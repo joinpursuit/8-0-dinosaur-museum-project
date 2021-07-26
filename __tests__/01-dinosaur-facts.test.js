@@ -8,7 +8,7 @@ const {
 const dinosaurs = require("../data/dinosaurs");
 
 describe("getTallestDinosaur()", () => {
-  test("should return an object where the key is the tallest dinosaur name and the value is the height in feet", () => {
+  test("should return an object where the key is the tallest dinosaur name and the value is the length in feet", () => {
     const actual = getTallestDinosaur(dinosaurs);
 
     const keys = Object.keys(actual);
@@ -19,7 +19,7 @@ describe("getTallestDinosaur()", () => {
     expect(actual[name]).toBeCloseTo(98.42, 1);
   });
 
-  test("should return the first dinosaur if there are multiples with the same height", () => {
+  test("should return the first dinosaur if there are multiples with the same length", () => {
     const input = [
       ...dinosaurs,
       {
