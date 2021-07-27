@@ -103,5 +103,3 @@ Before you start coding, remember Polya's problem solving methodology; begin by 
   ```
 
 - Start small for each of the functions. Many of the functions require you to solve for some edge-case. First, design a function that works for a single case and then expand outwards. It is likely that you will incrementally have more and more tests passing, as opposed to all of them passing at once.
-
-- Try writing helper methods that solve small problems, and use them in your overall function.
