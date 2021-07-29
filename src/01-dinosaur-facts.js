@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -22,7 +23,33 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  // Guard clause // if provide empty array return empty object 
+  // accumulator patern to determine tallest
+  // convert length in meters to feet 
+  // return newly created object with name of dinosaur as the key and height as the value.
+  
+  
+  
+  if (!dinosaurs.length) {        // if not dinosaurs return empty object // edge case
+    return {}
+  }
+
+  let height = dinosaurs[0].lengthInMeters // first dinosaur to compare
+  let key;                                 // initializing key variable
+
+    for(let i = 1; i < dinosaurs.length; i++) {     // define my loop
+      let dino = dinosaurs[i]
+      if(dino.lengthInMeters > height) {
+          key = dino.name
+          height = dino.lengthInMeters
+        }
+    }
+    let lengthInFeet = height * 3.281 // convert to feet
+    return {
+      [key]: lengthInFeet             // return created key new value
+    }
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +71,20 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  // should return a sting description of a dinosaur by id
+  // should work for dinosaurs with only one value in mya
+  // should return error message if dinosaurs cannot be found
+  
+  let dinoDescription = `A dinosaur with an ID of ${id} cannot be found.`
+  
+  for(let dinosaur of dinosaurs) {
+    if(dinosaur.dinosaurID === id) {
+      dinoDescription = `${dinosaur.name} ${dinosaur.pronunciation}\n${dinosaur.info}. It lived in the ${dinosaur.period}, over ${dinosaur.mya[i].length - 1} million years ago.`
+    }
+  }
+  return dinoDescription
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +111,14 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  // needs to return an array of dinosaur Id's that lived within the mya range provided. if the mya !== any dino.mya's within
+  // return an empy arrau
+
+  // next, if a dino only has one mya year provided, the logic has to allow for the given mya or dino.mya - 1
+
+  // if the key argument is provided(ie truthy) 
+}
 
 module.exports = {
   getTallestDinosaur,
