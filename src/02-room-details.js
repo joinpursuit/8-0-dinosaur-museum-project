@@ -24,8 +24,30 @@ const exampleRoomData = require("../data/rooms");
  * EXAMPLE:
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
+ * 
+ * Input: obj array, obj array, string
+ * Output: string
+ * Checks for if dino exists
+ *  >Checks for rooms including the dino
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let result = ''
+  let dinoId = ''
+  for (let dino of dinosaurs){
+    if (dino.name === dinosaurName){
+      dinoId = dino.dinosaurId
+      break;
+    }
+  }
+  if (!dinoId){return `Dinosaur with name '${dinosaurName}' cannot be found.`}
+  for (let room of rooms){
+    if (room.dinosaurs.includes(dinoId)){
+      result = room.name
+    }
+  }
+  if (!result) {return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`}
+  return result
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -43,13 +65,36 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
  * EXAMPLE:
  *  getConnectedRoomNamesById(rooms, "A6QaYdyKra");
  *  //> [
-      "Entrance Room",
-      "Coat Check Room",
-      "Ellis Family Hall",
-      "Kit Hopkins Education Wing"
-    ]
+ "Entrance Room",
+ "Coat Check Room",
+ "Ellis Family Hall",
+ "Kit Hopkins Education Wing"
+]
+ 
+Input: array of room objects, id string
+Output: either an array of the adjacent room names, or an error message
+
+
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let result = []
+  for (let room of rooms){
+    if (room.roomId === id){//check for matching id of base room
+      for (let adjacent of room.connectsTo){//loop through the connected room id's
+        let flag = true //a way to check if the adjacent room hits in the lower loop
+        for (let rm of rooms){//checking back to main array for the id's
+          if (adjacent === rm.roomId){//checks if id exists, if not flag goes through
+            result.push(rm.name)
+            flag = false
+          }
+        }
+        if (flag){return `Room with ID of '${adjacent}' could not be found.`}
+      }
+      return result
+    }
+  }
+  return `Room with ID of '${id}' could not be found.`
+}
 
 module.exports = {
   getRoomByDinosaurName,
