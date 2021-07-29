@@ -53,8 +53,33 @@ const exampleTicketData = require("../data/tickets");
     };
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
+
+  Input: nested object, and a object
+  Output: either an error message or a price in cents
+    >Maybe accumulator for a running total
+  Need a check for any errors
+  Need to access each attribute of the object
+    >reference Database object
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let total = 0
+  if (!ticketData[ticketInfo.ticketType]){
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+  }else if(!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]){
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+  }
+total += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+if (ticketInfo.extras){
+  for (let i = 0; i< ticketInfo.extras.length; i++){
+    if (!ticketData.extras[ticketInfo.extras[i]]){
+      return `Extra type '${ticketInfo.extras[i]}' cannot be found.`
+    }
+    total+= ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType]
+  }
+}
+// console.log(total, ticketInfo)
+return total
+}
 
 /**
  * purchaseTickets()
@@ -108,8 +133,34 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     ]
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
+
+  Input: data containing obeject, array of objects
+  Output: a formatted string
+  loop through each item of the purchase to check pricing and validity
+    >Make use of previously defined function
+
  */
-function purchaseTickets(ticketData, purchases) {}
+function capFirst(word) {//just for convenience
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
+function purchaseTickets(ticketData, purchases) {
+  let total = 0
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
+  for (let item of purchases){
+    let cost = calculateTicketPrice(ticketData,item)
+    if (typeof cost === 'string') {return cost} //for the case of invalid charge
+    total += cost
+    for (let i = 0; i< item.extras.length; i++){
+      item.extras[i] = capFirst(item.extras[i]) + ' Access' //adding to comply with formatting
+    }
+    if (item.extras.length !=0){//check for if there are extras to include
+      receipt += `${capFirst(item.entrantType)} ${ticketData[item.ticketType].description}: $${(cost/100).toFixed(2)} (${item.extras.join(', ')})\n`
+    }else{
+      receipt += `${capFirst(item.entrantType)} ${ticketData[item.ticketType].description}: $${(cost/100).toFixed(2)}\n`
+    }
+  }
+  return receipt + `-------------------------------------------\nTOTAL: $${(total/100).toFixed(2)}`
+}
 
 // Do not change anything below this line.
 module.exports = {
