@@ -22,7 +22,31 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  //Overall Plan: Loop through dinos, hold on to tallestDino in a variable outside of the loop, and return a formatted object representing our tallest dino
+  //Account for the edgecase of an empty array
+  if (!dinosaurs[0]){
+    return {};
+  }
+  //Declare result variable to accumulate to, empty object
+  const result = {};
+  //Declare tallestDino object to accumulate to, set to first dino
+  let tallestDino = dinosaurs[0];
+  //Declare loop to iterate through all dinos (except the first)
+  for (let i = 1; i < dinosaurs.length; i++){
+    //create currentDino variable for clarity
+    currentDino = dinosaurs[i];
+    //in loop, check if current dino is taller than our tallest dino
+    if (currentDino.lengthInMeters > tallestDino.lengthInMeters){
+      //if it is, make it our new tallest dino
+      tallestDino = currentDino;
+    }
+  }
+  //after loop, push the name and height(in feet) of our tallest dino into our new object, formatted
+  result[tallestDino.name] = tallestDino.lengthInMeters * 3.281 
+  //return result
+  return result;
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +68,25 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  //Overall Plan: Loop through dinos, save the dino w/ the corrisponding ID, and then return string based on object
+  //Declare variable to accumulate to (to hold our target dino)
+  let targetDino = {};
+  //Declare loop to iterate through dinosaurs
+  for (let currentDino of dinosaurs){
+    //in loop, check if target id is our currentDino's ID
+    if (currentDino.dinosaurId === id){
+      //if it is, make targetDino = currentDino
+      targetDino = currentDino
+    }
+  }
+  //after loop, return error if id wasn't found, or formatted text for the found dino
+  if (!targetDino.dinosaurId){
+    return `A dinosaur with an ID of '${id}' cannot be found.`;
+  } else {
+    return `${targetDino.name} (${targetDino.pronunciation})\n${targetDino.info} It lived in the ${targetDino.period} period, over ${targetDino.mya[targetDino.mya.length - 1]} million years ago.`
+  }
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +113,36 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  //Declare result variable to iterate to
+  const result = [];
+  //Declare loop to iterate through dinosaurs
+  for (const currentDino of dinosaurs){
+    //in loop, check if current dinosaur was alive during the mya
+    switch (true){
+      //if there are 2 mya values
+      default:
+        //check if the given mya is <= the first, AND >= second
+        if (mya <= currentDino.mya[0] && mya >= currentDino.mya[1]){
+          //if dino was alive during those years
+          //check if key is valid, if it is, push currentDino[key] to array, if not push id
+          currentDino[key] ? result.push(currentDino[key]) : result.push(currentDino.dinosaurId);
+        }
+        break;
+      //if case has 1 mya value
+      case (currentDino.mya.length === 1):
+        //check if the given mya is = to currentDino.mya, OR currentDino.mya - 1
+        if (mya === currentDino.mya[0] || mya === currentDino.mya[0] - 1){
+          //if dino was alive during those years
+          //check if key is valid, if it is, push currentDino[key] to array, if not push id
+          currentDino[key] ? result.push(currentDino[key]) : result.push(currentDino.dinosaurId);
+        }
+        break;
+    }
+  }
+  //after loop, return our result array
+  return result;
+}
 
 module.exports = {
   getTallestDinosaur,
