@@ -54,7 +54,37 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let validTicket = ["general", "membership"];
+  let validEntrant = ["child", "adult", "senior"];
+
+  if (!validTicket.includes(ticketInfo.ticketType)) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+
+  if (!validEntrant.includes(ticketInfo.entrantType)) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+
+  for (let item of ticketInfo.extras) {
+    if (!Object.keys(ticketData.extras).includes(item)) {
+      return `Extra type '${item}' cannot be found.`;
+    }
+  }
+
+  let sum = 0;
+  let ticket = ticketInfo.ticketType;
+  let entrant = ticketInfo.entrantType;
+  let extra = ticketInfo.extras;
+
+  sum += ticketData[ticket]["priceInCents"][entrant];
+
+  for (let item of extra) {
+    sum += ticketData["extras"][item]["priceInCents"][entrant];
+  }
+
+  return sum;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +139,40 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let print =
+    "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------";
+
+  if (typeof calculateTicketPrice(ticketData, purchases[0]) === "string") {
+    return calculateTicketPrice(ticketData, purchases[0]);
+  }
+  let total = 0;
+  for (purchase of purchases) {
+    let sum = calculateTicketPrice(ticketData, purchase);
+    sum /= 100;
+    total += sum;
+    print += `\n${
+      purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)
+    } ${
+      purchase.ticketType[0].toUpperCase() + purchase.ticketType.slice(1)
+    } Admission: $${sum.toFixed(2)}`;
+
+    if (purchase.extras.length > 0) {
+      let extraFormat = [];
+      for (let type of purchase.extras) {
+        extraFormat.push(type[0].toUpperCase() + type.slice(1) + " Access");
+      }
+      let extraString = extraFormat.join(", ");
+      print += ` (${extraString})`;
+    }
+  }
+
+  print += `\n-------------------------------------------\nTOTAL: $${total.toFixed(
+    2
+  )}`;
+
+  return print;
+}
 
 // Do not change anything below this line.
 module.exports = {
