@@ -21,8 +21,27 @@ const exampleDinosaurData = require("../data/dinosaurs");
  * EXAMPLE:
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
+ * 
+ * Input = Obj Array
+ * Output = Object of {name: lengthInFeet(lengthInMeters*3.281)) //maybe rounded to 2 decimals
+ *    >establish an empty obj
+ * loop through all objects and compare length attributes
+ *    >if higher height, keep track of the item
+ *      >establish a holder
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  let result = {}
+  let holder = dinosaurs[0]
+  for (let i = 1; i < dinosaurs.length; i++){
+    if (dinosaurs[i].lengthInMeters > holder.lengthInMeters){
+      holder = dinosaurs[i]
+    }
+  }
+  if (holder){
+    result[holder.name] = holder.lengthInMeters*3.281
+  }
+  return result
+}
 
 /**
  * getDinosaurDescription()
@@ -43,8 +62,18 @@ function getTallestDinosaur(dinosaurs) {}
  *
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
+ * 
+ * Input: object array, string
+ * Output: string containing about 5 properties of the given id, or default nothing found string
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  for (let dino of dinosaurs){
+    if (dino.dinosaurId === id){
+      return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`
+    }
+  }
+  return "A dinosaur with an ID of 'incorrect-id' cannot be found."
+}
 
 /**
  * getDinosaursAliveMya()
@@ -70,8 +99,31 @@ function getDinosaurDescription(dinosaurs, id) {}
  *
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
+ * 
+ * input: obj array, number, optional key with a default value
+ * output: array based on key given
+ * set default key is set for empty key input, and an additionaly check if inputted key exists
+ * check if within range
+ *    >Need extra catch for ranges w/o a 2nd number
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key = 'dinosaurId') {
+  if (!Object.keys(dinosaurs[0]).includes(key)){
+    key = 'dinosaurId'
+  }
+  let arr = []
+  for (let dino of dinosaurs){
+    if (dino.mya.length === 1){
+      if (dino.mya[0] >= mya && dino.mya[0]-1 <= mya){
+        arr.push(dino[key])
+      }
+    }else{
+      if (dino.mya[0] >= mya && dino.mya[1] <= mya){
+        arr.push(dino[key])
+      }
+    }
+  }
+  return arr
+}
 
 module.exports = {
   getTallestDinosaur,
