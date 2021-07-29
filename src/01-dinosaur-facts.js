@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -35,7 +36,7 @@ function getTallestDinosaur(dinosaurs) {
   }
   return tallestDinoInFeet;
 }
-getTallestDinosaur(exampleDinosaurData);
+// getTallestDinosaur(exampleDinosaurData);
 /**
  * getDinosaurDescription()
  * ---------------------
@@ -56,7 +57,25 @@ getTallestDinosaur(exampleDinosaurData);
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  for(let dino of dinosaurs){
+    if(dino.dinosaurId === id){
+      return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`;
+    };
+  };
+  return `A dinosaur with an ID of '${id}' cannot be found.`
+}
+
+// let sentence = '';
+// {
+//   for(let i=0; i<dinosaurs.length; i++){
+//     if(dinosaurs[i].dinosaurId === id){
+//       sentence =  `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.`;
+//     }else{
+//       sentence = `A dinosaur with an ID of '${id}' cannot be found`;
+//     };
+//     return sentence;
+// }
 
 /**
  * getDinosaursAliveMya()
