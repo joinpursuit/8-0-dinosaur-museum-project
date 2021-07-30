@@ -117,7 +117,6 @@ function ticketExtraDetails(extras, rooms){
                     }
                 }
             }
-
         }
     }else{
         for (let room of rooms){
@@ -133,7 +132,6 @@ function ticketExtraDetails(extras, rooms){
             }
         }
     }
-
     if(exDinos.length>0){
         return `If you purchase this extra ticket you will gain access to ${exRooms.length} more ${exRooms.length>1? 'rooms':'room'} and see ${exDinos.length} more dinosaurs!`
     }else{
