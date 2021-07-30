@@ -112,19 +112,36 @@ function getConnectedRoomNamesById(rooms, id) {
   //input an array of objects, and a string
   //output an error message string or array of strings representing room names
   let foundConnectedRooms = null;
-  // const roomNames = [];
+
+  //get valid rooms as we iterate through
+  let roomsKeeper = null;
 
   //determine whether room exists by iterating through rooms
   for (let i = 0; i < rooms.length; i++) {
     //if room exists according to id
     if (rooms[i].roomId === id) {
       //assign connectedRooms to be the array
-      foundConnectedRooms = rooms[i].connectsTo;
+      foundConnectedRooms = rooms[i].connectsTo.slice();
+      roomsKeeper = rooms[i].connectsTo.slice();
     }
   }
 
-  if (!foundConnectedRooms) return `Room with ID of 'incorrect-id' could not be found.`;
-  if (foundConnectedRooms.includes("incorrect-id")) return `Room with ID of 'incorrect-id' could not be found.`;
+  //block if rooms keeper does not get re-assigned
+  if (!roomsKeeper) return `Room with ID of '${id}' could not be found.`;
+
+  //iterate through rooms and check to see if all rooms are accounted for
+  for (let i = 0; i < rooms.length; i++) {
+    //ignore the main room that connects all
+    if (foundConnectedRooms.length === rooms[i].connectsTo.length) continue;
+    for (let j = 0; j < foundConnectedRooms.length; j++) {
+      if (foundConnectedRooms.includes(rooms[i].roomId)) {
+        const index = roomsKeeper.indexOf(rooms[i].roomId);
+        if (index !== -1) roomsKeeper.splice(index, 1);
+      }
+    }
+  }
+  //block if there is an invalid room that doesn't exist
+  if (roomsKeeper.length !== 0) return `Room with ID of '${roomsKeeper[0]}' could not be found.`;
 
   return foundConnectedRooms.reduce((roomNames, currentConnect) => {
     //iterate through rooms
@@ -135,8 +152,6 @@ function getConnectedRoomNamesById(rooms, id) {
     return roomNames;
   }, []);
 }
-
-console.log(getConnectedRoomNamesById(input, id));
 
 module.exports = {
   getRoomByDinosaurName,
