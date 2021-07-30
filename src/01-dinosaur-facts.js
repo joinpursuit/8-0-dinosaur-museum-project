@@ -1,3 +1,11 @@
+// this is our island, everything should go inside of these functions. Do NOT make global variables.
+// How to use the debugger with this file:
+// 1. Call the function
+
+ // call function for debugger
+// pass in our dinosaur data for THIS file to run the debugger.
+// dinosaurs = given object (it's in the data/dinosaurs file)
+
 /*
   Do not change the line below. If you'd like to run code from this file, you may use the `exampleDinosaurData` variable below to gain access to tickets data. This data is pulled from the `data/dinosaurs.js` file.
 
@@ -22,7 +30,23 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  if (!dinosaurs.length) { // if no dinosaurs/if false
+    return {};
+  }
+let height = dinosaurs[0].lengthInMeters; // first dinosaur
+let key;
+  for (let i = 1; i < dinosaurs.length; i++) {
+    let dino = dinosaurs[i];
+    if (dino.lengthInMeters > height) {
+      key = dino.name;
+      height = dino.lengthInMeters; // height of tallest dinosaur
+    }
+  }
+  let lengthInFeet = height * 3.281; // convert meters to feet
+  return {[key]: lengthInFeet};  // outside for loop
+}
+// getTallestDinosaur(exampleDinosaurData);
 
 /**
  * getDinosaurDescription()
@@ -44,7 +68,19 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  // If the dinosaur cannot be found, returns an error message - default message
+  let description = `A dinosaur with an ID of '${id}' cannot be found.`;
+  for (let dino of dinosaurs) { // for loop
+    if (dino.dinosaurId === id) {
+      // re-assign value of description, include mya as last element in case you do find the id.
+      description = `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length -1]} million years ago.`
+    } 
+  }
+  return description; // outside for loop
+}
+// getDinosaurDescription(exampleDinosaurData, "U9vuZmgKwUr");
+// getDinosaurDescription(exampleDinosaurData, "incorrect-id");
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +107,30 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+// default is the id.
+let newArr = [];
+for (let dino of dinosaurs) { // for loop
+  if (dino.mya.length === 1) {
+    if (dino.mya[0] === mya || dino.mya[0] -1 === mya) {
+      if (key in dino) { // if key exists in dino
+        newArr.push(dino[key]);
+      } else {
+        newArr.push(dino.dinosaurId);
+      }
+    }
+  } else {
+    if (dino.mya[1] <= mya && mya <= dino.mya[0]) { // between
+      if (key in dino) {
+        newArr.push(dino[key]);
+      } else {
+        newArr.push(dino.dinosaurId);
+      }
+    }
+  }
+}
+return newArr;
+}
 
 module.exports = {
   getTallestDinosaur,

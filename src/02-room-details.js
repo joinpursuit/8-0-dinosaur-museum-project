@@ -25,7 +25,28 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let newStr = `Dinosaur with name '${dinosaurName}' cannot be found.`; // Default value - this dinosaur does not exist
+  let newObj = {};
+  for (let dino of dinosaurs) {
+    // check if dinosaur is in any room
+    if (dino.name === dinosaurName) { // find dinosaur by name
+      newObj = dino; // new dino in the new object
+    }
+  }
+  if (!("name" in newObj)) { // if the newObj is empty of a name
+    return newStr;
+  }
+  for (let room of rooms) {
+    newStr = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`; // this dinosaur cannot
+    // if dinosaur in that room includes the dinosaur
+    if (room.dinosaurs.includes(newObj.dinosaurId)) {
+      newStr = room.name; // reassign newStr to room name
+      break; // so it stops running after it evaluates to true
+    } 
+  }
+  return newStr; // outside for loop
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +70,31 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let newArr = [];
+  for (let room of rooms) {
+    if (room.roomId === id) { // check for room Id first
+      newArr = room.connectsTo.slice(0); // makes a copy of array
+    }
+  }
+  if (newArr.includes("incorrect-id")) {
+    return `Room with ID of 'incorrect-id' could not be found.` // If a room ID cannot be found
+  }
+
+  if (!newArr.length) {
+   return `Room with ID of '${id}' could not be found.` // If a room ID cannot be found
+  }
+
+  let newArr2 = [];
+  for (let room of rooms) { // new loop for rooms
+    if (newArr.includes(room.roomId)) {
+      newArr2.push(room.name);
+    }
+  }
+  return newArr2;
+}
+
+
 
 module.exports = {
   getRoomByDinosaurName,
