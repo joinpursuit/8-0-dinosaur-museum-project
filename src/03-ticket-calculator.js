@@ -77,7 +77,6 @@ if (ticketInfo.extras){
     total+= ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType]
   }
 }
-// console.log(total, ticketInfo)
 return total
 }
 
@@ -143,6 +142,7 @@ return total
 function capFirst(word) {//just for convenience
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
+
 function purchaseTickets(ticketData, purchases) {
   let total = 0
   let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
