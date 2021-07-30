@@ -103,29 +103,25 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let fullNumberMya = [];
   let arrayForIdList = [];
-  let rangeNumber;
-
-  for (let i = 0; i < dinosaurs.length; i ++) {
-    
-    var highEnd = dinosaurs[i].mya[0] + 1; //156
-    var lowEnd= dinosaurs[i].mya[1]; //144
+  for (let i = 0; i < dinosaurs.length; i ++) { 
+    var max = dinosaurs[i].mya[0]; //156
+    var min= dinosaurs[i].mya[1]; //144
+    var id = dinosaurs[i].dinosaurId;
     var arr = [];
-    // console.log(lowEnd) 
-    // console.log(arr)
-    // console.log(highEnd)
-      while(lowEnd <= highEnd){
-        arr.push(highEnd--); 
+      while(min <= max){
+        arr.push(max--); 
       }
-      // console.log(arr)
+    if (Object.keys(dinosaurs[i]).includes(key)) {
+      id = dinosaurs[i][key];
+    } 
     if (arr.includes(mya)){
-    
-    arrayForIdList.push(dinosaurs[i].dinosaurId);
+    arrayForIdList.push(id);
+    } else if (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] - 1 === mya) {
+    arrayForIdList.push(id);
     }
   }
     return arrayForIdList;
-
 }
     
     
