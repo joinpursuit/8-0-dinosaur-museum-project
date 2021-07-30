@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -22,8 +23,35 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
 
+
+//looking through an array of objects. Each object has a dinosaur and its deets
+//grabbing the dinosaur name and its height
+//convert height from meters to feet - this can be a function that can be called, but doesn't have to exist since the height can be converted at the end
+// compare the current dinosaur to different dinosaurs to determine if its hight is higher or lower than the listed dinosaur
+//create an empty object and dump the info into it
+//loop through each index of the original dinosaur object and look at the height first
+
+
+function getTallestDinosaur(dinosaurs) {
+  let tallestDinosaur = {};
+  let currentDino = dinosaurs[0];
+  if (dinosaurs.length === 0) {
+    return tallestDinosaur;
+  }
+  for (let i = 0; i < dinosaurs.length; i++) {
+    let indexDino = dinosaurs[i];
+    if (currentDino.lengthInMeters < indexDino.lengthInMeters) {
+      currentDino = indexDino;
+    }
+  }
+  let measurementsInFeet = currentDino.lengthInMeters * 3.281
+  tallestDinosaur[currentDino.name] = measurementsInFeet;
+  return tallestDinosaur;
+}
+
+// const stuff = []
+// console.log(getTallestDinosaur(stuff));
 /**
  * getDinosaurDescription()
  * ---------------------
@@ -44,8 +72,35 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
 
+//looks the array of objects- loop through each object
+//return a line of text that incorporates the identified dinosaur(id of the dinosaur)
+//if the dinosaur is not listed then the result in an error message
+//if there are two values in the mya array it grabs the lowest numbers - automatically grab the second value - array.length - 1
+function getDinosaurDescription(dinosaurs, id) {
+  for (const eachDino of dinosaurs ) {
+    if (eachDino.dinosaurId === id) {
+      return `${eachDino.name} (${eachDino.pronunciation})\n${eachDino.info} It lived in the ${eachDino.period} period, over ${eachDino.mya[eachDino.mya.length-1]} million years ago.` 
+    }
+  }
+  return `A dinosaur with an ID of '${id}' cannot be found.`
+}
+
+//  const stuff = [ 
+//   {
+//     dinosaurId: "U9vuZmgKwUr",
+//     name: "Xenoceratops",
+//     pronunciation: "ZEE-no-SEH-ruh-tops",
+//     meaningOfName: "alien horned face",
+//     diet: "herbivorous",
+//     lengthInMeters: 6,
+//     period: "Early Cretaceous",
+//     mya: [78.5, 77.5],
+//     info: "Xenoceratops had horns and a bony frill with elaborate ornamentation of projections, knobs, and spikes.",
+//   } 
+// ]
+
+// console.log(getDinosaurDescription(stuff,"U9vuZmgKwUr"))
 /**
  * getDinosaursAliveMya()
  * ---------------------
@@ -71,7 +126,74 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+//returns an array of dinosaurs who were alive at a given time
+//the given time is mya
+//if a key is provided, return the value of that key - can be any property listed within the object
+//if there is no key, then return the dinosaur ID 
+//create a function to determine if something is alive
+//if the function rings as true, then things happens
+//mya will be equal to to the value or 1 less.
+//determine if the dinosaurs is alive
+
+//create a function that determines if a dinosaur is alive or not during the time campared to it
+
+
+function yesIAmAlive(eachDino, mya) {
+  let iAmAlive = false
+    // if the number given is bigger than the first number in mya, then the dinosaur doesn't exist and if the number given is smaller than the second number in mya it's still dead
+    //if the given number exists in mya range (index number 2 to index number 1) then the dino is alive   
+    if (eachDino.mya.length === 2 && (eachDino.mya[0]>= mya && eachDino.mya[1] <= mya) ) {
+      iAmAlive = true
+    }
+    // if there's only 1 year element in mya, then the mya (listed in the array) has to match the given year or be one less than the given
+    //if it doesn't meet then it's false
+    if (eachDino.mya.length === 1 && (eachDino.mya[0] === mya || eachDino.mya[0]-1 === mya) ) {
+      iAmAlive = true
+    }
+  return iAmAlive
+}
+
+function getDinosaursAliveMya(dinosaurs, mya, key = `dinosaurId`) {
+  let aliveAtTheTime = [];
+  for (const eachDino of dinosaurs) {
+    if (yesIAmAlive(eachDino, mya) && key) {
+      aliveAtTheTime.push(eachDino[key])
+    }
+    // else if (yesIAmAlive(eachDino, mya)) {
+    //   aliveAtTheTime.push(eachDino.dinosaurId)
+    // }
+  }
+  return aliveAtTheTime
+} 
+
+
+// let stuff = [
+//   {
+//   dinosaurId: "YLtkN9R37",
+//   name: "Allosaurus",
+//   pronunciation: "AL-oh-sore-us",
+//   meaningOfName: "other lizard",
+//   diet: "carnivorous",
+//   lengthInMeters: 12,
+//   period: "Late Jurassic",
+//   mya: [156, 144],
+//   info: "Allosaurus was an apex predator in the Late Jurassic in North America.",
+// },
+// {
+//   dinosaurId: "WHQcpcOj0G",
+//   name: "Dracorex",
+//   pronunciation: "dray-ko-rex",
+//   meaningOfName: "dragon king",
+//   diet: "herbivorous",
+//   lengthInMeters: 4,
+//   period: "Late Cretaceous",
+//   mya: [66],
+//   info: "Dracorex hogwartsia was a pachycephalosaur that did not have a domed head. Instead, its skull was adorned with spikes and frills reminiscent of a dragon. A skull was discovered in the Hell Creek Formation in South Dakota and donated to the Children's Museum of Indianapolis in 2004. Its name was inspired by J.K. Rowling's Harry Potter series and the young visitors to the children's museum.",
+// }
+// ]
+
+// getDinosaursAliveMya(stuff, 150, stuff.dinosaurId)
+
 
 module.exports = {
   getTallestDinosaur,
