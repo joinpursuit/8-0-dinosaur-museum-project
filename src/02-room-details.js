@@ -76,6 +76,7 @@ Output: either an array of the adjacent room names, or an error message
 
 
  */
+/* Version 1
 function getConnectedRoomNamesById(rooms, id) {
   let result = []
   for (let room of rooms){
@@ -95,6 +96,36 @@ function getConnectedRoomNamesById(rooms, id) {
   }
   return `Room with ID of '${id}' could not be found.`
 }
+*/
+
+function getRoom(rooms, id){
+  for (let room of rooms){
+    if (room.roomId === id){
+      return room
+    }
+  }
+  return false
+}
+
+function getConnectedRoomNamesById(rooms, id) {
+  let result = []
+  let startingRoom = getRoom(rooms, id)
+  if (startingRoom){
+    for (let adjacent of startingRoom.connectsTo){//loop through the connected room id's
+      if (getRoom(rooms, adjacent)){
+        result.push(getRoom(rooms, adjacent).name)
+      }else{
+        return `Room with ID of '${adjacent}' could not be found.`;
+      }
+    }
+    return result
+  }
+  return `Room with ID of '${id}' could not be found.`
+}
+
+
+
+
 
 module.exports = {
   getRoomByDinosaurName,
