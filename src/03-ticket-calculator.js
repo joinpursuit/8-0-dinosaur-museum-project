@@ -54,7 +54,52 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  //Declare variable to accumulate to, set to 0
+  let total = 0;
+  //Declare variable for type for clarity
+  let type = ticketInfo.ticketType
+  //Declare variable for age for clarity
+  const age = ticketInfo.entrantType;
+  //Declare switch statement to account for some edge statements
+  switch (true){
+    //check if ticketType exist
+    case (!ticketData[type]):
+      //if it doesn't, return error msg
+      return `Ticket type '${type}' cannot be found.`
+      break;
+    //check if entrantType exist
+    case (!ticketData[type].priceInCents[age]):
+      //if it doesn't, return error msg
+      return `Entrant type '${age}' cannot be found.`
+      break;
+  }
+  //Declare a loop to iterate through the appropriate ticketType price
+  for (const ticketAge in ticketData[type].priceInCents){
+    //Check if our age is found in the ticketType price
+    if (ticketAge === age){
+      //If it is, add it's cost to our total
+      total += ticketData[type].priceInCents[ticketAge];
+    }
+  }
+
+  //Declare new loop to iterate through extras array
+  for (const extra of ticketInfo.extras){
+    //account for edgecase of extra not existing
+    //check if extra exist
+    if (!ticketData.extras[extra]){
+      //if it doesn't, return error
+      return `Extra type '${extra}' cannot be found.`
+    //else, if it exist
+    } else {
+      //find the appropriate cost and add it to our total
+      total += ticketData.extras[extra].priceInCents[age];
+    }
+    
+  }
+  //after loop, return total
+  return total;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +154,79 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  //Declare variable to accumulate to, set to empty string;
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  //Declare variable to accumulate to, set to 0;
+  let totalInCents = 0;
+  //Declare loop to iterathe through purchases
+  for (const item of purchases){
+    //create variable for clarity
+    let itemPrice = calculateTicketPrice(ticketData, item)
+    //check for error (string)
+    if (typeof itemPrice === 'string'){
+      //return the error msg
+      return itemPrice;
+    //if there are no errors
+    } else {
+    //add the cost to our totalInCents
+    totalInCents += itemPrice
+    //and add on to our receipt
+    receipt += purchaseToReceipt(ticketData, item)
+    }
+  }
+  //return receipt + footer
+  return receipt + `-------------------------------------------\nTOTAL: $${(totalInCents/100).toFixed(2)}`
+
+}
+
+//function to format purchases to receipt format
+function purchaseToReceipt(ticketData, purchase){
+  //Declare variable to loop through
+  let extraArr = [];
+  let extraList = "";
+  //loop through extras to get an array of extra discriptions
+  for (const extra of purchase.extras){
+    //push extra's discription into new array
+    extraArr.push(ticketData.extras[extra].description);
+  }
+  //Check if we have extras
+  if (extraArr[0]) {
+    //if we do, add text to our formatted string to include it
+    extraList = ` (${extraArr.join(', ')})`
+  }
+  //return formatted string
+  return `${magneto(purchase.entrantType)} ${ticketData[purchase.ticketType].description}: $${(calculateTicketPrice(ticketData, purchase) / 100).toFixed(2)}${extraList}\n`
+}
+
+//function to capitalize first letter of string
+function magneto(string){ // (idk, name sounded cool)
+  //return first letter uppercase, rest of the word lowercase
+  return string[0].toUpperCase() + string.slice(1).toLowerCase()
+}
+
+/*purchaseTickets(exampleTicketData, [
+  {
+    ticketType: "general",
+    entrantType: "adult",
+    extras: ["movie", "terrace"],
+  },
+  {
+    ticketType: "general",
+    entrantType: "senior",
+    extras: ["terrace"],
+  },
+  {
+    ticketType: "general",
+    entrantType: "child",
+    extras: ["education", "movie", "terrace"],
+  },
+  {
+    ticketType: "general",
+    entrantType: "child",
+    extras: ["education", "movie", "terrace"],
+  },
+])*/
 
 // Do not change anything below this line.
 module.exports = {
