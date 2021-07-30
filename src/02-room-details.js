@@ -25,7 +25,28 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  // 1. Default value and output 
+  let roomName = "Dinosaur with name '" + dinosaurName + "' cannot be found."
+  // 2. Define the loop 
+  for (let dinosaur of dinosaurs) {
+    // 3. Accumulate
+    if (dinosaurName === dinosaur.name) {
+      for (let room of rooms) {
+        if (room.dinosaurs.includes(dinosaur.dinosaurId)) {
+          // the trick here is to return as soon as it's found. 
+          // Otherwise it'll continue looping
+          return roomName = room.name 
+        } else {
+          roomName = "Dinosaur with name '" + dinosaurName + "' cannot be found in any rooms."
+        }
+      }
+    } 
+  }
+  return roomName
+}
+
+
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +70,60 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  //1. Default value and output
+  let nameArray = []
+  let idArray = []
+  let error = "Room with ID of 'incorrect-id' could not be found."
+  //2. Define the Loop
+  
+  for (let i = 0; i < rooms.length; i++ ) {
+    let room = rooms[i]
+    if (room.roomId === id) {
+      idArray.push(...room.connectsTo)
+      break;
+    } else {
+      if (room.roomId !== id) {
+        error
+      }
+    }
+  }
+
+  if (idArray.length === 1) {
+    for (let i = 0; i < rooms.length; i++ ) {
+      let room = rooms[i]
+      if (idArray[0] === room.roomId) {
+        nameArray.push(room.name)
+        break;
+      } else {
+        if (!idArray.includes(room.roomId)) {
+          error; 
+        }
+      }
+    }
+  } else if (!idArray.length) {
+    return error 
+  } else if (idArray.length > 1) {
+    for (let i = 0; i < rooms.length; i++ ) {
+      let room = rooms[i]
+      if (nameArray.length < idArray.length) {
+        if (idArray.includes(room.roomId)) {
+          nameArray.push(room.name)
+        }
+      }
+      if (nameArray.length === idArray.length) {
+        break;
+      }
+    } 
+  } 
+  
+  if (nameArray.length < idArray.length) {
+    return error
+  }
+
+  return nameArray 
+}
+
 
 module.exports = {
   getRoomByDinosaurName,
