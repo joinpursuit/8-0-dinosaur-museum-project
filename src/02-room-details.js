@@ -49,7 +49,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   return output;
 }
 
-getRoomByDinosaurName(exampleDinosaurData,exampleRoomData,"Tyrannosaurus")
+// getRoomByDinosaurName(exampleDinosaurData,exampleRoomData,"Tyrannosaurus")
 /**
  * getConnectedRoomNamesById()
  * ---------------------
@@ -72,8 +72,44 @@ getRoomByDinosaurName(exampleDinosaurData,exampleRoomData,"Tyrannosaurus")
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  
+  let exactId;
+  let output;
+  let array = [];
 
+  for (let singleRoom of rooms) {
+    exactId = singleRoom.roomId
+    
+    // Compared the given id with the roomId in every single room.
+    if (exactId === id) {
+      output = singleRoom.connectsTo;
+      //Here is the output (Ids in an array) is going to connect with the roomId of eachRoom in rooms. 
+
+      // console.log(output) 
+      // For example, given id is "A6QaYdyKra".
+      //[ 'zwfsfPU5u', 'aIA6tevTne', 'dpQnu5wgaN', 'L72moIRcrX' ]
+
+      for (let singleIdInArray of output) {
+         
+        for (let eachRoom of rooms) {
+          // Compared singleIdInArray with roomId of eachRoom, if it's true, then push what is asking for into an array. 
+          if (singleIdInArray === eachRoom.roomId) {
+            // Push the room name  
+            array.push(eachRoom.name);
+          };
+        };
+      // if (exactId !== id) {
+      //         return `Room with ID of ${singleIdInArray} could not be found.`
+      //       }
+      };
+    return array;
+    };
+  };
+return `Room with ID of '${id}' could not be found.`;
+};
+
+getRoomByDinosaurName(exampleRoomData,"A6QaYdyKra")
 module.exports = {
   getRoomByDinosaurName,
   getConnectedRoomNamesById,
