@@ -147,3 +147,5 @@ console.log(ticketExtraDetails("terrace",rooms),'\n');
 
 console.log(ticketExtraDetails(["education", "terrace"],rooms));
 //> "If you purchase this ticket extra you will gain access to 3 more rooms and see 2 more dinosaurs!
+
+console.log(ticketExtraDetails(['education','terrace','movie'],rooms))
