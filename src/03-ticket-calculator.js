@@ -54,7 +54,48 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let totalCost = 0;
+ 
+  // Create three new arrays which store the values of ticket type, entrant type and ticket extras in ticketData
+  // Create these array with the same value in ticketData to compare with the value of ticketInfo 
+  let ticketTypeInData = ["general","membership"];
+  let ticketEntrantTypeInData = ["child","adult","senior"];
+  let ticketExtrasInData = ["movie","education","terrace"];
+
+  let incorrectType = !ticketTypeInData.includes(ticketInfo.ticketType);
+  let incorrectEntrantType = !ticketEntrantTypeInData.includes(ticketInfo.entrantType);
+  // let incorrectExtraType = !ticketExtrasInData.includes(ticketInfo.extras);
+  // Get access to each element in the extras array by using for loop;
+
+  for(let i = 0; i < ticketInfo.extras.length; i++) {
+    if (!ticketExtrasInData.includes(ticketInfo.extras[i])) {
+    return `Extra type '${ticketInfo.extras[i]}' cannot be found.`
+    } else if (ticketInfo.extras.length !== 0) {
+      // According to the exact value of extras from ticketInfo to find the price in ticketData;
+        extrasCost = ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType];
+        totalCost += extrasCost;
+    }
+  }
+
+  if(incorrectType) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+  }
+
+  if(incorrectEntrantType) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+  }
+
+  if (ticketInfo.ticketType === ticketTypeInData[0] || ticketTypeInData[1]) {
+    // According to the exact value of ticketType from ticketInfo to find the price in ticketData;
+    noExtrasCost = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+    // If there is no extras cost, totalCost equals to 0 plus the price found in ticket Data;
+    // If it occurs some extras costs, totalCost equals to (totalCost += extrasCost) plus the price found in ticket Data;
+    totalCost += noExtrasCost;
+  }
+  return totalCost;
+}
+
 
 /**
  * purchaseTickets()

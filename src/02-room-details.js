@@ -99,7 +99,7 @@ function getConnectedRoomNamesById(rooms, id) {
             array.push(eachRoom.name);
           };
         };
-      // if (exactId !== id) {
+      // if (singleIdInArray !== id) {
       //         return `Room with ID of ${singleIdInArray} could not be found.`
       //       }
       };
