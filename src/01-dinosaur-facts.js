@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -22,7 +23,28 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+ //dinoHeight.push(dinosaurs[i]*3.281)
+
+function getTallestDinosaur(dinosaurs) {
+  let dinoHeight = {};
+  let result = dinosaurs[0];
+
+  for(let i=1;i<dinosaurs.length;i++){
+    if(dinosaurs[i].lengthInMeters > result.lengthInMeters){
+        result = dinosaurs[i];
+      }
+    }
+    if(result){
+      dinoHeight[result.name] = result.lengthInMeters * 3.281;
+    }
+  return dinoHeight;         
+}
+// guard clause if dinosaurs return e
+// accumulator pattern to determine tallest
+// convert lengthInMeters to test
+// return the newly created object with name of the dinosaur as the 'key' and height as the value. 
+
+
 
 /**
  * getDinosaurDescription()
@@ -44,7 +66,27 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+
+function getDinosaurDescription(dinosaurs, id) {
+    // take a for loop (or for of) loop to check each element
+    // compare each element to target id to see if they match
+    // if a match is found, Return the target value
+    // if the loop completes and the target isn't found, return an error message
+  //**   **//
+    //** Dinosaur Description **/
+    //> "Xenoceratops (ZEE-no-SEH-ruh-tops)\nXenoceratops had horns and a bony frill with elaborate ornamentation of projections, knobs, and spikes. 
+    //-->cont'd : It lived in the Early Cretaceous period, over 77.5 million years ago."
+    let dinoArr = ""; 
+
+    for(let dino of dinosaurs){
+      if(dino.dinosaurId === id){
+        return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`
+      }
+    }
+    // ERROR message: getDinosaurDescription(dinosaurs, "incorrect-id"); "A dinosaur with an ID of 'incorrect-id' cannot be found."
+  return "A dinosaur with an ID of 'incorrect-id' cannot be found.";
+  }
+  //**noteForSelf: Pay attention to formatting!! It matters in this problem. Template literal worked so much better.
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +113,41 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key){
+// first, needs to return and array of dinosaur IDs 
+// that lived within the mya range provided. 
+// if the mya !==any dino.mya's within range, Return an empty array.
+
+// next, if a dino only has one mya year, the logic has to allow for the given mya OR dino.mya-1
+
+// if they 'key' argument IS provided (i.e ) 
+// if the 'key' argument !== any dino[key], return the IDs as above.
+  // const expected = ["YLtkN9R37", "GGvO1X9Zeh", "BFjjLjea-O", "V53DvdhV2A"];
+  // const actual = getDinosaursAliveMya(dinosaurs, mya, key);
+  if(!Object.keys(dinosaurs[0]).includes(key)){    //return original dinosaur array in order if no key given
+        key = "dinosaurId";                        // return dinosaurIds as keys if no info given
+    }
+        let dinoArr = [];                          // set variable for Arr
+
+    for(let dino of dinosaurs){                    
+      let minDinoArr = dino.mya[0];                // set variable for dino.mya[0][1] for readability
+      let maxDinoArr = dino.mya[1];
+        
+        if(dino.mya.length === 1){
+          if(minDinoArr >= mya && minDinoArr -1 <= mya){   // push dino[keys] if mya fit tests rules: &&, not || ---> causes error; include dino.mya[]-1;
+            dinoArr.push(dino[key]);
+          }
+        }else{
+          if(minDinoArr >= mya && maxDinoArr <= mya){
+            dinoArr.push(dino[key]);
+          }
+        }
+      }   
+      return dinoArr;
+    }
+
+    // **noteForSelf: using pbjects.keys call func inside for loop, and after 1st IF statement caused error.
+    // method returns an array of a giv obj property names, iterated in an order that a normal loop would.
 
 module.exports = {
   getTallestDinosaur,
