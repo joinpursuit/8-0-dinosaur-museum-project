@@ -76,29 +76,29 @@ Output: either an array of the adjacent room names, or an error message
 
 
  */
-/* Version 1
-function getConnectedRoomNamesById(rooms, id) {
-  let result = []
-  for (let room of rooms){
-    if (room.roomId === id){//check for matching id of base room
-      for (let adjacent of room.connectsTo){//loop through the connected room id's
-        let flag = true //a way to check if the adjacent room hits in the lower loop
-        for (let rm of rooms){//checking back to main array for the id's
-          if (adjacent === rm.roomId){//checks if id exists, if not flag goes through
-            result.push(rm.name)
-            flag = false
-          }
-        }
-        if (flag){return `Room with ID of '${adjacent}' could not be found.`}
-      }
-      return result
-    }
-  }
-  return `Room with ID of '${id}' could not be found.`
-}
-*/
+// //Version 1
+// function getConnectedRoomNamesById(rooms, id) {
+//   let result = []
+//   for (let room of rooms){
+//     if (room.roomId === id){//check for matching id of base room
+//       for (let adjacent of room.connectsTo){//loop through the connected room id's
+//         let flag = true //a way to check if the adjacent room hits in the lower loop
+//         for (let rm of rooms){//checking back to main array for the id's
+//           if (adjacent === rm.roomId){//checks if id exists, if not flag goes through
+//             result.push(rm.name)
+//             flag = false
+//           }
+//         }
+//         if (flag){return `Room with ID of '${adjacent}' could not be found.`}
+//       }
+//       return result
+//     }
+//   }
+//   return `Room with ID of '${id}' could not be found.`
+// }
 
-function getRoom(rooms, id){
+
+function getRoom(rooms, id){//Helper function for room search by id
   for (let room of rooms){
     if (room.roomId === id){
       return room
@@ -106,7 +106,7 @@ function getRoom(rooms, id){
   }
   return false
 }
-
+// Version 2 with an id reference helper
 function getConnectedRoomNamesById(rooms, id) {
   let result = []
   let startingRoom = getRoom(rooms, id)
