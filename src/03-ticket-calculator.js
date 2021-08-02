@@ -6,6 +6,8 @@
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
 const exampleTicketData = require("../data/tickets");
+
+
 // Do not change the line above.
 
 /**
@@ -54,7 +56,43 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  // default value, keep track of the total price
+  let aticketPrice = 0;
+  // check if the ticket type is valid
+  if (ticketInfo.ticketType in ticketData) {
+    // if true, check if the ticket entrant type is valid
+    if (ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents) {
+      // if true, get the price in cents of the specific entrant type
+      aticketPrice += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+    }
+    // if false return an error that entrant type cannot be found.
+    else return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+
+  }
+  // if false return an error that ticket type is incorrect
+  else return "Ticket type 'incorrect-type' cannot be found.";
+  // check if the ticket has extras
+  if (ticketInfo.extras.length) {
+    // if true make a copy of the extras array
+    let extrasArr = ticketInfo.extras.slice(0);
+    // iterate over all elements in extras array
+    for (let elem of extrasArr) {
+      // check if extra type is valid
+      if (elem in ticketData.extras) {
+        // if yes, access the specific price
+        aticketPrice += ticketData.extras[elem].priceInCents[ticketInfo.entrantType];
+      }
+      // if no return an error: etra type cannot be found
+      else return `Extra type '${elem}' cannot be found.`;
+
+    }
+
+  }
+  // return the total price in cents
+  return aticketPrice;
+ 
+}
 
 /**
  * purchaseTickets()
@@ -109,8 +147,71 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+/**
+ * used as function helper of the purchaseTickets function
+ * returns a formatted string depending on the ticket
+ * @param {*} ticketData - object of tickets
+ * @param {*} ticketInfo - info about a ticket 
+ * @returns {string} - returns a formatted string
+ */
+ function formatted(ticketData, ticketInfo) {
+  let newArr = ticketInfo.extras.slice(0);
+  let newStr ="";
+  if (newArr.length) {
+    newStr += " (";
+    for(let i=0; i < newArr.length; i++) {
+      if (i === newArr.length-1) {
+        newStr += ticketData.extras[newArr[i]].description + ")"
+      }
+      else newStr += ticketData.extras[newArr[i]].description + ", "
+    }
+  }
+  return newStr;
+}
+/**
+ * used as function helper of the purchaseTickets function
+ * @param {string} str
+ * @returns {string} returns a string with the first letter in capital letter.
+ */
+function capitalize(str){
+  let first  = str[0].toUpperCase();
+  let newArr = str.split("");
+  newArr.shift();
+  return first + newArr.join("");
+}
 
+
+function purchaseTickets(ticketData, purchases) {
+  // default value to this string
+  let newStr = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  // need to keep track of all purchases total
+  let total = 0;
+  // keep track of a single ticket price
+  let subTotal;
+  // iterate over all purchases
+  for (let ticket of purchases) {
+    // always start the variable at zero for each purchase
+    subTotal =0;
+    // used the previous function to get a single ticket price
+    // we will need to check the validation of the return from the calculateTicketPrice function
+    let checkValidation = calculateTicketPrice(ticketData, ticket) ;
+    // check if the return is valid
+    if (typeof checkValidation === "number") {
+      // if valid then assign the value subTotal
+      subTotal = checkValidation;
+      // construct the receipt in each iteration using helper functions
+      newStr += `${capitalize(ticket.entrantType)} ${ticketData[ticket.ticketType].description}: $${(subTotal/100).toFixed(2)}${formatted(ticketData, ticket)}\n`;
+      // assign the subtotal divided by 100 to total
+      total += subTotal/100;
+    }
+    // if not returned the error
+    else return checkValidation;
+    
+  }
+  // return the final receipt
+  return newStr += "-------------------------------------------\nTOTAL: $" +total.toFixed(2);
+}
+//purchaseTickets(exampleTicketData, purchases);
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
