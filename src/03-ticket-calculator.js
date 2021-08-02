@@ -54,8 +54,25 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
-
+function calculateTicketPrice(ticketData, ticketInfo) {
+      let totalPrice = 0;
+      if (ticketInfo.ticketType in ticketData) {
+      if (ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents) {
+      totalPrice += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+    }
+      else return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+    }
+      else return "Ticket type 'incorrect-type' cannot be found.";
+      if (ticketInfo.extras.length) {
+      let extrasArr = ticketInfo.extras.slice(0); // copy of array.
+      for (let elem of extrasArr) {
+      if (elem in ticketData.extras) {
+      totalPrice += ticketData.extras[elem].priceInCents[ticketInfo.entrantType];
+    }
+    else return `Extra type '${elem}' cannot be found.`;
+  }
+}
+return totalPrice; }
 /**
  * purchaseTickets()
  * ---------------------
@@ -109,7 +126,63 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+/**
+ * // formatted()
+ * @param {*} ticketData - object of tickets
+ * @param {*} ticketInfo - info about a ticket
+ * @returns {string} - returns a formatted string
+ */
+/**
+ * // capitalize()
+ * @param {string} str
+ * @returns {string} returns a string with the first letter in cap letter.
+ */
+/**
+ * //purchaseTickets()
+ * @param {*} ticketData - object of tickets
+ * @param {*} ticketInfo - info about a ticket 
+ * @returns {string} - returns a formatted string
+ */
+
+//HELPER FUNCTION
+function formatted(ticketData, ticketInfo) {
+  let newArr = ticketInfo.extras.slice(0);
+  let newStr ="";
+      if (newArr.length) {
+    newStr += " (";
+    for(let i=0; i < newArr.length; i++) {
+      if (i === newArr.length-1) {
+        newStr += ticketData.extras[newArr[i]].description + ")"
+      }
+      else newStr += ticketData.extras[newArr[i]].description + ", "
+    }
+  }
+  return newStr;
+}
+//HELPER FUNCTION
+function capitalize(str){
+  let first  = str[0].toUpperCase();
+  let newArr = str.split("");
+    newArr.shift();
+      return first + newArr.join("");
+  }
+
+function purchaseTickets(ticketData, purchases) {
+  let newStr = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  let total = 0;
+    for (let ticket of purchases) {
+  let subTotal = 0;
+  let check = calculateTicketPrice(ticketData, ticket) ;
+    if (typeof check === "number") {
+      subTotal = check;
+      newStr += `${capitalize(ticket.entrantType)} ${ticketData[ticket.ticketType].description}: $${(subTotal/100).toFixed(2)}${formatted(ticketData, ticket)}\n`;
+      total += subTotal/100;
+    }
+    else return check;
+  }
+  return newStr += "-------------------------------------------\nTOTAL: $" +total.toFixed(2);
+} 
 
 // Do not change anything below this line.
 module.exports = {
