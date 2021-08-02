@@ -21,8 +21,30 @@ const exampleDinosaurData = require("../data/dinosaurs");
  * EXAMPLE:
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
+ * 
+ * 
+ * 
  */
-function getTallestDinosaur(dinosaurs) {}
+
+function getTallestDinosaur(dinosaurs) {
+  if(!dinosaurs.length){
+    return {};
+  }
+  let height = dinosaurs[0].lengthInMeters;
+  let key;
+  for(let i = 1;i < dinosaurs.length;i++){
+    let dino = dinosaurs[i];
+    if(dino.lengthInMeters > height){
+      key = dino.name;
+      height = dino.lengthInMeters;
+    }
+  }
+  let lengthInFeet = height * 3.281;
+   return {[key]: lengthInFeet};
+}
+
+
+getTallestDinosaur(exampleDinosaurData);
 
 /**
  * getDinosaurDescription()
@@ -44,7 +66,27 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+/*
+1.loop through the dinosaur array.
+2. usa an if statement to compare each element (each dino object) to the target id
+3. if target match
+
+
+
+*/
+function getDinosaurDescription(dinosaurs, id) {
+// function findTargetNum(array, target){
+
+// }
+// make a for loop to check each element 
+// for( let n of array){
+// if(n === target){
+//  return n
+//}
+// return ` 
+//} 
+
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +113,31 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+
+
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+/*
+first, needs to return an ARRAY of dinosaur IDs that lived within the mya range provided. If the mya !==
+any dino.mya's within range, return an empty array.
+2. if a dino only has on mya year provided, the logic has to allow for the given mya OR dino.mya-1
+3. if the 'key' argument IS PROVIDED (i.e. truthy), it needs to return the value of that key for each dino
+alive at that time, in an ARRAY.
+4. if the key argument !== any dino(key), return the IDs as above.
+
+
+
+
+
+
+*/
+}
+
+
+
+
+
+
+
 
 module.exports = {
   getTallestDinosaur,
