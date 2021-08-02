@@ -54,7 +54,80 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  // 1. Default value and output
+  let result = 0
+  let error = "Ticket type 'incorrect-type' cannot be found."
+  let dataTickets = Object.keys(ticketData)
+  let dataEntrants = Object.keys(ticketData.general.priceInCents)
+  let dataExtras = Object.keys(ticketData.extras)
+
+//ERRORS
+//1. Default Value and Output
+//2. Define the loop and Accumulate (via .includes to check against ticketData sets even exist)
+  //In ticketInfo - we're looking to test if the keys even exist in the list of tickets (in tickets.js files) - 
+  //so we're iterating over keys in tickets list which is an object of objects. 
+  if (ticketInfo.ticketType === undefined || typeof ticketInfo.ticketType !== 'string' || !dataTickets.includes(ticketInfo.ticketType)) {
+    return error 
+  }
+
+  if (ticketInfo.entrantType === undefined || typeof ticketInfo.entrantType !== 'string' || !dataEntrants.includes(ticketInfo.entrantType)) {
+    error = "Entrant type 'incorrect-entrant' cannot be found." 
+    return error
+  }
+
+  if (ticketInfo.extras === undefined || typeof ticketInfo.extras !== 'object') {
+    error = "Extra type 'incorrect-extra' cannot be found." 
+      return error
+  }
+//2. Define the loop and accumulate 
+// (via for of loop for and then again via .includes to check if every element in ticketInfo extras can be found in ticketData extras)
+  if (ticketInfo.extras.length) {
+    for (let element of ticketInfo.extras) {
+      if (typeof element !== 'string') {
+        error = "Extra type 'incorrect-extra' cannot be found." 
+        return error
+      }
+      if (!dataExtras.includes(element)) {
+        error = "Extra type 'incorrect-extra' cannot be found." 
+        return error
+      }
+    } 
+  }
+    
+// 1. Define the loop and accumulate  
+// GENERAL/MEMBERSHIP ADMIN
+  
+  for (let type in ticketData) {
+    if (type === ticketInfo.ticketType) {
+      for (let entrant in ticketData[type].priceInCents) {
+        if (entrant === ticketInfo.entrantType) {
+          result = ticketData[type].priceInCents[entrant]
+          break;
+        }
+      }
+    }
+  }
+
+
+// 1. Define the loop and accumulate  
+// ADMIN WITH EXTRAS
+  if (ticketInfo.extras.length) {
+    for (let element in ticketInfo.extras) {
+      for (let type in ticketData.extras) {
+        if (type === ticketInfo.extras[element]) {
+          for (let entrant in ticketData.extras[type].priceInCents) {
+            if (entrant === ticketInfo.entrantType) {
+              result += ticketData.extras[type].priceInCents[entrant]
+            }
+          }
+        }
+      } 
+    }
+  }
+
+  return result
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +182,90 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+// Helper Function
+function capitalize (element) {
+  return element[0].toUpperCase() + element.slice(1)
+}
+
+
+function purchaseTickets(ticketData, purchases) {
+  //1. Default value and output
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
+
+  let total = 0
+  let ticketPrice = 0
+  let dataEntrants = Object.keys(ticketData.general.priceInCents)
+
+  // 2. Define the loop and Accumulate 
+  for (let i = 0; i < purchases.length; i++) {
+    let purchase = purchases[i]
+    //ERRORS
+    if (typeof calculateTicketPrice(ticketData, purchase) === 'string') {
+      return calculateTicketPrice(ticketData, purchase)
+    }
+
+    //NOTE: Add breaks to stop the loop once a condition is met and speed up the process
+    for (let j in dataEntrants) {
+      if (dataEntrants[j] === purchase.entrantType) {
+        let newEntrant = capitalize(dataEntrants[j])
+        receipt += newEntrant + " "
+        break;
+      }
+    }
+    for (let k in ticketData) {
+      if (k === purchase.ticketType) {
+        let newTicket = ticketData[k].description
+        receipt += newTicket + ": "
+        total += calculateTicketPrice(ticketData, purchase)/100
+        ticketPrice = calculateTicketPrice(ticketData, purchase)/100
+        if (!purchase.extras.length) {
+          receipt += "$" + ticketPrice.toFixed(2) + "\n"
+          break;
+        } else {
+          receipt += "$" + ticketPrice.toFixed(2) + " "
+          break;
+        }
+      }
+    }
+    
+    if (purchase.extras.length) {
+      for (let m in purchase.extras) {
+        let extra = purchase.extras[m]
+          for (let l in ticketData.extras) {
+            if (l === extra) {
+              let extraInfo = ticketData.extras[l].description
+              if (purchase.extras.length === 1) {
+                receipt += "(" + extraInfo + ")\n"
+                break;
+              } 
+              // NOTE: The index in the array of extras in Purchases is a string 
+              m = Number(m)
+              if (m === 0) {
+                receipt += "(" + extraInfo + ", "
+                break;
+              } else if (m > 0 && purchase.extras.length === 2) {
+                receipt += extraInfo + ")\n"
+                break;
+              } else if (purchase.extras.length === 3 && m < purchase.extras.length - 1  && m > 0) {
+                receipt += extraInfo + ", "
+                break;
+              } else if (purchase.extras.length === 3 && m === purchase.extras.length - 1 && m > 0) {
+                receipt += extraInfo + ")\n"
+                break;
+              }
+            }
+          }
+      }
+    }
+  }
+
+  receipt += "-------------------------------------------\n" + "TOTAL: $" + total.toFixed(2)
+  
+  return receipt
+
+}
+
 
 // Do not change anything below this line.
 module.exports = {
