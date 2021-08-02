@@ -55,6 +55,7 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
+  //Overall plan: Declare variables to make navigating the problem easier, loop through the right ticket type and find the right ticket, and then add it to our total. Then loop though our extras and find their appropriate orices and add it to our total, then return total.
   //Declare variable to accumulate to, set to 0
   let total = 0;
   //Declare variable for type for clarity
@@ -63,14 +64,14 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   const age = ticketInfo.entrantType;
   //Declare switch statement to account for some edge statements
   switch (true){
-    //check if ticketType exist
+    //check if we were given a valid ticketType
     case (!ticketData[type]):
-      //if it doesn't, return error msg
+      //if we weren't, return error msg
       return `Ticket type '${type}' cannot be found.`
       break;
-    //check if entrantType exist
+    //check if we were given a valid entrantType
     case (!ticketData[type].priceInCents[age]):
-      //if it doesn't, return error msg
+      //if we weren't, return error msg
       return `Entrant type '${age}' cannot be found.`
       break;
   }
@@ -85,12 +86,12 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 
   //Declare new loop to iterate through extras array
   for (const extra of ticketInfo.extras){
-    //account for edgecase of extra not existing
-    //check if extra exist
+    //account for edgecase of invalid extras
+    //check if we were given a valid extra
     if (!ticketData.extras[extra]){
-      //if it doesn't, return error
+      //if we weren't, return error
       return `Extra type '${extra}' cannot be found.`
-    //else, if it exist
+    //else, add the valid extra to our total
     } else {
       //find the appropriate cost and add it to our total
       total += ticketData.extras[extra].priceInCents[age];
@@ -155,7 +156,8 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  //Declare variable to accumulate to, set to empty string;
+  //Overall plan: receit looks long, create helper function to help format. Use our previous function as a helper function to calculate cost. Loop through the purchases and use our helper functions to add to both our total and receipt, and when we're done, return our receipt w/ the total on it.
+  //Declare variable to accumulate to, set to receipt header;
   let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
   //Declare variable to accumulate to, set to 0;
   let totalInCents = 0;
@@ -177,7 +179,6 @@ function purchaseTickets(ticketData, purchases) {
   }
   //return receipt + footer
   return receipt + `-------------------------------------------\nTOTAL: $${(totalInCents/100).toFixed(2)}`
-
 }
 
 //function to format purchases to receipt format
@@ -205,31 +206,8 @@ function magneto(string){ // (idk, name sounded cool)
   return string[0].toUpperCase() + string.slice(1).toLowerCase()
 }
 
-/*purchaseTickets(exampleTicketData, [
-  {
-    ticketType: "general",
-    entrantType: "adult",
-    extras: ["movie", "terrace"],
-  },
-  {
-    ticketType: "general",
-    entrantType: "senior",
-    extras: ["terrace"],
-  },
-  {
-    ticketType: "general",
-    entrantType: "child",
-    extras: ["education", "movie", "terrace"],
-  },
-  {
-    ticketType: "general",
-    entrantType: "child",
-    extras: ["education", "movie", "terrace"],
-  },
-])*/
-
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
   purchaseTickets,
-};
+};``

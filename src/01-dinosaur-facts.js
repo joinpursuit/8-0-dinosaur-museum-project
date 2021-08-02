@@ -42,7 +42,7 @@ function getTallestDinosaur(dinosaurs) {
       tallestDino = currentDino;
     }
   }
-  //after loop, push the name and height(in feet) of our tallest dino into our new object, formatted
+  //after loop, declare a key and value in our result object to our tallest dinosaur's name and it's height(in feet), respectively.
   result[tallestDino.name] = tallestDino.lengthInMeters * 3.281 
   //return result
   return result;
@@ -80,10 +80,12 @@ function getDinosaurDescription(dinosaurs, id) {
       targetDino = currentDino
     }
   }
-  //after loop, return error if id wasn't found, or formatted text for the found dino
+  //after loop, if we didnt find and id return an error
   if (!targetDino.dinosaurId){
     return `A dinosaur with an ID of '${id}' cannot be found.`;
+  //else, if we did find an Id
   } else {
+    //return the target dino's description in a formatter string
     return `${targetDino.name} (${targetDino.pronunciation})\n${targetDino.info} It lived in the ${targetDino.period} period, over ${targetDino.mya[targetDino.mya.length - 1]} million years ago.`
   }
 }
@@ -113,7 +115,8 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {
+function getDinosaursAliveMya(dinosaurs, mya, key = "dinosaurId") { //learned how to default the key value from Angie (Thank you!!!)
+  //Overall plan: Loop through dinosaurs, check if each dino was alive at the given time, and if they were, push their desired key into an empty object to return
   //Declare result variable to iterate to
   const result = [];
   //Declare loop to iterate through dinosaurs
@@ -124,18 +127,18 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
       default:
         //check if the given mya is <= the first, AND >= second
         if (mya <= currentDino.mya[0] && mya >= currentDino.mya[1]){
-          //if dino was alive during those years
-          //check if key is valid, if it is, push currentDino[key] to array, if not push id
-          currentDino[key] ? result.push(currentDino[key]) : result.push(currentDino.dinosaurId);
+          //if dino was alive during those years push currentDino[key] to array
+          //if no key was given, it will default to dinosaurId
+          result.push(currentDino[key])
         }
         break;
       //if case has 1 mya value
       case (currentDino.mya.length === 1):
         //check if the given mya is = to currentDino.mya, OR currentDino.mya - 1
         if (mya === currentDino.mya[0] || mya === currentDino.mya[0] - 1){
-          //if dino was alive during those years
-          //check if key is valid, if it is, push currentDino[key] to array, if not push id
-          currentDino[key] ? result.push(currentDino[key]) : result.push(currentDino.dinosaurId);
+          //if dino was alive during those years push currentDino[key] to array
+          //if no key was given, it will default to dinosaurId
+          result.push(currentDino[key])
         }
         break;
     }

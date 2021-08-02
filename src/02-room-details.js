@@ -2,7 +2,7 @@
   Do not change the lines below. If you'd like to run code from this file, you may use the `exampleDinosaurData` and `exampleRoomData` variables below to gain access to each data set. This data is pulled from the relevant files in the `data/` directory.
 
   You may use this data to test your functions. You may assume the shape of the data remains the same but that the values may change.
-*/
+`*/
 const exampleDinosaurData = require("../data/dinosaurs");
 const exampleRoomData = require("../data/rooms");
 // Do not change the lines above.
@@ -28,30 +28,32 @@ const exampleRoomData = require("../data/rooms");
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   //Overall Plan: loop through the dinos to find corresponding id, if it's found, save it, if not error. loop through rooms and see if we can find the saved id, if not then error
   //Declare variable to store our id
-  let dinoId = "Id not found";
+  let dinoId = "";
+  //Declare result variable to accumulate to
+  let result = "";
   //Declare loop to iterate through dinosaurs array,
   for (let dino of dinosaurs){ 
     //in loop, check for dinosaur name
     if (dino.name === dinosaurName){
-      //if found, copy that dinosaur's id to dinoID
+      //if found, save that dino's Id in a variable for later
       dinoId = dino.dinosaurId;
     }
   }
   // if we didn't find the dinosaur in our first loop
-  if (dinoId === "Id not found"){
-    //return error message
+  if (!dinoId){
+    //return an error message
     return `Dinosaur with name '${dinosaurName}' cannot be found.`
   }
   //after that loop, declare another loop to go through the rooms
   for (let room of rooms){
     //check if the dinosaurs value includes our id
     if (room.dinosaurs.includes(dinoId)){
-      //if it does, return roomName
-      return room.name;
+      //if it does, make our result the roomName
+       result = room.name;
     }
   }
-  //after loop, if we didn't find any rooms w/ our dino, return error msg
-  return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+  //after loop, if we didn't find our dinosaur, return an error, else return our result``
+  return !result ? `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.` : result
 }
 
 /**
@@ -77,53 +79,54 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  //I know there were some tools to make this easier, made my own functions for the challenge
-  //Declare variable to iterate to, empty array
-  const result = [];
-  //collect all the room ids for our validity check later
-  const roomIds = roomIdCollector(rooms); //created roomIdCollector function on line 107
-  //Declare loop to interate through rooms
-  for (let currentRoom of rooms){
-    //check if currentRoom id is our target id
-    if (currentRoom.roomId === id){
-      //if it is, loop through collectTo for our check
-      for (let conId of currentRoom.connectsTo){
-        //check if the connectedRoomId ISNT on our list of room ids
-        if (!roomIds.includes(conId)){
-          //if it isn't, return error
-          return `Room with ID of '${conId}' could not be found.`
-        } else {
-          result.push(idConverter(rooms ,conId)) //created idConverter on line 119
-        }
-      }
-      //after the check loop, if we made it through, return all connect rooms
-      return result;
+  //connectedTo works viceversa, so if we find our givenid in the "connectedTo" array, we know THAT ROOM is also on our target room's "connectedTo" list.
+  //Overall plan: loop through the rooms, see if their connectedTo array includes our given Id. if it does, push it's name into an empty array. After looping, return array.
+  //Declare variable to accumulate to, make it an empty array
+  const newArr = [];
+  //Declare loop to iterate through rooms
+  for (const room of rooms){
+    //declare variable to represent the validity of the connected rooms
+    const isValid = validityCheck(rooms, room.connectsTo);
+    //in loop, check if it's connected room is valid
+    if (isValid !== true){
+      //if it isn't, return error msg
+      return isValid;
+      //if not
+    } else if (room.connectsTo.includes(id)){
+      //if it is, push room name to empty array
+      newArr.push(room.name)
     }
   }
-  //outside of our first loop if we didn't find a match, return error
-  return `Room with ID of '${id}' could not be found.`
+  //check if the key wasn't found in our loop
+  if (!newArr[0]){
+    //if it wasn't, it's invalid, return error
+    return `Room with ID of '${id}' could not be found.`
+  }
+  //after loop, return array
+  return newArr;
 }
 
-function roomIdCollector(rooms){
-  //declare variable to accumulate to, make it an empty array
-  const result = [];
-  //declare a loop to iterate through the rooms
-  for (room of rooms){
-    //in loop, push room id to result
-    result.push(room.roomId)
+function validityCheck(listOfRooms, givenIds){ //created this helper function to help check if our list of room IDs are valid.
+  //Declare loop to iterate through list of Ids
+  for (const currentId of givenIds){
+    //Declare variable to show if Id was valid
+    let idCheck = false;
+    //Declare loop to iterate through list of rooms
+    for (const currentRoom of listOfRooms){
+      //in loop check if the currentId = givenId
+      if (currentRoom.roomId === currentId){
+        //if it is, change idCheck to true
+        idCheck = true;
+      }
+    }
+    //check if we didn't find that Id in the listOfRooms
+    if (idCheck === false){
+      //if we didn't find it, give error a value
+      return `Room with ID of '${currentId}' could not be found.`
+    }
   }
-  //return array
-  return result;
-}
-
-function idConverter(rooms, id){
-  //Declare loop to iterate through our rooms
-  for (const currentRoom of rooms){
-    //in loop, check if our id = currentRoom's id
-    if (id === currentRoom.roomId)
-    //if it is, return name of currentRoom
-    return currentRoom.name;
-  }
+  //after loop, return result
+  return true;
 }
 
 module.exports = {
