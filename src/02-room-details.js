@@ -25,7 +25,19 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+
+  //1) Use a loop on dinosaurs array to find dinosaurId that corresponds to the given dinosaurName
+
+  //2) If no mathcing dinosaudId is found in the dinosaurs array, return the appriate error message
+
+  //3) use a loops on the rooms array to see which room the target dino is located in based on it's dinosaurID
+
+  //4if no matching room is found in the rooms arrauy return the appropriate error message
+
+  //Two seperate error messages are needed
+
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +61,28 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+
+  let roomNamesAndIds = {};
+  let connectedRoomsId = [];
+
+  for (let room of rooms) {
+    if (room.roomId === id) {
+      for (let roomId of room.connectsTo) {
+        connectedRoomsId.push(roomid)
+      }
+    }
+    roomNamesAndIds[room.roomId] = room.name
+  }
+
+}
+
+getConnectedRoomNamesById(exampleRoomData, "ID");
+
+
+// Loop through 'rooms' checking for a matching roomId ===. If none match, the roor message with the incorrect id {id} needs to be returned
+//For a match, store the 'connectsTo' array to Ids in a new array
+
 
 module.exports = {
   getRoomByDinosaurName,
