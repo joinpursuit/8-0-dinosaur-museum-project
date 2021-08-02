@@ -27,23 +27,19 @@ function getTallestDinosaur(dinosaurs) {
   if (!dinosaurs.length) {
     return {};
   }
-  // Get the first dinosaur heigth and supposed it is the tallest
-  let tallestDino = dinosaurs[0].lengthInMeters;
-  // need a variable to keep track of the key value ouside the for loop
-  let key;
+  // Get the first dinosaur and supposed it is the tallest
+  let tallestDino = dinosaurs[0];
   // For loop to skip the first element and iterate over every other elements
   for (let i=1; i<dinosaurs.length; i++) {
     // For each dinosaur, check if it is taller
-    if (dinosaurs[i].lengthInMeters > tallestDino) {
-      // if true, change the value of key
-      key = dinosaurs[i].name;
+    if (dinosaurs[i].lengthInMeters > tallestDino.lengthInMeters) {
       // change the value of tallestDino
-      tallestDino = dinosaurs[i].lengthInMeters;
+      tallestDino = dinosaurs[i];
     }
 
   }
   // return the new object with key as key and tallestDino as value convert in feet.
-  return {[key]:tallestDino*3.281};
+  return {[tallestDino.name]:tallestDino.lengthInMeters*3.281};
 }
 
 /**
