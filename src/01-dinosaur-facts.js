@@ -22,7 +22,24 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+ function getTallestDinosaur(dinosaurs) {
+  // length doesn't mean height
+  tallDinoObj = {};
+  if (dinosaurs.length == 0) {
+    return tallDinoObj;
+  }
+  mtrsToft = 3.281;
+  long = dinosaurs[0].lengthInMeters;
+  for (let i = 0; i < dinosaurs.length; i++) {
+    let height = dinosaurs[i].lengthInMeters * mtrsToft;
+    if (dinosaurs[i].lengthInMeters > long) {
+      long = dinosaurs[i].lengthInMeters;
+      tallDinoObj = { [dinosaurs[i].name]: height };
+    }
+  }
+  return tallDinoObj;
+}
+
 
 /**
  * getDinosaurDescription()
@@ -44,14 +61,26 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+ function getDinosaurDescription(dinosaurs, id) {
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].dinosaurId === id) {
+      let dino = dinosaurs[i];
+      let indexMYA = dino.mya.length - 1;
+      return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[indexMYA]} million years ago.`;
+    }
+  }
+  return `A dinosaur with an ID of '${id}' cannot be found.`;
+}
 
 /**
  * getDinosaursAliveMya()
  * ---------------------
- * Returns an array of dinosaurs who were alive at the given `mya` (i.e. "millions of years ago") value. If a `key` is provided, returns the value of that key for each dinosaur alive at that time. Otherwise, returns the ID.
+ * Returns an array of dinosaurs who were alive at the given `mya` (i.e. "millions of years ago") value. 
+ * If a `key` is provided, returns the value of that key for each dinosaur alive at that time. Otherwise, returns the ID.
  *
- * If the dinosaur only has a single value for `mya`, allows for the `mya` value to be equal to the given value or one less. For example, if a dinosaur has a `mya` value of `[29]`, the dinosaur's information will be returned if `29` is entered or `28` is entered.
+ * If the dinosaur only has a single value for `mya`, allows for the `mya` value to be equal to the given value or one less. 
+ * For example, if a dinosaur has a `mya` value of `[29]`, 
+ * the dinosaur's information will be returned if `29` is entered or `28` is entered.
  *
  * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file for an example of the input.
  * @param {number} mya - "Millions of years ago."
@@ -71,7 +100,22 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+ function getDinosaursAliveMya(dinosaurs, mya, key) {
+  if (!Object.keys(dinosaurs[0]).includes(key)) {
+    key = "dinosaurId";
+  }
+  let liveDino = [];
+  for (let dino of dinosaurs) {
+    if (dino.mya.length == 1) {
+      if (dino.mya[0] >= mya && dino.mya[0] - 1 <= mya) {
+        liveDino.push(dino[key]);
+      }
+    } else if (dino.mya[0] >= mya && dino.mya[1] <= mya) {
+      liveDino.push(dino[key]);
+    }
+  }
+  return liveDino;
+}
 
 module.exports = {
   getTallestDinosaur,

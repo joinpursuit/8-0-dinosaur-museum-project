@@ -11,14 +11,16 @@ const exampleTicketData = require("../data/tickets");
 /**
  * calculateTicketPrice()
  * ---------------------
- * Returns the ticket price based on the ticket information supplied to the function. The `ticketInfo` will be in the following shape. See below for more details on each key.
+ * Returns the ticket price based on the ticket information supplied to the function. 
+ * The `ticketInfo` will be in the following shape. See below for more details on each key.
  * const ticketInfo = {
     ticketType: "general",
     entrantType: "child",
     extras: ["movie"],
   };
  *
- * If either the `ticketInfo.ticketType` value or `ticketInfo.entrantType` value is incorrect, or any of the values inside of the `ticketInfo.extras` key is incorrect, an error message should be returned.
+ * If either the `ticketInfo.ticketType` value or `ticketInfo.entrantType` value is incorrect, 
+ * or any of the values inside of the `ticketInfo.extras` key is incorrect, an error message should be returned.
  *
  * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
  * @param {Object} ticketInfo - An object representing data for a single ticket.
@@ -54,7 +56,31 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+let infoCheck = ['senior', 'adult', 'child'];
+let membCheck = ['membership','general'];
+let extraCheck = ['movie', 'education', 'terrace'];
+let noExtras;
+let finalPrice = 0;
+if (!infoCheck.includes(ticketInfo.entrantType)){
+  return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+}
+if (!membCheck.includes(ticketInfo.ticketType)){
+  return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+}
+for (let i = 0; i < ticketInfo.extras.length; i++){
+  if (!extraCheck.includes(ticketInfo.extras[i])){
+    return `Extra type '${ticketInfo.extras[i]}' cannot be found.`;
+  }
+}
+noExtras = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+finalPrice += noExtras;
+if(ticketInfo.extras.length == 0){
+  return finalPrice;}
+  ticketInfo.extras.forEach((extra) => {finalPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+  });
+  return finalPrice;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +135,54 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let totalPrice = 0;
+  let ty =
+    "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+    
+  for (let i = 0; i < purchases.length; i++) {
+    let purchase = purchases[i];
+    let infoCheck = ['senior', 'adult', 'child'];
+    let membCheck = ['membership', 'general'];
+    let extraCheck = ['movie', 'education', 'terrace'];
+    if (!infoCheck.includes(purchase.entrantType)) {
+      return `Entrant type '${purchase.entrantType}' cannot be found.`;
+    }
+    if (!membCheck.includes(purchase.ticketType)) {
+      return `Ticket type '${purchase.ticketType}' cannot be found.`;
+    }
+    let currentPrice = 0;
+    let extraDesc = '';
+    if (purchase.extras.length > 0) {
+      for (x = 0; x < purchase.extras.length; x++) {
+        if (!extraCheck.includes(purchase.extras[x])) {
+          return `Extra type '${purchase.extras[x]}' cannot be found.`;
+        }
+        currentPrice +=
+          ticketData.extras[purchase.extras[x]].priceInCents[
+            purchase.entrantType
+          ];
+          extraDesc += ticketData.extras[purchase.extras[x]].description + ', ';
+      }
+    }
+    extraDesc = extraDesc.slice(0, -2);
+    ty += purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
+    ty += ' ' + ticketData[purchase.ticketType].description + ': ';
+    currentPrice +=
+      ticketData[purchase.ticketType].priceInCents[purchase.entrantType];
+    ty += '' + '$' + (currentPrice / 100).toFixed(2);
+    if (purchase.extras.length > 0) {
+      ty += ` (${extraDesc})\n`;
+    } else {
+      ty += '\n';
+    }
+    totalPrice += currentPrice;
+  }
+  totalPrice = '$' + (totalPrice / 100).toFixed(2);
+  ty += `-------------------------------------------\nTOTAL: ${totalPrice}`;
+  return ty;
+}
+    
 
 // Do not change anything below this line.
 module.exports = {
