@@ -55,10 +55,36 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  let ticketTypeObj = ticketData[ticketInfo.ticketType]
-  if (!ticketTypeObj){
-    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+  let price = 0
+  // let ticketTypeObj = ticketData[ticketInfo.ticketType]
+  // if (!ticketTypeObj){
+  //   return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+  // }
+  // else if()
+  // if(!ticketData[ticketInfo.entrantType]){
+  //   return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+  // }
+  if (ticketInfo.ticketType in ticketData){
+    if(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents){
+      
+      price += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+    }
+    else return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
   }
+  else return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+  
+  if(ticketInfo.extras.length){
+    let exArr = ticketInfo.extras.slice(0)
+
+    for (let ex of exArr){
+      if(ex in ticketData.extras){
+        price += ticketData.extras[ex].priceInCents[ticketInfo.entrantType]
+      }
+      else return `Extra type '${ex}' cannot be found.`
+    }
+  }
+
+  return price
 }
 
 /**
@@ -115,13 +141,28 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  for (let purchase of purchases){
-    if (typeof purchasetotal === "string"){
-      
-    }
-  }
-}
 
+let price = 0
+let receiptTotal = []
+  for(let purchase of purchases){
+    let formatEntType = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)
+    let purchaseTotal = calculateTicketPrice(ticketData, purchase);
+    if(typeof purchaseTotal === "string"){
+      return  purchaseTotal
+    }
+    let extraDescription = []
+    let priceExtras = 0
+    for (let ex of purchase.extras){
+      extraDescription.push(ticketData.extras[ex].description)
+      priceExtras += ticketData.extras[ex].priceInCents[purchase.entrantType]
+    }
+
+  }
+
+  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n ${formatEntType} ${purchase.ticketType}: $${(purchaseTotal/100).toFixed(2)} ${extraDescription}\n-------------------------------------------\nTOTAL: $${(purchaseTotal/100).toFixed(2)}`
+
+  
+}
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
