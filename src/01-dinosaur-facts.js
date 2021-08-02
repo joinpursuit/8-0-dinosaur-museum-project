@@ -38,7 +38,7 @@ function getTallestDinosaur(dinosaurs) {
     }
 
   }
-  // return the new object with key as key and tallestDino as value convert in feet.
+  // return the new object with key as tallest dinosaur name and value as its length in feet.
   return {[tallestDino.name]:tallestDino.lengthInMeters*3.281};
 }
 
