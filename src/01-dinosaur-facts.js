@@ -139,37 +139,36 @@ function getDinosaurDescription(dinosaurs, id) {
 
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   
-  let dinosthatLived = [];
-  let dinoNamesThatLived = [];
+  let dinosthatLived = []; // Im declaring an empty array within local scope of this funtion. This will be my return value.
   
   for (let i = 0 ; i < dinosaurs.length; i ++){
-      let dinoYearArr = dinosaurs[i].mya;
-      let dinoID = dinosaurs[i].dinosaurId;
-      let dinoName = dinosaurs[i].name;
-      let startYear;
-      let endYear;
+      let dinoYearArr = dinosaurs[i].mya; // thie array will include looped through mya values.  using this variable to access it easier. 
+      let dinoID = dinosaurs[i].dinosaurId; //  all the values for dinosaurs.dinosaurID looped through the dinosaurs array. These ID values will be pushed into Array if alive within given years.  
       
-      if (dinoYearArr.length === 1){
-        startYear = dinoYearArr[0] - 1;
-        endYear = dinoYearArr[0];
+      let startYear; // we had to differentiate between the two values given in the dinoYearArr = dinosaurs[i].mya. this will give us a range to match the mya parameter.
+      let endYear; // this was the greater of the two values as stated above.  we had a 1 year difference to account for. 
+      
+      if (dinoYearArr.length === 1){ // If the array length = 1 that means there is only one index position [0] for the assigned value of dinoYearArr. 
+        //`dynoYearArr[0]`. 
+        startYear = dinoYearArr[0] - 1; // Because we had to account for the year difference as stated in the instructions, - 1 was assigned to dynoYearArr[0] which was then set = startYear.
+        endYear = dinoYearArr[0]; // So the endYear is = to the single value of the array given, dinoYear[0]. We determined there was only 1 index position within the conditional within () of the if statement above. 
       } else {
-        startYear = dinoYearArr[1];
-        endYear = dinoYearArr[0];
+        startYear = dinoYearArr[1]; // here we have the lesser number set as the start year
+        endYear = dinoYearArr[0]; // here we have the greater number set as the end year. we know the order of the numbers given by looking at the data test file.
       }
-      if ((mya >= startYear && mya <= endYear) && key){
+      if ((mya >= startYear && mya <= endYear) && key){ // here I want to account for all variables.  if key is involved, I push in names.
+        let dinoKey = dinosaurs[i];
+        dinosthatLived.push(dinoKey[key]); // I slipped up here .. Initially got it to pass using only the name key .. I made it dynamic by setting dynoKey. Now I can push into  any key wihin the object as long as it matches. 
         
-        dinosthatLived.push(dinoName);
-        
-      } else if (mya>= startYear & mya <= endYear){ 
+      } else if (mya>= startYear & mya <= endYear){  // here I account for only two arguements passed.  in this case I push dinoID since thats the only value needed.
 
-        dinosthatLived.push(dinoID);
-        //dinosthatLived = dynoName;
-        //return dinosthatLived;
+        dinosthatLived.push(dinoID); // pushing in the dinoID since key is not given. 
+       
       }
 
   } return dinosthatLived;
 
-} getDinosaursAliveMya(exampleDinosaurData, 65, "key")
+} console.log(getDinosaursAliveMya(exampleDinosaurData, 65, "diet"));
 
 module.exports = {
   getTallestDinosaur,
