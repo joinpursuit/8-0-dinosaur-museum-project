@@ -26,8 +26,10 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  // initialize parameters
   let found = false;
   let dinoId;
+  //for loop object to capture if parameter passed is included in object
   for (let dino of dinosaurs) {
     if (dino.name === dinosaurName) {
       found = true;
@@ -35,14 +37,17 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       break;
     }
   }
+  // if parameter is not found after the for loop return error msg
   if (!found) {
     return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+    // else loop through room object to find rooms that include the valid dinosaurId
   } else {
-    for (room of rooms) {
+    for (let room of rooms) {
       if (room.dinosaurs.includes(dinoId)) {
         return room.name;
       }
     }
+    // addiontal error msg if a valid dinsour is not present in room object
     return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
   }
 }
@@ -70,29 +75,32 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  let answer;
-
+  //initialize parameters
+  let connectsArray;
+  // for loop to validate parameter id
   for (let room of rooms) {
     if (room.roomId === id) {
-      answer = room.connectsTo;
+      connectsArray = room.connectsTo;
     }
   }
-
-  if (answer === undefined) {
+  // check if for loop captured any data if not return error msg
+  if (connectsArray === undefined) {
     return `Room with ID of '${id}' could not be found.`;
   }
-
+  // initialize parameters for return
   let array = [];
   let index = 0;
-  for (let ids of answer) {
+  // loop through data captured to transform into required output format
+  for (let connect of connectsArray) {
     for (let room of rooms) {
-      if (ids === room.roomId) {
+      if (connect === room.roomId) {
         array.push(room.name);
       }
     }
     index++;
+    // check if orginal data captured is same size after tranfomation
     if (array.length !== index) {
-      return `Room with ID of '${ids}' could not be found.`;
+      return `Room with ID of '${connect}' could not be found.`;
     }
   }
   return array;

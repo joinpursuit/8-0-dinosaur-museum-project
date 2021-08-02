@@ -54,31 +54,33 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {
-  let validTicket = ["general", "membership"];
-  let validEntrant = ["child", "adult", "senior"];
 
-  if (!validTicket.includes(ticketInfo.ticketType)) {
+function calculateTicketPrice(ticketData, ticketInfo) {
+  //Check argument ticketInfo valid ticketType
+  if (!ticketData[ticketInfo.ticketType]) {
     return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
   }
-
-  if (!validEntrant.includes(ticketInfo.entrantType)) {
+  //Check argument ticketInfo valid entrantType
+  if (!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]) {
     return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
   }
-
+  //Check argument ticketInfo eventype
   for (let item of ticketInfo.extras) {
     if (!Object.keys(ticketData.extras).includes(item)) {
       return `Extra type '${item}' cannot be found.`;
     }
   }
 
+  //declare helper variables and sum
   let sum = 0;
   let ticket = ticketInfo.ticketType;
   let entrant = ticketInfo.entrantType;
   let extra = ticketInfo.extras;
 
+  //Add general/membership and entrant type price
   sum += ticketData[ticket]["priceInCents"][entrant];
 
+  //Accumulate to sum the extra tickets
   for (let item of extra) {
     sum += ticketData["extras"][item]["priceInCents"][entrant];
   }
@@ -140,33 +142,41 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
+  // add welcome statement
   let print =
     "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------";
 
+  //if invalid data return errors
   if (typeof calculateTicketPrice(ticketData, purchases[0]) === "string") {
     return calculateTicketPrice(ticketData, purchases[0]);
   }
+  //
   let total = 0;
   for (purchase of purchases) {
+    //calculate sum
     let sum = calculateTicketPrice(ticketData, purchase);
-    sum /= 100;
-    total += sum;
+    total += sum /= 100;
+
+    //add statement for each type of ticket
     print += `\n${
       purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)
     } ${
       purchase.ticketType[0].toUpperCase() + purchase.ticketType.slice(1)
     } Admission: $${sum.toFixed(2)}`;
 
+    // adding extra statement within ()
     if (purchase.extras.length > 0) {
       let extraFormat = [];
+      //capitilize letters
       for (let type of purchase.extras) {
         extraFormat.push(type[0].toUpperCase() + type.slice(1) + " Access");
       }
+      //turn array in string
       let extraString = extraFormat.join(", ");
       print += ` (${extraString})`;
     }
   }
-
+  //add final newline and total
   print += `\n-------------------------------------------\nTOTAL: $${total.toFixed(
     2
   )}`;

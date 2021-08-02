@@ -23,9 +23,11 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getTallestDinosaur(dinosaurs) {
+  //return an empty object if there are no dinosaurs
   if (dinosaurs.length === 0) {
     return {};
   } else {
+    // start variable with first item inorder to start comparison
     let tall = dinosaurs[0].lengthInMeters;
     let dinoName = dinosaurs[0].name;
     for (let item of dinosaurs) {
@@ -34,6 +36,7 @@ function getTallestDinosaur(dinosaurs) {
         dinoName = item.name;
       }
     }
+    //convert to feet
     return { [dinoName]: tall * 3.281 };
   }
 }
@@ -60,6 +63,7 @@ function getTallestDinosaur(dinosaurs) {
  */
 function getDinosaurDescription(dinosaurs, id) {
   let mya;
+  // loop through array to find match
   for (let item of dinosaurs) {
     if (item.dinosaurId === id) {
       if (item.mya.length > 1) {
@@ -70,6 +74,7 @@ function getDinosaurDescription(dinosaurs, id) {
       return `${item.name} (${item.pronunciation})\n${item.info} It lived in the ${item.period} period, over ${mya} million years ago.`;
     }
   }
+  // return error if argument is not found
   return `A dinosaur with an ID of '${id}' cannot be found.`;
 }
 
@@ -101,6 +106,7 @@ function getDinosaurDescription(dinosaurs, id) {
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   let answer = [];
   let masterKey = "dinosaurId";
+  // check key parameter
   if (Object.keys(dinosaurs[0]).includes(key)) {
     masterKey = key;
   }
