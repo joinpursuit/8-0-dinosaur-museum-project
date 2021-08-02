@@ -54,8 +54,20 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
-
+function calculateTicketPrice(ticketData, ticketInfo) {
+  
+  let ticketTypeObj = ticketData[ticketInfo.ticketType];
+  if(ticketTypeObj === undefined){
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+  // Is the ticket type valid?
+  // Is the entrant type valid?
+  // Get the ticket cost without extras
+  // Accumulator pattern to calulate all of the extras
+    // Inside of for loop of acculator pattern: Is the extra type valid?
+  // return total of ticket cost and the cost of the extras 
+  }
+ 
 /**
  * purchaseTickets()
  * ---------------------
@@ -109,7 +121,24 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+ 
+  // Double accumulator pattern
+    // Keep track of purchase total(Number) and receipt purchase summary(String)
+  // Loop through purchases and use calculateTicketPrice to determine total of purchase
+    // If the return type is a String return it
+  // A nested accumulator to determine the extra cost total(Number) and a summary(String) for the receipt
+  // Format the receipt with the totals and the receipt summaries
+  for(let purchase of purchases){
+    let purchaseTotal = calculateTicketPrice(ticketData, purchase);
+    if(typeof purchaseTotal === "string"){
+      return purchaseTotal;
+    }
+  }
+​
+  // return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------${}-------------------------------------------\nTOTAL: $${}.00`
+}
+
 
 // Do not change anything below this line.
 module.exports = {
