@@ -22,7 +22,28 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  // create a new object
+let tallest = {};
+let currentDino = dinosaurs[0];
+  // return empty if no dinos 
+if (dinosaurs.length === 0) {
+  return {}
+}
+  // loop through the array
+for (dino of dinosaurs) {
+  // conditional statements checking dino sizes
+if ( dino.lengthInMeters > currentDino.lengthInMeters) { currentDino = dino
+}
+}
+  // pull the tallest dinosaur
+  // add dino name as new key in object && height as value
+  // convert meters to feet
+tallest[currentDino.name] = currentDino.lengthInMeters * 3.281
+  // return new object
+return tallest
+}
+
 
 /**
  * getDinosaurDescription()
@@ -33,19 +54,27 @@ function getTallestDinosaur(dinosaurs) {}
  *
  * NOTE: The `\n` represents a new line in text.
  *
- * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file for an example of the input.
+ * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file for an example of the input. 
  * @param {string} id - The unique identifier for the dinosaur.
  * @returns {string} A detailed description of the dinosaur.
  *
  * EXAMPLE:
  *  getDinosaurDescription(dinosaurs, "U9vuZmgKwUr");
- *  //> "Xenoceratops (ZEE-no-SEH-ruh-tops)\nXenoceratops had horns and a bony frill with elaborate ornamentation of projections, knobs, and spikes. It lived in the Early Cretaceous period, over 77.5 million years ago."
+ *  //> "Xenoceratops (ZEE-no-SEH-ruh-tops)\nXenoceratops had horns and a bony frill with elaborate ornamentation of projections, knobs, and spikes. It lived in the Early Cretaceous period, over 77.5 million years ago." 
  *
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
-
+function getDinosaurDescription(dinosaurs, id) {
+// iterate through dinosaur array  
+  for (dino of dinosaurs) {
+// check if dinosaurId is the same.
+  if (dino.dinosaurId === id) {
+    return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length -1]} million years ago.`
+    } 
+  }
+  return "A dinosaur with an ID of 'incorrect-id' cannot be found."
+}
 /**
  * getDinosaursAliveMya()
  * ---------------------
@@ -71,7 +100,30 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let alive = [];
+for (dino of dinosaurs) {
+  if (dino.mya.length === 2) {
+    if (dino.mya[0] >= mya && dino.mya[dino.mya.length - 1] <= mya) {
+      if (key === 'name') {
+        alive.push(dino.name)
+    } else {
+        alive.push(dino.dinosaurId)
+    } 
+    }
+  }
+   if (dino.mya.length === 1) { 
+    if (dino.mya[0] === mya || dino.mya[0] - 1 === mya) { 
+      if (key === 'name') {
+        alive.push(dino.name)
+    } else {
+        alive.push(dino.dinosaurId)
+    } 
+  }
+  }
+}
+return alive
+}
 
 module.exports = {
   getTallestDinosaur,
