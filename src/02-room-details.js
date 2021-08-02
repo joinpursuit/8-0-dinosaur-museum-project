@@ -76,6 +76,7 @@ function getConnectedRoomNamesById(rooms, id) {
   
   let exactId;
   let output;
+  // let check = true;
   let array = [];
 
   for (let singleRoom of rooms) {
@@ -91,17 +92,18 @@ function getConnectedRoomNamesById(rooms, id) {
       //[ 'zwfsfPU5u', 'aIA6tevTne', 'dpQnu5wgaN', 'L72moIRcrX' ]
 
       for (let singleIdInArray of output) {
-         
+         let hasFoundRoom = false;
         for (let eachRoom of rooms) {
           // Compared singleIdInArray with roomId of eachRoom, if it's true, then push what is asking for into an array. 
           if (singleIdInArray === eachRoom.roomId) {
             // Push the room name  
             array.push(eachRoom.name);
+            hasFoundRoom = true;
           };
         };
-      // if (singleIdInArray !== id) {
-      //         return `Room with ID of ${singleIdInArray} could not be found.`
-      //       }
+        if (!hasFoundRoom) {
+            return `Room with ID of '${singleIdInArray}' could not be found.`
+        };
       };
     return array;
     };
