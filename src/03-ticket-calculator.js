@@ -20,7 +20,20 @@ const exampleTicketData = require("../data/tickets");
  *
  * If either the `ticketInfo.ticketType` value or `ticketInfo.entrantType` value is incorrect, or any of the values inside of the `ticketInfo.extras` key is incorrect, an error message should be returned.
  *
- * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
+ * @param {Object} ticketData - An object if (ticketInfo.extras.length) {
+  
+    let xtras = ticketInfo.extras.slice(0);
+    
+    for (let extra of xtras) {
+    
+      if (extra in ticketData.extras) {
+        
+        ticket += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+      }
+  
+      else return `Extra type '${extra}' cannot be found.`;
+
+    } containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
  * @param {Object} ticketInfo - An object representing data for a single ticket.
  * @param {string} ticketInfo.ticketType - Represents the type of ticket. Could be any string except the value "extras".
  * @param {string} ticketInfo.entrantType - Represents the type of entrant. Prices change depending on the entrant.
@@ -54,7 +67,31 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  
+ let ticket = 0;
+
+  if (ticketInfo.ticketType in ticketData) {
+    if (ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents) {
+      
+      ticket += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+    } else return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+    } else return "Ticket type 'incorrect-type' cannot be found.";
+  
+  if (ticketInfo.extras.length) {
+    
+    let newArray = ticketInfo.extras.slice(0);
+  
+    for (let extra of newArray) {
+      
+      if (extra in ticketData.extras) {
+       
+        ticket += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+      } else return `Extra type '${extra}' cannot be found.`; 
+      }
+  }
+  return ticket;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +146,51 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+ let extraz = [];
+  let extraList = '';
+  
+  for (let extra of purchase.extras){
+    
+    extraz.push(ticketData.extras[extra].description);
+  }
+ 
+  if (extraz[0]) {
+   
+    extraList = ` (${extraz.join(', ')})`
+  }
+
+  return `${ticketz(purchase.entrantType)} ${ticketData[purchase.ticketType].description}: $${(calculateTicketPrice(ticketData, purchase) / 100).toFixed(2)}${extraList}`
+
+function ticketz(string){ 
+  
+  return string[0].toUpperCase() + string.slice(1).toLowerCase()
+
+  
+ let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+ // I got the receipt idea from working with Dylan I thought it was cute but he thought of it first (as far as I know)
+  
+  let priceInCents = 0;
+ 
+  for (let type of purchases){
+  
+    let price = calculateTicketPrice(ticketData, type)
+    
+    if (typeof price === 'string'){
+  
+      return price;
+    
+    } else {
+   
+    priceInCents += price
+   
+    receipt += purchaseToReceipt(ticketData, type)
+    }
+  }
+ 
+  return receipt + `-------------------------------------------\nTOTAL: $${(priceInCents/100).toFixed(2)}`
+
+}
 
 // Do not change anything below this line.
 module.exports = {
