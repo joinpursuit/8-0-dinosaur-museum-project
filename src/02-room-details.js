@@ -74,63 +74,43 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
  */
 function getConnectedRoomNamesById(rooms, id) {
   
-//   let exactId;
-//   let output;
-//   // let check = true;
-//   let array = [];
+  let exactId;
+  let output;
+  // let check = true;
+  let array = [];
 
-//   for (let singleRoom of rooms) {
-//     exactId = singleRoom.roomId
+  for (let singleRoom of rooms) {
+    exactId = singleRoom.roomId
     
-//     // Compared the given id with the roomId in every single room.
-//     if (exactId === id) {
-//       output = singleRoom.connectsTo;
-//       //Here is the output (Ids in an array) is going to connect with the roomId of eachRoom in rooms. 
+    // Compared the given id with the roomId in every single room.
+    if (exactId === id) {
+      output = singleRoom.connectsTo;
+      //Here is the output (Ids in an array) is going to connect with the roomId of eachRoom in rooms. 
 
-//       // console.log(output) 
-//       // For example, given id is "A6QaYdyKra".
-//       //[ 'zwfsfPU5u', 'aIA6tevTne', 'dpQnu5wgaN', 'L72moIRcrX' ]
+      // console.log(output) 
+      // For example, given id is "A6QaYdyKra".
+      //[ 'zwfsfPU5u', 'aIA6tevTne', 'dpQnu5wgaN', 'L72moIRcrX' ]
 
-//       for (let singleIdInArray of output) {
-//          let hasFoundRoom = false;
-//         for (let eachRoom of rooms) {
-//           // Compared singleIdInArray with roomId of eachRoom, if it's true, then push what is asking for into an array. 
-//           if (singleIdInArray === eachRoom.roomId) {
-//             // Push the room name  
-//             array.push(eachRoom.name);
-//             hasFoundRoom = true;
-//           };
-//         };
-//         if (!hasFoundRoom) {
-//             return `Room with ID of '${singleIdInArray}' could not be found.`
-//         };
-//       };
-//     return array;
-//     };
-//   };
-// return `Room with ID of '${id}' could not be found.`;
-// };
-let connectedRoomsIds = [];
-  for (let room of rooms){
-    if(room.roomId === id){
-        connectedRoomsIds = room.connectsTo.slice(0)
-    }
-  }
-  if(!connectedRoomsIds.length){
-    return `Room with ID of '${id}' could not be found.`;
-  }
-  if(connectedRoomsIds.includes("incorrect-id")){
-    return `Room with ID of 'incorrect-id' could not be found.`;
-  }
-  let connectedRoomsNames= [];
-  for (let room of rooms){
-    if(connectedRoomsIds.includes(room.roomId)){
-      connectedRoomsNames.push(room.name)
-    } else {`Room with ID of '${id}' could not be found.`;
-    }
-  }
-  return connectedRoomsNames;
-  }
+      for (let singleIdInArray of output) {
+         let hasFoundRoom = false;
+        for (let eachRoom of rooms) {
+          // Compared singleIdInArray with roomId of eachRoom, if it's true, then push what is asking for into an array. 
+          if (singleIdInArray === eachRoom.roomId) {
+            // Push the room name  
+            array.push(eachRoom.name);
+            hasFoundRoom = true;
+          };
+        };
+        if (!hasFoundRoom) {
+            return `Room with ID of '${singleIdInArray}' could not be found.`
+        };
+      };
+    return array;
+    };
+  };
+return `Room with ID of '${id}' could not be found.`;
+};
+
 getRoomByDinosaurName(exampleRoomData,"A6QaYdyKra")
 module.exports = {
   getRoomByDinosaurName,
