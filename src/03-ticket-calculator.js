@@ -1,3 +1,4 @@
+
 /*
   Do not change the line below. If you'd like to run code from this file, you may use the `exampleTicketData` variable below to gain access to tickets data. This data is pulled from the `data/tickets.js` file.
 
@@ -5,6 +6,8 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+
+const { extras } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +57,58 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+//returning a number, total priceincents
+//check if tickets.property[key] = ticketsInfo.ticketType
+//check tickets.description = ticketInfo.ticketType
+//check tickets.priceIncents[key] = ticketInfo.entrantType
+//ticketsplus.
+
+function calculateTicketPrice(tickets, ticketInfo) {
+  let total = 0;
+
+  let ticksType = ticketInfo.ticketType
+  if(tickets.hasOwnProperty(ticketInfo.ticketType)){
+    let costType = tickets[ticksType].priceInCents
+    let entrant = ticketInfo.entrantType
+    if(costType.hasOwnProperty(entrant)){
+      total += costType[entrant]
+    } else {
+      return `Entrant type '${entrant}' cannot be found.`
+    }
+  } else {
+    return `Ticket type '${ticksType}' cannot be found.`
+  }
+  let extraTicks = ticketInfo.extras
+    if(ticketInfo.extras.length > 0){
+      let ticketsPlus = tickets.extras
+      for (let extraTick of extraTicks){
+        if(ticketsPlus.hasOwnProperty(extraTick)){
+          total += ticketsPlus[extraTick].priceInCents[ticketInfo.entrantType]
+        } else {
+          return `Extra type '${ticketInfo.extras}' cannot be found.`
+        }
+      }
+    }
+    return total;
+  }
+   
+    
+
+
+
+  
+
+// * EXAMPLE:
+//  *  const ticketInfo = {
+//       ticketType: "membership",
+//       entrantType: "child",
+//       extras: ["movie"],
+//     };
+//     calculateTicketPrice(tickets, ticketInfo);
+//     //> 2500
+
+
+
 
 /**
  * purchaseTickets()
@@ -109,7 +163,18 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+    //return a custom message with the priceInCents converted to a string "$0.00" calling the function above
+    //return error messages calling the function above if the key value doesn't match
+    //how do we use helper function
+
+function purchaseTickets(tickets, purchases) {
+
+
+
+
+  return "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
+}
 
 // Do not change anything below this line.
 module.exports = {

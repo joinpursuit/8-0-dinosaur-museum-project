@@ -127,10 +127,10 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
     if(mya <= dinoYears[0] && mya >= dinoYears[1] ||
     dinoYears.length === 1 && mya === dinoYears[0] ||
     dinoYears.length === 1 && mya + 1 === dinoYears[0]){
-      if(key && dino.hasOwnProperty(key)){
-          dinoArray.push(dino[key])
-     }else {
-      dinoArray.push(dino.dinosaurId)
+      if(key && dino.hasOwnProperty(key)){ 
+       dinoArray.push(dino[key])
+      }else {
+       dinoArray.push(dino.dinosaurId)
       }
     }
   }
