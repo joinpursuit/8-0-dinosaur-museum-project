@@ -26,23 +26,35 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  // declare variable for the found dinosaurId
 let foundID = ''
+  // declare variable for found room name
 let roomName = ''
+  // iterate through array of dinosaurs
   for (let dino of dinosaurs){
+    // conditional statement checking if dino name = given name
     if (dino.name === dinosaurName){
+      // assign empty string to hold dinosaurId
       foundID = dino.dinosaurId
     }
   }
+  // conditional statement checking if dinoId isn't found
   if(!foundID){
+    // return error message
     return `Dinosaur with name '${dinosaurName}' cannot be found.`}
+    // iterate through rooms array
   for (let room of rooms){
+    // conditional checking if room.dinosaurs includes foundId
     if (room.dinosaurs.includes(foundID)){
+      // assign empty string to hold room name
       roomName = room.name
     }
 } 
+  // conditional statement checking if room name isn't found
   if (!roomName){
+    // return error message
     return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`}
-
+    // return room name
    return roomName
 }
 
@@ -69,27 +81,43 @@ let roomName = ''
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
+  // declare variable for empty array
 let arr = [];
+// declare variable for found room
 let foundRoom;
+// declare variable for connected rooms
 let foundConnectedRoom;
+// iterate through array of rooms
 for (const room of rooms) {
+  // conditional statement checking if roomId matches given Id
   if (room.roomId === id) { 
+    // assign empty variable to be true
       foundRoom = true
+      // iterate through array of connected rooms
 for (const connectedRoom of room.connectsTo) {
+  // iterate through array of rooms
   for (const connected of rooms) {
+    // assign empty variable to be false
     foundConnectedRoom = false
+    // conditional statement checking if roomId matches connected rooms
   if (connected.roomId === connectedRoom) {
+    // reassign variable for connected rooms to true
     foundConnectedRoom = true
+    // push names connected to empty array 
       arr.push(connected.name) 
+      // break to stop array 
         break;       
         }
       }
     }
   }
 }
+// conditional checking if found room || connected rooms are false
   if (!foundRoom || !foundConnectedRoom) {
+    // reassigning error message (string)
     arr = `Room with ID of 'incorrect-id' could not be found.`
   }
+  // return output
     return arr
 }
 

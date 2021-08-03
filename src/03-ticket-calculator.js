@@ -140,6 +140,7 @@ return totalCost
     //> "Ticket type 'discount' cannot be found."
  */
 
+// create helper function to capitalize
 function capital(entrantType) {
   entrantType = entrantType.charAt(0).toUpperCase() + entrantType.slice(1)
   return entrantType

@@ -26,7 +26,7 @@ function getTallestDinosaur(dinosaurs) {
   // create a new object
 let tallest = {};
 let currentDino = dinosaurs[0];
-  // return empty if no dinos 
+  // return empty if no dino 
 if (dinosaurs.length === 0) {
   return {}
 }
@@ -73,6 +73,7 @@ function getDinosaurDescription(dinosaurs, id) {
     return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length -1]} million years ago.`
     } 
   }
+  // return error message
   return "A dinosaur with an ID of 'incorrect-id' cannot be found."
 }
 /**
@@ -101,27 +102,41 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
+  // declare variable for empty array
   let alive = [];
+  // iterate through dinosaur array
 for (dino of dinosaurs) {
+  // conditional checking mya length
   if (dino.mya.length === 2) {
+    // conditional statement checking if mya is less than/equal to given mya
     if (dino.mya[0] >= mya && dino.mya[dino.mya.length - 1] <= mya) {
+      // conditional statement checking if key matches string name
       if (key === 'name') {
+        // push dino name into empty array
         alive.push(dino.name)
+        // conditional statement for name not matching/push dinoId into empty array
     } else {
         alive.push(dino.dinosaurId)
     } 
     }
   }
+  // conditional statement checking mya length
    if (dino.mya.length === 1) { 
+    //  conditonal checking if 1st mya or 1st mya-1 matches given mya
     if (dino.mya[0] === mya || dino.mya[0] - 1 === mya) { 
+      // conditional checking if key matches name
       if (key === 'name') {
+        // push dino name into array
         alive.push(dino.name)
+        // conditional if it doesn't match 
     } else {
+      // push dinoId into array
         alive.push(dino.dinosaurId)
     } 
   }
   }
 }
+  // return array
 return alive
 }
 
