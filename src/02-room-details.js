@@ -24,8 +24,39 @@ const exampleRoomData = require("../data/rooms");
  * EXAMPLE:
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
+ * 
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+
+//rooms is an array 
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let dinoID ; // matching ID will be set to this value if first condition is met
+  let roomName; // matching room name if second condition is met 
+    
+  for (let i = 0 ; i < dinosaurs.length; i++){ // looping through dinosaurs.name to determine if first condition is met 
+      let dinoName = dinosaurs[i].name;
+
+    if (dinosaurName === dinoName){
+        dinoID = dinosaurs[i].dinosaurId; // if dinosaurName argument matches dinoName , we are adding the dinosaurs.dinosaurID value to dinoID at [i]index postion
+     } 
+  } 
+      if (!dinoID) { // if there is no matching name, there will be no dinoID value. if there is no value, we will return error statment.
+        return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+      }
+        for (let c = 0 ; c < rooms.length; c++){ // this is the second loop, used to iterate through rooms.dinosaurs arrays
+        let roomDinosaurArray = rooms[c].dinosaurs; // we are setting this variable to compare to dinoID
+     
+          if (roomDinosaurArray.includes(dinoID)){ // . includes checks the Array within rooms[c].dinosaurs for matching dinoID
+            roomName = rooms[c].name; // if dinoID is found within roomDinosaursArray , we will assign roomName with the rooms.name value at index positon[c]
+
+            return roomName;     
+          } 
+        } 
+        if (!roomName){  // if dinoID was not found, there is no roomName. It was set as empty right after function declaration
+          return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+        }
+  }
+
+console.log(getRoomByDinosaurName(exampleDinosaurData, exampleRoomData,"Dracorex" ));
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +80,24 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let connectedRooms = []; // I am declaring an empty array to return the names of rooms connected to given room id. 
+  // we are comparing the ** id ** argument to **rooms.roomId** , to produce matching **rooms.connectsTo** values
+  //If there is a match between id & rooms.roomID , I will push the matching values of rooms[i].connectsTo , into the array 
+
+  for (let i = 0 ; i < rooms.length; i++){
+    let indexOfRooms = rooms[i];
+      if (id === indexOfRooms.roomId){
+          connectedRooms.push(indexOfRooms.connectsTo); // I am creating an array with connects to rooms. 
+          // the issue is converting them to names
+      } 
+    
+  } if (connectedRooms.length < 1){
+    return `Room with ID of '${id}' could not be found.`
+  }
+
+}
+getConnectedRoomNamesById(exampleRoomData, "A6QaYdyKra");
 
 module.exports = {
   getRoomByDinosaurName,

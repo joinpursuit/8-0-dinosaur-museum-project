@@ -54,7 +54,31 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+
+    // Looking for the cost of ticket .  The cost of ticket is determined by two inputs, ticketData, and TicketInfo which are objects.
+    // We will have to compare each object.  the ticketInfo will determine the output of the ticketData.   
+function calculateTicketPrice(ticketData, ticketInfo) {
+
+  // We want to return priceInCents.  How do we access that value? The values for priceInCents are objects. Each priceInCents object has 3 key value pairs. 
+  //priceInCents.child, priceInCents.adult, priceInCents.senior.
+  // acccessing priceInCents .  (tickets) ticketData is an object.  It has 5 key values consisting of : general , membership, extras, education, and terrace.  
+  // ticketData.general , ticketData.membership, ticketData.extras, ticketData.education, ticketData.terrace all contain objects as values. ticketData.extras has 3 objects nested for its value.
+  // Using ticketInfo, the first goal is to match ticketInfo.ticketType to ticketData.general, ticketData.membership, ticketData.axtras, ticketData.education, ticketData.terrace
+  // once we have our first matching key value pairs , we must also compare ticketInfo.entrantType to ticketData.X.priceInCents.(value determined from ticketInfo.entrantType).
+
+  // ticketInfo.ticketType & ticketInfo.entrantType values must be specific to the values given in ticketData.  
+  // ticketInfo.ticketType values are limited to general, membership, extras, education, terrace.
+  // ticketInfo.entrantType values should match ticketData.X.priceInCents => child , adult or senior.
+  //how do we start matching?  I dont see this being a for loop.  There are no arrays except for the values found in extras
+
+  // Extras is a set of objects that inludes : movie , education, terrace . They will increase the final price according to their values. 
+
+  let tickettype = ticketInfo.ticketType; // these values are strings .  if ticketData.tickettype
+
+     
+
+
+}
 
 /**
  * purchaseTickets()
