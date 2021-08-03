@@ -22,7 +22,24 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  //returns empty object if there are no dinos
+  if(dinosaurs == false){
+    return {};
+  }
+  let height = 0;
+  let tallDino = '';
+  //height and name accumulators 
+  for(let dino of dinosaurs){
+    if(dino.lengthInMeters > height){
+      height = dino.lengthInMeters;
+      tallDino = dino.name;
+    }
+  }
+  height *= 3.281;
+  let dinoObj = {[tallDino]: height};
+  return dinoObj;
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +61,19 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  
+  for(let dino of dinosaurs){
+    //created formatted string
+    let desc = `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`;
+    //only returns if id resides in dinosaursId
+     if(dino.dinosaurId === id){
+      return desc;
+      }
+  }
+  //no need to use else for this return
+  return  `A dinosaur with an ID of '${id}' cannot be found.`;
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +100,33 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinoArr = [];
+
+  for(let dino of dinosaurs){
+    //covers case where dino has 1 mya year
+    if(dino.mya.length === 1){
+      if(mya === dino.mya[0] || mya === dino.mya[0] - 1){// covers 1 mya less than amount
+        if(key in dino){
+          dinoArr.push(dino[key]);
+        } else{
+        dinoArr.push(dino.dinosaurId);
+          }
+      }
+      //covers 2 myas
+    } else{
+        if(dino.mya[0] >= mya && mya >= dino.mya[1]){
+          if(key in dino){
+            dinoArr.push(dino[key]);
+          }else{
+            dinoArr.push(dino.dinosaurId);
+            }
+        }
+      }
+  }
+  //empty array for no match
+  return dinoArr;
+}
 
 module.exports = {
   getTallestDinosaur,

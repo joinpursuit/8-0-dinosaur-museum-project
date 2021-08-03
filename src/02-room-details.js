@@ -25,7 +25,27 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let dinoObj = {};
+  //loop to grab correct dinosaur object
+  for(let dino of dinosaurs){
+    if(dino.name === dinosaurName){
+      dinoObj = dino;
+    }
+  }
+  //checks for dinosaurId ket within the object for validity
+  if(!('dinosaurId' in dinoObj)){
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+  }
+  let dinoId = dinoObj.dinosaurId;
+  //tests individual dinoid against the one within dinosaurs
+  for(let room of rooms){
+    if(room.dinosaurs.includes(dinoId)){
+      return room.name;
+    } 
+  }
+  return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +69,37 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let connectedArr = [];
+  let pairsObj = {};
+  //loop grabs correct arrays of connecting rooms
+  for(let i = 0; i < rooms.length; i++){
+    if(id === rooms[i].roomId){
+      connectedArr = rooms[i].connectsTo;
+    }
+    //object becomes a host for corresponding pairs of roomIds and names to be use as a reference
+    pairsObj[rooms[i].roomId] = rooms[i].name;
+  }
+  //this covers case where the array can be undefined or another falsey value
+  if(connectedArr == false){
+    return `Room with ID of '${id}' could not be found.`;
+  }
+//array of all keys within the pairs object
+  let roomIdsArr = Object.keys(pairsObj);
+  let finalArr = [];
+  //loop checks each element within the connected array 
+  for(let connectedId of connectedArr){
+    //if statement will only add to the final array if there is a match between the pairs keys and connectedId, otherwise returns error
+      if(roomIdsArr.includes(connectedId)){
+        finalArr.push(pairsObj[connectedId]);
+      } else{
+        return `Room with ID of '${connectedId}' could not be found.`;
+      }
+    }
+  
+
+  return finalArr;
+}
 
 module.exports = {
   getRoomByDinosaurName,

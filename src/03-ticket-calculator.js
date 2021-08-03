@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { extras } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,30 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let cost = 0;
+//error for no matching ticket type
+  if(!(ticketInfo.ticketType in ticketData)){
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+//accumulator in the case that the entrant type is valid within the ticketData
+  if(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents){
+    cost += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+  } else{ //alternatively, return an error if there is no match
+      return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+    }
+
+  let ticketExtras = ticketInfo.extras;// create an array to iterate through in next line
+  for(let eachExtra of ticketExtras){
+    //eachExtra used to reference between BOTH ticketData and the param's extras array then accumulate
+    if(eachExtra in ticketData.extras){
+      cost += ticketData.extras[eachExtra].priceInCents[ticketInfo.entrantType];
+    } else{ //return error if there is no match with cross reference
+      return `Extra type '${eachExtra}' cannot be found.`;
+    }
+  }
+  return cost;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +133,42 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let receipt = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n';
+  let totalCost = 0;
+  
+  //helper function to capitalize first letters within a string
+  function firstLetterCaps(string){
+    return string[0].toUpperCase() + string.slice(1);
+  }
+  //isolates each purchase within the loop
+  for(let purchase of purchases){
+    let eachCost = 0;
+    let extrasArr = [];//this array is used to grab descriptions
+    let price = calculateTicketPrice(ticketData, purchase); //borrows logic from previous question 
+    //returns price if it is an error, which would be a string
+    if(typeof price === 'string'){
+      return price;
+    }
+    let formattedExtras = '';
+    //checks if extras array contains anything
+    if(purchase.extras.length){
+      //pushes the appropriate extras descriptions into the extrasArr to enter formattedExtras correctly
+      for(let x of purchase.extras){
+          extrasArr.push(ticketData.extras[x].description);   
+      }
+      //finishes any formatting left
+      formattedExtras = ` (${extrasArr.join(', ')})`;
+    }
+    //changes to dollar amount from cents
+    eachCost = price / 100;
+    //.toFixed adds decimal point
+    receipt += `${firstLetterCaps(purchase.entrantType)} ${firstLetterCaps(purchase.ticketType)} Admission: $${eachCost.toFixed(2)}${formattedExtras}\n`;
+    //totalCost accumulates each cost as a final step in the loop
+    totalCost += eachCost;
+  }
+ return `${receipt}-------------------------------------------\nTOTAL: $${totalCost.toFixed(2)}`;
+}
 
 // Do not change anything below this line.
 module.exports = {
