@@ -159,7 +159,6 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  */
 function purchaseTickets(ticketData, purchases) {
   let total = 0;
-  let newArr = [];
   let welcome = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
   
 
@@ -172,7 +171,6 @@ function purchaseTickets(ticketData, purchases) {
     
     let entrant = singlePurchase.entrantType;  
     let formattedEntrant = entrant.slice(0,1).toUpperCase() + entrant.slice(1) + " ";
-
     let formattedAdmission = ticketData[singlePurchase.ticketType].description + ": ";
     let payment = (result/100).toFixed(2);
     let detailedTicketInfo = `${formattedEntrant}${formattedAdmission}$${payment}`;
@@ -180,6 +178,7 @@ function purchaseTickets(ticketData, purchases) {
     if (singlePurchase.extras.length === 0) {
       welcome += `${detailedTicketInfo}\n`;
     } else {
+        let newArr = [];
         for (let extra of singlePurchase.extras) {
           finalExtra = ticketData.extras[extra].description;
           newArr.push(finalExtra);
