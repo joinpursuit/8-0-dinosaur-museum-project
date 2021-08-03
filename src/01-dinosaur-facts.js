@@ -22,7 +22,29 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  //INPUT is an array of dinosaurs
+  if (dinosaurs.length === 0) {
+    return {};
+  }
+  //Create default variable = {}
+  let tallest = {};
+
+  //Create a new variable for = tallest Dino. currentDino = tallestDino
+  let currentDino = dinosaurs[0];
+
+  //Define loop and code to loop thru
+  for (let i = 1; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].lengthInMeters > currentDino.lengthInMeters) {
+      currentDino = dinosaurs[i];
+    }
+  }
+  //tallest[currentDino.name] = currentDino.lengthInMeters * 3.281
+  tallest[currentDino.name] = currentDino.lengthInMeters * 3.281;
+
+  //OUTPUT: return new object > DINOSAUR NAME:DINOSAUR HEIGHT IN FEET = {name:heightInFeet}
+  return tallest;
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +66,28 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  //IF DINOSAUR NOT FOUND RETURN ERROR MESSAGE
+  //IF DINOSAUR FOUND RETURN DINO DESCRIPTION
+  //DEFINE DEFAULT VALUE = ERROR MESSAGE
+  //DEFINE LOOP
+
+  let message = `A dinosaur with an ID of '${id}' cannot be found.`;
+
+  for (let i = 0; i < dinosaurs.length; i++) {
+    let dinosaur = dinosaurs[i];
+
+    if (dinosaur.dinosaurId === id) {
+      return `${dinosaur.name} (${dinosaur.pronunciation})\n${
+        dinosaur.info
+      } It lived in the ${dinosaur.period} period, over ${
+        dinosaur.mya[dinosaur.mya.length - 1]
+      } million years ago.`;
+    }
+  }
+  return message;
+}
+//console.log(getDinosaurDescription(exampleDinosaurData, "U9vuZmgKwUr"));
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +114,33 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function isItAlive(dino, year) {
+  if (dino[0] >= year && dino[1] <= year) {
+    return true;
+  } else if (dino[0] === year || dino[0] - 1 === year) {
+    return true;
+  }
+  return false;
+}
+
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let liveDino = [];
+  for (let dino of dinosaurs) {
+
+    if (isItAlive(dino.mya, mya) && key) {
+      liveDino.push(dino[key]);
+      
+    } 
+    else if (isItAlive(dino.mya, mya)) {
+      liveDino.push(dino.dinosaurId);
+    }
+  }
+  return liveDino;
+};
+
+/*Returns an array of dinosaurs who were alive at the given `mya` (i.e. "millions of years ago") value. If a `key` is provided, returns the value of that key for each dinosaur alive at that time. Otherwise, returns the ID.
+ *
+ * If the dinosaur only has a single value for `mya`, allows for the `mya` value to be equal to the given value or one less. For example, if a dinosaur has a `mya` value of `[29]`, the dinosaur's information will be returned if `29` is entered or `28` is entered.*/
 
 module.exports = {
   getTallestDinosaur,
