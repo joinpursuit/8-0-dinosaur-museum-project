@@ -66,17 +66,6 @@ function getDinosaurDescription(dinosaurs, id) {
   return `A dinosaur with an ID of '${id}' cannot be found.`
 }
 
-// let sentence = '';
-// {
-//   for(let i=0; i<dinosaurs.length; i++){
-//     if(dinosaurs[i].dinosaurId === id){
-//       sentence =  `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.`;
-//     }else{
-//       sentence = `A dinosaur with an ID of '${id}' cannot be found`;
-//     };
-//     return sentence;
-// }
-
 /**
  * getDinosaursAliveMya()
  * ---------------------
@@ -102,7 +91,37 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let aliveDinosaurs = [];
+  for(dino of dinosaurs){
+    if(dino.mya.length > 1){
+      if(dino.mya[0] >= mya && dino.mya[1] <= mya){
+        aliveDinosaurs.push(dino);
+      }
+    }else{
+      if(mya === dino.mya[0] || mya === (dino.mya[0] - 1)){
+      aliveDinosaurs.push(dino);
+      };
+    };
+  }
+  let finalArr = [];
+  let keyArr = Object.keys(dinosaurs[0]);
+  if(!key || !keyArr.includes(key)){
+    for(let i=0; i<aliveDinosaurs.length; i++){
+      finalArr.push(aliveDinosaurs[i].dinosaurId);
+    }
+  }else{
+    if(keyArr.includes(key)){
+      for(let i=0; i<aliveDinosaurs.length; i++){
+        finalArr.push(aliveDinosaurs[i][key]);
+      };
+    };
+  };
+  return finalArr;
+}
+
+// console.log(getDinosaursAliveMya(exampleDinosaurData, 143));
+
 
 module.exports = {
   getTallestDinosaur,
