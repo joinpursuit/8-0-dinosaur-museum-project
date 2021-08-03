@@ -64,15 +64,15 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 
 
   
-  const array = ['general', 'membership', `adult`, `child`, `senior`, `movie`, `education`, `terrace`]
-  if(!array.includes(type)) {
+  
+  if(!(type in ticketData)) {
     return "Ticket type 'incorrect-type' cannot be found."
-  } else if (!array.includes(entrant)) {
+  } else if (!(entrant in ticketData[type][price])) {
     return `Entrant type '${entrant}' cannot be found.`
   }
   
   for (const extra of ticketInfo.extras) {
-    if(!array.includes(extra)){
+    if(!(extra in ticketData.extras)){
       return "Extra type 'incorrect-extra' cannot be found."
     }
   }
