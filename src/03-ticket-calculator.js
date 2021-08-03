@@ -142,10 +142,9 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  */
 function purchaseTickets(ticketData, purchases) {
 
-let price = 0
-let receiptTotal = []
+// let price = 0
+// let receiptTotal = []
   for(let purchase of purchases){
-    let formatEntType = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)
     let purchaseTotal = calculateTicketPrice(ticketData, purchase);
     if(typeof purchaseTotal === "string"){
       return  purchaseTotal
@@ -156,13 +155,14 @@ let receiptTotal = []
       extraDescription.push(ticketData.extras[ex].description)
       priceExtras += ticketData.extras[ex].priceInCents[purchase.entrantType]
     }
-
   }
 
-  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n ${formatEntType} ${purchase.ticketType}: $${(purchaseTotal/100).toFixed(2)} ${extraDescription}\n-------------------------------------------\nTOTAL: $${(purchaseTotal/100).toFixed(2)}`
+  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n ${purchase.entrantType} ${purchase.ticketType}: $${(purchaseTotal/100).toFixed(2)} ${extraDescription.join()}\n-------------------------------------------\nTOTAL: $${(purchaseTotal/100).toFixed(2)}`
 
   
 }
+    // let formatEntType = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)
+// purchaseTickets(exampleTicketData, purchases)
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
