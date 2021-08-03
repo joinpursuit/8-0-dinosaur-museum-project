@@ -137,7 +137,14 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       },
     ];
     purchaseTickets(tickets, purchases);
-    //> "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
+    //> "Thank you for visiting the Dinosaur Museum!
+    \n-------------------------------------------
+    \nAdult General Admission: $50.00 (Movie Access, Terrace Access)
+    \nSenior General Admission: $35.00 (Terrace Access)
+    \nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)
+    \nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)
+    \n-------------------------------------------
+    \nTOTAL: $175.00"
 
  * EXAMPLE:
     const purchases = [
@@ -150,7 +157,43 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let total = 0;
+  let newArr = [];
+  let welcome = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  
+
+  for (let singlePurchase of purchases) {
+    let result = calculateTicketPrice(ticketData,singlePurchase);
+    if (typeof result === "string") {
+      return result;
+    } 
+    total += result;
+    
+    let entrant = singlePurchase.entrantType;  
+    let formattedEntrant = entrant.slice(0,1).toUpperCase() + entrant.slice(1) + " ";
+
+    let formattedAdmission = ticketData[singlePurchase.ticketType].description + ": ";
+    let payment = (result/100).toFixed(2);
+    let detailedTicketInfo = `${formattedEntrant}${formattedAdmission}$${payment}`;
+   
+    if (singlePurchase.extras.length === 0) {
+      welcome += `${detailedTicketInfo}\n`;
+    } else {
+        for (let extra of singlePurchase.extras) {
+          finalExtra = ticketData.extras[extra].description;
+          newArr.push(finalExtra);
+        }  
+         welcome += `${detailedTicketInfo} (${newArr.join(", ")})\n`;
+      }
+} 
+  let finalReceipt = (welcome +`-------------------------------------------\nTOTAL: $${(total/100).toFixed(2)}`);
+  return finalReceipt;
+  }
+  
+
+  
+
 
 // Do not change anything below this line.
 module.exports = {
