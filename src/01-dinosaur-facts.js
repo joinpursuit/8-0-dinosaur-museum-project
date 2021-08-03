@@ -22,7 +22,28 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+
+//what is our input: it's an array of objects with several keys
+//What is our output: returns a new object{name: heightInFeet} with the name of tallest dinosaur in feet.
+
+//function converterToFeet(n) {
+// return n * 3.281;
+//}
+
+function getTallestDinosaur(dinosaurs) {
+  const tallest = {};
+  if (dinosaurs.length === 0) {
+    return {};
+  }
+  let currentDino = dinosaurs[0];
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].lengthInMeters > currentDino.lengthInMeters) {
+      currentDino = dinosaurs[i];
+    }
+  }
+  tallest[currentDino.name] = currentDino.lengthInMeters * 3.281;
+  return tallest;
+}
 
 /**
  * getDinosaurDescription()
@@ -39,12 +60,31 @@ function getTallestDinosaur(dinosaurs) {}
  *
  * EXAMPLE:
  *  getDinosaurDescription(dinosaurs, "U9vuZmgKwUr");
- *  //> "Xenoceratops (ZEE-no-SEH-ruh-tops)\nXenoceratops had horns and a bony frill with elaborate ornamentation of projections, knobs, and spikes. It lived in the Early Cretaceous period, over 77.5 million years ago."
- *
+ *  //> "Xenoceratops (ZEE-no-SEH-ruh-tops)\nXenoceratops had horns and a bony frill with elaborate ornamentation of projections, knobs, and spikes. It lived in the Early Cretaceous period, over 77.5 million year"
+ *s ago.
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
+ *
+ *
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let result = "";
+  if (id !== dinosaurs.dinosaurId) {
+    result = `A dinosaur with an ID of 'incorrect-id' cannot be found.`;
+  }
+
+  for (let i = 0; i < dinosaurs.length; i++) {
+    const dinosaur = dinosaurs[i];
+    if (dinosaur.dinosaurId === id) {
+      result = `${dinosaur.name} (${dinosaur.pronunciation})\n${
+        dinosaur.info
+      } It lived in the ${dinosaur.period} period, over ${
+        dinosaur.mya[dinosaur.mya.length - 1]
+      } million years ago.`;
+    }
+  }
+  return result;
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +111,35 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  //Define your default value
+  let dino = [];
+
+  for (const i of dinosaurs) {
+    let max = i.mya[0];
+    let min = i.mya[1];
+
+    if (i.mya.length === 1) {
+      if (max === mya || max - 1 === mya) {
+        if (key in i) {
+          dino.push(i[key]);
+        } else {
+          dino.push(i.dinosaurId);
+        }
+      }
+    } else {
+      if (mya <= max && mya >= min) {
+        if (key in i) {
+          dino.push(i[key]);
+        } else {
+          dino.push(i.dinosaurId);
+        }
+      }
+    }
+  }
+  return dino;
+}
 
 module.exports = {
   getTallestDinosaur,

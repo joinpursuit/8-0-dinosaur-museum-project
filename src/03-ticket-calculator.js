@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,36 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+
+function calculateTicketPrice(ticketData, ticketInfo) {
+  // the result will hold the correct value of the function
+  const ticketType = ticketInfo.ticketType;
+  const entrantType = ticketInfo.entrantType;
+  const extrasParam = ticketInfo.extras;
+
+  if (!(ticketType in ticketData)) {
+    return `Ticket type '${ticketType}' cannot be found.`;
+  }
+
+  if (!(entrantType in ticketData[ticketType].priceInCents)) {
+    return `Entrant type '${entrantType}' cannot be found.`;
+  }
+
+  for (const extra of extrasParam) {
+    if (!(extra in ticketData.extras)) {
+      return `Extra type '${extra}' cannot be found.`;
+    }
+  }
+
+  let price = ticketData[ticketType].priceInCents[entrantType];
+  let extrasPrice = 0;
+
+  for (const extra of extrasParam) {
+    extrasPrice += ticketData.extras[extra].priceInCents[entrantType];
+  }
+
+  return price + extrasPrice;
+}
 
 /**
  * purchaseTickets()
@@ -109,9 +139,35 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+function purchaseTickets(ticketData, purchases) {
+  let output = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+
+  let totalPrice = 0;
+
+  for (const obj of purchases) {
+    const price = calculateTicketPrice(ticketData, obj);
+    if (typeof price === "string") {
+      return price;
+    }
+    const description = ticketData[obj.ticketType].description;
+    const ageGroup = obj.entrantType.substring(0, 1).toUpperCase() + obj.entrantType.substring(1).toLowerCase();
+    const priceInDollars = (price / 100).toFixed(2);
+
+    totalPrice += price;
+    extrasLabel = obj.extras.map((extra) => tickets.extras[extra].description).join(", ");
+    const extraText = extrasLabel ? ` (${extrasLabel})` : "";
+
+    let line = `${ageGroup} ${description}: $${priceInDollars}${extraText}\n`;
+    output += line;
+  }
+  output += `-------------------------------------------\nTOTAL: $${(totalPrice / 100).toFixed(2)}`;
+
+  return output;
+}
 
 // Do not change anything below this line.
+
 module.exports = {
   calculateTicketPrice,
   purchaseTickets,
