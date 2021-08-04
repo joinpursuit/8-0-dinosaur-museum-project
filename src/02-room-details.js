@@ -98,7 +98,7 @@ function getConnectedRoomNamesById(rooms, id) {
   }
 
   if (eachRoomId === "" || eachRoomId === "incorrect-id")
-    return `Room with ID of '${id}' could not be found.`;
+    return `Room with ID of 'incorrect-id' could not be found.`;
 
   return finalList;
 }
