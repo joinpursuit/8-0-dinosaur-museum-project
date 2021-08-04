@@ -3,6 +3,7 @@
 
   You may use this data to test your functions. You may assume the shape of the data remains the same but that the values may change.
 */
+
 const exampleDinosaurData = require("../data/dinosaurs");
 const exampleRoomData = require("../data/rooms");
 // Do not change the lines above.
@@ -25,8 +26,59 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
 
+//return room where dino is found
+// look for dino in dinosaur objects
+
+
+function getDinoIdFromName (dinosaurs, name) {
+  for (let i = 0; i < dinosaurs.length; i++){
+    // if we have a match between id and dinosaurId return dino name.
+    if (dinosaurs[i].name === name){
+      return dinosaurs[i].dinosaurId;
+    }
+  
+  
+  }
+}
+
+//let proper = getDinoIdFromName;
+//const id = convert(dinosaurs, dinosaurName);
+//convert (exampleDinosaurData, 'WHQcpcOj0G');
+//function getDinoIdFromName(dinosaurs, name)
+//get dinoId from name
+//loop through the room and
+//4. if any of the ids in the dinosaurs array matched the Dino id we’re looking for, return the room's name
+//console.log(convert(exampleDinosaurData, ‘Compsognathus’))
+//console.log(getDinoIdFromName(exampleDinosaurData, dinosaurName));
+
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let expectedRoom = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`; //created so that if condition doesn't hit the condition
+  let proper = getDinoIdFromName(dinosaurs, dinosaurName); //will convert dinosaurName variable to dinosaurId
+  if (proper === undefined){
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+  }
+//looping through rooms array 
+  for (let room of rooms){
+    //looping through each object key "dinosaurs";
+    for (let dinoId of room.dinosaurs){
+     //convert dinosaurName to dinosaurId 
+    // look for a match in array of dinosaur key 
+       if (dinoId === proper){ 
+          expectedRoom = room.name
+    } 
+  }
+}
+    return expectedRoom;
+   
+}
+//getRoomByDinosaurName(exampleDinosaurData, exampleRoomData, "Allosaurus");
+
+//if (dinoId !== proper) {
+ // expectedRoom = `Dinosaur with name 'Pterodactyl' cannot be found.`;
+//} 
+
+//getRoomByDinosaurName(exampleDinosaurData);
 /**
  * getConnectedRoomNamesById()
  * ---------------------
@@ -49,7 +101,49 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+
+
+    function getRoomNameById (rooms, id) {
+      for (let i = 0; i < rooms.length; i++){
+        //if we have a match between roomId and id return room name
+        if (rooms[i].roomId === id){
+          return rooms[i].name;
+        }
+      }
+    }
+
+//console.log(getRoomNameById(exampleRoomData, "aIA6tevTne"));
+
+
+function getConnectedRoomNamesById(rooms, id) {
+   let arr = [];
+   let roomNames = getRoomNameById(rooms, id);
+    if (roomNames === undefined){
+      return `Room with ID of 'incorrect-id' could not be found.`;
+    }
+  
+    let connectingRoomIds = []
+    for (let i = 0; i < rooms.length; i++) {
+        if (rooms[i].roomId === id) {
+            connectingRoomIds = rooms[i].connectsTo;
+            break;
+        }
+    } 
+    for (let i = 0; i < connectingRoomIds.length; i++){
+        let connectingRoomId = connectingRoomIds[i]
+       let connectingRoomName = getRoomNameById(rooms, connectingRoomId)
+        if (connectingRoomName === undefined){
+          return "Room with ID of 'incorrect-id' could not be found.";
+        // print the name associated with this id
+        } arr.push(connectingRoomName);
+    } 
+    
+    // [ 'zwfsfPU5u', 'aIA6tevTne', 'dpQnu5wgaN', 'L72moIRcrX' ]
+    
+  return arr;
+}
+  
+getConnectedRoomNamesById (exampleRoomData, "dpQnu5wgaN");
 
 module.exports = {
   getRoomByDinosaurName,
