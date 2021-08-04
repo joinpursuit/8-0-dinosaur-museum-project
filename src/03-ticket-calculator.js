@@ -54,22 +54,59 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let priceInCents = 0;
+  let extraArr = ticketInfo.extras.slice(0);
+
+  if (ticketInfo.ticketType in ticketData) {
+    if (ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents) {
+      priceInCents += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+    } else {
+      return "Entrant type 'incorrect-entrant' cannot be found.";
+    }
+  } else {
+    return "Ticket type 'incorrect-type' cannot be found.";
+  }
+
+  if (ticketInfo.extras.length) {
+    for (let extra of extraArr) {
+      if (extra in ticketData.extras) {
+        priceInCents += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+      } else {
+        return "Extra type 'incorrect-extra' cannot be found.";
+      }
+        
+    }
+  }
+  return priceInCents;  
+  // Is the ticket type valid?
+  // Is the entrant type valid?
+  // Get the ticket cost without extras
+  // Accumulator pattern to calulate all of the extras
+    // Inside of for loop of acculator pattern: Is the extra type valid?
+  // return total of ticket cost and the cost of the extras 
+
+}
 
 /**
  * purchaseTickets()
  * ---------------------
- * Returns a receipt based off of a number of purchase. Each "purchase" maintains the shape from `ticketInfo` in the previous function.
+ * Returns a receipt based off of a number of purchase. Each "purchase" maintains the shape from `ticketInfo` in the 
+ * previous function.
  *
- * Any errors that would occur as a result of incorrect ticket information should be surfaced in the same way it is in the previous function.
+ * Any errors that would occur as a result of incorrect ticket information should be surfaced in the same way it is in the 
+ * previous function.
  * 
- * NOTE: Pay close attention to the format in the examples below and tests. You will need to have the same format to get the tests to pass.
+ * NOTE: Pay close attention to the format in the examples below and tests. You will need to have the same format to get 
+ * the tests to pass.
  *
- * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
+ * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file 
+ * for an example of the input.
  * @param {Object[]} purchases - An array of objects. Each object represents a single ticket being purchased.
  * @param {string} purchases[].ticketType - Represents the type of ticket. Could be any string except the value "extras".
  * @param {string} purchases[].entrantType - Represents the type of entrant. Prices change depending on the entrant.
- * @param {string[]} purchases[].extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
+ * @param {string[]} purchases[].extras - An array of strings where each string represent a different "extra" that can be 
+ * added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
  * @returns {string} A full receipt, with each individual ticket bought and the total.
  *
  * EXAMPLE:
@@ -109,7 +146,57 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+// Double accumulator pattern
+  //   Keep track of purchase total(Number) and receipt purchase summary(String)
+  // Loop through purchases and use calculateTicketPrice to determine total of purchase
+  //   If the return type is a String return it
+  // A nested accumulator to determine the extra cost total(Number) and a summary(String) for the receipt
+  // Format the receipt with the totals and the receipt summaries
+  //for(let purchase of purchases){
+    //     let purchaseTotal = calculateTicketPrice(ticketData, purchase);
+    //     if(typeof purchaseTotal === "string"){
+    //       return purchaseTotal;
+    //     }
+    //   }
+    // ​
+    //   return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------${}-------------------------------------------\nTOTAL: $${}.00`
+
+
+function purchaseTickets(ticketData, purchases) {
+  let receiptStr = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  let purchaseTotal = 0;
+  for (let purchase of purchases) {
+    let subSum = calculateTicketPrice(ticketData, purchase);
+    if (typeof subSum === "string") {
+      return subSum;
+    } 
+    receiptStr += upperCaseFirstLetter(purchase.entrantType) + " " + ticketData[purchase.ticketType].description + ": " + "$" + (subSum/100).toFixed(2) + extraTicketData(ticketData, purchase) + "\n";
+    purchaseTotal += subSum/100;
+  }
+  return receiptStr + "-------------------------------------------\n" + "TOTAL: $" + purchaseTotal.toFixed(2);
+}
+function extraTicketData(ticketData, ticketInfo) {
+  let extraArr = ticketInfo.extras.slice(0);
+  if (extraArr.length === 0) {
+    return "";
+  } 
+  let newStr = " (";
+  for (let i = 0; i < extraArr.length; i++) {
+    if (i === extraArr.length-1) {
+      newStr += ticketData.extras[extraArr[i]].description + ")";
+    } else {
+      newStr += ticketData.extras[extraArr[i]].description + ", ";
+    }
+  }
+  return newStr;
+}
+function upperCaseFirstLetter(ticketString){
+  let firstLetter = ticketString.charAt(0);
+  let upperCaseFirst = firstLetter.toUpperCase();
+  let restOfWord = ticketString.slice(1);
+  return upperCaseFirst + restOfWord;
+}
+
 
 // Do not change anything below this line.
 module.exports = {
