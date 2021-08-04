@@ -54,7 +54,29 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+    function calculateTicketPrice(ticketData, ticketInfo) {
+      let totalCost = 0;
+     
+      let ticketTypeInData = ["general","membership"];
+      let ticketEntrantTypeInData = ["child","adult","senior"];
+      let ticketExtrasInData = ["movie","education","terrace"];
+      let incorrectType = !ticketTypeInData.includes(ticketInfo.ticketType);
+      let incorrectEntrantType = !ticketEntrantTypeInData.includes(ticketInfo.entrantType);
+      for(let i = 0; i < ticketInfo.extras.length; i++) {
+        if (!ticketExtrasInData.includes(ticketInfo.extras[i])) {
+        return `Extra type '${ticketInfo.extras[i]}' cannot be found.`
+        } else if (ticketInfo.extras.length !== 0) {
+            extrasCost = ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType];
+            totalCost += extrasCost;
+        }
+      }
+      if(incorrectType) {
+        return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+      }
+      if(incorrectEntrantType) {
+        return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+      }
+    
 
 /**
  * purchaseTickets()
@@ -109,7 +131,41 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+    function purchaseTickets(ticketData, purchases) {
+      let total = 0;
+      let welcome = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+    
+    
+      for (let singlePurchase of purchases) {
+        let result = calculateTicketPrice(ticketData,singlePurchase);
+        if (typeof result === "string") {
+          return result;
+        } 
+        total += result;
+    
+        let entrant = singlePurchase.entrantType;  
+        let formattedEntrant = entrant.slice(0,1).toUpperCase() + entrant.slice(1) + " ";
+    
+        let formattedAdmission = ticketData[singlePurchase.ticketType].description + ": ";
+        let payment = (result/100).toFixed(2);
+        let detailedTicketInfo = `${formattedEntrant}${formattedAdmission}$${payment}`;
+    
+        if (singlePurchase.extras.length === 0) {
+          welcome += `${detailedTicketInfo}\n`;
+        } else {
+            let newArr = [];
+            for (let extra of singlePurchase.extras) {
+              finalExtra = ticketData.extras[extra].description;
+              newArr.push(finalExtra);
+            }  
+             welcome += `${detailedTicketInfo} (${newArr.join(", ")})\n`;
+          }
+    } 
+      let finalReceipt = (welcome +`-------------------------------------------\nTOTAL: $${(total/100).toFixed(2)}`);
+      return finalReceipt;
+      }
+      
+    
 
 // Do not change anything below this line.
 module.exports = {
