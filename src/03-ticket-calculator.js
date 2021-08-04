@@ -53,8 +53,38 @@ const exampleTicketData = require("../data/tickets");
     };
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
- */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+    */
+   
+    function calculateTicketPrice(ticketData, ticketInfo) {
+      // declare variable for ticketType && entrantType && priceInCents && extras
+    let type = ticketInfo.ticketType;
+    let entrant = ticketInfo.entrantType;
+    let price = 'priceInCents';
+    let extras = ticketData.extras;
+    
+      // declare variable for totalCost to ticketData[type][price][entrant]
+    let newArray = ['general', 'membership', 'adult', 'child', 'senior', 'movie', 'education', 'terrace']
+      // conditional checking if type, entrant exists
+      if (!newArray.includes(type)) return "Ticket type 'incorrect-type' cannot be found."
+      // conditional checking if entrant, entrant exists
+      if (!newArray.includes(entrant)) return "Entrant type 'incorrect-entrant' cannot be found."
+    
+      // iterate through ticketInfo.extras for error message
+      for (let extra of ticketInfo.extras) {
+        if (!newArray.includes(extra)) return "Extra type 'incorrect-extra' cannot be found."
+        
+      }
+    let totalCost = ticketData[type][price][entrant]
+    
+        // iterate through ticketInfo.extras
+      for (let extra of ticketInfo.extras) {
+        // add totalCost += [extra][price][entrant]
+        totalCost += extras[extra][price][entrant]
+    }
+      // return totalCost
+    return totalCost;
+     
+    }
 
 /**
  * purchaseTickets()
@@ -109,7 +139,49 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+// function purchaseTickets(ticketData, purchases) {}
+
+function capital(entrantType) {
+if (entrantType = entrantType.charAt(0).toUpperCase() + entrantType.slice(1)) return entrantType
+  }
+
+function purchaseTickets(ticketData, purchases) {
+  // declare empty string
+  let receipt = '';
+  // declare variable for totalCost to 0
+  let totalCost = 0;
+  // iterate through purchases array
+  for (ticketInfo of purchases) {
+    // declare variable  currentCost = calculateTicketPrice(ticketData, ticketInfo)
+    let currentCost = calculateTicketPrice(ticketData, ticketInfo);
+    // conditional statement checking datatype('string')
+    if (typeof currentCost === 'string') return currentCost
+    
+    // declare variable with helper function for entrantType
+    let entrantType = capital(ticketInfo.entrantType);
+    // redefine current cost dollars && 2 decimal places as a number
+    currentCost = Number((currentCost/100).toFixed(2))
+    // conditional statement checking if there are no extras
+    if (ticketInfo.extras.length === 0) {
+      receipt += `${entrantType} ${ticketData[ticketInfo.ticketType].description}: $${currentCost.toFixed(2)}\n`
+    } else {
+      //  declare empty array
+      let emptyArray = [];
+  // iterate through array of extras
+    for (let extra of ticketInfo.extras) {
+      emptyArray.push(ticketData.extras[extra].description)
+    }
+  // reassign empty string to ticketInfo.entrant ticketData.[ticketInfo.ticketType].description : $currentCost $ticketInfo.extras.toString() \n
+    receipt += `${entrantType} ${ticketData[ticketInfo.ticketType].description}: $${currentCost.toFixed(2)} (${emptyArray.join(', ')})\n`
+  }
+  // reassign totalCost to += currentCost
+  totalCost += currentCost
+  }
+  // declare variable receiptWords to Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n$receipt\n-------------------------------------------\nTOTAL: totalCost/100.toFixed(2)
+  let receiptMessage = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${receipt}-------------------------------------------\nTOTAL: $${totalCost.toFixed(2)}`
+  // return receiptWords
+    return receiptMessage;
+  }
 
 // Do not change anything below this line.
 module.exports = {
