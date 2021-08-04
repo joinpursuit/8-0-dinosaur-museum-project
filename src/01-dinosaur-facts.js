@@ -22,7 +22,20 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  const tallest = {};
+  if (dinosaurs.length === 0) {
+    return {};
+  }
+  let currentDino = dinosaurs[0];
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].lengthInMeters > currentDino.lengthInMeters) {
+      currentDino = dinosaurs[i];
+    }
+  }
+  tallest[currentDino.name] = currentDino.lengthInMeters * 3.281;
+  return tallest;
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +57,28 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  // output: to return "name:", ("pronunciation"); info, and mya
+  //output: use if statement to check if id exists, return string, else if id does not exist result equals error message
+  //input:
+
+  let emptyString = "";
+  if (id !== dinosaurs.dinosaurId) {
+    emptyString = "A dinosaur with an ID of 'incorrect-id' cannot be found.";
+  }
+
+  for (let i = 0; i < dinosaurs.length; i++) {
+    const dinosaur = dinosaurs[i];
+    if (dinosaur.dinosaurId === id) {
+      emptyString = `${dinosaur.name} (${dinosaur.pronunciation})\n${
+        dinosaur.info
+      } It lived in the ${dinosaur.period} period, over ${
+        dinosaur.mya[dinosaur.mya.length - 1]
+      } million years ago.`;
+    }
+  }
+  return emptyString;
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +105,55 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  //input: if the `mya` key is an array of one number, should allow for 1 MYA less than the amount
+  //       if the third argument is set, should replace the IDs with the value of the given key
+  //       should include dinosaurs with only one mya year
+  //       if the third argument is set, but to a key that doesn't return a value, should return the IDs
+  //output: should return the IDs of all dinosaurs that were alive approximately at the given time
+  //        should include dinosaurs with only one `mya` year
+  //        should return an empty array if the year does not match any
+  //Define your default value
+  //   let dinoId = [];
+
+  //   //Define your loop
+
+  let dino = [];
+  for (const i of dinosaurs) {
+    let max = i.mya[0];
+    let min = i.mya[1];
+
+    if (i.mya.length === 1) {
+      if (max === mya || max - 1 === mya) {
+        if (key in i) {
+          dino.push(i[key]);
+        } else {
+          dino.push(i.dinosaurId);
+        }
+      }
+    } else {
+      if (mya < +max && mya > +min) {
+        if (key in i) {
+          dino.push(i[key]);
+        } else {
+          dino.push(i.dinosaurId);
+        }
+      }
+    }
+  }
+return dino;
+}
+
+
+//   for (let i = 0; i < dinosaurs.length; i++) {
+//     const dinosaur = dinosaurs[i];
+//     if (dinosaur.includes(key) === mya && dinosaur.includes(key)) {
+//        dinoId.push(dinosaur[key])
+
+//   }
+// }
+// return dino
+// }
 
 module.exports = {
   getTallestDinosaur,
