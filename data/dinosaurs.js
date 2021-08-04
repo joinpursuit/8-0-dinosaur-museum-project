@@ -11,8 +11,7 @@ const dinosaurs = [
     info: "Allosaurus was an apex predator in the Late Jurassic in North America.",
   },
   {
-    dinosaurId: "GGvO1X9Zeh",
-    name: "Apatosaurus",
+    dinosaurId: "Apatosaurus",
     pronunciation: "ah-PAT-oh-sore-us",
     meaningOfName: "deceptive lizard",
     diet: "herbivorous",
