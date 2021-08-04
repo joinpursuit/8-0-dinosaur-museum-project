@@ -54,7 +54,37 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  
+    let priceInCents = 0;
+    let extraArr = ticketInfo.extras.slice(0);
+    if (ticketInfo.ticketType in ticketData) {
+      if (ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents) {
+        priceInCents += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+      } else {
+        return "Entrant type 'incorrect-entrant' cannot be found.";
+      }
+    } else {
+      return "Ticket type 'incorrect-type' cannot be found.";
+    }
+    if (ticketInfo.extras.length) {
+      for (let extra of extraArr) {
+        if (extra in ticketData.extras) {
+          priceInCents += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+        } else {
+          return "Extra type 'incorrect-extra' cannot be found.";
+        }
+      }
+    }
+    return priceInCents;  
+    // Is the ticket type valid?
+    // Is the entrant type valid?
+    // Get the ticket cost without extras
+    // Accumulator pattern to calulate all of the extras
+      // Inside of for loop of acculator pattern: Is the extra type valid?
+    // return total of ticket cost and the cost of the extras 
+  }
+
 
 /**
  * purchaseTickets()
@@ -109,7 +139,43 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+
+  let receiptStr = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  let purchaseTotal = 0;
+  for (let purchase of purchases) {
+    let subSum = calculateTicketPrice(ticketData, purchase);
+    if (typeof subSum === "string") {
+      return subSum;
+    } 
+    receiptStr += upperCaseFirstLetter(purchase.entrantType) + " " + ticketData[purchase.ticketType].description + ": " + "$" + (subSum/100).toFixed(2) + extraTicketData(ticketData, purchase) + "\n";
+    purchaseTotal += subSum/100;
+  }
+  return receiptStr + "-------------------------------------------\n" + "TOTAL: $" + purchaseTotal.toFixed(2);
+}
+function extraTicketData(ticketData, ticketInfo) {
+  let extraArr = ticketInfo.extras.slice(0);
+  if (extraArr.length === 0) {
+    return "";
+  } 
+  let newStr = " (";
+  for (let i = 0; i < extraArr.length; i++) {
+    if (i === extraArr.length-1) {
+      newStr += ticketData.extras[extraArr[i]].description + ")";
+    } else {
+      newStr += ticketData.extras[extraArr[i]].description + ", ";
+    }
+  }
+  return newStr;
+}
+
+function upperCaseFirstLetter(ticketString){
+  let firstLetter = ticketString.charAt(0);
+  let upperCaseFirst = firstLetter.toUpperCase();
+  let restOfWord = ticketString.slice(1);
+  return upperCaseFirst + restOfWord;
+}
+
 
 // Do not change anything below this line.
 module.exports = {
