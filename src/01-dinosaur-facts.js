@@ -22,7 +22,39 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+ function getTallestDinosaur(dinosaurs) {
+  //Declare a variable `tallest` and set it equal to the first dino/height `dinosaurs[0]`
+  let tallest = dinosaurs[0]
+
+  //Declare empty object `newObject`
+  let newObject = {}
+
+  if(dinosaurs.length){
+
+    //Iterate through array of dinosaurs `dinosaurs`
+    for (const dino of dinosaurs) {
+
+      //Compare `tallest.lengthInMeters` to/< `dinosaurs[i].lengthInMeters`-> (the current dinosaur)
+      if (tallest.lengthInMeters < dino.lengthInMeters) {
+
+        //if `dinosaurs[i].lengthInMeter` is taller reassgin tallest to `dinosaurs[i]`
+        tallest = dino
+      } 
+    }
+
+    //Declare variable `heightInFeet` = `tallest.heightInMeters` * 3.281
+    const lengthInFeet = tallest.lengthInMeters * 3.281
+
+    //ADD key `tallest.name` and value `heightInFeet` to `newObject`
+    newObject[tallest.name] = lengthInFeet
+  }
+
+  //return newObject
+  return newObject
+
+}
+
+//getTallestDinosaur(exampleDinosaurData)
 
 /**
  * getDinosaurDescription()
@@ -44,7 +76,37 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+ function getDinosaurDescription(dinosaurs, id) {
+  //Declare empty variable `foundDino`
+  let foundDino;
+
+  //iterate through `dinosaurs` array
+  for (const dino of dinosaurs) {
+    //Compare current `dino.dinosaurId` to/=== `id`
+    if (dino.dinosaurId === id) {
+      //if equal reassign `foundDino` to equal `dino`
+      foundDino = dino
+      //Break loop
+      break;
+    }
+  }
+
+  let dinoInfo;
+
+  if(!!foundDino) {
+    //Declare const variable `dinoInfo` equal to `${foundDino.name} (${foundDino.pronuncaition})\n${funodDino.info}. It liveed in the ${foundDino.period}, over ${foundDino.mya[foundDino.mya.length - 1]} million years ago.`
+    dinoInfo = `${foundDino.name} (${foundDino.pronunciation})\n${foundDino.info} It lived in the ${foundDino.period} period, over ${foundDino.mya[foundDino.mya.length - 1]} million years ago.`
+  } else {
+    dinoInfo = `A dinosaur with an ID of '${id}' cannot be found.`
+  }
+
+  //return dinoInfo
+  return dinoInfo
+
+}
+
+// getDinosaurDescription(exampleDinosaurData)
+
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +133,39 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+ function getDinosaursAliveMya(dinosaurs, mya, key) {
+  //Declare variable empty array `dinoArr`
+  let dinoArr = []
+  //iterate through `dinosaurs` array, each element `dino`
+  for (const dino of dinosaurs) {
+    //Check if `dino.mya.length` === 2, Compare `dino.mya[0]` to/>= `mya` and `dino.mya[1]` to/<= `mya`
+    if (dino.mya.length === 2 && dino.mya[0] >= mya && dino.mya[1] <= mya) {
+      //Is there a `key`
+      if(key) {
+        //if there is a `key` push `dino[key]` into `dinoArr`
+        dinoArr.push(dino[key])
+      } else {
+        //if there is no `key push `dino.dinosaurId` into `dinoArr` array
+        dinoArr.push(dino.dinosaurId)
+      }
+      //Check if `dino.mya[0]` === `mya or (`dino.mya[0]`)-1 === `mya
+    } else if (dino.mya[0] === mya || (dino.mya[0])-1 === mya) {
+      //Is there a `key`
+      if (key) {
+        //if there is a `key` push `dino[key]` into `dinoArr`
+        dinoArr.push(dino[key])
+      } else {
+        //if true push `dino.dinosaurId` into `dinoArr` array
+        dinoArr.push(dino.dinosaurId)
+      }
+
+    }
+
+  }
+
+  //return `dinoArr`
+  return dinoArr
+}
 
 module.exports = {
   getTallestDinosaur,
