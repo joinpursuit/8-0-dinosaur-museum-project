@@ -143,53 +143,43 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 // A nested accumulator to determine the extra cost total(Number)
 // and a summary(String) for the 
 // Format receipt with total and receipt summaries.
-// return receipt, 
+// return receipt
 
-function purchaseTickets(ticketData, purchases) {}
-/** 
-* helper func grabbind purchas tix 
-* return string of tix
-* @param {*} ticketData - obj of tix @param {*} ticketInfo - info about tix
-* @return {string} - formatted
-*/
-function formatted(ticketData, ticketInfo){
-  let newArr = ticketInfo.extras.slice(0);
-  let newStr = "";
-  if(newArrlength){
-    newStr += " (";
-    for(let i=0;i<newArr.length;i++){
-      if(i === newArr.length-1){
-        newStr += ticketData.extras[newArr[i]].description + ")";
-      }else newStr += ticketData.extras[newArr[i]].description + ", ";
-    }
+//function purchaseTickets(ticketData, purchases) {}
+
+function capitalize(entrantType){
+    if(entrantType = entrantType.charAt(0).toUpperCase() + entrantType.slice(1)) return entrantType;
   }
-  return newStr;
-  }
-/** helper func *///cap letter, returns string
-// not really certain how to get helper functo apply...problem with code, not reading test for last func anymore
-function upperCaseFirstLetter(str){
-  let firstLetter = str[0].toUpperCase();
-  let newArr = str.split("");
-  newArr.shift();
-  return firstLetter + newArr.join("");
-}
+
 function purchaseTickets(ticketData, purchases) {
-  let newStr = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"; // track purchases
-  let total = 0;                                               // track single tix
-
-  let subTotal;
-  for(let ticket of purchases){
-    subTotal = 0;
-    let check = calculateTicketPrice(ticketData, ticket);       // check using calctixprice func
-      if(typeof check === "number"){
-        subTotal = check;
-        newStr += `${upperCaseFirstLetter(ticket.entrantType)} ${ticketData[ticket.ticketType].description}: $${(subTotal/100).toFixed(2)}${formatted(ticketData, ticket)}\n`;
-        total += subTotal/100;
+  // set empty str
+  let receipt = '';
+  // set variable for total to 0
+  let total = 0;
+  //loop thru purchases
+  for(ticketInfo of purchases){     //set cost variable= tixdata, tixinfo;
+    let curr = calculateTicketPrice(ticketData, ticketInfo);
+    if(typeof curr === "string") return curr;
+    //now try using helper func again
+    let entrantType = capitalize(ticketInfo.entrantType);
+    //format the cost dollars use .toFixed(2)) for decimal place
+    curr = Number((curr/100).toFixed(2))
+    if(ticketInfo.extras.length === 0){
+      receipt += `${entrantType} ${ticketData[ticketInfo.ticketType].description}: $${curr.toFixed(2)}\n`
+    }else{
+      let elem = [];  // set empty arr, loop thru extras
+      for(let extra of ticketInfo.extras){
+        elem.push(ticketData.extras[extra].description);
       }
-      else return check;  
-    }                                      // return error
-      return newStr += "-------------------------------------------\nTOTAL: $" +total.toFixed(2); // return receipt
-}
+      //set empty elem to string that contains tix data, tix info, tix type; join
+      receipt += `${entrantType} ${ticketData[ticketInfo.ticketType].description}: $${curr.toFixed(2)} (${elem.join(', ')})\n`
+    }
+    total += curr;
+    }
+    //now print a new receipt containing message "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nTOTAL: calc
+    let newReceipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${receipt}-------------------------------------------\nTOTAL: $${total.toFixed(2)}`
+  return newReceipt;
+  }
 
 // Do not change anything below this line.
 module.exports = {
