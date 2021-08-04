@@ -122,7 +122,7 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
  function range (dinosaurs, mya) {  
-  // loop through an object in dinosaurs array 
+  // loop through numbers in dinosaurs.mya array
   for (let i = dinosaurs.mya[0] ; i >= dinosaurs.mya[dinosaurs.mya.length - 1]; i--) {
     // if dinosaur was alive `mya`
     if (i === mya) {
@@ -132,26 +132,29 @@ function getDinosaurDescription(dinosaurs, id) {
       return true;
     }
   }
-  return false;
+  return false; // range([68, 66], 66) //> true
 }
+
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   // input: `dinosaurs`, `mya` and `key` are special variable for that will hold the value of the argument when the function is invoked
   //        `mya` is a number in an array and is equivalent to accessing dinosaur.mya[]
-  //        `key` is a string if "name" return dinosaur name otherwise return dinosaur Id 
+  //        `key` is a string if key is name in dinosaur return dinosaur name otherwise return dinosaur Id 
   // output: return an array of strings if dinosaurs lived `mya` 
 
   // declare a variable `alive` and assign it an empty arr
   let alive = [];
-
+  
   // loop through each objects in dinosaurs array
-  for (let i = 0; i < dinosaurs.length; i++ ) {
+  for (let i = 0; i < dinosaurs.length; i++) {
+    const invokeRange = range(dinosaurs[i], mya)
+
     // if a dinosaur is alive `mya` and if key is stricly equal to "name"  
-    if (range(dinosaurs[i], mya)  && key === "name") {
+    if (invokeRange && key === 'name') {
       // push dinosaur name into alive
       alive.push(dinosaurs[i].name);
 
       // if a dinosaur is alive `mya` 
-    } else if (range(dinosaurs[i], mya) ) {
+    } else if (invokeRange) {
       // push dinosaur Id into alive
       alive.push(dinosaurs[i].dinosaurId);
     }

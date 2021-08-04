@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,72 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+// create a helper function match the entry type to the keys in priceInCents to entry type
+function matchPriceWithVisitorType (priceInCents, ticketInfo) {
+  let cost = 0;
+  for (const value in priceInCents) {
+    if (value === ticketInfo.entrantType) {
+      cost += priceInCents[value]
+    };
+  };
+  return cost;
+}
+
+// create a helper function to match the key in ticketData.extra to key in ticketInfo.extras
+function extras (extras, ticketData, ticketInfo) {
+  for (const key in ticketData.extras) {
+    const invoke = matchPriceWithVisitorType(ticketData.extras[key]['priceInCents'], ticketInfo)
+
+    if (key === extras) {
+      // return invoke to match the entry type to the keys in priceInCents to entry type
+      return invoke;
+    };
+  };
+}
+
+function calculateTicketPrice(ticketData, ticketInfo) {
+  // edge case: if ticket type is something other than `general` or `membership`
+  if (ticketInfo.ticketType !== 'general' && ticketInfo.ticketType !== 'membership') {
+    // return an error message
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  };
+  // edge case: if the entrant type if someone other than `child`, `adult` or `senior`
+  if (ticketInfo.entrantType !== 'child' && ticketInfo.entrantType !== 'adult' && ticketInfo.entrantType !== 'senior') {
+    // return an error message
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  };
+
+  // declare a variable totalCost that will give you the final total depending on `ticketType`, `entrantType` and `extras`
+  let totalCost = 0;
+  
+  // loop through keys in ticketData ie `general`, `membership` and `extras`
+  for (const property in ticketData) {
+    // declare a variable to store the arguments needed to invoke the helper function
+    const invokeMatchPrice = matchPriceWithVisitorType(ticketData[property]['priceInCents'], ticketInfo)
+  
+    // if ticketType is strictly equal to ticketData keys ie `general` or `membership` since it will never be equal to `extra`
+    if (property === ticketInfo.ticketType) {
+      //  totalCost will be reassigned to the return value of the invoked helper function
+      totalCost += invokeMatchPrice;
+    }; 
+  };
+  
+  // loop through strings in extras arr
+  for (let i = 0; i < ticketInfo.extras.length; i++) {
+    // declare a variable to store the arguements needed to invoke the helper function
+    const invokeExtras = extras(ticketInfo.extras[i], ticketData, ticketInfo);
+
+    // edge case: if extras include anything other than 'movie', 'education' and 'terrace'
+    if (ticketInfo.extras[i] !== 'movie' && ticketInfo.extras[i] !== 'education' && ticketInfo.extras[i] !== 'terrace') {
+      // return an error message
+      return `Extra type '${ticketInfo.extras}' cannot be found.`;
+    };
+    //  totalCost will be reassigned to the return value of the invoked helper function
+    totalCost += invokeExtras;
+  }
+
+  return totalCost;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +175,97 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+// create a helper function to convert price in cents to price in dollars and format it to look like $28.90 
+function formatCost (money) {
+  return '$' + (money/100).toFixed(2);
+}
+
+// create a helper function to capitalize each word in a given string
+function capitalize (string) {
+  // access first char in my name .toUpperCase() && use string method slice
+  return string[0].toUpperCase() + string.slice(1);
+}
+
+function extraTypes (ticketData, purchaseExtras) {
+  let description = [];
+  // loop through arr of str
+  for (const purchase of purchaseExtras) {
+    // loop through ticketData
+    for (const key in ticketData.extras) {
+      if (purchase === key) {
+        // push description of purchase extras
+        description.push(ticketData.extras[key]['description']);
+      };
+    };
+  };
+  return description.join(', ');
+}
+
+function purchaseTickets(ticketData, purchases) {
+
+  let totalInCents = 0
+  let ticket = [];
+  const indent = `\n`;
+  
+  // loop through objects in purchases arr
+  for (let i = 0; i < purchases.length; i++) {
+
+    // invoking the function above to get the price one ticket at a time
+    const centsOrError = calculateTicketPrice(ticketData, purchases[i]);
+    
+    // if the result of invoking the function is an error message 
+    if (typeof centsOrError === 'string') {
+      // return the error message
+      return centsOrError;
+    };
+    
+    // keep a running total of tickets for each iteration 
+    totalInCents += centsOrError;
+    
+    const vistorType = capitalize(purchases[i].entrantType);
+    const admissionType = capitalize(purchases[i].ticketType);
+    
+    // every ticket but the last one with no extras 
+    if (i < purchases.length - 1 && purchases[i].extras.length === 0) {
+      // push the body of the receipt to ticket
+      ticket.push(`${vistorType} ${admissionType} Admission: ${formatCost(centsOrError)}${indent}`);
+      
+      // last tickets with no extras 
+    } else if (i === purchases.length - 1 && purchases[i].extras.length === 0) {
+      // push the body of the receipt to ticket
+      ticket.push(`${vistorType} ${admissionType} Admission: ${formatCost(centsOrError)}`);
+    };
+    
+    // purchases[i].extras is an array of strings and by invoking the function I want to format each extra 
+    const formatExtras = extraTypes(ticketData, purchases[i].extras);
+    
+    // every ticket but the last one with extras 
+    if (i < purchases.length - 1 && purchases[i].extras.length > 0) {
+      // push the body of the receipt to ticket
+      ticket.push(`${vistorType} ${admissionType} Admission: ${formatCost(centsOrError)} (${formatExtras})${indent}`);
+      // last tickets with extras 
+    } else if (i === purchases.length - 1 && purchases[i].extras.length > 0) {
+      // push the body of the receipt to ticket
+      ticket.push(`${vistorType} ${admissionType} Admission: ${formatCost(centsOrError)} (${formatExtras})`);
+    };
+  }
+  
+  const thankYou = `Thank you for visiting the Dinosaur Museum!`;
+  const dash = `\n-------------------------------------------\n`;
+  const total = `TOTAL: `;
+  
+  const receipt = thankYou + dash + ticket.join('') + dash + total + formatCost(totalInCents);
+  return receipt;
+}
+// "Thank you for visiting the Dinosaur Museum!
+// \n-------------------------------------------\n
+// Adult General Admission: $50.00 (Movie Access, Terrace Access)\n
+// Senior General Admission: $35.00 (Terrace Access)\n
+// Child General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n
+// Child General Admission: $45.00 (Education Access, Movie Access, Terrace Access)
+// \n-------------------------------------------\n
+// TOTAL: $175.00";
 
 // Do not change anything below this line.
 module.exports = {
