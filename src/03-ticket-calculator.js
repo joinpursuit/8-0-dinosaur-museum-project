@@ -54,7 +54,37 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+
+    // returning a number which is cost of the ticket cents
+    // loop through tickets
+    // check ticket.description === 
+function calculateTicketPrice(tickets, ticketInfo) {
+  let total = 0;
+  let ticksType = ticketInfo.ticketType
+  if(tickets.hasOwnProperty(ticketInfo.ticketType)){
+    let costType = tickets[ticksType].priceInCents
+    let entrant = ticketInfo.entrantType
+    if(costType.hasOwnProperty(entrant)){
+      total += costType[entrant]
+    } else {
+      return `Entrant type '${entrant}' cannot be found.`
+    }
+  } else {
+    return `Ticket type '${ticksType}' cannot be found.`
+  }
+  let extraTicks = ticketInfo.extras
+    if(ticketInfo.extras.length > 0){
+      let ticketsPlus = tickets.extras
+      for (let extraTick of extraTicks){
+        if(ticketsPlus.hasOwnProperty(extraTick)){
+          total += ticketsPlus[extraTick].priceInCents[ticketInfo.entrantType]
+        } else {
+          return `Extra type '${ticketInfo.extras}' cannot be found.`
+        }
+      }
+    }
+    return total;
+    }
 
 /**
  * purchaseTickets()
@@ -109,7 +139,71 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+//let receiptLines = ""
+//let receiptX = ""
+//Thank you for visiting the Dinosaur Museum!
+//"\n-------------------------------------------\n"
+//purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1) + " " +
+//if tickets.hasOwnProperty(purchase.ticketType)
+//let receiptAdd = tickets[purchase.ticketType].description
+//+ ": " + "$" +
+//let centsTotal = calculateTicketPrice(tickets, purchase) -> 5000
+// (centsTotal/100).toFixed(2) + " (" +
+//let extraTicks = purchase.extras
+//if(purchase.extras.length > 0)
+//let ticketsPlus = tickets.extras
+//for (let i = 0; i < extraTicks.length; i++){
+// let extraTick = extraTicks[i]
+//if(ticketsPlus.hasOwnProperty(extraTick))
+//if (i = extraTicks.length -1){
+//receiptX += ticketsPlus[extraTicks].description + ")"}
+//else{receiptX += ticketsPlus[extraTicks].description + ", "}
+//receiptLines += line 187 to line 201 + "\n"
+//"-------------------------------------------\nTOTAL: $" +
+//total += calculatedValue(tickets, purchase)
+// + finalTotal
+
+function purchaseTickets(tickets, purchases) {
+  let finalTotal = 0;
+  let total = 0;
+  let receiptLines = "";
+  let receiptAdd = "";
+  let receiptX = "";
+  for (let purchase of purchases){
+    if(typeof(calculateTicketPrice(tickets, purchase)) === 'string'){
+      return calculateTicketPrice(tickets, purchase)
+    }
+    let capEntrant = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1) + " "
+    if (tickets.hasOwnProperty(purchase.ticketType)){
+      receiptAdd = tickets[purchase.ticketType].description + ": " + "$"
+    }
+    let centsTotal = calculateTicketPrice(tickets, purchase)
+    let extraTicks = purchase.extras
+    if(purchase.extras.length > 0){
+      centsTotal = (centsTotal/100).toFixed(2)
+      let ticketsPlus = tickets.extras
+      for (let i = 0; i < extraTicks.length; i++){
+        let extraTick = extraTicks[i]
+        if(ticketsPlus.hasOwnProperty(extraTick)){
+          if (i === extraTicks.length - 1){
+            receiptX += ticketsPlus[extraTick].description + ")\n"
+          }if(i !== extraTicks.length - 1){
+            receiptX += ticketsPlus[extraTick].description + ", "
+          }
+        }
+      }
+      receiptX = " (" + receiptX
+    }else{
+      centsTotal = (centsTotal/100).toFixed(2) + "\n"
+    }
+    total += calculateTicketPrice(tickets, purchase)
+    receiptLines += (capEntrant + receiptAdd + centsTotal + receiptX)
+    receiptX = "";
+  }
+  finalTotal = (total/100).toFixed(2)
+  return "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n" + receiptLines
+  + "-------------------------------------------\nTOTAL: $" + finalTotal;
+}
 
 // Do not change anything below this line.
 module.exports = {
