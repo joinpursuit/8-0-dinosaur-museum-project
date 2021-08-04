@@ -168,10 +168,6 @@ function purchaseTickets(ticketData, purchases) {
     arrayExtra = []; //["movie", "terrace"]
 
     for(let extra of purchase.extras){ //loop through purchase -> ["movie", "terrace"]
-   
-      // if (arrayExtra === 1){
-      //   finalReceiptStr += " ("+ ticketData.extras[extra].description + ")";
-      // } 
 
       if (purchase.extras.length > 1){
         arrayExtra.push(ticketData.extras[extra].description);
