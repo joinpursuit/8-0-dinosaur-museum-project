@@ -171,4 +171,4 @@ const exampleTicketData = require("../data/tickets");
 module.exports = {
   calculateTicketPrice,
   purchaseTickets,
-};
+}
