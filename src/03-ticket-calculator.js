@@ -18,7 +18,8 @@ const exampleTicketData = require("../data/tickets");
     extras: ["movie"],
   };
  *
- * If either the `ticketInfo.ticketType` value or `ticketInfo.entrantType` value is incorrect, or any of the values inside of the `ticketInfo.extras` key is incorrect, an error message should be returned.
+ * If either the `ticketInfo.ticketType` value or `ticketInfo.entrantType` value is incorrect, or any of the values inside of the 
+ * `ticketInfo.extras` key is incorrect, an error message should be returned.
  *
  * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
  * @param {Object} ticketInfo - An object representing data for a single ticket.
@@ -54,7 +55,31 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let finalPrice = 0;
+  let ticketTypeObj = ticketData[ticketInfo.ticketType];
+  let typeOfTicket = ticketInfo.ticketType;
+  let ticketAge = ticketInfo.entrantType; 
+  let ticketBonus = ticketInfo.extras;
+  if(ticketTypeObj){
+    if(ticketAge in ticketTypeObj.priceInCents){
+      finalPrice += ticketTypeObj.priceInCents[ticketAge];
+    }
+      else return `Entrant type '${ticketAge}' cannot be found.`;
+    }
+      else return `Ticket type '${typeOfTicket}' cannot be found.`;
+
+      if (ticketBonus.length){
+        let objBonus = ticketBonus.slice(0)
+        for(let bonus of objBonus){
+          if(bonus in ticketData.extras){
+            finalPrice += ticketData.extras[bonus].priceInCents[ticketAge];
+          }
+          else return `Extra type '${bonus}' cannot be found.`;
+        }
+    }
+    return finalPrice;
+}
 
 /**
  * purchaseTickets()
@@ -109,8 +134,29 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
-
+    function purchaseTickets(ticketData, purchases){
+      let price = 0;
+      let goodBye = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+      let addtionalPrice = 0;
+      for(let purchase of purchases){
+        let purchaseTotal = calculateTicketPrice(ticketData, purchase);
+        if(typeof purchaseTotal === "string"){
+           return purchaseTotal;
+        }
+        let description = [];
+        for(let extra of purchase.extras){
+          description.push(ticketData.extras[extra].description);
+        }
+        if(purchase.extras.length){
+        description = ` (${description.join(", ")})`
+      }
+        addtionalPrice = purchaseTotal;
+        goodBye += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(addtionalPrice/100).toFixed(2)}${description}\n`;
+        price += addtionalPrice/100;  
+      }
+      return goodBye += "-------------------------------------------\nTOTAL: $" + price.toFixed(2);
+    }
+    
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
