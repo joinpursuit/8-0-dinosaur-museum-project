@@ -11,107 +11,90 @@ const exampleTicketData = require("../data/tickets");
 /**
  * calculateTicketPrice()
  * ---------------------
- * Returns the ticket price based on the ticket information supplied to the function. The `ticketInfo` will be in the following shape. See below for more details on each key.
- * const ticketInfo = {
+ * Returns the ticket price based on the ticket information supplied to the function. The `ticket` will be in the following shape. See below for more details on each key.
+ * const ticket = {
     ticketType: "general",
     entrantType: "child",
     extras: ["movie"],
   };
  *
- * If either the `ticketInfo.ticketType` value or `ticketInfo.entrantType` value is incorrect, or any of the values inside of the `ticketInfo.extras` key is incorrect, an error message should be returned.
+ * If either the `ticket.ticketType` value or `ticket.entrantType` value is incorrect, or any of the values inside of the `ticket.extras` key is incorrect, an error message should be returned.
  *
  * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
- * @param {Object} ticketInfo - An object representing data for a single ticket.
- * @param {string} ticketInfo.ticketType - Represents the type of ticket. Could be any string except the value "extras".
- * @param {string} ticketInfo.entrantType - Represents the type of entrant. Prices change depending on the entrant.
- * @param {string[]} ticketInfo.extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
+ * @param {Object} ticketType - An object representing data for a single ticket.
+ * @param {string} ticket.ticketType - Represents the type of ticket. Could be any string except the value "extras".
+ * @param {string} ticket.entrantType - Represents the type of entrant. Prices change depending on the entrant.
+ * @param {string[]} ticket.extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
  * @returns {number} The cost of the ticket in cents.
  *
  * EXAMPLE:
- *  const ticketInfo = {
+ *  const ticket = {
       ticketType: "general",
       entrantType: "adult",
       extras: [],
     };
-    calculateTicketPrice(tickets, ticketInfo);
+    calculateTicketPrice(tickets, ticket);
     //> 3000
  *  
  * EXAMPLE:
- *  const ticketInfo = {
+ *  const ticket = {
       ticketType: "membership",
       entrantType: "child",
       extras: ["movie"],
     };
-    calculateTicketPrice(tickets, ticketInfo);
+    calculateTicketPrice(tickets, ticket);
     //> 2500
 
  * EXAMPLE:
- *  const ticketInfo = {
+ *  const ticket = {
       ticketType: "general",
       entrantType: "kid", // Incorrect
       extras: ["movie"],
     };
-    calculateTicketPrice(tickets, ticketInfo);
+    calculateTicketPrice(tickets, ticket);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {
+
+    // rename parameters if needed (e.g. from ticketInfo to ticket)
+function calculateTicketPrice(ticketData, ticket) {
   // 1. Default value and output
-  let result = 0
-  let error = "Ticket type 'incorrect-type' cannot be found."
-  let dataTickets = Object.keys(ticketData)
-  let dataEntrants = Object.keys(ticketData.general.priceInCents)
-  let dataExtras = Object.keys(ticketData.extras)
-  let ticket = ticketInfo.ticketType
-  let entrant = ticketInfo.entrantType
-  let extraInfo = ticketInfo.extras
 
-//ERRORS
-//1. Default Value and Output
-  if (ticket === undefined || typeof ticket !== 'string' || !dataTickets.includes(ticket)) {
-    return error 
+//USE DESTRUCTURING INSTEAD 
+  const [ticketType, entrantType, extraInfo] = [ticket.ticketType, ticket.entrantType, ticket.extras]
+
+  //ERROS
+  // This next line is called walking the object. (it's more dynamic)
+  if (ticketData[ticketType] === undefined) { //|| typeof ticketType !== 'string') {
+    return `Ticket type '${ticketType}' cannot be found.`
+  }   
+
+  if (ticketData[ticketType].priceInCents[entrantType] === undefined) {
+    return `Entrant type '${entrantType}' cannot be found.`
   }
 
-  if (entrant === undefined || typeof entrant !== 'string' || !dataEntrants.includes(entrant)) {
-    error = "Entrant type 'incorrect-entrant' cannot be found." 
-    return error
-  }
 
-  if (extraInfo === undefined || typeof extraInfo !== 'object') {
-    error = "Extra type 'incorrect-extra' cannot be found." 
-      return error
-  }
+  // GENERAL/MEMBERSHIP ADMIN
+  let result = ticketData[ticketType].priceInCents[entrantType]
 
-// EXTRA ERRORS
-//1. Default Value and Output
-//2. Define the loop and accumulate 
-  if (extraInfo.length) {
-    for (let extra of extraInfo) {
-      if (typeof extra !== 'string') {
-        error = "Extra type 'incorrect-extra' cannot be found." 
-        return error
-      }
-      if (!dataExtras.includes(extra)) {
-        error = "Extra type 'incorrect-extra' cannot be found." 
-        return error
-      }
-    } 
-  }
-    
-// GENERAL/MEMBERSHIP ADMIN
-  let ticketCost = ticketData[ticket].priceInCents
-  result = ticketCost[entrant]
 
-//2. Define the loop and accumulate  
-// ADMIN WITH EXTRAS
-  if (extraInfo.length) {
-      for (let extra of extraInfo) {
-          let extraCost = ticketData.extras[extra].priceInCents
-          result += extraCost[entrant]
-      } 
+//2. Define the loop and accumulate (extras)
+for (let extra of extraInfo) {
+    if (ticketData.extras[extra] === undefined) {
+      return `Extra type '${extra}' cannot be found.`
+    } else { 
+      // NOTE: combine to get one line code vs declare new variables - or not production app/level code) 
+      // Though it's easier to read, when it's broken down 
+      result += ticketData.extras[extra].priceInCents[entrantType]
+    }
+
   }
 
   return result
 }
+
+// To debug, call - 
+// const ticket = {...etc.}
+// calculateTicketPrice(exampleTicketData, ticket)
 
 /**
  * purchaseTickets()
@@ -166,54 +149,64 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
+//CREATE JSDoc comments for the Helper Functions
 
-// Helper Function
+// Helper Functions
 function capitalize (element) {
-  return element[0].toUpperCase() + element.slice(1)
+  return element[0].toUpperCase() + element.slice(1).toLowerCase()
 }
+
+function formatPrice(number) {
+  return `$${(number/100).toFixed(2)}`
+}
+
+function addExtrasString(ticketData, extraInfo) {
+  let receipt = ""
+  let newArray = [];
+  if (extraInfo.length) {
+    for (let info of extraInfo) {
+      newArray.push(ticketData.extras[info].description)
+    }
+    receipt += `(${newArray.join(", ")})`
+    newArray = [] 
+  }
+  return receipt  
+}
+
 
 function purchaseTickets(ticketData, purchases) {
   //1. Default value and output
   let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
   let total = 0
-  let ticketPrice = 0
-  let newArray = []
 
   // 2. Define the loop and Accumulate 
-  // Each purchase has to be printed out in the receipt in a separate line item
-  for (let purchase of purchases) {
-    let priceFunction = calculateTicketPrice(ticketData, purchase)
-    //ERRORS
-    if (typeof priceFunction === 'string') {
-      return priceFunction
+  // Each ticket has to be printed out in the receipt in a separate line item
+  for (let ticket of purchases) {
+    let price = calculateTicketPrice(ticketData, ticket)
+    
+  //ERRORS
+    if (typeof price === 'string') {
+      return price
     }
-  //Add Entrant
-    let newEntrant = capitalize(purchase.entrantType)
-    receipt += newEntrant + " "
+  //Add Entrant, ticket type, description, price and extra info, if any
+    let newEntrant = capitalize(ticket.entrantType)
+    let newTicket = ticketData[ticket.ticketType].description    
 
-  //Add Ticket type and price
-    let type = purchase.ticketType
-    let newTicket = ticketData[type].description
-    receipt += newTicket + ": "
-    total += priceFunction/100
-    ticketPrice = priceFunction/100
-    if (!purchase.extras.length) {
-        receipt += "$" + ticketPrice.toFixed(2) + "\n"
+    if (!ticket.extras.length) {
+      // DRY Don't repeat yourself 
+      // WET write everything twice (it's fine to write a logic twice ) 
+      // anything more, put it in helper functions 
+      // Example - create a Helper function for formatting things and other logic
+      receipt += `${newEntrant} ${newTicket}: ${formatPrice(price)}\n`
     } else {
-        receipt += "$" + ticketPrice.toFixed(2) + " "
+      receipt += `${newEntrant} ${newTicket}: ${formatPrice(price)} ${addExtrasString(ticketData, ticket.extras)}\n`
     }
-    //Add extra info
-    if (purchase.extras.length) {
-        for (let info of purchase.extras) {
-            let extraInfo = ticketData.extras[info].description
-            newArray.push(extraInfo)
-        }
-        receipt += `(${newArray.join(", ")})\n` 
-        newArray = [] 
-    }
+    
+    total += price
+    
   }
 
-  receipt += "-------------------------------------------\n" + "TOTAL: $" + total.toFixed(2)
+  receipt += `-------------------------------------------\nTOTAL: ${formatPrice(total)}`
   
   return receipt
 
