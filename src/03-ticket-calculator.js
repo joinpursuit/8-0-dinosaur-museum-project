@@ -18,12 +18,12 @@ const exampleTicketData = require("../data/tickets");
     extras: ["movie"],
   };
  *
- * If either the `ticketInfo.ticketType` value or `ticketInfo.entrantType` value is incorrect, or any of the values inside of the `ticketInfo.extras` key is incorrect, an error message should be returned.
+ * If either the `ticksType` value or `entrant` value is incorrect, or any of the values inside of the `ticketInfo.extras` key is incorrect, an error message should be returned.
  *
  * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
  * @param {Object} ticketInfo - An object representing data for a single ticket.
- * @param {string} ticketInfo.ticketType - Represents the type of ticket. Could be any string except the value "extras".
- * @param {string} ticketInfo.entrantType - Represents the type of entrant. Prices change depending on the entrant.
+ * @param {string} ticksType - Represents the type of ticket. Could be any string except the value "extras".
+ * @param {string} entrant - Represents the type of entrant. Prices change depending on the entrant.
  * @param {string[]} ticketInfo.extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
  * @returns {number} The cost of the ticket in cents.
  *
@@ -54,7 +54,36 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+    function calculateTicketPrice(tickets, ticketInfo) {
+
+      let total = 0;
+      
+      let ticksType = ticketInfo.ticketType
+      if(tickets.hasOwnProperty(ticksType)){
+        let costType = tickets[ticksType].priceInCents
+        let entrant = ticketInfo.entrantType
+        if(costType.hasOwnProperty(entrant)){
+          total += costType[entrant]
+        } else{
+          return `Entrant type '${entrant}' cannot be found.`
+        }
+      } else{
+        return `Ticket type '${ticksType}' cannot be found.`
+      }
+
+      let extraTicks = ticketInfo.extras
+      if(extraTicks.length > 0){
+        let ticketsPlus = tickets.extras
+        for (let extraTick of extraTicks){
+          if(ticketsPlus.hasOwnProperty(extraTick)){
+            total += ticketsPlus[extraTick].priceInCents[ticketInfo.entrantType]  
+          } else{
+            return `Extra type '${ticketInfo.extras}' cannot be found.`
+          }
+        }
+      }
+    return total;
+    }
 
 /**
  * purchaseTickets()
@@ -109,7 +138,89 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+// if the return value from the previous function is not a number but is a string then the return will be the value from the previous function
+
+// ticketData = tickets
+function purchaseTickets(tickets, purchases) {
+
+  let finalTotal = 0;
+  let total = 0;
+  let receiptLines = "";
+  let receiptAdd = "";
+  let receiptX = "";
+
+  for (let purchase of purchases){
+
+    if(typeof(calculateTicketPrice(tickets, purchase)) === 'string'){
+      return calculateTicketPrice(tickets, purchase)
+    }
+
+    let capEntrant = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1) + " "
+   
+    if (tickets.hasOwnProperty(purchase.ticketType)){
+      receiptAdd = tickets[purchase.ticketType].description + ": " + "$"
+    }
+    
+    let centsTotal = calculateTicketPrice(tickets, purchase)
+    let extraTicks = purchase.extras
+   
+    if(purchase.extras.length > 0){
+      centsTotal = (centsTotal/100).toFixed(2)
+      let ticketsPlus = tickets.extras
+      for (let i = 0; i < extraTicks.length; i++){
+        let extraTick = extraTicks[i]
+        if(ticketsPlus.hasOwnProperty(extraTick)){
+          if (i === extraTicks.length - 1){
+            receiptX += ticketsPlus[extraTick].description + ")\n"
+          }if(i !== extraTicks.length - 1){
+            receiptX += ticketsPlus[extraTick].description + ", "
+          }
+        }
+      }
+      
+      receiptX = " (" + receiptX
+    
+    }else{
+      centsTotal = (centsTotal/100).toFixed(2) + "\n"
+    }
+    
+    total += calculateTicketPrice(tickets, purchase)
+    receiptLines += (capEntrant + receiptAdd + centsTotal + receiptX)
+    receiptX = "";
+  }
+
+  finalTotal = (total/100).toFixed(2)
+  
+  return "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n" + receiptLines 
+  + "-------------------------------------------\nTOTAL: $" + finalTotal;
+}
+//let receiptLines = ""
+//let receiptX = ""
+//Thank you for visiting the Dinosaur Museum!
+//"\n-------------------------------------------\n"
+//purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1) + " " +
+//if tickets.hasOwnProperty(purchase.ticketType)
+//let receiptAdd = tickets[purchase.ticketType].description
+//+ ": " + "$" +
+//let centsTotal = calculateTicketPrice(tickets, purchase) -> 5000
+// (centsTotal/100).toFixed(2) + " (" +
+//let extraTicks = purchase.extras
+//if(purchase.extras.length > 0)
+//let ticketsPlus = tickets.extras
+//for (let i = 0; i < extraTicks.length; i++){
+// let extraTick = extraTicks[i]
+//if(ticketsPlus.hasOwnProperty(extraTick))
+//if (i = extraTicks.length -1){
+//receiptX += ticketsPlus[extraTicks].description + ")"}
+//else{receiptX += ticketsPlus[extraTicks].description + ", "}
+//receiptLines += line 187 to line 201 + "\n"
+//"-------------------------------------------\nTOTAL: $" +
+//total += caluculatedValue(tickets, purchase)
+// + finalTotal
+
+//   return "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
+// }
 
 // Do not change anything below this line.
 module.exports = {
