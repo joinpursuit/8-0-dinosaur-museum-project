@@ -164,13 +164,13 @@ const exampleTicketData = require("../data/tickets");
       let finalReceipt = (welcome +`-------------------------------------------\nTOTAL: $${(total/100).toFixed(2)}`);
       return finalReceipt;
       }
+    }
+    
       
     
 
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
-  purchaseTickets, 
- };
-
- 
+  purchaseTickets,
+}
