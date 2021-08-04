@@ -73,8 +73,13 @@ function getDinosaurDescription(dinosaurs, id) {
       let period = dinosaurs[i].period;
       let mya = dinosaurs[i].mya;
       let info = dinosaurs[i].info;
-
-      return name.trim() + " " + "(" +pronunciation + ")" + "\n" + " " + info + " It lived in the " + period + " period, over " + mya+ " million years ago.";
+      
+      
+      if(dinosaurs[i].mya.length > 1){
+        return `${name} (${pronunciation})\n${info} It lived in the ${period} period, over ${mya[1]} million years ago.` 
+      }
+    
+      return `${name} (${pronunciation})\n${info} It lived in the ${period} period, over ${mya[0]} million years ago.` 
     }
   }
       return `A dinosaur with an ID of '${id}' cannot be found.`
