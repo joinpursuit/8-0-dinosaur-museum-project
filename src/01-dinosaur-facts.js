@@ -50,15 +50,15 @@ function getTallestDinosaur(dinosaurs) {
     if (dino.lengthInMeters >
       currentDino.lengthInMeters) {
         currentDino = dino;
-        
-        // tallestDino[currentDino.name] =
-        //   currentDino.lengthInMeters;
       }
     }
     tallestDino[currentDino.name] = convertToFeet(currentDino.lengthInMeters);
     return tallestDino; //tallestDino.name: .length
   }
-  getTallestDinosaur(exampleDinosaurData);
+  
+  //getTallestDinosaur(exampleDinosaurData);
+  // tallestDino[currentDino.name] =
+  //   currentDino.lengthInMeters;
   
   // if (dinosaurs.length === id) {
   //   return `A dinosaur with an ID of '${id}' cannot be found.`;
@@ -182,20 +182,40 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   // What is our input? An dinosaurs array with several keys
   //
   // Looping through the inputted array: use a for..of loop
-  let newArr = [];
-  for (let dino of dinosaurs) {
-    if (dino.mya[0] === mya || (dino.mya[0] - (dino.mya.length-1) === mya)) {
-      if (dino.includes(key)) {
-        newArr.push(dino[key]);
-      } else if ((dino.mya[0] === mya) || (dino.mya[0] - 1 === mya)){
-        newArr.push(dino.dinosaursId);
+
+  //   //determine input - output
+    let newArr = [];
+    //define loop
+    //iterate through dinosaurs arr
+    for (let dino of dinosaurs) {
+      if (key) {
+        if (
+          dino.mya[0] === mya ||
+          dino.mya[0] - 1 === mya ||
+          dino.mya[dino.mya.length - 1] === mya
+          ) {
+          //push dino id into arr if it meets condition. Repeat to clear each error.
+          newArr.push(dino[key]);
+        } else if (dino.mya[0] >= mya && dino.mya[dino.mya.length - 1] <= mya) {
+          newArr.push(dino.key);
+        }
+      } else if (!key) {
+        if (
+          dino.mya[0] - 1 === mya ||
+          dino.mya[0] === mya ||
+          dino.mya[dino.mya.length - 1] === mya
+        ) {
+          newArr.push(dino.dinosaurId);
+        } else if (dino.mya[0] >= mya && dino.mya[dino.mya.length - 1] <= mya) {
+          newArr.push(dino.dinosaurId);
+        }
       }
     }
+    return newArr;
   }
-  // Return a string
-  return newArr;
-}
 
+  
+// getDinosaursAliveMya(exampleDinosaurData);
 
 module.exports = {
   getTallestDinosaur,

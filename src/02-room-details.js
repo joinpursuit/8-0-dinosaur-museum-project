@@ -46,7 +46,7 @@ if (!(dinosaurName in rooms)) {
 return result;
 }
 
-getRoomByDinosaurName();
+// getRoomByDinosaurName();
 /**
  * getConnectedRoomNamesById()
  * ---------------------

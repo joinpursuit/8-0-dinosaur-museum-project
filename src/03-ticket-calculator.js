@@ -92,19 +92,6 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       return `Extra type '${extra}' cannot be found.`;
     }
   }
-  // ANGIE
-  //   if (!(guestTix in tickets)) {
-  //     return `"Ticket type '${membership}' cannot be found."`;
-  // }
-  // if (!(age in tickets[guestTix].priceInCents)) {
-  //   return `"Entrant type '${guest}' cannot be found."`;
-  // }
-  // // Use for loop bsecuase we want to go through an array to check the info below
-  // for (const extra of extras) {
-  //   if (!(extra in ticketData.extras)) {
-  //     return `Extra type '${extra}' cannot be found.`;
-  //   }
-
   let price = tickets[type].priceInCents[age];
   // general admission price
   //tickets.general.priceInCents.child
