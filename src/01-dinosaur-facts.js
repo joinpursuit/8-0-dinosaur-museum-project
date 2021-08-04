@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -22,7 +23,31 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+
+// What is our input; an array of object with several keys
+// What is out output; return { name: HeightInFeet }
+
+// Create a new object to copy info into
+
+function converterToFeet(n) {
+  return n * 3.281
+}
+
+function getTallestDinosaur(dinosaurs){
+  let tallest = {};
+  let currentDino = dinosaurs[0];
+  if (dinosaurs.length === 0) {
+    return {};
+  }
+  for ( let i = 1; i < dinosaurs.length; i++) {
+  if (dinosaurs[i] .lengthInMeters > currentDino.lengthInMeters) {
+    currentDino = dinosaurs[i]
+   }
+  }
+  tallest[currentDino.name] = converterToFeet(currentDino.lengthInMeters)
+  return tallest;
+}
+
 
 /**
  * getDinosaurDescription()
@@ -43,8 +68,33 @@ function getTallestDinosaur(dinosaurs) {}
  *
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
- */
-function getDinosaurDescription(dinosaurs, id) {}
+*/
+
+function getDinosaurDescription(dinosaurs, id) {
+
+  for (i = 0; i < dinosaurs.length; i++) {
+    const dinoDescription = dinosaurs[i] 
+    
+    if (dinoDescription.dinosaurId === id) { 
+      return `${dinoDescription.name} (${dinoDescription.pronunciation})\n${dinoDescription.info} It lived in the ${dinoDescription.period} period, over ${dinoDescription.mya[dinoDescription.mya.length-1]} million years ago.`
+    } 
+  }
+  return "A dinosaur with an ID of 'incorrect-id' cannot be found."
+  
+ }
+
+ //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
+ // It returns a formatted description of a dinosaur. If the dinosaur cannot be found, returns an error message.
+ // \n represents a new line in the text.
+ // panameter of an object - an array of dinosaur objects, 
+ // the id is the identifier for the dinosaur
+ // it return a string with a detailed description of the dinosaur.
+
+
+// getDinosaurDescription(exampleDinosaurData);
+
+
+
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +121,40 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+
+
+
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinoArray= []; 
+  
+  for (i = 0; i < dinosaurs.length; i++) {
+    let dinoInfo = dinosaurs[i]
+    let min = dinoInfo.mya[1];
+    let max = dinoInfo.mya[0];
+
+  if(dinoInfo.mya.length === 1) {
+    if (max === mya || max -1 === mya) {
+     if (key in dinoInfo) {
+      dinoArray.push(dinoInfo[key]);
+     } else {
+      dinoArray.push(dinoInfo.dinosaurId);
+      }
+     }
+    } else {
+    if (mya <= max && mya >= min) {
+      if (key in dinoInfo) {
+        dinoArray.push(dinoInfo[key])
+      } else {
+        dinoArray.push(dinoInfo.dinosaurId)
+      }
+    }
+  } 
+}
+
+ return dinoArray;
+}
+
+// getDinosaursAliveMya(exampleDinosaurData);
 
 module.exports = {
   getTallestDinosaur,
