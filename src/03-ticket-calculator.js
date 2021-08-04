@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,8 +55,79 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  // Input? tickets object
+  // Output? object which includes the prices to enter the museum
+  // ERROR 1
+  //"Ticket type 'incorrect-type' cannot be found."
+  // If statements to clear errors
+  // Error 1 use the in ~ object method (google: "how to check if key in value") use it to check if ticket type exists.
+  // If I'm not using parameters, I'm hardcoding
+  // if (!ticketData[ticketInfo.ticketType]) --> if ticketData is the object, accessing
+  // 'incorrect-type' === ticketInfo.ticketType??
+  // (compare the test file with the ticket.js file. Match the info found on the different set of tests with the original "tickets" object. )
+  // ticketData = tickets object
+  // ticketType = general, membership, and extras
+  // const guestTix = ticketInfo.ticketType// general, membership, and extras
+  // const age = ticketInfo.entrantType// priceInCents
+  // const extra = ticketInfo.extras; // movie, education, terrace
+  // const tickets = ticketData// tickets entire object
 
+  // ERIC
+  const type = ticketInfo.ticketType; // general, membership, and extras
+  const age = ticketInfo.entrantType; // priceInCents
+  const tickets = ticketData; // tickets entire object
+  const extrasParam = ticketInfo.extras;
+
+  if (!(type in tickets)) {
+    return `Ticket type '${type}' cannot be found.`;
+  }
+
+  if (!(age in tickets[type].priceInCents)) {
+    return `Entrant type '${age}' cannot be found.`;
+  }
+
+  for (const extra of extrasParam) {
+    if (!(extra in ticketData.extras)) {
+      return `Extra type '${extra}' cannot be found.`;
+    }
+  }
+  // ANGIE
+  //   if (!(guestTix in tickets)) {
+  //     return `"Ticket type '${membership}' cannot be found."`;
+  // }
+  // if (!(age in tickets[guestTix].priceInCents)) {
+  //   return `"Entrant type '${guest}' cannot be found."`;
+  // }
+  // // Use for loop bsecuase we want to go through an array to check the info below
+  // for (const extra of extras) {
+  //   if (!(extra in ticketData.extras)) {
+  //     return `Extra type '${extra}' cannot be found.`;
+  //   }
+
+  let price = tickets[type].priceInCents[age];
+  // general admission price
+  //tickets.general.priceInCents.child
+  let extrasPrice = 0;
+  let totalPrice = 0;
+  if (extrasParam.length >= 1) {
+    for (const extra of extrasParam) {
+      // For loop option:
+      // for (let i = 0; i < extrasParam.length; i++) {
+      extrasPrice = extrasPrice + tickets.extras[extra].priceInCents[age];
+      // If using the for i loop option:
+      // extrasPrice + tickets.extras[extrasParam[i]].priceInCents[age]; // index position of the parameter
+      // tickets.extras.movie.priceInCents.child
+      totalPrice = price + extrasPrice;
+    }
+  } else {
+    return price;
+  }
+  return totalPrice;
+}
+
+// tickets[extrasParam].
+//tickets.extras.movie.priceInCents.child
 /**
  * purchaseTickets()
  * ---------------------
