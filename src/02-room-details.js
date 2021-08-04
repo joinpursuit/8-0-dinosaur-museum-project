@@ -26,26 +26,35 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  let newStr = `Dinosaur with name '${dinosaurName}' cannot be found.`; // Default value - this dinosaur does not exist
+  // Default message `newStr` with value of this dinosaur does not exist
+  let newStr = `Dinosaur with name '${dinosaurName}' cannot be found.`;
   let newObj = {};
+  // Iterate through `dinosaurs` array, each called `dino`
   for (let dino of dinosaurs) {
-    // check if dinosaur is in any room
-    if (dino.name === dinosaurName) { // find dinosaur by name
-      newObj = dino; // new dino in the new object
+    // check if dinosaur is in any room // find dinosaur by `dino.name`
+    if (dino.name === dinosaurName) { 
+      // new dino in the `newObj`
+      newObj = dino;
     }
   }
-  if (!("name" in newObj)) { // if the newObj is empty of a name
+  // if the `newObj` is empty of a "name"
+  if (!("name" in newObj)) { 
     return newStr;
   }
+  // Iterate through `rooms`, each called `room`
   for (let room of rooms) {
-    newStr = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`; // this dinosaur cannot
+    // this `dinosaurName` cannot be found
+    newStr = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
     // if dinosaur in that room includes the dinosaur
     if (room.dinosaurs.includes(newObj.dinosaurId)) {
-      newStr = room.name; // reassign newStr to room name
-      break; // so it stops running after it evaluates to true
+      // reassign `newStr` to `room.name`
+      newStr = room.name;
+      // stop running after evaluates to true
+      break;
     } 
   }
-  return newStr; // outside for loop
+  // return `newStr` outside for loop
+  return newStr;
 }
 
 /**
@@ -72,28 +81,31 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
  */
 function getConnectedRoomNamesById(rooms, id) {
   let newArr = [];
+  // Iterate through `rooms`, each called `room`
   for (let room of rooms) {
-    if (room.roomId === id) { // check for room Id first
-      newArr = room.connectsTo.slice(0); // makes a copy of array
+    // check for `room.roomId` first
+    if (room.roomId === id) { 
+      // makes a copy of array
+      newArr = room.connectsTo.slice(0);
     }
   }
   if (newArr.includes("incorrect-id")) {
-    return `Room with ID of 'incorrect-id' could not be found.` // If a room ID cannot be found
+    // If a room ID cannot be found for `incorrect-id`
+    return `Room with ID of 'incorrect-id' could not be found.` 
   }
-
   if (!newArr.length) {
-   return `Room with ID of '${id}' could not be found.` // If a room ID cannot be found
+    // If a room ID cannot be found for `id`
+   return `Room with ID of '${id}' could not be found.` 
   }
-
   let newArr2 = [];
-  for (let room of rooms) { // new loop for rooms
+  // Iterate through `rooms`, each called `room`
+  for (let room of rooms) {
     if (newArr.includes(room.roomId)) {
       newArr2.push(room.name);
     }
   }
   return newArr2;
 }
-
 
 
 module.exports = {

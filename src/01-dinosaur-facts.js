@@ -30,21 +30,44 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {
-  if (!dinosaurs.length) { // if no dinosaurs/if false
-    return {};
-  }
-let height = dinosaurs[0].lengthInMeters; // first dinosaur
-let key;
+
+
+
+// HELPER FUNCTION #1:
+function searchForTallestDinosaur(dinosaurs) {
+  // Accumulator Pattern to determine tallest
+  // Height of first dinosaur
+  let highestDino = dinosaurs[0];
+  // Iterate through `dinosaurs` array
   for (let i = 1; i < dinosaurs.length; i++) {
     let dino = dinosaurs[i];
-    if (dino.lengthInMeters > height) {
-      key = dino.name;
-      height = dino.lengthInMeters; // height of tallest dinosaur
+    if (dino.lengthInMeters > highestDino.lengthInMeters) {
+      // Tallest dinosaur
+      highestDino = dino;
     }
   }
-  let lengthInFeet = height * 3.281; // convert meters to feet
-  return {[key]: lengthInFeet};  // outside for loop
+  // Return `highestDino` when found
+  return highestDino; 
+}
+
+// HELPER FUNCTION #2
+// Isolating the logic of multiplying
+function convertMetersToFeet(meters){
+  // convert `lengthInMeters` to feet
+  return meters * 3.281;
+}
+
+// MAIN FUNCTION
+function getTallestDinosaur(dinosaurs) {
+  if (!dinosaurs.length) { 
+    return {};
+  }
+  // Assign variable to helper function to isolate the tallest dinosaur
+  // call helper function, but pass the argument into it to access `dinosaurs`
+  let foundDino = searchForTallestDinosaur(dinosaurs); 
+  // provide `foundDino.lengthInMeters` and multiply by 3.281 and it will return it
+  let lengthInFeet = convertMetersToFeet(foundDino.lengthInMeters); 
+  return {[foundDino.name]: lengthInFeet};
 }
 // getTallestDinosaur(exampleDinosaurData);
 
@@ -68,16 +91,20 @@ let key;
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
+
 function getDinosaurDescription(dinosaurs, id) {
-  // If the dinosaur cannot be found, returns an error message - default message
+  // Default `description` error message if the dinosaur cannot be found
   let description = `A dinosaur with an ID of '${id}' cannot be found.`;
-  for (let dino of dinosaurs) { // for loop
+  // Iterate through `dinosaurs` array, each called `dino`
+  for (let dino of dinosaurs) {
+    // Compare current `dino.dinosaurId` to `id`
     if (dino.dinosaurId === id) {
-      // re-assign value of description, include mya as last element in case you do find the id.
+      // if `id` found, re-assign value of description, with `dino.mya[dino.mya.length -1]` as last element.
       description = `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length -1]} million years ago.`
     } 
   }
-  return description; // outside for loop
+  // Return `description` as string
+  return description;
 }
 // getDinosaurDescription(exampleDinosaurData, "U9vuZmgKwUr");
 // getDinosaurDescription(exampleDinosaurData, "incorrect-id");
@@ -108,28 +135,33 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-// default is the id.
-let newArr = [];
-for (let dino of dinosaurs) { // for loop
-  if (dino.mya.length === 1) {
-    if (dino.mya[0] === mya || dino.mya[0] -1 === mya) {
-      if (key in dino) { // if key exists in dino
-        newArr.push(dino[key]);
+  // Declare empty array `newArray`
+  let newArray = [];
+  // iterate through `dinosaurs` array, each called `dino`
+  for (const dino of dinosaurs) {
+    // Compare current `dino.mya[0]` to/> mya && `dino.mya[1]` to/< mya // `dino.mya.length` === 2
+    if (dino.mya[0] >= mya && dino.mya[1] <= mya && dino.mya.length === 2) {
+      // if `key` given, .push `dino[key]` into `newArray`
+      if (key) {
+        newArray.push(dino[key]);
       } else {
-        newArr.push(dino.dinosaurId);
+        // if alive, .push `dino.dinosaurId` into `newArray`
+        newArray.push(dino.dinosaurId);
       }
     }
-  } else {
-    if (dino.mya[1] <= mya && mya <= dino.mya[0]) { // between
-      if (key in dino) {
-        newArr.push(dino[key]);
+    // Compare current `dino.mya[0]` to/=== mya || `dino.mya[0]` -1 to/=== mya
+    if (dino.mya[0] === mya || dino.mya[0] -1 === mya) {
+      // if `key` given, .push `dino[key]` into `newArray`
+      if (key) {
+        newArray.push(dino[key]);
       } else {
-        newArr.push(dino.dinosaurId);
+        // if alive, .push `dino.dinosaurId` into `newArray`
+        newArray.push(dino.dinosaurId);
       }
     }
   }
-}
-return newArr;
+  // return `newArray`
+  return newArray;
 }
 
 module.exports = {
