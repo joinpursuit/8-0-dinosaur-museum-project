@@ -22,8 +22,26 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
-
+function getTallestDinosaur(dinosaurs) {
+  // Accumulator Pattern to determin tallest
+  // Convert lengthInMeters to feet
+  // Return the newly created object with name of the dinosaur as the key and height as the value
+  let obj = {}
+  let height = 0
+  if(!dinosaurs.length){
+    return obj;
+  }
+  for(let i = 0; i < dinosaurs.length; i++){
+    if(dinosaurs[i].lengthInMeters > height){
+       height = dinosaurs[i].lengthInMeters;
+       key = dinosaurs[i].name; 
+       lengthInFeet = height * 3.281;
+    } 
+  } 
+  obj[key] = lengthInFeet
+  return obj;
+}
+getTallestDinosaur(exampleDinosaurData);
 /**
  * getDinosaurDescription()
  * ---------------------
@@ -44,8 +62,19 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
-
+function getDinosaurDescription(dinosaurs, id) {
+  //make a for loop to check each element
+  //compare each element to target to see if they match
+  //if a match is found, return the target value
+  //if the loop completes and the target isn't found, return an error message
+  for(let dino of dinosaurs){
+    if(dino.dinosaurId === id){
+      return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length -1]} million years ago.`;
+    }
+  }
+  return `A dinosaur with an ID of '${id}' cannot be found.`
+}
+getDinosaurDescription(exampleDinosaurData);
 /**
  * getDinosaursAliveMya()
  * ---------------------
@@ -71,10 +100,76 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+// First, needs to return an ARRAY of "dinosaurId's" that lived within the "mya" range provided. 
+  let arr = [];
+  let dinoKey = "dinosaurId";
+// If the "key" parameter IS PROVIDED (i.e. truthy), it needs to return the value of the that key for each
+// dinosaur alive at that time, in an ARRAY
+  if(Object.keys(dinosaurs[0]).includes(key)){ // Object.keys method
+    dinoKey = key;
+  }
+// If the "key" param !== any dino[key], return the IDs as above.
+
+ // // Ternary method
+    //let dinosaurKey = dinosaurs[key] ? key : "dinosaurId"
+    
+    // Or
+    
+    // if method
+    // if(!dinosaur[key]){
+    //   dinosaurKey = key
+    // }else{
+    //   dinosaurKey = "dinosaurId"
+    // }
+    
+  for(let dino of dinosaurs){
+// Next, if a dino only has one mya year porvided, the logic has to allow for the given mya OR dino.mya -1       
+    if(dino.mya.length === 2){
+     if(mya <= dino.mya[0] && mya >= dino.mya[1]){
+       arr.push(dino[dinoKey])
+     }
+    }else{
+      if(mya === dino.mya[0] || mya === (dino.mya[0] - 1)){
+       arr.push(dino[dinoKey])
+      }
+    }
+  }
+// If the mya !== any dino.mya's within range, return an empyt array.
+  return arr;
+}
+getDinosaursAliveMya(exampleDinosaurData, 150, "teeth");
 
 module.exports = {
   getTallestDinosaur,
   getDinosaurDescription,
   getDinosaursAliveMya,
 };
+
+
+
+/**
+ * Example Function
+ * @param {array} an array of numbers
+ * @param {number} a target number to search for in the array
+ * @return {number or string} returns the target number if found. if number is not found, returns a error message.
+ * 
+ * let numArr = [4,7,9,2,11,5,5,13,2]
+ * 
+ * PSEUDOCODE
+ * make a for loop to check each element
+ * compare each element to target to see if they match
+ * if a match is found, return the target value
+ * if the loop completes and the target isn't found, return an error message
+ */
+
+// function findTargetNum(array, target)
+//{ for(let num of array){
+//  if(num === target){
+//    return num
+//}  
+//}
+//return `${target} not found`
+//}
+//
+//console.log(findTargetNum(numArr, 13))
