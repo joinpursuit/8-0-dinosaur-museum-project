@@ -22,7 +22,36 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+
+  //this coverts my metters to length
+  function convertToFeet(n) {
+    return n * 3.281
+  }
+  
+  function getTallestDinosaur(dinosaurs) {
+    
+    //if the array is empty return a falsey value
+    if (!dinosaurs.length) return []
+    
+    let tallest = {}
+    //have to make my currentDino the first dino because i need something to compare the other dinos too
+    let currentDino = dinosaurs[0]
+    
+    //creating a loop to go thought all the dinos legthInMeters
+    for (let i = 1; i < dinosaurs.length; i++) {
+      
+      //if the hight is taller tha my currentDino then assign the dinosaurs[i].lengthInMeters to my current dino
+      if (dinosaurs[i].lengthInMeters > currentDino.lengthInMeters) {
+        currentDino = dinosaurs[i]
+      }
+    }
+    //converting my current dino from meters to feet.
+    tallest[currentDino.name] = convertToFeet(currentDino.lengthInMeters)
+    return tallest
+  }
+
+
+
 
 /**
  * getDinosaurDescription()
@@ -44,7 +73,20 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+
+  //looping throuht the dinososaurs array that was given
+ for (let dino of dinosaurs) {
+
+  //if the dino.dinosaurId is equal to the id that was given
+  if (dino.dinosaurId === id) {
+    //if the id was found return this string
+    return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length - 1] } million years ago.`
+  }
+ }
+// If the id was not founf return this error message.
+return `A dinosaur with an ID of '${id}' cannot be found.`
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +113,44 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+
+//creating a helper cuntion just to check if the dino is alive during the year that was given
+function isItAlive(dino, year) {
+
+  //creating my default value with the value false
+  let alive = false
+  //checking if the year that wsas given to us is in between the years that the dino was alive
+  if (dino[0] >= year && dino[1] <= year) {//if he is alive assignt true to alive
+    alive = true
+    //checking if the year that wsas given to us is equal to the year that the dino was seen or 1 year before
+  } else if (dino[0] === year || (dino[0] - 1) === year) { ////if he is alive assignt true to alive
+    alive = true
+  } //returns alive
+  return alive
+}
+
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  //creating my default value to push my dinosaurs who are alive in.
+  let arr = []
+
+  //looping through every dino in the dinosaurs array
+  for (const dino of dinosaurs) {
+
+    //calling for my helper function to check if the dino was alive or not. Its also checking if a key
+    //was give to us.
+    if (isItAlive(dino.mya, mya) && key) { 
+      //if the dino was alive and a key was given push a i want to push the key that was give for that dino
+      arr.push(dino[key])
+      ////calling for my helper function to check if the dino was alive or not
+    } else if (isItAlive(dino.mya , mya)) { 
+      //if the dino was alive I want to push the dinosaurId into my array.
+      arr.push(dino.dinosaurId)
+      }
+  }
+  return arr
+}
+
+
 
 module.exports = {
   getTallestDinosaur,

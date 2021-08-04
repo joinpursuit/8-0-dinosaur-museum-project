@@ -25,7 +25,41 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+
+//creating a helper function to just get the dino.dinosaurId.
+function findDinoId(name, dinos) {
+  let id = "";
+
+  for (let dino of dinos) {
+    if (dino.name === name) {
+      id = dino.dinosaurId;
+    }
+  }
+  return id;
+}
+
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  //creating an variable with an error as its default value.
+  let roomName = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+
+  //if the Dinosaur name cannot be found return an error message.
+  if (!findDinoId(dinosaurName, dinosaurs)) {
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+  }
+
+  //creating a  loop to loop through my rooms.dinosaurs.
+  for (let i = 0; i < rooms.length; i++) {
+    let room = rooms[i].dinosaurs;
+    let name = rooms[i].name;
+
+    //if the room with the id is found i want to get the name.
+    if (room.includes(findDinoId(dinosaurName, dinosaurs))) {
+      roomName = name;
+    }
+  }
+  //return the room name
+  return roomName;
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +83,39 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  // Im going to crate a new variable that its going to hold what all the rooms that that id connects too
+  let idArr = [];
+  let nameArr = [];
+
+  // Im going to loop though all of the rooms to check that the id matches.
+  for (let room of rooms) {
+    // if the id matches im going to re-asign my created variable to the array of connected rooms that it has.
+    if (room.roomId === id) {
+      idArr = room.connectsTo;
+    }
+  } // Then im going to loop throught my new variable and try to compare the id that it has in it to the rooms id so i could get the names of the rooms.
+  if (!idArr.length) {
+    return `Room with ID of '${id}' could not be found.`;
+  }
+  // looping through the rooms array
+  for (let room of rooms) {
+    //looping through my ids array
+    for (let tag of idArr) {
+      //checking if any given tag is the same as any given roomId
+      if (tag === room.roomId) {
+        nameArr.push(room.name);
+      }
+    }
+  }
+  //if my id arrays length and my names array length is not the same, i know they are not the same.
+  if(idArr.length !== nameArr.length){
+    return `Room with ID of 'incorrect-id' could not be found.`
+  }
+
+  return nameArr;
+}
+
 
 module.exports = {
   getRoomByDinosaurName,
