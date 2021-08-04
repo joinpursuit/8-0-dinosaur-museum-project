@@ -66,6 +66,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     // look for a match in array of dinosaur key 
        if (dinoId === proper){ 
           expectedRoom = room.name
+          break;
     } 
   }
 }
@@ -117,25 +118,25 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 
 function getConnectedRoomNamesById(rooms, id) {
    let arr = [];
-   let roomNames = getRoomNameById(rooms, id);
+   let roomNames = getRoomNameById(rooms, id); //serves as a guard clause. helper function returning room name of id parameter.
     if (roomNames === undefined){
       return `Room with ID of 'incorrect-id' could not be found.`;
     }
   
     let connectingRoomIds = []
     for (let i = 0; i < rooms.length; i++) {
-        if (rooms[i].roomId === id) {
-            connectingRoomIds = rooms[i].connectsTo;
-            break;
+        if (rooms[i].roomId === id) { //finds the object with matching parameter given (room Id).
+            connectingRoomIds = rooms[i].connectsTo; //grabs connectsTo value (array of roomId)in the object equal to parameter id.
+            break; // efficientcy to kill the loop... 
         }
     } 
-    for (let i = 0; i < connectingRoomIds.length; i++){
-        let connectingRoomId = connectingRoomIds[i]
-       let connectingRoomName = getRoomNameById(rooms, connectingRoomId)
-        if (connectingRoomName === undefined){
+    for (let i = 0; i < connectingRoomIds.length; i++){ //iterates through array
+        let connectingRoomId = connectingRoomIds[i] //creates variable to get a hold of elements in the connectsTo array 
+       let connectingRoomName = getRoomNameById(rooms, connectingRoomId) //create variable and pass helper function to pass elements of connectsTo array as arguments to output room names.
+        if (connectingRoomName === undefined){ //fullfills if connecting room id is incorrect clause
           return "Room with ID of 'incorrect-id' could not be found.";
         // print the name associated with this id
-        } arr.push(connectingRoomName);
+        } arr.push(connectingRoomName);//push names of roomId into new array.
     } 
     
     // [ 'zwfsfPU5u', 'aIA6tevTne', 'dpQnu5wgaN', 'L72moIRcrX' ]
