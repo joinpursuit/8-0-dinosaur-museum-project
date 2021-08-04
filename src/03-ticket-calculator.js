@@ -54,7 +54,34 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+// Is the ticket type valid?
+// Is the entrant type valid?
+// Get the ticket cost without extras
+// Accumulator pattern to calc all of the extras
+// Inside of for loop of accumu paatter: is the extra type valid?
+// Return the total: cost of ticket + extras. 
+ 
+ let total = 0;
+
+  if(!ticketData[ticketInfo.ticketType]){
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+      }else if(!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]){
+        return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+      }
+    total += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+    if(ticketInfo.extras){
+    for(let i=0; i < ticketInfo.extras.length; i++){
+      if(!ticketData.extras[ticketInfo.extras[i]]){
+        return `Extra type '${ticketInfo.extras[i]}' cannot be found.`
+      }
+    total += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType];
+      }
+    }
+    return total;
+  }
+  
+
 
 /**
  * purchaseTickets()
@@ -109,7 +136,60 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
+// Psuedocode: two for loops --double accum pattern
+// keep track of purchase total (number) and receipt purchase summary("String")
+// loop through purchases and use calculateTicketPrice to determine total of purchase
+// if return type is a styring then return it
+// A nested accumulator to determine the extra cost total(Number)
+// and a summary(String) for the 
+// Format receipt with total and receipt summaries.
+// return receipt, 
+
 function purchaseTickets(ticketData, purchases) {}
+/** 
+* helper func grabbind purchas tix 
+* return string of tix
+* @param {*} ticketData - obj of tix @param {*} ticketInfo - info about tix
+* @return {string} - formatted
+*/
+function formatted(ticketData, ticketInfo){
+  let newArr = ticketInfo.extras.slice(0);
+  let newStr = "";
+  if(newArrlength){
+    newStr += " (";
+    for(let i=0;i<newArr.length;i++){
+      if(i === newArr.length-1){
+        newStr += ticketData.extras[newArr[i]].description + ")";
+      }else newStr += ticketData.extras[newArr[i]].description + ", ";
+    }
+  }
+  return newStr;
+  }
+/** helper func *///cap letter, returns string
+// not really certain how to get helper functo apply...problem with code, not reading test for last func anymore
+function upperCaseFirstLetter(str){
+  let firstLetter = str[0].toUpperCase();
+  let newArr = str.split("");
+  newArr.shift();
+  return firstLetter + newArr.join("");
+}
+function purchaseTickets(ticketData, purchases) {
+  let newStr = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"; // track purchases
+  let total = 0;                                               // track single tix
+
+  let subTotal;
+  for(let ticket of purchases){
+    subTotal = 0;
+    let check = calculateTicketPrice(ticketData, ticket);       // check using calctixprice func
+      if(typeof check === "number"){
+        subTotal = check;
+        newStr += `${upperCaseFirstLetter(ticket.entrantType)} ${ticketData[ticket.ticketType].description}: $${(subTotal/100).toFixed(2)}${formatted(ticketData, ticket)}\n`;
+        total += subTotal/100;
+      }
+      else return check;  
+    }                                      // return error
+      return newStr += "-------------------------------------------\nTOTAL: $" +total.toFixed(2); // return receipt
+}
 
 // Do not change anything below this line.
 module.exports = {
