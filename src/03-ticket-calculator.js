@@ -54,7 +54,57 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let ticketType = ticketInfo.ticketType;
+  let ageOfEntrant = ticketInfo.entrantType;
+  let extras = ticketInfo.extras;
+  let totalTicketPriceInCents = 0;
+  if(ticketType === 'general'){
+    if(ageOfEntrant === 'child'){
+      totalTicketPriceInCents += 2000;
+    }else if(ageOfEntrant === 'adult'){
+      totalTicketPriceInCents += 3000;
+    }else if(ageOfEntrant === 'senior'){
+      totalTicketPriceInCents += 2500;
+    }else{
+      return `Entrant type '${ageOfEntrant}' cannot be found.`
+    };
+  }else if(ticketType === 'membership'){
+    if(ageOfEntrant === 'child'){
+      totalTicketPriceInCents += 1500;
+    }else if(ageOfEntrant === 'adult'){
+      totalTicketPriceInCents += 2800;
+    }else if(ageOfEntrant === 'senior'){
+      totalTicketPriceInCents += 2300;
+    }else{
+      return `Entrant type '${ageOfEntrant}' cannot be found.`
+    };
+  }else{
+    return `Ticket type '${ticketType}' cannot be found.`
+  }
+  if(extras.length){
+    for(let extra of extras){
+      if(extra === 'movie'){
+        totalTicketPriceInCents += 1000;
+      }else if(extra === 'education'){
+        if(ageOfEntrant === 'child'){
+          totalTicketPriceInCents += 1000;
+        }else if(ageOfEntrant === 'adult' || ageOfEntrant === 'senior'){
+          totalTicketPriceInCents += 1200;
+        };
+      }else if(extra === 'terrace'){
+        if(ageOfEntrant === 'child'){
+          totalTicketPriceInCents += 500;
+        }else if(ageOfEntrant === 'adult' || ageOfEntrant === 'senior'){
+          totalTicketPriceInCents += 1000;
+        };
+      }else{
+        return `Extra type '${extra}' cannot be found.`;
+      };
+    };
+  };
+  return totalTicketPriceInCents;
+}
 
 /**
  * purchaseTickets()
