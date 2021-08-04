@@ -170,5 +170,7 @@ const exampleTicketData = require("../data/tickets");
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
-  purchaseTickets,
-}
+  purchaseTickets, 
+ };
+
+ 
