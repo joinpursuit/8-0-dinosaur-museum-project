@@ -168,19 +168,20 @@ function purchaseTickets(ticketData, purchases) {
     arrayExtra = []; //["movie", "terrace"]
 
     for(let extra of purchase.extras){ //loop through purchase -> ["movie", "terrace"]
-      arrayExtra.push(extra); 
-      
+   
       // if (arrayExtra === 1){
       //   finalReceiptStr += " ("+ ticketData.extras[extra].description + ")";
       // } 
 
       if (purchase.extras.length > 1){
-        finalReceiptStr += ticketData.extras[extra].description;
+        arrayExtra.push(ticketData.extras[extra].description);
       } else {
-        finalReceiptStr += " (" + ticketData.extras[extra].description + ")"
+        arrayExtra.push(ticketData.extras[extra].description)
       }
-
-    }
+    } 
+    if(arrayExtra.length > 0){
+    finalReceiptStr += ` (${arrayExtra.join(", ")})`
+    } 
   }
 
   return finalReceiptStr+ "\n" + "-------------------------------------------" + "\n" + "TOTAL: $" + (total/100).toFixed(2)
