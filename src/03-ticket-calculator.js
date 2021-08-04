@@ -55,17 +55,31 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  
+
   let ticketTypeObj = ticketData[ticketInfo.ticketType];
-  if(ticketTypeObj === undefined){
+  
+  // Is the ticket type valid?
+  if(!ticketTypeObj){
     return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
   }
-  // Is the ticket type valid?
-  // Is the entrant type valid?
-  // Get the ticket cost without extras
+  
+  let ticketCost = ticketTypeObj["priceInCents"][ticketInfo.entrantType]
+  if(!ticketCost) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+  }
+  
   // Accumulator pattern to calulate all of the extras
+  for(let addon of ticketInfo.extras) {
     // Inside of for loop of acculator pattern: Is the extra type valid?
+    if(!Object.keys(ticketData.extras).includes(addon)) {
+      return `Extra type '${addon}' cannot be found.`
+    }
+  }
+  for(let addon of ticketInfo.extras) {
+    ticketCost += ticketData["extras"][addon]["priceInCents"][ticketInfo.entrantType]
+  }
   // return total of ticket cost and the cost of the extras 
+    return ticketCost
   }
  
 /**
@@ -121,22 +135,52 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {
- 
-  // Double accumulator pattern
-    // Keep track of purchase total(Number) and receipt purchase summary(String)
-  // Loop through purchases and use calculateTicketPrice to determine total of purchase
-    // If the return type is a String return it
-  // A nested accumulator to determine the extra cost total(Number) and a summary(String) for the receipt
-  // Format the receipt with the totals and the receipt summaries
-  for(let purchase of purchases){
-    let purchaseTotal = calculateTicketPrice(ticketData, purchase);
-    if(typeof purchaseTotal === "string"){
-      return purchaseTotal;
+
+    // HELPER FUNCTION
+    // Returns every word with first charcater as uppercase letter 
+    function capatalize(str) {
+     let arr = str.split(" ")
+     for(let i = 0; i < arr.length; i++) {
+       arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1)
+     }
+     return arr.join(" ")
     }
+
+function purchaseTickets(ticketData, purchases) {
+
+  // reciept variable to bring return at the end with all our purchases totaled
+  let reciepts = []
+  let resultFromCalc
+  let entrant 
+
+  
+  for(let purchase of purchases) {
+    resultFromCalc = calculateTicketPrice(ticketData, purchase)
+    // If the return type is a String return it
+    // Loop through purchases and use calculateTicketPrice to determine total of purchase
+    if(typeof resultFromCalc === "string") {
+      return resultFromCalc
+    }
+    
+    // use helper gunction to capatalize entrant type
+     entrant = capatalize(purchase.entrantType)
+    // since resultFromCal = cost format it using /100 & .toFixed(2)
+      resultFromCalc = ((resultFromCalc/100)).toFixed(2)
+      addOnDescr = []
+
+      for(let addon of purchase.extras) {
+        addOnDescr.push(ticketData.extras[addon].description)
+      }
+      // Adult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
+      if(addOnDescr.length) {
+        addOnDescr = ` (${addOnDescr.join(`, `)})`
+      }
+      reciepts.push(`${entrant} ${ticketData[purchase.ticketType].description}: $${resultFromCalc}${addOnDescr}`)
+      reciepts = reciepts.join("")
+      updatedReciept = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${reciepts}\n-------------------------------------------\nTOTAL: $${resultFromCalc}`
   }
-​
-  // return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------${}-------------------------------------------\nTOTAL: $${}.00`
+  
+return updatedReciept
 }
 
 
