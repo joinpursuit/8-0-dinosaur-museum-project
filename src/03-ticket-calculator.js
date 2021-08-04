@@ -203,34 +203,6 @@ function calculateTicketPrice(tickets, ticketInfo) {
     }
 
 
-//let receiptLines = ""
-//let receiptX = ""
-//Thank you for visiting the Dinosaur Museum!
-//"\n-------------------------------------------\n"
-//purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1) + " " +
-//if tickets.hasOwnProperty(purchase.ticketType)
-//let receiptAdd = tickets[purchase.ticketType].description
-//+ ": " + "$" +
-//let centsTotal = calculateTicketPrice(tickets, purchase) -> 5000
-// (centsTotal/100).toFixed(2) + " (" +
-//let extraTicks = purchase.extras
-//if(purchase.extras.length > 0)
-//let ticketsPlus = tickets.extras
-//for (let i = 0; i < extraTicks.length; i++){
-// let extraTick = extraTicks[i]
-//if(ticketsPlus.hasOwnProperty(extraTick))
-//if (i = extraTicks.length -1){
-//receiptX += ticketsPlus[extraTicks].description + ")"}
-//else{receiptX += ticketsPlus[extraTicks].description + ", "} 
-//receiptLines += line 187 to line 201 + "\n"
-//"-------------------------------------------\nTOTAL: $" + 
-//total += caluculatedValue(tickets, purchase) 
-// + finalTotal
-
-
-
-
-
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
