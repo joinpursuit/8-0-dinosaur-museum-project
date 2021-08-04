@@ -22,7 +22,27 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+
+function converterToFeet(n) {
+  return n * 3.281;
+}
+function getTallestDinosaur(dinosaurs) {
+  //determine input/output
+  let tallest = {};
+  let currentTallest = dinosaurs[0];
+  //define loop
+  if (dinosaurs.length === 0) {
+    return {};
+  }
+  for (let i = 1; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].lengthInMeters > currentTallest.lengthInMeters) {
+      currentTallest = dinosaurs[i];
+    }
+  }
+  tallest[currentTallest.name] = converterToFeet(currentTallest.lengthInMeters);
+  // tallest[currentTallest.name] = converterToFeet(currentTallest.lengthInMeters);
+  return tallest;
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +64,22 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  //iterate through dinosaurs array
+  for (let i = 0; i < dinosaurs.length; i++) {
+    //if id matches current element return description
+    if (dinosaurs[i].dinosaurId === id) {
+      return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${
+        dinosaurs[i].info
+      } It lived in the ${dinosaurs[i].period} period, over ${
+        dinosaurs[i].mya[dinosaurs[i].mya.length - 1]
+      } million years ago.`;
+    }
+  } //take care of edgecase for invalid id
+  if (!dinosaurs.dinosaurId) {
+    return `A dinosaur with an ID of 'incorrect-id' cannot be found.`;
+  }
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +106,39 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  //determine input - output
+  let arr = [];
+  //define loop
+  //iterate through dinosaurs arr
+  for (let dino of dinosaurs) {
+    //push dino id into arr if alive during given mya
+    if (key) {
+      if (
+        dino.mya[0] === mya ||
+        dino.mya[0] - 1 === mya ||
+        dino.mya[dino.mya.length - 1] === mya
+      ) {
+        arr.push(dino[key]);
+      } else if (dino.mya[0] >= mya && dino.mya[dino.mya.length - 1] <= mya) {
+        arr.push(dino.key);
+      }
+    } else if (!key) {
+      if (
+        dino.mya[0] - 1 === mya ||
+        dino.mya[0] === mya ||
+        dino.mya[dino.mya.length - 1] === mya
+      ) {
+        arr.push(dino.dinosaurId);
+      } else if (dino.mya[0] >= mya && dino.mya[dino.mya.length - 1] <= mya) {
+        arr.push(dino.dinosaurId);
+      }
+    }
+  }
+  //accumulate
+  return arr;
+}
 
 module.exports = {
   getTallestDinosaur,

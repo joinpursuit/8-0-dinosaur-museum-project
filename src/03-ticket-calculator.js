@@ -5,6 +5,8 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { extras } = require("../data/tickets");
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +56,49 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+
+function calculateTicketPrice(ticketData, ticketInfo) {
+  //declare input/output
+  let totalPrice = 0;
+  let infoType = ticketInfo.ticketType;
+  let entrantType = ticketInfo.entrantType;
+  let extraType = ticketInfo.extras;
+
+  //check if given ticket contains available admission and take care of edgecase
+  if (infoType in ticketData === false || infoType === "extras") {
+    return `Ticket type '${infoType}' cannot be found.`;
+  }
+
+  //Look for given entrant type in ticketdata
+  //if given entrant type is included in ticketdata, calculate price.
+  if (entrantType in ticketData[infoType].priceInCents) {
+    totalPrice += ticketData[infoType].priceInCents[entrantType];
+  } else {
+    //otherwise, return error msg
+    return `Entrant type '${entrantType}' cannot be found.`;
+  }
+
+  if (
+    //look for given ticket activities purchased
+    extraType.length > 0 &&
+    (extraType.includes("movie") ||
+      extraType.includes("education") ||
+      extraType.includes("terrace"))
+  ) {
+    //if activity is available recalculate total
+    for (let extra of extraType) {
+      totalPrice += ticketData.extras[extra].priceInCents[entrantType];
+    }
+  } //account for unavailable activities edgecase
+  else if (
+    extraType.length > 0 &&
+    !extraType.includes("movie", "education", "terrace")
+  ) {
+    return `Extra type '${extraType}' cannot be found.`;
+  }
+  //returns total price in cents
+  return totalPrice;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +153,31 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+function capitalize(str) {
+  let first = str[0].toUpperCase();
+  let newArr = str.split("");
+  newArr.shift();
+  return first + newArr.join("");
+}
+
+function purchaseTickets(ticketData, purchases) {
+  //determine input/output
+  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+
+  //for purchase of purchases to iterate each purchase thru array of purchases
+  for (let purchase of purchases) {
+    //save the result of calculateTicketprice to a var and use toFixed method to convert currency
+    let total = calculateTicketPrice(ticketData, purchase);
+
+    receipt += `${capitalize(purchase.entrantType)} ${
+      ticketData[purchase.ticketType].description
+    } : ${total} (${purchase.extras})\n`;
+  }
+  //helper function to capitalize first letter of adult and general (or assign purchase.entrantType & purchase.extras)
+
+  //return
+}
 
 // Do not change anything below this line.
 module.exports = {
