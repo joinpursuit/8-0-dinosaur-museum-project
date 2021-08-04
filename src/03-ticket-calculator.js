@@ -54,7 +54,63 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+
+//ticketData.general.priceInCents.adult
+//declare several separate variables
+//variable for error messages
+//first check for errors -- if/else statments or undefined, string, etc
+//return right away the error messages
+//looping through extras, etras = array
+//only loop through the purchases
+//looping through estas, extras = array
+//use info from Ticket info to get info Ticketdata
+//calculate price for each ticket
+//return error or a number
+function calculateTicketPrice(ticketData, ticketInfo) {
+    const type = ticketInfo.ticketType; // general, membership, and extras
+      const entrant = ticketInfo.entrantType; // priceInCents
+     // const tickets = ticketData; // tickets entire object
+      const extrasParam = ticketInfo.extras;
+
+      if (!(type in tickets)) {
+        return `Ticket type ‘${type}’ cannot be found.`;
+      }
+      if (!(age in tickets[type].priceInCents)) {
+        return `Entrant type ‘${entrant}’ cannot be found.`;
+      }
+      for (const extra of extrasParam) {
+        if (!(extra in ticketData.extras)) {
+          return `Extra type ‘${extra}’ cannot be found.`;
+        }
+      }
+    let price = tickets[type].priceInCents[age];
+      // general admission price
+      //tickets.general.priceInCents.child
+      let extrasPrice = 0;
+      let totalPrice = 0;
+      if (extrasParam.length >= 1) {
+        for (const extra of extrasParam) {
+          // For loop option:
+          // for (let i = 0; i < extrasParam.length; i++) {
+          extrasPrice = extrasPrice + tickets.extras[extra].priceInCents[age];
+          // If using the for i loop option:
+          // extrasPrice + tickets.extras[extrasParam[i]].priceInCents[age]; // index position of the parameter
+          // tickets.extras.movie.priceInCents.child
+          totalPrice = price + extrasPrice;
+        }
+      } else {
+        return price;
+      }
+      return totalPrice;
+    }
+
+
+
+
+
+
+
+
 
 /**
  * purchaseTickets()

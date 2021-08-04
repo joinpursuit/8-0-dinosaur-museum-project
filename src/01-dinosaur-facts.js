@@ -5,6 +5,8 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+// const dinosaurs = require("../data/dinosaurs");
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -22,7 +24,30 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  //input: is an array of dinosaurs objects
+  //output: key value pair with the tallest dinosaur name as the key and value(hieght){ name:heightInFeet }
+  //converts from meter to feet by multiplying lengthInMeters times 3.281
+  // step 1: create a new object to copy info into (tallest)
+  //step 3: for every loop we would have to store the current highest (example we have to save our loops so we can compare ) set currentDino = the tallest dino
+  // if the dino we are looping through is taller than currentDino, then set currentDino = the current loop dino
+
+  if (dinosaurs.length === 0) {
+    return {};
+  }
+  let tallest = {};
+  let currentDino = dinosaurs[0];
+
+  for (i = 1; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].lengthInMeters > currentDino.lengthInMeters) {
+      currentDino = dinosaurs[i];
+    }
+  }
+
+  tallest[currentDino.name] = currentDino.lengthInMeters * 3.281;
+
+  return tallest;
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +69,24 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+
+//input: array of objects
+//output: a formatted description of the dinosaur
+//Step1: iterate through (dinosaurs) array, each dinosaur called (dino)
+//Step2: Compare (if statement) (dino.dinosaurId) to"===" (id)
+//
+function getDinosaurDescription(dinosaurs, id) {
+  for (const dino of dinosaurs) {
+    if (dino.dinosaurId === id) {
+      return `${dino.name} (${dino.pronunciation})\n${
+        dino.info
+      } It lived in the ${dino.period} period, over ${
+        dino.mya[dino.mya.length - 1]
+      } million years ago.`;
+    }
+  }
+  return "A dinosaur with an ID of 'incorrect-id' cannot be found.";
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +113,29 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let liveDino = [];
+  for (let dinosaur of dinosaurs)
+    if (dinosaur.mya.length > 1) {
+      if (dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya) {
+        if (key in dinosaur) {
+          liveDino.push(dinosaur[key]);
+        } else {
+          liveDino.push(dinosaur.dinosaurId);
+        }
+      }
+    } else if (dinosaur.mya.length === 1) {
+      if (dinosaur.mya[0] === mya || dinosaur.mya[0] === mya + 1) {
+        if (key in dinosaur) {
+          liveDino.push(dinosaur[key]);
+        } else {
+          liveDino.push(dinosaur.dinosaurId);
+        }
+      }
+    }
+  return liveDino;
+}
 
 module.exports = {
   getTallestDinosaur,
