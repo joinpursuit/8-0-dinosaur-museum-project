@@ -42,8 +42,6 @@ if (dinosaurs[i].lengthInMeters > currentDino.lengthInMeters){
   }
   tall[currentDino.name] = currentDino.lengthInMeters * 3.281
   return tall;
-
-  //tall(currentDino.name) = convertToFeet(currentDino.lengthInMeters)
 }
 
 /**
@@ -67,9 +65,6 @@ if (dinosaurs[i].lengthInMeters > currentDino.lengthInMeters){
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 
-//return a description of a dinosaur or if !dinosaur error message
-//
-
 function getDinosaurDescription(dinosaurs, id) {
   
   for(let i = 0; i < dinosaurs.length; i++){
@@ -90,10 +85,6 @@ function getDinosaurDescription(dinosaurs, id) {
   }
   return "A dinosaur with an ID of 'incorrect-id' cannot be found." 
 }
-
-  
-
-
 
 /**
  * getDinosaursAliveMya()
