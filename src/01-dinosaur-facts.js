@@ -114,19 +114,27 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function isItAlive(dino, year) {
+
+//HELPER FUNCTION... DOES NOTHING UNTIL IT IS CALLED BY ANOTHER FUNCTION
+/*function isItAlive(dino, year) {
+  //Dino = dino.mya and Year = mya which 
+  //dino is an array. Parameters passed in on line 134
   if (dino[0] >= year && dino[1] <= year) {
     return true;
+    //if (66) = given year or (65) = given year
   } else if (dino[0] === year || dino[0] - 1 === year) {
     return true;
   }
   return false;
 }
-
 function getDinosaursAliveMya(dinosaurs, mya, key) {
+  //Default value is an empty array
   let liveDino = [];
+  
+  //Dino represents each individual dinosaur in dinosaurs array
   for (let dino of dinosaurs) {
 
+    //
     if (isItAlive(dino.mya, mya) && key) {
       liveDino.push(dino[key]);
       
@@ -136,11 +144,32 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
     }
   }
   return liveDino;
-};
 
-/*Returns an array of dinosaurs who were alive at the given `mya` (i.e. "millions of years ago") value. If a `key` is provided, returns the value of that key for each dinosaur alive at that time. Otherwise, returns the ID.
- *
- * If the dinosaur only has a single value for `mya`, allows for the `mya` value to be equal to the given value or one less. For example, if a dinosaur has a `mya` value of `[29]`, the dinosaur's information will be returned if `29` is entered or `28` is entered.*/
+};*/
+
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let liveDino = [];
+  for (let dinosaur of dinosaurs) {
+    if (dinosaur.mya.length > 1) {
+      if (dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya) {
+        if (key in dinosaur) {
+          liveDino.push(dinosaur[key]); 
+        } else {
+          liveDino.push(dinosaur.dinosaurId)
+        }
+      }
+    } else if (dinosaur.mya.length === 1){
+      if (dinosaur.mya[0] === mya || dinosaur.mya[0] === mya + 1) {
+        if (key in dinosaur) {
+          liveDino.push(dinosaur[key]);
+        } else {
+          liveDino.push(dinosaur.dinosaurId);
+        }
+      }
+    }
+  }
+  return liveDino;
+ }
 
 module.exports = {
   getTallestDinosaur,

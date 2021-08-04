@@ -84,9 +84,10 @@ function getConnectedRoomNamesById(rooms, id) {
   //If ID is not in any room, return error message
   //If given ID exists return name of room 
   //Loop thru rooms array then connectsTo array
-  //Create default variable> [];
   //Return
   //Error message: `Room with ID of 'incorrect-id' could not be found.`
+  
+  //Create default variable> [];
   let roomID = [];
   let allrooms = [];
 //Loops thru rooms array searching for id given
