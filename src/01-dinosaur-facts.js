@@ -123,7 +123,6 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
    return dinoArr
   }
   
-getDinosaursAliveMya(exampleDinosaurData, 150)
 module.exports = {
   getTallestDinosaur,
   getDinosaurDescription,

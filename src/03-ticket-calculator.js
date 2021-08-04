@@ -141,26 +141,38 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-
-// let price = 0
-// let receiptTotal = []
-  for(let purchase of purchases){
+let ticketInfo= ""
+let price = 0
+for(let purchase of purchases){
+    let extra = []
     let purchaseTotal = calculateTicketPrice(ticketData, purchase);
     if(typeof purchaseTotal === "string"){
       return  purchaseTotal
     }
-    let extraDescription = []
-    let priceExtras = 0
+    price += purchaseTotal
     for (let ex of purchase.extras){
-      extraDescription.push(ticketData.extras[ex].description)
-      priceExtras += ticketData.extras[ex].priceInCents[purchase.entrantType]
+      if (purchase.extras.length > 0){
+        extra.push(ticketData.extras[ex].description)
+      }
+
     }
+    if (purchase.extras.length > 0){
+    ticketInfo += purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1) + " " + purchase.ticketType[0].toUpperCase() + purchase.ticketType.slice(1) + " Admission: " + "$" + (purchaseTotal/100).toFixed(2) + " " + "(" + extra.join(", ") + ")" + "\n" 
+    }
+    else{
+      ticketInfo += purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1) + " " + purchase.ticketType[0].toUpperCase() + purchase.ticketType.slice(1) + " Admission: " + "$" + (purchaseTotal/100).toFixed(2) + "\n" 
+
+    }
+      
   }
 
-  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n ${purchase.entrantType} ${purchase.ticketType}: $${(purchaseTotal/100).toFixed(2)} ${extraDescription.join()}\n-------------------------------------------\nTOTAL: $${(purchaseTotal/100).toFixed(2)}`
+  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${ticketInfo}-------------------------------------------\nTOTAL: $${(price/100).toFixed(2)}`
 
   
 }
+// if (purchase.extras.includes(ex)){      
+//   extra.push(ticketData.extras[ex].description)
+// }
     // let formatEntType = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)
 // purchaseTickets(exampleTicketData, purchases)
 // Do not change anything below this line.
