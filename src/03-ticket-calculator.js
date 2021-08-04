@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -18,13 +19,18 @@ const exampleTicketData = require("../data/tickets");
     extras: ["movie"],
   };
  *
- * If either the `ticketInfo.ticketType` value or `ticketInfo.entrantType` value is incorrect, or any of the values inside of the `ticketInfo.extras` key is incorrect, an error message should be returned.
+ * If either the `ticketInfo.ticketType` value or `ticketInfo.entrantType` 
+ * value is incorrect, or any of the values inside of the `ticketInfo.extras` key is incorrect, 
+ * an error message should be returned.
  *
- * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
+ * @param {Object} ticketData - An object containing data about prices to enter the museum. 
+ * See the `data/tickets.js` file for an example of the input.
  * @param {Object} ticketInfo - An object representing data for a single ticket.
- * @param {string} ticketInfo.ticketType - Represents the type of ticket. Could be any string except the value "extras".
+ * @param {string} ticketInfo.ticketType - Represents the type of ticket. 
+ * Could be any string except the value "extras".
  * @param {string} ticketInfo.entrantType - Represents the type of entrant. Prices change depending on the entrant.
- * @param {string[]} ticketInfo.extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
+ * @param {string[]} ticketInfo.extras - An array of strings where each string represent a different 
+ * "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
  * @returns {number} The cost of the ticket in cents.
  *
  * EXAMPLE:
@@ -54,7 +60,32 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  //first check for errors [if/else statements] || undefined, string, etc.
+  //returns an error mssg
+  //looping through extras, extras = array
+  //use info from Ticketinfo to get info from Ticketdata
+  //calculate price for each ticket
+  //returns a number
+  // variables for error message and numbers
+
+const ticket = "Ticket type 'incorrect-type' cannot be found.";
+const entrant = "Entrant type 'incorrect-entrant' cannot be found.";
+let cost = 0;
+
+if(!ticketInfo.ticketType){
+  return ticket;
+}
+if(!ticketInfo.entrantType){
+  return entrant;
+}
+
+
+
+
+
+
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +140,9 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  //loop through purchases 
+}
 
 // Do not change anything below this line.
 module.exports = {
