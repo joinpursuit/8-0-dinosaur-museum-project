@@ -127,9 +127,6 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   });
   return dinosAliveMya;
 }
-//mya represents a range
-
-console.log(getDinosaursAliveMya(exampleDinosaurData, 65));
 
 module.exports = {
   getTallestDinosaur,

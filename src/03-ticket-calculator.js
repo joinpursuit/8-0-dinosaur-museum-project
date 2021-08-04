@@ -62,32 +62,31 @@ const ticketInfo = {
 // calculateTicketPrice(tickets, ticketInfo);
 //> "Entrant type 'kid' cannot be found."
 
-function calculateTicketPrice(ticketData, ticketInfo) {
+function calculateTicketPrice(ticketData, { ticketType, entrantType, extras }) {
   const validTicketEntrantTypes = ["child", "adult", "senior"];
   const validTicketTypes = ["general", "membership"];
   const validExtras = ["terrace", "movie", "education"];
   let totalPrice = 0;
 
   //check to see if ticket is valid
-  if (!validTicketEntrantTypes.includes(ticketInfo.entrantType)) return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
-  if (!validTicketTypes.includes(ticketInfo.ticketType)) return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  if (!validTicketEntrantTypes.includes(entrantType)) return `Entrant type '${entrantType}' cannot be found.`;
+  if (!validTicketTypes.includes(ticketType)) return `Ticket type '${ticketType}' cannot be found.`;
 
   //iterate through ticketInfoExtras
-  for (let i = 0; i < ticketInfo.extras.length; i++) {
+  for (let i = 0; i < extras.length; i++) {
     //if current string is not included in valid extras
-    if (!validExtras.includes(ticketInfo.extras[i])) return `Extra type '${ticketInfo.extras[i]}' cannot be found.`;
+    if (!validExtras.includes(extras[i])) return `Extra type '${extras[i]}' cannot be found.`;
   }
 
-  ticketWithoutExtras = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
-  totalPrice += ticketWithoutExtras;
+  totalPrice = ticketData[ticketType].priceInCents[entrantType];
 
-  if (ticketInfo.extras.length === 0) return totalPrice;
+  if (extras.length === 0) return totalPrice;
 
-  //iterate through ticketInfo Extras
-  ticketInfo.extras.forEach((extra) => {
+  //iterate through Extras
+  extras.forEach((extra) => {
     //get current string
     //reference current string and entrant type and add to totalPrice
-    totalPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+    totalPrice += ticketData.extras[extra].priceInCents[entrantType];
   });
 
   return totalPrice;
@@ -143,18 +142,9 @@ const purchases = [
 ];
 purchaseTickets(exampleTicketData, purchases);
 //> "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
-
-//pre loop "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
-
-//Adult General Admission: $50.00 (Movie Access, Terrace Access)\n
-//Senior General Admission: $35.00 (Terrace Access)\n
-//Child General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n
-//Child General Admission: $45.00 (Education Access, Movie Access, Terrace Access)
-
-//post loop add \n-------------------------------------------\nTOTAL: $175.00"
-
-console.log(purchaseTickets(exampleTicketData, purchases));
 //> "Ticket type 'discount' cannot be found."
+
+// console.log(purchaseTickets(exampleTicketData, purchases));
 
 function purchaseTickets(ticketData, purchases) {
   //input: object called ticketData, array of objects called purchases
@@ -205,15 +195,11 @@ function purchaseTickets(ticketData, purchases) {
     currentTotalPurchasePrice += ticketData[purchase.ticketType].priceInCents[purchase.entrantType];
     receipt += " " + convertToDollars(currentTotalPurchasePrice);
 
-    // console.log(currentTotalPurchasePrice);
     if (purchase.extras.length > 0) {
       receipt += ` (${extrasDescription})\n`;
     } else {
       receipt += "\n";
     }
-    // console.log(`${ticketData[purchase.ticketType]}`);
-    //if extras array is empty just return everything before extras with string interpolation
-    //join method extras, by default there is a comma space or it's comma by default
     totalPrice += currentTotalPurchasePrice;
   }
   //post iteration add remainder of format to receipt
