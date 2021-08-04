@@ -54,7 +54,50 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  // Input? tickets object
+  // Output? object which includes the prices to enter the museum
+  // ERROR 1
+  //"Ticket type 'incorrect-type' cannot be found."
+  // If statements to clear errors
+  // Error 1 use in ~ object method (google: if key in value) to check if ticket type exists.
+  // If I'm not using parameters, I'm hardcoding
+  // if (!ticketData[ticketInfo.ticketType]) --> if ticketData is the object, accessing
+  // 'incorrect-type' === ticketInfo.ticketType
+  let type = ticketInfo.ticketType;
+  let age = ticketInfo.entrantType;
+  let tickets = ticketData;
+
+  if (!(type in tickets)) {
+    return `Ticket type '${type}' cannot be found.`;
+  }
+
+  if (!(age in tickets[type].priceInCents)) {
+    return `Entrant type '${age}' cannot be found.`;
+  }
+
+  const extrasParam = ticketInfo.extras;
+
+  for (const extra of extrasParam) {
+    if (!(extra in ticketData.extras)) {
+      return `Extra type '${extra}' cannot be found.`;
+    }
+  }
+
+  let price = tickets[type].priceInCents[age]; //tickets.general.priceInCents.child
+  let extrasPrice = 0; //tickets.extras.movie.priceInCents.child
+  let totalPrice = 0;
+  if (extrasParam.length >= 1) {
+    for (i = 0; i < extrasParam.length; i++) {
+      extrasPrice =
+        extrasPrice + tickets.extras[extrasParam[i]].priceInCents[age];
+      totalPrice = price + extrasPrice;
+    }
+  } else {
+    return price;
+  }
+  return totalPrice;
+}
 
 /**
  * purchaseTickets()
