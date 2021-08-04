@@ -140,7 +140,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
     //Check if `dino.mya.length` === 2, Compare `dino.mya[0]` to/>= `mya` and `dino.mya[1]` to/<= `mya`
     if (dino.mya.length === 2 && dino.mya[0] >= mya && dino.mya[1] <= mya) {
       //Is there a `key`
-      if(key) {
+      if(dino[key]) {
         //if there is a `key` push `dino[key]` into `dinoArr`
         dinoArr.push(dino[key])
       } else {
@@ -150,7 +150,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
       //Check if `dino.mya[0]` === `mya or (`dino.mya[0]`)-1 === `mya
     } else if (dino.mya[0] === mya || (dino.mya[0])-1 === mya) {
       //Is there a `key`
-      if (key) {
+      if (dino[key]) {
         //if there is a `key` push `dino[key]` into `dinoArr`
         dinoArr.push(dino[key])
       } else {
