@@ -63,7 +63,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   let basePrice = 0
   let ticketTypeObj = ticketData[ticketInfo.ticketType]; //gives general key or membership key so we store "general" / "membership"
     
-  if (ticketTypeObj){
+    if (ticketTypeObj){
       basePrice += ticketTypeObj.priceInCents[ticketInfo.entrantType];
     }
 
@@ -87,7 +87,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       } 
       basePrice += extraData.priceInCents[ticketInfo.entrantType];
     }
-    
+
   return basePrice;
 }
 
@@ -144,22 +144,49 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
+function firstLetterUpperCase(string){
+  let firstLetter = string.charAt(0);
+  let upperCaseFirstLetter = firstLetter.toUpperCase();
+  let restOfWord = string.slice(1)
+  return upperCaseFirstLetter + restOfWord
+}
+
 function purchaseTickets(ticketData, purchases) {
-  //double accumulated pattern (keep track of the total
-    //keep track of purchase total(Number) and reciept purchase summary
-  //loop through purchases and use calculateTicketPrice to determine total of purchase 
-    //if the return type is a string return it, otherwise continue
-  //a nested accumulator to determine the extra cost total(Number) and a summary(string)
-  //Format the receipt with 
+  
+  let finalReceiptStr = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------`;
+  let total = 0;
+
   for(let purchase of purchases){
-    let purchaseTotal = calculateTicketPrice(ticketData, purchase)
-    if(typeof purchaseTotal === "string"){
-      return purchaseTotal
+    let ticketPrice = calculateTicketPrice(ticketData, purchase)
+    if(typeof ticketPrice === "string"){
+      return ticketPrice; 
     }
 
+    total += ticketPrice;
+    finalReceiptStr += `\n${firstLetterUpperCase(purchase.entrantType)} ${ticketData[purchase.ticketType].description}: $${(ticketPrice/100).toFixed(2)}`
+
+    arrayExtra = []; //["movie", "terrace"]
+
+    for(let extra of purchase.extras){ //loop through purchase -> ["movie", "terrace"]
+      arrayExtra.push(extra); 
+      
+      // if (arrayExtra === 1){
+      //   finalReceiptStr += " ("+ ticketData.extras[extra].description + ")";
+      // } 
+
+      if (purchase.extras.length > 1){
+        finalReceiptStr += ticketData.extras[extra].description;
+      } else {
+        finalReceiptStr += " (" + ticketData.extras[extra].description + ")"
+      }
+
+    }
   }
 
+  return finalReceiptStr+ "\n" + "-------------------------------------------" + "\n" + "TOTAL: $" + (total/100).toFixed(2)
+
 }
+
 
 // Do not change anything below this line.
 module.exports = {
