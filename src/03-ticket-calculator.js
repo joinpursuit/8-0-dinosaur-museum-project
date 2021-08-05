@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -130,7 +131,36 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+// function capitalizeWord(word){
+//   return word.char
+// }
+
+function purchaseTickets(ticketData, purchases) {
+  let runningTotal = 0;
+  let receiptPrint = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n'
+  for(let purchase of purchases){
+    let ageOfTicket = purchase.entrantType;
+    let ticketType = purchase.ticketType;
+    let ticketPriceInCents = calculateTicketPrice(ticketData, purchase);
+    let ticketPriceInDollars = ticketPriceInCents / 100;
+    runningTotal += ticketPriceInDollars;
+    //above line is different from his (229)
+    if(typeof(calculateTicketPrice(ticketData, purchase)) === 'string'){
+      return calculateTicketPrice(ticketData, purchase);
+    };
+    for(let i=0; i<purchase.extras.length; i++){
+      purchase.extras[i] = purchase.extras[i].charAt(0).toUpperCase() + purchase.extras[i].slice(1) + ' Access';
+    };
+    //above is where he used helper function
+    if(purchase.extras.length){
+      receiptPrint += ageOfTicket.charAt(0).toUpperCase() + ageOfTicket.slice(1) + ' ' + ticketType.charAt(0).toUpperCase() + ticketType.slice(1) + ' Admission: $' + ticketPriceInDollars.toFixed(2) + ' (' + purchase.extras.join(', ') + `)\n`;
+    }else{
+      receiptPrint += ageOfTicket.charAt(0).toUpperCase() + ageOfTicket.slice(1) + ' ' + ticketType.charAt(0).toUpperCase() + ticketType.slice(1) + ' Admission: $' + ticketPriceInDollars.toFixed(2) + `\n`;
+    };
+  };
+  return receiptPrint + `-------------------------------------------\nTOTAL: $${runningTotal.toFixed(2)}`;
+}
 
 // Do not change anything below this line.
 module.exports = {
