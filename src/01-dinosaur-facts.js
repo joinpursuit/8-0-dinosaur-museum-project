@@ -22,7 +22,37 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+
+/* 
+Understanding: 
+Access the dinosaur array and return the *longest* dinosaur by *feet*
+The output is an object with the dinosaur name and length in feet with 2 decimal points
+Plan: 
+Set the default output as an object
+loop through the array to find the dinosaur with the longest length in meters, which is Brachiosaurus with 30 meters in length
+then set default output equal to the dinosaur name
+*/
+
+function getTallestDinosaur(dinosaurs) {
+  // Checks to see if dinosaurs array is empty, if it is, the output is an empty object  
+  if(dinosaurs.length === 0){
+    return {};
+  }
+  // Accumulator to get the longest Dino
+  let longestDino = dinosaurs[0];
+  let longestDinoObj = {}
+  for (let i=1; i<dinosaurs.length; i++){
+    let dinoLength = dinosaurs[i].lengthInMeters;
+    if(dinoLength > longestDino.lengthInMeters){
+      longestDino = dinosaurs[i];
+    }
+  }
+  // Sets the Dino name as the key within the empty object and sets the value to length in feet by multiplying meters by 3.281
+  longestDinoObj[longestDino.name] = longestDino.lengthInMeters * 3.281;
+  return longestDinoObj;
+}
+
+getTallestDinosaur(exampleDinosaurData);
 
 /**
  * getDinosaurDescription()
@@ -44,7 +74,24 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  // Set default 
+  let dinoDescription = '';
+  // Accumulator to see if given ID is equal to a dinosaur ID, set description
+  for (let i=0; i<dinosaurs.length; i++){
+    let dinosaurId = dinosaurs[i].dinosaurId;
+    if (dinosaurId === id){
+      let dino = dinosaurs[i];
+      dinoDescription = `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`;
+    } 
+  }
+  // Error checking if ID is valid
+  if (dinoDescription === ''){
+    return `A dinosaur with an ID of '${id}' cannot be found.`
+  } else {
+    return dinoDescription;
+  }
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +118,28 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  // Set default value to an empty array
+  let dinoAlive = [];
+  // Loop through dinosaurs
+  for (let i=0; i<dinosaurs.length; i++){
+    let dino = dinosaurs[i];
+    let dinoYearsArr = dinosaurs[i].mya;
+    let dinoID = dinosaurs[i].dinosaurId
+    
+    if (!key && (mya <= dinoYearsArr[0] && mya >= dinoYearsArr[1])){
+      dinoAlive.push(dinoID);
+    } else if (!key && (mya === dinoYearsArr[0] || mya === (dinoYearsArr[0]-1))){
+      dinoAlive.push(dinoID);
+    } else if (key && (mya === dinoYearsArr[0] || mya === (dinoYearsArr[0]-1)) || (mya <= dinoYearsArr[0] && mya >= dinoYearsArr[1])){
+      dinoAlive.push(dino[key]);
+    } else if (key !== dino && (mya === dinoYearsArr[0] || mya === (dinoYearsArr[0]-1)) || (mya <= dinoYearsArr[0] && mya >= dinoYearsArr[1])){
+      dinoAlive.push(dinoID);
+    }
+  }
+  return dinoAlive;
+}
 
 module.exports = {
   getTallestDinosaur,

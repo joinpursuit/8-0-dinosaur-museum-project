@@ -54,7 +54,49 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+
+/*
+Understanding:
+* We are given an object called ticketInfo. From the ticketInfo object we have keys and values that we need to determine the ticket price. We use the ticketData, which have the information for how much the the price should be.
+*/
+
+function calculateTicketPrice(ticketData, ticketInfo) {
+  // Error checking to see if ticket type is valid
+  let ticketTypeObj = ticketData[ticketInfo['ticketType']];
+  if (!ticketTypeObj){
+    return `Ticket type '${ticketInfo['ticketType']}' cannot be found.`
+  } 
+
+  // Error checking to see if entrant type is valid
+  let entrantTypeObj = ticketData[ticketInfo['ticketType']]['priceInCents'][[ticketInfo['entrantType']]];
+  if (!entrantTypeObj){
+    return `Entrant type '${ticketInfo['entrantType']}' cannot be found.`;
+  }
+  // Placeholder for total
+  let totalTicketPrice = 0;
+  // Placeholder for sub-total of ticket without any extras 
+  let priceNoExtras = ticketData[ticketInfo['ticketType']]['priceInCents'][[ticketInfo['entrantType']]];
+
+  // Default value to accumulate the price of extras 
+  let priceOfExtras = 0;
+  let extrasArr = ticketInfo['extras']; // Focusing on the extras array
+  for (let i=0; i<extrasArr.length; i++){ //Looping and accumulating the cost of the extras
+    if (extrasArr[i] === 'movie'){
+      priceOfExtras += ticketData['extras']['movie']['priceInCents'][ticketInfo['entrantType']];
+    } else if (extrasArr[i] === 'education'){
+      priceOfExtras += ticketData['extras']['education']['priceInCents'][ticketInfo['entrantType']];
+    } else if (extrasArr[i] === 'terrace'){
+      priceOfExtras += ticketData['extras']['terrace']['priceInCents'][ticketInfo['entrantType']];
+    } else if (extrasArr[i] !== 'movie' || 'education' || 'terrace'){
+      return `Extra type '${extrasArr[i]}' cannot be found.`
+    }
+  }
+  // Adding price of the ticket without extras and the price of all the extras
+  totalTicketPrice = priceNoExtras + priceOfExtras;
+  return totalTicketPrice;
+}
+
+
 
 /**
  * purchaseTickets()
@@ -109,7 +151,69 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+/*
+  Understanding: 
+  * This function will output a receipt of each purchased ticket that is listed in the purchases array. 
+  * The format of the receipt is very important. 
+    -The receipt uses the entrantType with the first letter capitalized and ticketData description. 
+    -It also has the ticket amount in dollars instead of in cents. 
+    -The purchased extras are also included using the description for each respected extra description from the ticketData object. 
+    -The last line in the receipt is the total of all purchased tickets from the purchases array.
+  * If there are any errors within the tickets, such as ticketType, entrantType, or extras, an error should be outputted with the same message used in the calculateTicketPrice function. 
+  * The difference between the array, purchases, and the object, ticketInfo, is the way to access each ticket, and there are more than one ticket in the purchases array.
+  Planning:
+  * // Double accumulator pattern
+    // Keep track of purchase total(Number) and receipt purchase summary(String)
+    // Loop through purchases and use calculateTicketPrice to determine total of purchase
+      // If the return type is a String return it
+    // A nested accumulator to determine the cost each ticket(Number) and a summary(String) for the receipt
+    // Format the receipt with the totals and the receipt summaries
+*/
+
+function purchaseTickets(ticketData, purchases) {
+  // Helper function to capitalize the entrantType within the receipt summary
+  function capitalize(text){
+  firstLetter = text[0].toUpperCase();
+  split = text.split("");
+  split.shift();
+  remainder = split.join("").toLowerCase();
+  return firstLetter + remainder;
+}
+  // Gets the total price within purchases using the previous function
+  let purchaseTotal = 0;
+  for (let i=0; i<purchases.length; i++){
+    let purchasePriceOfEachTicket = calculateTicketPrice(ticketData, purchases[i]);
+    if (typeof(purchasePriceOfEachTicket) === 'string'){
+      return purchasePriceOfEachTicket;
+    } else if (typeof(purchasePriceOfEachTicket) === 'number'){
+        purchaseTotal += purchasePriceOfEachTicket/100;
+    }
+  }
+  // Set default value for accumulator to get the receipt summary
+  let receiptSummary = '';
+
+  for (let i=0; i<purchases.length; i++){
+    // If each purchase or TickcetInfo contains no extras
+    if (purchases[i]['extras'].length === 0){
+      receiptSummary += `${capitalize(purchases[i]['entrantType'])} ${ticketData[purchases[i]['ticketType']]['description']}: $${(calculateTicketPrice(ticketData, purchases[i]))/100}.00\n`;
+    } // If each purchase or TicketInfo contains extras
+      else if (purchases[i]['extras'].length !== 0){ 
+        // Another accumulator to add the extra summary to the receipt summary
+        let extrasArr = purchases[i]['extras'];
+        let extrasSummary = '';
+        for (let i=0; i<extrasArr.length; i++){
+          if (i === extrasArr.length-1){
+            extrasSummary += `${ticketData['extras'][extrasArr[i]]['description']}`;
+          } else {
+            extrasSummary += `${ticketData['extras'][extrasArr[i]]['description']}, `;
+          }
+        }
+        receiptSummary += `${capitalize(purchases[i]['entrantType'])} ${ticketData[purchases[i]['ticketType']]['description']}: $${(calculateTicketPrice(ticketData, purchases[i]))/100}.00 (${extrasSummary})\n`
+    }
+  }
+  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${receiptSummary}-------------------------------------------\nTOTAL: $${purchaseTotal}.00`
+}
 
 // Do not change anything below this line.
 module.exports = {
