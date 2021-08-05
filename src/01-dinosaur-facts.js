@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -22,7 +23,27 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+if(!dinosaurs.length){
+  return {};
+}
+let height =dinosaurs[0].lengthInMeters;
+let key;
+for(i = 0; i < dinosaurs.length; i++){
+  let dino= dinosaurs[i];
+  if(dino.lengthInMeters>height){
+    key = dino.name;
+    height = dino.lengthInMeters;
+  }
+}
+let lengthInFeet = height*3.281;
+
+return {[key]:lengthInFeet}
+}
+// gaurd clause
+// acuumulator pattern to determine tallest
+// convert lengthInMeters to feet
+//create a new object with name of dinosaur as the key and the height as the value
 
 /**
  * getDinosaurDescription()
@@ -44,8 +65,20 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
-
+function getDinosaurDescription(dinosaurs, id) {
+  let valueToReturn = `A dinosaur with an ID of '${id}' cannot be found.`;
+  for(let dinosaur of dinosaurs){
+    if(dinosaur.dinosaurId === id){
+      valueToReturn =  `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[dinosaur.mya.length-1]} million years ago.`
+    }
+    }
+    return valueToReturn
+  }
+//make a for loop to check each element / loop through dinosaurs array 
+//compare each element to target to see if they match / use an if statement to compare each element(each dinosaur object) to the target id
+//if a match match is found, return the tyarget value / if target dino is found, return a formatted description of that dinosaur
+// if the loop completes and the target isn't found, return an error message / if taget is not found after loo completes, return the error message
+// pay attention to the details
 /**
  * getDinosaursAliveMya()
  * ---------------------
@@ -71,8 +104,38 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let newArr =[];
 
+  for(let dino of dinosaurs){
+    if (dino.mya.length === 1){
+      if(dino.mya[0] === mya || dino.mya[0]-1 === mya){
+        if(dino[key]){
+          newArr.push(dino[key]);
+        } else{
+          newArr.push(dino.dinosaurId);
+        }
+      }
+    } else {
+      if (dino.mya[0] >= mya && dino.mya[1] <= mya){
+        if(dino[key]){
+          newArr.push(dino[key]);
+        } else {
+          newArr.push(dino.dinosaurId);
+        }
+      }
+    } 
+  }return newArr
+}
+// first needs to return an array of dinosaur ids that lived within the mya range provided, if the mya !== any dino.mya's within range, return an empty array
+
+// next if a dino only has one mya year provided, the logic has to allow for the givin mya or dina.mya-1
+ 
+// if the key argument is providided (ie truthy) , it needs to return the value of that key for each dinosaur alive at that time, in an array
+
+// if the key argument !== any dino[key, return the IDs as above
+
+//console.log(getDinosaursAliveMya(exampleDinsaurData, 150, 'name'))
 module.exports = {
   getTallestDinosaur,
   getDinosaurDescription,
