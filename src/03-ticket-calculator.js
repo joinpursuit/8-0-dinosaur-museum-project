@@ -132,10 +132,6 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 
-// function capitalizeWord(word){
-//   return word.char
-// }
-
 function purchaseTickets(ticketData, purchases) {
   let runningTotal = 0;
   let receiptPrint = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n'
