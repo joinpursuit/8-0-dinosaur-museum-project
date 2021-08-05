@@ -30,44 +30,42 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   //WHAT KEY PIECE OF INFO DO WE NEED TO REVEAL WHICH DINOS ARE IN WHICH ROOMS? -> the dinosaur's id
   //HOW CAN WE USE THE INFO PROVIDED TO FIND SOMETHING THAT WILL MATCH OUR
   //TARGET DINO TO THE ROOM IT IS LOCATED IN? -> use the dinosaurs array to find the id of the dinosaur with a name that matches dinosaurName
-  
+
   //default value to return either dinosaur name OR error message
-  
-  let defaultVal = `Dinosaur with name '${dinosaurName}' cannot be found.`
-  let dinosaurObj = {}
-  
+
+  let defaultVal = `Dinosaur with name '${dinosaurName}' cannot be found.`;
+  let dinosaurObj = {};
+
   //1) use a loop on dinosaurs array to find the dinosaurId that corresponds to the given dinosaurName
-  for(let dinosaur of dinosaurs) {
-    if(dinosaur.name === dinosaurName) {
-      dinosaurObj = dinosaur
+  for (let dinosaur of dinosaurs) {
+    if (dinosaur.name === dinosaurName) {
+      dinosaurObj = dinosaur;
     }
   }
 
-
   //2) if no matching dinosaurId is found in the dinosaurs array, return the appropriate error message
-  if(!Object.keys(dinosaurObj).length) {
-    return defaultVal
+  if (!Object.keys(dinosaurObj).length) {
+    return defaultVal;
   }
 
   // default value must change if no dinos can be found in room
-    defaultVal = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+  defaultVal = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
 
   //3) use a loop on the rooms array to see which room the target dino is located in based on its dinosaurId
   // for each room check if given id is inside the room
-  for(let room of rooms) {
-    if(room.dinosaurs.includes(dinosaurObj.dinosaurId)) {
+  for (let room of rooms) {
+    if (room.dinosaurs.includes(dinosaurObj.dinosaurId)) {
       // if the dino included is true, change default to room name
-      defaultVal = room.name
+      defaultVal = room.name;
     }
   }
   //4) if no matching room is found in the rooms array, return the appropriate error message
   // use the changed default val
 
   //CLARIFYING NOTE:
-//TWO SEPARATE ERROR MESSAGES ARE NEEDED TO PASS THE TESTS
+  //TWO SEPARATE ERROR MESSAGES ARE NEEDED TO PASS THE TESTS
 
-return defaultVal
- 
+  return defaultVal;
 }
 /**
  * getConnectedRoomNamesById()
@@ -92,41 +90,40 @@ return defaultVal
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  
-  let roomNamesAndIds = {}
-  let connectedRoomsIds = []
- 
-for (let room of rooms){
-    if(room.roomId === id){
-      for (let roomId of room.connectsTo){
-        connectedRoomsIds.push(roomId)
+  let roomNamesAndIds = {};
+  let connectedRoomsIds = [];
+
+  for (let room of rooms) {
+    if (room.roomId === id) {
+      for (let roomId of room.connectsTo) {
+        connectedRoomsIds.push(roomId);
       }
     }
-    roomNamesAndIds[room.roomId] = room.name
+    roomNamesAndIds[room.roomId] = room.name;
   }
 
-  if(!connectedRoomsIds.length) {
-    return `Room with ID of '${id}' could not be found.`
+  if (!connectedRoomsIds.length) {
+    return `Room with ID of '${id}' could not be found.`;
   }
- 
-  let allRoomsArr = Object.keys(roomNamesAndIds)
-  let connectedRoomNames = []
 
-  for(let connectedId of connectedRoomsIds) {
+  let allRoomsArr = Object.keys(roomNamesAndIds);
+  let connectedRoomNames = [];
+
+  for (let connectedId of connectedRoomsIds) {
     if (allRoomsArr.includes(connectedId)) {
-      connectedRoomNames.push(roomNamesAndIds[connectedId])
+      connectedRoomNames.push(roomNamesAndIds[connectedId]);
     } else {
-      return `Room with ID of '${connectedId}' could not be found.`
+      return `Room with ID of '${connectedId}' could not be found.`;
     }
   }
-  
+
   // Is there a way to store all of both the roomIds AND names somehow in the same data structure? How could that be done?
   // Similarly, is there a way to store only all of the roomIds somehow?
-  //Loop through the 'connectsTo' Ids to see if any are included in, or match to, all of the roomIds. 
-  // If they do, 1. Store the 'name' of the correct 'roomId' in a new array and return - MAYBE using the data structure storing BOTH the roomIds and names... OR 
+  //Loop through the 'connectsTo' Ids to see if any are included in, or match to, all of the roomIds.
+  // If they do, 1. Store the 'name' of the correct 'roomId' in a new array and return - MAYBE using the data structure storing BOTH the roomIds and names... OR
   // 2. Replace the 'connectsTo' Id with the coinciding room's name. If a 'connectsTo' Id is incorrect, or does not match any other 'roomId's, return the error message with the incorrect id {connectsTo}.
- return connectedRoomNames;
- }
+  return connectedRoomNames;
+}
 
 module.exports = {
   getRoomByDinosaurName,

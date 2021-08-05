@@ -55,33 +55,33 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-
   let ticketTypeObj = ticketData[ticketInfo.ticketType];
-  
+
   // Is the ticket type valid?
-  if(!ticketTypeObj){
+  if (!ticketTypeObj) {
     return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
   }
-  
-  let ticketCost = ticketTypeObj["priceInCents"][ticketInfo.entrantType]
-  if(!ticketCost) {
-    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+
+  let ticketCost = ticketTypeObj["priceInCents"][ticketInfo.entrantType];
+  if (!ticketCost) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
   }
-  
+
   // Accumulator pattern to calulate all of the extras
-  for(let addon of ticketInfo.extras) {
+  for (let addon of ticketInfo.extras) {
     // Inside of for loop of acculator pattern: Is the extra type valid?
-    if(!Object.keys(ticketData.extras).includes(addon)) {
-      return `Extra type '${addon}' cannot be found.`
+    if (!Object.keys(ticketData.extras).includes(addon)) {
+      return `Extra type '${addon}' cannot be found.`;
     }
   }
-  for(let addon of ticketInfo.extras) {
-    ticketCost += ticketData["extras"][addon]["priceInCents"][ticketInfo.entrantType]
+  for (let addon of ticketInfo.extras) {
+    ticketCost +=
+      ticketData["extras"][addon]["priceInCents"][ticketInfo.entrantType];
   }
-  // return total of ticket cost and the cost of the extras 
-    return ticketCost
-  }
- 
+  // return total of ticket cost and the cost of the extras
+  return ticketCost;
+}
+
 /**
  * purchaseTickets()
  * ---------------------
@@ -136,81 +136,59 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 
-    // HELPER FUNCTION
-    // Returns every word with first charcater as uppercase letter 
-    function capatalize(str) {
-     let arr = str.split(" ")
-     for(let i = 0; i < arr.length; i++) {
-       arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1)
-     }
-     return arr.join(" ")
-    }
-
-function purchaseTickets(ticketData, purchases) {
-
-  // reciept variable to bring return at the end with all our purchases totaled
-  let reciepts = []
-  let resultFromCalc
-  let entrant 
-  let total = 0
-
-  
-  for(let purchase of purchases) {
-    resultFromCalc = calculateTicketPrice(ticketData, purchase)
-    // If the return type is a String return it
-    // Loop through purchases and use calculateTicketPrice to determine total of purchase
-    if(typeof resultFromCalc === "string") {
-      return resultFromCalc
-    }
-    
-    total += resultFromCalc
-
-    // use helper gunction to capatalize entrant type
-     entrant = capatalize(purchase.entrantType)
-    // since resultFromCal = cost format it using /100 & .toFixed(2)
-      resultFromCalc = ((resultFromCalc/100)).toFixed(2)
-      addOnDescr = []
-
-      for(let addon of purchase.extras) {
-        addOnDescr.push(ticketData.extras[addon].description)
-      }
-      // Adult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
-      if(addOnDescr.length) {
-        addOnDescr = ` (${addOnDescr.join(`, `)})`
-      }
-      reciepts.push(`${entrant} ${ticketData[purchase.ticketType].description}: $${resultFromCalc}${addOnDescr}\n`)
-    }
-    
-    total = (total/100).toFixed(2)
-    reciepts = reciepts.join("")
-    updatedReciept = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${reciepts}-------------------------------------------\nTOTAL: $${total}`
-return updatedReciept
+// HELPER FUNCTION
+// Returns every word with first charcater as uppercase letter
+function capatalize(str) {
+  let arr = str.split(" ");
+  for (let i = 0; i < arr.length; i++) {
+    arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+  }
+  return arr.join(" ");
 }
 
-// const purchases = [
-//   {
-//     ticketType: "general",
-//     entrantType: "adult",
-//     extras: ["movie", "terrace"],
-//   },
-//   {
-//     ticketType: "general",
-//     entrantType: "senior",
-//     extras: ["terrace"],
-//   },
-//   {
-//     ticketType: "general",
-//     entrantType: "child",
-//     extras: ["education", "movie", "terrace"],
-//   },
-//   {
-//     ticketType: "general",
-//     entrantType: "child",
-//     extras: ["education", "movie", "terrace"],
-//   },
-// ];
+function purchaseTickets(ticketData, purchases) {
+  // reciept variable to bring return at the end with all our purchases totaled
+  let reciepts = [];
+  let resultFromCalc;
+  let entrant;
+  let total = 0;
 
-// console.log(purchaseTickets(exampleTicketData, purchases))
+  for (let purchase of purchases) {
+    resultFromCalc = calculateTicketPrice(ticketData, purchase);
+    // If the return type is a String return it
+    // Loop through purchases and use calculateTicketPrice to determine total of purchase
+    if (typeof resultFromCalc === "string") {
+      return resultFromCalc;
+    }
+
+    total += resultFromCalc;
+
+    // use helper gunction to capatalize entrant type
+    entrant = capatalize(purchase.entrantType);
+    // since resultFromCal = cost format it using /100 & .toFixed(2)
+    resultFromCalc = (resultFromCalc / 100).toFixed(2);
+    addOnDescr = [];
+
+    for (let addon of purchase.extras) {
+      addOnDescr.push(ticketData.extras[addon].description);
+    }
+    // Adult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
+    if (addOnDescr.length) {
+      addOnDescr = ` (${addOnDescr.join(`, `)})`;
+    }
+    reciepts.push(
+      `${entrant} ${
+        ticketData[purchase.ticketType].description
+      }: $${resultFromCalc}${addOnDescr}\n`
+    );
+  }
+
+  total = (total / 100).toFixed(2);
+  reciepts = reciepts.join("");
+  updatedReciept = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${reciepts}-------------------------------------------\nTOTAL: $${total}`;
+  return updatedReciept;
+}
+
 
 // Do not change anything below this line.
 module.exports = {
