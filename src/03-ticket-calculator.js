@@ -56,29 +56,46 @@ const exampleTicketData = require("../data/tickets");
  */
 
     // Looking for the cost of ticket .  The cost of ticket is determined by two inputs, ticketData, and TicketInfo which are objects.
-    // We will have to compare each object.  the ticketInfo will determine the output of the ticketData.   
+    // We will have to compare each object.  the ticketInfo will determine the output of the ticketData.  
+    const ticketInfo = {
+      ticketType: "general",
+      entrantType: "adult",
+      extras: [], };
+    
 function calculateTicketPrice(ticketData, ticketInfo) {
+  let admissionTypesArr =  Object.keys(ticketData);
+  let costInCents = {};
+  
+  let givenType = ticketInfo.ticketType; // these values are strings.
+  let givenEntrant = ticketInfo.entrantType;// declaring a variable for ticketInfo with a key of entrantType => "adult"
+  //let admission = ; // admission is the value for the first key value pair in tickets => "general" , 
+  let givenExtras = ticketInfo.extras; // we want to compare this to tickets.extras
+    
+  for (let i = 0 ; i < admissionTypesArr.length; i ++) {
+      
+      if (givenType === admissionTypesArr[i]){    
+        costInCents = ticketData[givenType].priceInCents;
+        let entrantArr = Object.keys(costInCents);
+        //console.log (entrantArr);
 
-  // We want to return priceInCents.  How do we access that value? The values for priceInCents are objects. Each priceInCents object has 3 key value pairs. 
-  //priceInCents.child, priceInCents.adult, priceInCents.senior.
-  // acccessing priceInCents .  (tickets) ticketData is an object.  It has 5 key values consisting of : general , membership, extras, education, and terrace.  
-  // ticketData.general , ticketData.membership, ticketData.extras, ticketData.education, ticketData.terrace all contain objects as values. ticketData.extras has 3 objects nested for its value.
-  // Using ticketInfo, the first goal is to match ticketInfo.ticketType to ticketData.general, ticketData.membership, ticketData.axtras, ticketData.education, ticketData.terrace
-  // once we have our first matching key value pairs , we must also compare ticketInfo.entrantType to ticketData.X.priceInCents.(value determined from ticketInfo.entrantType).
+        return costInCents[givenEntrant]; 
+      } 
+        if (!ticketData[givenType]){
 
-  // ticketInfo.ticketType & ticketInfo.entrantType values must be specific to the values given in ticketData.  
-  // ticketInfo.ticketType values are limited to general, membership, extras, education, terrace.
-  // ticketInfo.entrantType values should match ticketData.X.priceInCents => child , adult or senior.
-  //how do we start matching?  I dont see this being a for loop.  There are no arrays except for the values found in extras
+        return `Ticket type '${givenType}' cannot be found.`
+      } 
+      for (let j = 0; j < entrantArr.length; j++) {
+          if (givenEntrant !== entrantArr[j]){
 
-  // Extras is a set of objects that inludes : movie , education, terrace . They will increase the final price according to their values. 
-
-  let tickettype = ticketInfo.ticketType; // these values are strings .  if ticketData.tickettype
-
-     
-
-
+          return `Entrant type '${givenEntrant}' cannot be found.`
+      }
+        }
+    } 
+    
 }
+
+
+console.log(calculateTicketPrice(exampleTicketData,ticketInfo));
 
 /**
  * purchaseTickets()
@@ -134,6 +151,13 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {}
+
+
+
+
+
+
+
 
 // Do not change anything below this line.
 module.exports = {

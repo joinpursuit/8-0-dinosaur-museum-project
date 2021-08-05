@@ -84,20 +84,53 @@ function getConnectedRoomNamesById(rooms, id) {
   let connectedRooms = []; // I am declaring an empty array to return the names of rooms connected to given room id. 
   // we are comparing the ** id ** argument to **rooms.roomId** , to produce matching **rooms.connectsTo** values
   //If there is a match between id & rooms.roomID , I will push the matching values of rooms[i].connectsTo , into the array 
+  let connectedNames =[];
+  let iDNameObj = {};
+  let idArray = [];
 
   for (let i = 0 ; i < rooms.length; i++){
     let indexOfRooms = rooms[i];
-      if (id === indexOfRooms.roomId){
-          connectedRooms.push(indexOfRooms.connectsTo); // I am creating an array with connects to rooms. 
-          // the issue is converting them to names
-      } 
     
-  } if (connectedRooms.length < 1){
-    return `Room with ID of '${id}' could not be found.`
-  }
+      if (id === indexOfRooms.roomId){
+        for (let k = 0; k < indexOfRooms.connectsTo.length; k++){ 
+          connectedRooms.push(indexOfRooms.connectsTo[k]);
+        }
+           // I am creating an array with connects to rooms. 
+          // the issue is converting them to names
+      } // Object.keys() Object will go in () , return value gives an array of all keys as strings.
+        iDNameObj[indexOfRooms.roomId] = indexOfRooms.name;
+  }  
+      if (connectedRooms.length < 1){
 
-}
-getConnectedRoomNamesById(exampleRoomData, "A6QaYdyKra");
+        return `Room with ID of '${id}' could not be found.`
+      } 
+        for (let j = 0 ; j < idArray.length; j++){
+          
+         if (id === idArray[j]){
+            
+          idArray = Object.keys(iDNameObj);
+          connectedNames.push(iDNameObj[indexOfRooms.roomId]);
+         }
+         
+          }
+          
+          return connectedNames;
+        }
+          
+        
+      // looop over connected rooms array , push name if matches 
+  //   for (let j = 0; j < rooms.length; j++){
+    
+  //   let indexofIDs = rooms[j].roomId;
+
+  //     if (connectedRooms.includes(indexofIDs)){
+  //       connectedNames.push(rooms[j].name);
+  //         return connectedNames;
+  //     }
+  // } 
+
+
+console.log(getConnectedRoomNamesById(exampleRoomData, "A6QaYdyKra"));
 
 module.exports = {
   getRoomByDinosaurName,
