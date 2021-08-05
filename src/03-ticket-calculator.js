@@ -152,6 +152,7 @@ function purchaseTickets(ticketData, purchases) {
   let reciepts = []
   let resultFromCalc
   let entrant 
+  let total = 0
 
   
   for(let purchase of purchases) {
@@ -162,6 +163,8 @@ function purchaseTickets(ticketData, purchases) {
       return resultFromCalc
     }
     
+    total += resultFromCalc
+
     // use helper gunction to capatalize entrant type
      entrant = capatalize(purchase.entrantType)
     // since resultFromCal = cost format it using /100 & .toFixed(2)
@@ -175,14 +178,39 @@ function purchaseTickets(ticketData, purchases) {
       if(addOnDescr.length) {
         addOnDescr = ` (${addOnDescr.join(`, `)})`
       }
-      reciepts.push(`${entrant} ${ticketData[purchase.ticketType].description}: $${resultFromCalc}${addOnDescr}`)
-      reciepts = reciepts.join("")
-      updatedReciept = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${reciepts}\n-------------------------------------------\nTOTAL: $${resultFromCalc}`
-  }
-  
+      reciepts.push(`${entrant} ${ticketData[purchase.ticketType].description}: $${resultFromCalc}${addOnDescr}\n`)
+    }
+    
+    total = (total/100).toFixed(2)
+    reciepts = reciepts.join("")
+    updatedReciept = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${reciepts}-------------------------------------------\nTOTAL: $${total}`
 return updatedReciept
 }
 
+// const purchases = [
+//   {
+//     ticketType: "general",
+//     entrantType: "adult",
+//     extras: ["movie", "terrace"],
+//   },
+//   {
+//     ticketType: "general",
+//     entrantType: "senior",
+//     extras: ["terrace"],
+//   },
+//   {
+//     ticketType: "general",
+//     entrantType: "child",
+//     extras: ["education", "movie", "terrace"],
+//   },
+//   {
+//     ticketType: "general",
+//     entrantType: "child",
+//     extras: ["education", "movie", "terrace"],
+//   },
+// ];
+
+// console.log(purchaseTickets(exampleTicketData, purchases))
 
 // Do not change anything below this line.
 module.exports = {
