@@ -44,8 +44,6 @@ function getTallestDinosaur(dinosaurs) {
 }
 
 
-getTallestDinosaur(exampleDinosaurData);
-
 /**
  * getDinosaurDescription()
  * ---------------------
@@ -71,22 +69,33 @@ getTallestDinosaur(exampleDinosaurData);
 2. usa an if statement to compare each element (each dino object) to the target id
 3. if target match
 
-
+"Elasmosaurus (ee-LAZ-mo-sore-us)\nElasmosaurus was an aquatic dinosaur with an extremely long neck that likely fed on other smaller aquatic fauna like fish, molluscs, and squid. E.D. Cope mistakenly placed the skull of an Elasmosaurus on the much shorter tail rather than the extremely long neck. It lived in the Late Cretaceous period, over 80.5 million years ago.";
 
 */
 function getDinosaurDescription(dinosaurs, id) {
+  let returnValue =  `A dinosaur with an ID of '${id}' cannot be found.`;
+  for(let dinosaur of dinosaurs){
+    if(dinosaur.dinosaurId === id){
+      return `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[dinosaur.mya.length-1]} million years ago.`;
+      } 
+    }
+    return returnValue;
+  }
+// This function takes in array and target and if target is found in the array then return the index of the target
+// if not found return an error message.
 // function findTargetNum(array, target){
-
+//   let foundIndex;
+//   let targetFound = `Target found at ${foundIndex}.`;
+// for(let i = 0;i < array.length;i++){
+//   if(array[i] === target){
+//     foundIndex = i;
+//     return targetFound;
+//   } 
+// } 
+// return "Target not found.";
 // }
-// make a for loop to check each element 
-// for( let n of array){
-// if(n === target){
-//  return n
-//}
-// return ` 
-//} 
+// console.log(findTargetNum(["Lions", "Tigers", "Bears"], "Dogs"));
 
-}
 
 /**
  * getDinosaursAliveMya()
