@@ -81,21 +81,6 @@ function getDinosaurDescription(dinosaurs, id) {
     }
     return returnValue;
   }
-// This function takes in array and target and if target is found in the array then return the index of the target
-// if not found return an error message.
-// function findTargetNum(array, target){
-//   let foundIndex;
-//   let targetFound = `Target found at ${foundIndex}.`;
-// for(let i = 0;i < array.length;i++){
-//   if(array[i] === target){
-//     foundIndex = i;
-//     return targetFound;
-//   } 
-// } 
-// return "Target not found.";
-// }
-// console.log(findTargetNum(["Lions", "Tigers", "Bears"], "Dogs"));
-
 
 /**
  * getDinosaursAliveMya()
@@ -125,20 +110,28 @@ function getDinosaurDescription(dinosaurs, id) {
 
 
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-/*
-first, needs to return an ARRAY of dinosaur IDs that lived within the mya range provided. If the mya !==
-any dino.mya's within range, return an empty array.
-2. if a dino only has on mya year provided, the logic has to allow for the given mya OR dino.mya-1
-3. if the 'key' argument IS PROVIDED (i.e. truthy), it needs to return the value of that key for each dino
-alive at that time, in an ARRAY.
-4. if the key argument !== any dino(key), return the IDs as above.
+  let dinosaursAliveArr = [];
+for(let dino of dinosaurs){
+  if(dino.mya.length === 1){
+    if(dino.mya[0] === mya || dino.mya[0] - 1 === mya){
+      if(dino[key]){
+        dinosaursAliveArr.push(dino[key]);
+      } else {
+        dinosaursAliveArr.push(dino.dinosaurId);
+        }
+    }
+    } else {
+    if(dino.mya[0] >= mya && dino.mya[1] <= mya){
+      if(dino[key]){
+        dinosaursAliveArr.push(dino[key]);
+      }  else {
+      dinosaursAliveArr.push(dino.dinosaurId);
+      }
+    }
+    } 
+}
+return dinosaursAliveArr;
 
-
-
-
-
-
-*/
 }
 
 
@@ -153,3 +146,4 @@ module.exports = {
   getDinosaurDescription,
   getDinosaursAliveMya,
 };
+
