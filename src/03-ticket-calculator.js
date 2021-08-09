@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { extras } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,33 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+
+  //without extra costs
+let ticketTypeObj = ticketData[ticketInfo.ticketType];
+if(ticketTypeObj === undefined){
+  return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+}
+let ticketCost = ticketTypeObj.priceInCents[ticketInfo.entrantType];
+if(ticketCost === undefined){
+  return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+}
+
+
+//extra costs calculated
+
+let extrasCost = 0;
+for(extra of ticketInfo.extras){
+  let extraObj = ticketData.extras[extra];
+  if(extraObj === undefined){
+    return `Extra type '${extra}' cannot be found.`;
+  }
+  let extraCost = extraObj.priceInCents[ticketInfo.entrantType];
+  extrasCost += extraCost
+}
+
+return ticketCost + extrasCost;
+}
 
 /**
  * purchaseTickets()
@@ -109,10 +136,48 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+    // Double accumulator pattern
+    // Keep track of purchase total(Number) and receipt purchase summary(String)
+    // Loop through purchases and use calculateTicketPrice to determine total of purchase
+    // If the return type is a String return it
+    // A nested accumulator to determine the extra cost total(Number) and a summary(String) for the receipt
+    // Format the receipt with the totals and the receipt summarie
+function purchaseTickets(ticketData, purchases) {
+  let receiptSummary = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+  let  purchasesTotal = 0;
+  for(let purchase of purchases){
+    let resultOfCalcTicketPrice = calculateTicketPrice(ticketData, purchase);
+    if(typeof resultOfCalcTicketPrice === "string"){
+      return resultOfCalcTicketPrice;
+    }
+    purchasesTotal += resultOfCalcTicketPrice;
+
+    //Movie Access/Terrace Access
+    let extrasSummary = "";
+    let extras = purchase.extras;
+    for(let i = 0;i < extras.length;i++){
+      extrasSummary += ticketData.extras[extras[i]].description;
+      if(i !== extras.length-1){
+        extrasSummary += ", ";
+      }
+    }
+
+let capitalizedEntrantType = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
+receiptSummary += `${capitalizedEntrantType} ${ticketData[purchase.ticketType].description}: $${resultOfCalcTicketPrice/100}.00`;
+receiptSummary += extras.length > 0 ? ` (${extrasSummary})\n` : `\n`;
+  }
+  return receiptSummary + `-------------------------------------------\nTOTAL: $${purchasesTotal/100}.00`;
+}
+
+  //   for(let purchase of purchases){
+//     let purchaseTotal = calculateTicketPrice(ticketData, purchase);
+//     if(typeof purchaseTotal === "string"){
+//       return purchaseTotal;
+// }
 
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
   purchaseTickets,
 };
+

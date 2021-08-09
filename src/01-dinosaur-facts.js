@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -22,8 +23,55 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
 
+
+  // Guard Clause if dinosaurs return empty object
+  // Accumulator Pattern to determine tallest
+  // Convert lengthInMeters to feet
+  // Return the newly created object with name of the dinosaur as the key and height as the value
+  // multiply by 3.281 to get to feet
+// function getTallestDinosaur(dinosaurs) {
+//   function convertMetersToFeet(meters){
+//     return meters*3.281;
+//   }
+//   function searchDinoList(dinosArr){
+//     let accumulator = dinosArr[0];
+//     for(let dino of dinosArr){
+//       if(dino.lengthInMeters > accumulator.lengthInMeters){
+//         accumulator = dino;
+//       }
+//     }
+//     return accumulator;
+//   }
+//   function getTallestDinosaur(dinosaurs) {
+//     if(dinosaurs.length < 1){
+//       return {};
+//     }
+//     let tallestDino = searchDinoList(dinosaurs);
+//     return {[tallestDino.name]: convertMetersToFeet(tallestDino.lengthInMeters)}
+//   }
+// // }
+function getTallestDinosaur(dinosaurs){
+  if(!dinosaurs.length){
+    return {};
+  }
+
+  let height = dinosaurs[0].lengthInMeters;
+  let key;
+  for(let i =1; i < dinosaurs.length;i++){
+    let dino = dinosaurs[i];
+    if(dino.lengthInMeters > height){
+      key = dino.name;
+      height = dino.lengthInMeters
+    }
+  }
+    let lengthInFeet = height*3.281
+
+    return {[key]: lengthInFeet};
+
+}
+
+getTallestDinosaur(exampleDinosaurData);
 /**
  * getDinosaurDescription()
  * ---------------------
@@ -44,8 +92,30 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
 
+
+//loop through the dinosaurs array
+  //use an if statement to compare each element (each dinosaur object) to the target id
+  //if target dino is found, return a formatted description of that dinosaur
+  // if target is not found after loop completes return the error message
+function getDinosaurDescription(dinosaurs, id) {
+  for(let i = 0; i < dinosaurs.length;i++){
+    let dinoArr = dinosaurs[i]
+    let idArr = dinoArr.dinosaurId;
+    let nameArr = dinoArr.name;
+    let infoArr = dinoArr.info;
+    let proArr = dinoArr.pronunciation;
+    let periodArr = dinoArr.period;
+    let myaArr = dinoArr.mya[dinoArr.mya.length-1];
+    if(id === idArr){
+      return `${nameArr} (${proArr})\n${infoArr} It lived in the ${periodArr} period, over ${myaArr} million years ago.`
+    }// else if( id === idArr){
+    //   // return `A dinosaur with an ID of ${idArr} cannot be found.`
+    // }
+  }
+    return `A dinosaur with an ID of '${id}' cannot be found.`;
+}
+getDinosaurDescription(exampleDinosaurData);
 /**
  * getDinosaursAliveMya()
  * ---------------------
@@ -71,8 +141,36 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
 
+
+ // first, needs to return an ARRAY of dinosaur IDs that lived within the mya range provided. if the mya !== any dino.mya's within range, return an empty array.
+  // next, if a dino only has one mya year provided, the logic has to allow for the given mya OR dino.mya - 1
+  // if the 'key' argument IS PROVIDED (i.e. truthy), it needs to return the value of that key for each dinosaur alive at that time, in an ARRAY
+  // if the 'key' argument !== any dino[key], return the IDs as above.
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let newArr =[];
+  let defaultKey = "dinosaurId";
+
+  if(Object.keys(dinosaurs[0]).includes(key)){
+    defaultKey = key;
+  }
+  for(let i = 0; i < dinosaurs.length; i++){
+  let dinoArr = dinosaurs[i];
+  if(dinoArr.mya.length === 1){
+    if(mya <= dinoArr.mya[0] && mya >= dinoArr.mya[0]-1){
+      newArr.push(dinoArr[defaultKey]);
+    }
+  } else {
+    if(mya <= dinoArr.mya[0] && mya >= dinoArr.mya[1]){
+      newArr.push(dinoArr[defaultKey]);
+      }
+    }
+  
+  }
+  return newArr;
+  
+}
+getDinosaursAliveMya(exampleDinosaurData)
 module.exports = {
   getTallestDinosaur,
   getDinosaurDescription,
