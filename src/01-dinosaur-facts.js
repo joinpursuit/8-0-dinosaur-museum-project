@@ -22,7 +22,28 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  // Guard Clause if dinosaurs return empty object
+
+  // Accumulator Pattern to determine tallest
+  // Convert lengthInMeters to feet
+  // Return the newly created object with name of the dinosaur as the key and height as the value 
+if(dinosaurs.length === 0){
+  return {};
+} 
+let tallestHeight = 0;
+let tallestDinoName = "";
+for(let i=0;i<dinosaurs.length;i++){
+  if(dinosaurs[i].lengthInMeters>tallestHeight){
+    tallestHeight = dinosaurs[i].lengthInMeters;
+    tallestDinoName = dinosaurs[i].name;
+  } 
+} 
+let tallestDino = {};
+tallestDino[tallestDinoName]=tallestHeight * 3.281;
+return tallestDino;
+}
+getTallestDinosaur(exampleDinosaurData);
 
 /**
  * getDinosaurDescription()
@@ -44,7 +65,23 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+ 
+  for(let i=0;i<dinosaurs.length;i++){
+    if(dinosaurs[i].dinosaurId === id){
+     return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.`
+    } 
+  }
+  return `A dinosaur with an ID of '${id}' cannot be found.`;
+  }
+
+
+//PSEUDOCODE FOR DINODESCRIPTION
+//loop through the dinosaurs array
+//use an if statement to compare each element (each dinosaur object) to the target id
+//if target dino is found, return a formatted description of that dinosaur
+// if target is not found after loop completes return the error message
+//pay very close attention to how the example is formatted. look at the dinosaur.js file to see what info you'll need!!
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +108,35 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  
+    //Declare empty array `newDinoArray`
+    let newDinoArray = [];
+    //iterate through `dinosaurs` array --> each called `dino`
+    for (const dino of dinosaurs){
+      //Compare current `dino.mya[0]` to/> `mya` && `dino.mya[1]` to/< `mya` && `dino.mya.length` === 2
+      if (dino.mya[0] >= mya && dino.mya[1] <= mya && dino.mya.length === 2) {
+        if(key){
+          newDinoArray.push(dino[key])
+        } else {
+       //if true PUSH current `dino.dinosaurId` into `newDinoArray`
+       newDinoArray.push(dino.dinosaurId)
+        }
+      }
+      //Compare currrent `dino.mya[0]` to/=== `mya` || `dino.mya[0] -1` to/=== `mya`
+      if (dino.mya[0] === mya || dino.mya[0]-1 === mya) {
+        if(key){
+          newDinoArray.push(dino[key])
+        } else {
+        // if true PUSH current `dino.dinosuarId` into `newDinoArray`
+        newDinoArray.push(dino.dinosaurId)
+        }
+      }
+    }
+    //return newDinoArray
+    return newDinoArray
+  }
+
 
 module.exports = {
   getTallestDinosaur,
