@@ -54,7 +54,32 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  // Calculate ticket cost no extras.
+  let ticketTypeObj = ticketData[ticketInfo.ticketType];
+  if(!ticketTypeObj){
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+  
+  let ticketCost = ticketTypeObj.priceInCents[ticketInfo.entrantType]; 
+   if(ticketCost === undefined){
+       return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+     }
+
+    // Calculate the extras total cost. 
+     let extrasCost = 0;
+     for(extra of ticketInfo.extras){
+       let extraObj = ticketData.extras[extra];
+       if(extraObj === undefined){
+         return `Extra type '${extra}' cannot be found.`;
+       } 
+       let extrasTotal = extraObj.priceInCents[ticketInfo.entrantType]
+       extrasCost += extrasTotal;
+     }
+     // Returns total price with extras included.
+     return ticketCost + extrasCost;
+  
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +134,29 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+// Double accumulator pattern not a nested one. Keep track of two things at once.
+//    keep track of purchase total(Number) and receipt purchase summary(String)
+// Loop through all the purchase and use calculateTicketPrice to determine total of purchase.
+// It the return type is String return it.
+// A nested accumulator to determine the extra cost total(Number) and a summary
+
+
+for(let purchase of purchases){
+ let purchaseTotal = calculateTicketPrice(ticketData, purchase);
+  if(typeof purchaseTotal === "string"){
+    return purchaseTotal;
+  }
+
+
+  return `Thank you for visiting the Dinosaur Museum!\n`
+}
+
+
+
+
+
+}
 
 // Do not change anything below this line.
 module.exports = {
