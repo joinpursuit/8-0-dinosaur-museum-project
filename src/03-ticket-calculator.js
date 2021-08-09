@@ -11,14 +11,16 @@ const exampleTicketData = require("../data/tickets");
 /**
  * calculateTicketPrice()
  * ---------------------
- * Returns the ticket price based on the ticket information supplied to the function. The `ticketInfo` will be in the following shape. See below for more details on each key.
+ * Returns the ticket price based on the ticket information supplied to the function. 
+ * The `ticketInfo` will be in the following shape. See below for more details on each key.
  * const ticketInfo = {
     ticketType: "general",
     entrantType: "child",
     extras: ["movie"],
   };
  *
- * If either the `ticketInfo.ticketType` value or `ticketInfo.entrantType` value is incorrect, or any of the values inside of the `ticketInfo.extras` key is incorrect, an error message should be returned.
+ * If either the `ticketInfo.ticketType` value or `ticketInfo.entrantType` value is incorrect, 
+ * or any of the values inside of the `ticketInfo.extras` key is incorrect, an error message should be returned.
  *
  * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
  * @param {Object} ticketInfo - An object representing data for a single ticket.
@@ -54,7 +56,34 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+    function calculateTicketPrice(ticketData, ticketInfo) {
+      let ticketCostInCents = 0;
+      let ticketTypeObj = ticketData[ticketInfo.ticketType];
+      let entrantTypeObj = ticketInfo[ticketInfo.entrantType];
+      let extraTypeObj = ticketInfo[ticketInfo.extras];
+
+      if(ticketTypeObj === undefined){
+        return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+      }
+      let ticketCost = ticketTypeObj.priceInCents[ticketInfo.entrantType]
+      if(ticketCost === undefined){
+        return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+      } 
+      
+      let extrasCost = 0;
+      for(extra of ticketInfo.extras){
+        let extraObj = ticketData.extras[extra];
+        if(extraObj === undefined){
+          return `Extra type '${extra}' cannot be found.`
+        }
+        let extraCost = extraObj.priceInCents[ticketInfo.entrantType];
+        extrasCost += extraCost;
+      }
+
+      return ticketCost + extrasCost;
+      
+       
+    }
 
 /**
  * purchaseTickets()
@@ -109,8 +138,42 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+    function purchaseTickets(ticketData, purchases) {
+      // Double accumulator pattern
+        // Keep track of purchase total(Number) and receipt purchase summary(String)
+      // Loop through purchases and use calculateTicketPrice to determine total of purchase
+        // If the return type is a String return it
+      // A nested accumulator to determine the extra cost total(Number) and a summary(String) for the receipt
+      // Format the receipt with the totals and the receipt summaries
+    
+      let receiptSummary = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+  let  purchasesTotal = 0;
+  for(let purchase of purchases){
+    let resultOfCalcTicketPrice = calculateTicketPrice(ticketData, purchase);
+    if(typeof resultOfCalcTicketPrice === "string"){
+      return resultOfCalcTicketPrice;
+    }
+    purchasesTotal += resultOfCalcTicketPrice;
 
+    //Movie Access/Terrace Access
+    let extrasSummary = "";
+    let extras = purchase.extras;
+    for(let i = 0;i < extras.length;i++){
+      extrasSummary += ticketData.extras[extras[i]].description;
+      if(i !== extras.length-1){
+        extrasSummary += ", ";
+      }
+    }
+
+
+//Purchase.entrantType[0] grabs the first letter of the entrant type and makes it capital.
+//Then we concate
+let capitalizedEntrantType = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
+receiptSummary += `${capitalizedEntrantType} ${ticketData[purchase.ticketType].description}: $${resultOfCalcTicketPrice/100}.00`;
+receiptSummary += extras.length > 0 ? ` (${extrasSummary})\n` : `\n`;
+  }
+  return receiptSummary + `-------------------------------------------\nTOTAL: $${purchasesTotal/100}.00`;
+}
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
