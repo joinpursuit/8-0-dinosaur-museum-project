@@ -5,11 +5,12 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
 /**
- * calculateTicketPrice()
+ * calculateTicketPrice() 
  * ---------------------
  * Returns the ticket price based on the ticket information supplied to the function. The `ticketInfo` will be in the following shape. See below for more details on each key.
  * const ticketInfo = {
@@ -54,8 +55,37 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let ticketKind = ticketData[ticketInfo, TypeOfTicket]
+   let errorMessage1 = `Ticket type '${ticketInfo.ticketKind}' cannot be found`;
+   let errorMessage2 = `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  /*guard clause*/
+  if (ticketKind === undefined) 
+  {
+    return errorMessage1;
+  }
+  let ticketCost = ticketKind.priceInCents[ticketInfo.entrantType]
 
+  if(ticketPrice === undefined)
+  {
+    return errorMessage2
+  }
+  //Extra costs
+  let extraStuff = 0;
+//loop along tickets length
+  for(let i = 0; i <tickets.length; i++) 
+  {
+    //extras on ticket will be the index of the extras in the ticket object
+    let extrasOnTicket = ticketData.extras[i];
+    if (extraStuff === undefined)
+    {
+    return errorMessage2
+    }
+    let extraCost = extraStuff.priceInCents[ticketInfo.entrantType]
+    extraCost += extraStuff.priceInCents[ticketInfo.entrantType]
+  }
+
+  return ticketCost + extraCost;
 /**
  * purchaseTickets()
  * ---------------------
@@ -109,7 +139,31 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+let receiptMessage = `Thank you for visting the Dinosuar Museum!\n---------------------------------------------------\n`
+let total = 0;
+/* loop along tickets array */
+for (let i = 0; i < tickets.length; i++)
+{ /*establish final price*/
+  let finalPrice = calculateTicketPrice(ticketData, purchases)
+  /*FInal price must be in string format*/
+  if (finalPrice === "string")
+  {
+    return finalPrice
+  }
+}
+/*extras is a string*/
+let extrasDescription = ""
+/*access the extras*/
+let extras = purchases.extras;
+/*loop along extras lenght*/
+for(let i = 0; i < extras.length i++)
+{
+  /* and add the description to the data we pulled from extras */
+  extrasDescription + ticketData.extras[extras[i]].description
+}
+
+}
 
 // Do not change anything below this line.
 module.exports = {
