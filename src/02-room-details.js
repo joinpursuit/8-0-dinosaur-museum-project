@@ -25,7 +25,27 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName){
+  let dinoObj;
+  let dinoErrorMsg = `Dinosaur with name '${dinosaurName}' cannot be found.`;
+  let dinoRoomErrorMsg = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+  for(let i = 0;i < dinosaurs.length;i++){
+    if(dinosaurs[i].name === dinosaurName){
+      dinoObj = dinosaurs[i];
+    }
+  }
+  
+  if(!dinoObj){
+    return dinoErrorMsg;
+  }
+  
+  for(let room of rooms){
+    if(room.dinosaurs.includes(dinoObj.dinosaurId)){
+      return room.name;
+    }
+  }
+return dinoRoomErrorMsg;
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +69,45 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+let roomNamesAndIds = {};
+  for (let room of rooms){
+    roomNamesAndIds[room.roomId] = room.name;
+  }
+
+
+
+
+let connectToRoomsIds = [];
+
+for (let room of rooms){
+  if(room.roomId === id){
+    for(let roomId of room.connectsTo){
+      connectToRoomsIds.push(roomId)
+    }
+  }
+  roomNamesAndIds[room.roomId] = room.name
+}
+
+/*
+1. Loop through "rooms" checking for a matching roomID === id. 
+2. If no match, the error message with the incorrect Id needs to be returned.
+3. for a match, store the 'connectsTo' array of id's in a new array.
+4. is there a way to store all of both the roomIDs AND names somehow in the same data structure?
+how could that be done?
+Similarly, is there a way to store only all of the roomID's somehow?
+5. Loop through the 'connectsTo' Id's to see if any are included in, or match to, all of the roomIDs.
+If they do, 1. Store the 'name' of the correct 'roomId' in a new array and return - 
+Maybe using the data structure storing BOTH the roomID's and names... OR
+2. Replace the 'connectsTo' ID with the coinciding room's name. If a "connectsTo" id is incorrect
+or does not match any other 'roomId's, return the error message with the incorrect id {connectsTo}.
+
+
+
+
+
+*/
+}
 
 module.exports = {
   getRoomByDinosaurName,
