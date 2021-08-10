@@ -134,25 +134,41 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
+
+
+
 function purchaseTickets(ticketData, purchases) {
+// String to be returned as the start of the reciept.
+
+let receiptSummary = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+let purchaseTotal = 0;
 // Double accumulator pattern not a nested one. Keep track of two things at once.
 //    keep track of purchase total(Number) and receipt purchase summary(String)
 // Loop through all the purchase and use calculateTicketPrice to determine total of purchase.
-// It the return type is String return it.
-// A nested accumulator to determine the extra cost total(Number) and a summary
-
-
 for(let purchase of purchases){
- let purchaseTotal = calculateTicketPrice(ticketData, purchase);
-  if(typeof purchaseTotal === "string"){
-    return purchaseTotal;
+ let ticketPriceTotal = calculateTicketPrice(ticketData, purchase);
+  if(typeof ticketPriceTotal === "string"){
+    return ticketPriceTotal;
   }
+  purchaseTotal += ticketPriceTotal;
 
-
-  return `Thank you for visiting the Dinosaur Museum!\n`
+  // A nested accumulator to get the extras as a description for adding to receipt summary
+  let extrasSummary = "";
+  let extras = purchase.extras;
+  for(let i = 0;i < extras.length;i++){
+    extrasSummary += ticketData.extras[extras[i]].description; 
+    if(i !== extras.length - 1){
+    extrasSummary += ", ";
+    }
+  }
+// Uppercases all the entrant types on the receipt and adds all the strings to create the receipt.
+  let capEntrantType = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
+  receiptSummary += `${capEntrantType} ${ticketData[purchase.ticketType].description}: $${ticketPriceTotal/100}.00`;
+  receiptSummary += extras.length >= 1 ? ` (${extrasSummary})\n` : `\n`;
+ 
 }
 
-
+return receiptSummary + `-------------------------------------------\nTOTAL: $${purchaseTotal/100}.00`;
 
 
 
