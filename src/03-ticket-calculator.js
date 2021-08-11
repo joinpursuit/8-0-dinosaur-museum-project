@@ -124,15 +124,15 @@ const exampleTicketData = require("../data/tickets");
  *
  * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file 
  * for an example of the input.
- * @param {Object[]} purchases - An array of objects. Each object represents a single ticket being purchased.
- * @param {string} purchases[].ticketType - Represents the type of ticket. Could be any string except the value "extras".
- * @param {string} purchases[].entrantType - Represents the type of entrant. Prices change depending on the entrant.
- * @param {string[]} purchases[].extras - An array of strings where each string represent a different "extra" that can be 
+ * @param {Object[]} ticket - An array of objects. Each object represents a single ticket being purchased.
+ * @param {string} ticket[].ticketType - Represents the type of ticket. Could be any string except the value "extras".
+ * @param {string} ticket[].entrantType - Represents the type of entrant. Prices change depending on the entrant.
+ * @param {string[]} ticket[].extras - An array of strings where each string represent a different "extra" that can be 
  * added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
  * @returns {string} A full receipt, with each individual ticket bought and the total.
  *
  * EXAMPLE:
- *  const purchases = [
+ *  const ticket = [
       {
         ticketType: "general",
         entrantType: "adult",
@@ -160,74 +160,57 @@ const exampleTicketData = require("../data/tickets");
     (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild 
     General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------
     \nTOTAL: $175.00"
+*/
+function createExtrasString(ticketData, extras){
 
- * EXAMPLE:
-    const purchases = [
-      {
-        ticketType: "discount", // Incorrect
-        entrantType: "adult",
-        extras: ["movie", "terrace"],
-      }
-    ]
-    purchaseTickets(tickets, purchases);
-    //> "Ticket type 'discount' cannot be found."
- */
-function purchaseTickets(ticketData, purchases) {
-let totalTicketPrice = ''; 
-let prize =  0;
-
-
-
-for (let purchase of purchases){
-
-  prize = calculateTicketPrice(ticketData, purchase)
-
+if(extras.length === 0){
+    return '';
+  }
+let result = ' ('
+for (let i = 0; i < extras.length; i++){
+    const extra = extras[i]
+    if(i === extras.length - 1){
+      result += ticketData.extras[extra].description + ')';
+    } else {
+      result += ticketData.extras[extra].description + ', ';
+    }
 }
-  if(typeof prize === 'number'){
-
-    const priceTotal = 0;
-// checks if the entrance ticket type is avialable
-if(entrantType in ticketData[ticketType].priceInCents){
-  priceTotal += prize
-  totalTicketPrice = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchase.entrantType} ${purchase.ticketType}  Admission: ${prize}\n-------------------------------------------\nTOTAL: ${priceTotal}`;
-}
-
-// checks if the entrance ticket type is avialable
-if(entrantType in ticketData[ticketType].priceInCents === 2){
-  priceTotal += prize
-  totalTicketPrice = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchase.entrantType} ${purchase.ticketType}  Admission: ${prize}\n${purchase.entrantType} ${purchase.ticketType}  Admission: ${prize}\n-------------------------------------------\nTOTAL:${priceTotal}`;
+return result
 }
 
 
-// checks if the entrance ticket type is avialable
-if(entrantType in ticketData[ticketType].priceInCents > 2){
- priceTotal += prize; 
-  totalTicketPrice = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchase.entrantType} ${purchase.ticketType}  Admission: ${prize}\n${purchase.entrantType} ${purchase.ticketType}  Admission: ${prize}\n${purchase.entrantType} ${purchase.ticketType}  Admission: ${prize}\n${purchase.entrantType} ${purchase.ticketType}  Admission: ${prize}\n${purchase.entrantType} ${purchase.ticketType}  Admission: ${prize}\n-------------------------------------------\nTOTAL:${priceTotal}`
+function createDollarString(dollar){
+  return '$' + (dollar / 100).toFixed(2)
 }
 
 
+ function purchaseTickets(ticketData, purchases){
+let total = 0;
+let result = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n'; 
+  
 
-
-    //checks if the objects array has elements, "movie", "education", "terrace" && if it's not empty
-    if((extraType.includes('movie') ||
-    extraType.includes('education') ||
-    extraType.includes('terrace')) && extraType.length >= 1){
-      priceTotal += prize; 
-        totalTicketPrice =`Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchase.entrantType} ${purchase.ticketType} Admission: ${prize} (${purchase.extras})\n-------------------------------------------\nTOTAL: ${priceTotal}`
-       
+  for (let i = 0; i < purchases.length; i++){
+    const ticket = purchases[i]
+    const price = calculateTicketPrice(ticketData, ticket)
+    if(typeof price === 'string'){
+      return price
     }
 
-    if(extraType.length >= 1){
-      priceTotal += prize;
-    totalTicketPrice =`Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchase.entrantType} ${purchase.ticketType} Admission: ${prize} (${purchase.extras})\n${purchase.entrantType} ${purchase.ticketType} Admission: ${prize} ${purchase.extras}\n${purchase.entrantType} ${purchase.ticketType} Admission: ${prize}  (${purchase.extras})\n${purchase.entrantType} ${purchase.ticketType} Admission: ${prize}  (${purchase.extras}\n-------------------------------------------\nTOTAL: ${priceTotal}`
-  }
- 
-  }
+    const entrantTypeString = ticket.entrantType[0].toUpperCase() + ticket.entrantType.slice(1).toLowerCase()
+    const ticketTypeString = ticketData[ticket.ticketType].description
+    const dollarString = createDollarString(price)
+    const extrasString = createExtrasString(ticketData, ticket.extras)
 
- return totalTicketPrice
-  } 
- // purchaseTickets(exampleTicketData, purchases)
-// Do not change anything below this line.
+    result = result + entrantTypeString + ' ' + ticketTypeString + ': ' + dollarString +extrasString + '\n'
+    total = total + price;
+
+      }
+      result = result + '-------------------------------------------\nTOTAL: '
+      result = result + createDollarString(total)
+    
+  return result;
+ }
+
 module.exports = {
   calculateTicketPrice,
   purchaseTickets,
