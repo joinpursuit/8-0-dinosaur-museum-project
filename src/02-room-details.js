@@ -27,21 +27,24 @@ const exampleRoomData = require("../data/rooms");
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   let result = ''
-  let ID = ''
+  let id = ''
 
-	  for (let dinosaur of dinosaurs){
-	    if (dinosaur.name === dinosaurName){
-        ID = dinosaur.dinosaurId
-      }
-	}
-    if(!ID){return `Dinosaur with name '${dinosaurName}' cannot be found.`}
-      for (let room of rooms){
-       if (room.dinosaurs.includes(ID)){
-        result = room.name
-  } 
-     if (!result){return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`}
-	 
-    return result  
+	for (let newDino of dinosaurs) {
+  let result = ''
+  let id = ''
+  for (let newDino of dinosaurs){
+    if (newDino.name === dinosaurName){
+      id = newDino.dinosaurId
+    }
+  }
+  if (!id){return `Dinosaur with name '${dinosaurName}' cannot be found.`}
+  for (let room of rooms){
+    if (room.dinosaurs.includes(id)){
+      result = room.name
+    }
+  }
+  if (!result) {return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`}
+  return result
 }
 }
 

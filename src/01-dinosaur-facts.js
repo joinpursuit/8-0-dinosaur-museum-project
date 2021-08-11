@@ -23,18 +23,18 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getTallestDinosaur(dinosaurs) {
-  const tallest = {};
-  if (dinosaurs.length === 0) {
-    return {};
-  };
-  let dino = dinosaurs[0]
-  for(let i =0; i < dinosaurs.length; i++){
-    if (dinosaurs.lengthInMeters > dino.lengthInMeters){
-      dino = dinosaur[i]
+  let tallest = {}
+  let newDino = dinosaurs[0]
+
+  for (let i = 1; i < dinosaurs.length; i++){
+    if (dinosaurs[i].lengthInMeters > newDino.lengthInMeters){
+      newDino = dinosaurs[i]
+    }
   }
-}
-tallest[dino.name] = dino.lengthInMeters *3.281;
-return tallest;
+  if (newDino){
+    tallest[newDino.name] = newDino.lengthInMeters*3.281
+  }
+    return tallest
 }
 
 /**
@@ -60,7 +60,7 @@ return tallest;
 function getDinosaurDescription(dinosaurs, id) {
   for (let dinosaur of dinosaurs){
     if (dinosaur.dinosaurId === id){
-      return `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`
+      return `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[dinosaur.mya.length-1]} million years ago.`
     }
   }
   return "A dinosaur with an ID of 'incorrect-id' cannot be found."
@@ -92,22 +92,23 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
+  
   if (!Object.keys(dinosaurs[0]).includes(key)){
-    key = 'dinosaurID'
+    key = 'dinosaurId'
   }
-    let Obj = []
-  for(let dinosaur of dinosaurs){
-    if(dinosaur.mya.length === 1){
-      if (dinosaur.mya[0] >= mya && dinosaurs.mya[0]-1 <= mya){
-        Obj.push(dinosaur[key])
+  let obj = []
+  for (let dinosaur of dinosaurs){
+    if (dinosaur.mya.length === 1){
+      if (dinosaur.mya[0] >= mya && dinosaur.mya[0]-1 <= mya){
+        obj.push(dinosaur[key])
       }
-    }else {
-      if (dinosaur.mya[0] >= mya && dinosaurs.mya[1] <= mya){
-
+    }else{
+      if (dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya){
+        obj.push(dinosaur[key])
       }
     }
   }
-  return Obj
+  return obj
 }
 
 module.exports = {

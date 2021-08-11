@@ -70,10 +70,11 @@ const exampleTicketData = require("../data/tickets");
 function calculateTicketPrice(ticketData, ticketInfo) {
   
  let ticket = 0;
+ //We always start at -
 
   if (ticketInfo.ticketType in ticketData) {
     if (ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents) {
-      
+   //I know this is messy but for me nesting helps me think. I didn't think of the data and price as seperate items because it just wasn't helping me to do so. 
       ticket += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
     } else return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
     } else return "Ticket type 'incorrect-type' cannot be found.";
@@ -147,50 +148,42 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
- let extraz = [];
-  let extraList = '';
-  
-  for (let extra of purchase.extras){
-    
-    extraz.push(ticketData.extras[extra].description);
+  function capitals(entrantType){
+    entrantType = entrantType.charAt(0).toUpperCase() + entrantType.slice(1)
+    return entrantType
   }
- 
-  if (extraz[0]) {
-   
-    extraList = ` (${extraz.join(', ')})`
-  }
+    let receipt = ''
+    //this is to mark the variable `totalCost`
+    let totalCost = 0
+    //this is going to move through the purchase array 
+    for (let ticketInfo of purchases) {
 
-  return `${ticketz(purchase.entrantType)} ${ticketData[purchase.ticketType].description}: $${(calculateTicketPrice(ticketData, purchase) / 100).toFixed(2)}${extraList}`
-
-function ticketz(string){ 
+    let currentCost = calculateTicketPrice(ticketData, ticketInfo)
+        if(typeof currentCost === '') {
+          return currentCost
+      }
+        let entrantType = capitals(ticketInfo.entrantType)
   
-  return string[0].toUpperCase() + string.slice(1).toLowerCase()
-
+        currentCost = currentCost/100
   
- let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
- // I got the receipt idea from working with Dylan I thought it was cute but he thought of it first (as far as I know)
+        if(ticketInfo.extras.length === 0) {
+          receipt += `${entrantType} ${ticketData[ticketInfo.ticketType].description}: $${currentCost.toFixed(2)}\n`
+      } else {
+          let extraArray = []
+          for(const extra of ticketInfo.extras){
+            extraArray.push(ticketData.extras[extra].description)
+      }
+          receipt += `${entrantType} ${ticketData[ticketInfo.ticketType].description}: $${currentCost.toFixed(2)} (${extraArray.join(', ')})\n`
   
-  let priceInCents = 0;
- 
-  for (let type of purchases){
+      }
+        totalCost += currentCost
   
-    let price = calculateTicketPrice(ticketData, type)
-    
-    if (typeof price === 'string'){
-  
-      return price;
-    
-    } else {
-   
-    priceInCents += price
-   
-    receipt += purchaseToReceipt(ticketData, type)
     }
-  }
- 
-  return receipt + `-------------------------------------------\nTOTAL: $${(priceInCents/100).toFixed(2)}`
 
-}
+    let finalPrintOut = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${receipt}-------------------------------------------\nTOTAL: $${totalCost.toFixed(2)}`
+  
+    return finalPrintOut
+  }
 
 // Do not change anything below this line.
 module.exports = {
