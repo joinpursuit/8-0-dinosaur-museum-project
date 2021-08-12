@@ -54,7 +54,100 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+
+//create a function that goes into the object and looks at the ticket info and ticket data and the ticket entrant type
+// if the ticket type is not general or membership, meaning if ticket type has be one of the ticket type listed 
+
+function calculateTicketPrice(ticketData,ticketInfo) {
+  //an accumulator for extra add ons
+  let extraTotal = 0;
+  //create a variable to store the type of ticket
+  let ticketInfoTicketType = ticketInfo.ticketType;
+  //create a variable to store the type of entrant
+  let ticketInfoEntrantType = ticketInfo.entrantType;
+  //declare a function the stores the types of extras
+  let ticketInfoExtraType = ticketInfo.extras;
+  //if there is a ticket type that is not listed in the ticket data ie not general, membership, or extras)
+  if (ticketData[ticketInfoTicketType] === undefined) {
+    return `Ticket type 'incorrect-type' cannot be found.`;
+  }
+  //if the entrant type is not listed in the ticket data ie not child, adult, or senior
+  if (ticketData[ticketInfoTicketType].priceInCents[ticketInfoEntrantType] === undefined) {
+    return `Entrant type 'incorrect-entrant' cannot be found.`;
+  }
+  //define how to get the cost of a regular ticket without extras
+  let costOfRegularTicket = ticketData[ticketInfoTicketType].priceInCents[ticketInfoEntrantType];
+  //if there aren't any extras just return the cost a regular ticket
+  if (ticketInfoExtraType.length === 0) {
+    return costOfRegularTicket
+  }
+  // if there are more than 0 extras added onto a ticket
+  if (ticketInfoExtraType.length > 0) {
+     //loop through the extra ticket info values
+    for (const eachExtraAddOn of ticketInfo.extras) {
+      //if the extra add on the ticket is not real then it's undefined, since it doesn't exist in the ticket data file
+      if (ticketData.extras[eachExtraAddOn] === undefined) {
+        return `Extra type 'incorrect-extra' cannot be found.`;
+      }
+      //if the if statement is false, find the price of the add on and add it onto the extra total
+      extraTotal += ticketData.extras[eachExtraAddOn].priceInCents[ticketInfoEntrantType]  
+    }
+  }  
+  return costOfRegularTicket += extraTotal;
+}
+
+const ticketData = {
+  general: {
+    description: "General Admission",
+    priceInCents: {
+      child: 2000,
+      adult: 3000,
+      senior: 2500,
+    },
+  },
+  membership: {
+    description: "Membership Admission",
+    priceInCents: {
+      child: 1500,
+      adult: 2800,
+      senior: 2300,
+    },
+  },
+  extras: {
+    movie: {
+      description: "Movie Access",
+      priceInCents: {
+        child: 1000,
+        adult: 1000,
+        senior: 1000,
+      },
+    }, 
+}
+}  
+
+const sampleTicketInfo = {
+  ticketType: "general",
+  entrantType: "child",
+  extras: ["movie"],
+}
+
+// const purchases = [
+//   {
+//     ticketType: "general", // Incorrect
+//     entrantType: "adult",
+//     extras: ["movie", "terrace"],
+//   }
+// ]
+// console.log(calculateTicketPrice(ticketData,purchases))
+
+// function calculateTicketPrice(ticketData,ticket) {
+  //console.log(ticketData[ticket.ticketType].priceInCents[ticket.entrantType])
+//how to do an error
+//if ticketData[ticketInfoTicketType] === undefined
+//if ticketdata[ticketype].priceInCents[entrantType] === undefined
+// if extras[extra] === undefined
+
+
 
 /**
  * purchaseTickets()
@@ -109,7 +202,102 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+//function that converts dollars to cents
+//take the calculate total function / 100 . to fixed (2). return `${result of the new function}.
+
+//the receipt will print the entrant type, the ticket type, the price of the ticket, the extras + `access`
+//each purchase on the purchase ticket is separated by \n
+//its an array of objects so I'm looping through each index, and each index is an object with properties. I am gathering and using the the values of each key to print information I need
+//the function loops and dumps the values + access into an accumulator which is an empty string
+//will have to loop through each value execute the top code, then run that value through the convert to dollars function, and toFix(2) and dollars sign to that value
+//   for (const eachPurchaseOnTicket of purchase) {
+
+//function that returns a number with 2 decimal places - 
+function convertToDollars(cost){
+  let totalDollarCost = 0;
+  totalDollarCost =+ (cost/100);
+  return totalDollarCost; //add toFixed(2) and $ after
+  }
+// console.log(convertToDollars(calculateTicketPrice(ticketData, sampleTicketInfo))); //add the helper function to determine cost of each ticket of the entire purchase
+
+//function that loops through the extras
+function loopThroughTheExtras(eachTicket){
+  let eachTicketExtra = []
+    for (let i = 0 ; i < eachTicket.extras.length; i++) {
+        let eachExtra = eachTicket.extras[i];
+        eachExtra = eachExtra.charAt(0).toUpperCase(1) + eachExtra.slice(1)  + ` Access`;
+        eachTicketExtra.push(eachExtra);
+     }    
+    return eachTicketExtra.join(', ');
+    }
+
+
+  const purchases = [
+    {
+      ticketType: "general",
+      entrantType: "adult",
+      extras: ["movie", "terrace"],
+    },
+    {
+      ticketType: "general",
+      entrantType: "senior",
+      extras: ["terrace"],
+    },
+    {
+      ticketType: "general",
+      entrantType: "child",
+      extras: ["education", "movie", "terrace"],
+    },
+    {
+      ticketType: "general",
+      entrantType: "child",
+      extras: ["education", "movie", "terrace"],
+    },
+  ];
+
+// console.log(loopThroughTheExtras(purchases));   //
+//find a way to capitalize the first letter of each extra  
+  
+function purchaseTickets(ticketData, purchases) {
+  for (const eachTicket of purchases) {
+    if (typeof calculateTicketPrice(ticketData, eachTicket) === 'string') {
+      return  calculateTicketPrice(ticketData, eachTicket);
+    }
+  }
+  //create an accumulator to store the dollar amount
+  let costOfAllTickets = 0;
+  //an empty accumulator to gather the ticket type
+  let eachTicketTicketValues = '';
+  //an empty accumulator for the extra items
+  // let allTheExtras = '';
+  // //loop through to gather information from each ticket, looping through an array
+  for (const eachTicket of purchases) {
+    let allTheExtras = '';
+    allTheExtras += `${loopThroughTheExtras(eachTicket)}`
+    if (allTheExtras.length === 0) {
+      eachTicketTicketValues += `${eachTicket.entrantType.charAt(0).toUpperCase() + eachTicket.entrantType.slice(1)} ${eachTicket.ticketType.charAt(0).toUpperCase() + eachTicket.ticketType.slice(1)} Admission: $${convertToDollars(calculateTicketPrice(ticketData,eachTicket)).toFixed(2)}\n`;
+
+    }
+    else {
+      eachTicketTicketValues += `${eachTicket.entrantType.charAt(0).toUpperCase() + eachTicket.entrantType.slice(1)} ${eachTicket.ticketType.charAt(0).toUpperCase() + eachTicket.ticketType.slice(1)} Admission: $${convertToDollars(calculateTicketPrice(ticketData,eachTicket)).toFixed(2)} (${allTheExtras})\n`;
+    }
+    // (${eachTicket.extras.join(' Access,').charAt(0).toUpperCase() + eachTicket.extras.toUpperCase()} Access)
+    // allTheExtras = `${loopThroughTheExtras(eachTicket)}`
+    costOfAllTickets += calculateTicketPrice(ticketData,eachTicket); 
+
+  // }
+  }
+  //loop and grab the values of entrant type
+  costOfAllTickets = convertToDollars(costOfAllTickets);
+return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${eachTicketTicketValues}-------------------------------------------\nTOTAL: $${costOfAllTickets.toFixed(2)}`;}
+//${eachTicketTicketValues} \n /
+console.log(purchaseTickets(ticketData,purchases));
+//create a helper function that converts the cents to dollars
+//create a helper function the loops all the extras that's in someone's purchase
+
+//find a way to add the extra
+
 
 // Do not change anything below this line.
 module.exports = {
