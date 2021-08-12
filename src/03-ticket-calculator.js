@@ -80,7 +80,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 
         return costInCents[givenEntrant]; 
       } 
-        if (!ticketData[givenType]){
+        if (givenType !== ticketData[givenType]){
 
         return `Ticket type '${givenType}' cannot be found.`
       } 
@@ -150,7 +150,26 @@ console.log(calculateTicketPrice(exampleTicketData,ticketInfo));
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let summaryReceipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+  let totalPurchases = 0;
+
+  for ( let purchase of purchases){
+    let resultOf;
+    if (typeof resultOf === "string")
+    return resultOf;
+  }
+  let extrasSummary = "";
+  for(let i = 0; i < purchase.extras.length;i++){
+    extrasSummary += ticketData.extras[i].description;
+    if (i !== purchase.extras.length -1){
+      extrasSummary += ", ";
+      
+    }
+    
+  }
+  summaryReceipt = ``;
+}
 
 
 

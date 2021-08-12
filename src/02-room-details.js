@@ -87,48 +87,31 @@ function getConnectedRoomNamesById(rooms, id) {
   let connectedNames =[];
   let iDNameObj = {};
   let idArray = [];
+  
+  for (let room of rooms){ 
+    iDNameObj[room.roomId] = room.name;
+    idArray.push(room.roomId);// creating an ID array to be iterated through
 
-  for (let i = 0 ; i < rooms.length; i++){
-    let indexOfRooms = rooms[i];
-    
-      if (id === indexOfRooms.roomId){
-        for (let k = 0; k < indexOfRooms.connectsTo.length; k++){ 
-          connectedRooms.push(indexOfRooms.connectsTo[k]);
-        }
-           // I am creating an array with connects to rooms. 
-          // the issue is converting them to names
-      } // Object.keys() Object will go in () , return value gives an array of all keys as strings.
-        iDNameObj[indexOfRooms.roomId] = indexOfRooms.name;
-  }  
-      if (connectedRooms.length < 1){
-
-        return `Room with ID of '${id}' could not be found.`
+    if (room.roomId === id){
+      for (let ID of room.connectsTo){
+        connectedRooms.push(ID)
       } 
-        for (let j = 0 ; j < idArray.length; j++){
-          
-         if (id === idArray[j]){
-            
-          idArray = Object.keys(iDNameObj);
-          connectedNames.push(iDNameObj[indexOfRooms.roomId]);
-         }
-         
-          }
-          
-          return connectedNames;
-        }
-          
-        
-      // looop over connected rooms array , push name if matches 
-  //   for (let j = 0; j < rooms.length; j++){
+    } 
+  } 
+
+  if (!connectedRooms.length){
+    return `Room with ID of '${id}' could not be found.`
+  }
+  for (let connected of connectedRooms){   // looping through connectedRooms  
+    if(idArray.includes(connected)){
+      connectedNames.push(iDNameObj[connected])
+    } else { 
+      return `Room with ID of '${connected}' could not be found.`
+    }   
+  }
+  return connectedNames;
     
-  //   let indexofIDs = rooms[j].roomId;
-
-  //     if (connectedRooms.includes(indexofIDs)){
-  //       connectedNames.push(rooms[j].name);
-  //         return connectedNames;
-  //     }
-  // } 
-
+}
 
 console.log(getConnectedRoomNamesById(exampleRoomData, "A6QaYdyKra"));
 
