@@ -159,7 +159,7 @@ function purchaseTickets(ticketData, purchases) {
     for (let ticketInfo of purchases) {
 
     let currentCost = calculateTicketPrice(ticketData, ticketInfo)
-        if(typeof currentCost === '') {
+        if(typeof currentCost === 'string') {
           return currentCost
       }
         let entrantType = capitals(ticketInfo.entrantType)
