@@ -144,11 +144,19 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 //if the room id is not right then the error message is `Room with ID of 'incorrect-id' could not be found.
 
 function getConnectedRoomNamesById(rooms, id) {
+  //have an array to determine to accumulate all the actual room IDs on the list
+  let allTheRoomIDs = []
+  //loop through an push each room Id into a room
+  for (let i = 0; i < rooms.length; i++) {
+    let eachRoom = rooms[i];
+    allTheRoomIDs.push(eachRoom.roomId)
+  }
   //create an empty array so that if there are values dump the value in there
   let listOfConnectingRooms = [];
   // loop through each room on the list roons
   for (let i = 0; i < rooms.length; i++) {
     let eachRoom = rooms[i];
+    allTheRoomIDs.push(eachRoom.roomId)
     //in each room loop through the connects to array
     for (const connectingRoom of eachRoom.connectsTo) {
       //check if the connect to array has the given id
@@ -156,8 +164,9 @@ function getConnectedRoomNamesById(rooms, id) {
         //if it does then push the value into the given array
         listOfConnectingRooms.push(eachRoom.name)
       }
-      if (connectingRoom.includes('incorrect-id')) {
-        return `Room with ID of 'incorrect-id' could not be found.`
+      if (!allTheRoomIDs.includes(connectingRoom)) {
+        //if it does then push the value into the given array
+         return `Room with ID of 'incorrect-id' could not be found.`
       }
     } 
   }
@@ -168,6 +177,7 @@ function getConnectedRoomNamesById(rooms, id) {
 
     //if (listOfConnectingRooms.includes //(an index that does not exist in the room id then it returns as false))
   return listOfConnectingRooms;
+
 }
 //create a loop that compares collected rooms against the values that exist as a room id.
 //the last test says if the connected room id was in correct then there is an error message
