@@ -22,70 +22,39 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-// function convertToFeet(n) {
-//   return n * 3.281
-// }
-// What is the input? An array of objects called dinosaurs
-// What is the output? An object: key = name & value of the tallest dinosaur, converted from meters to feet.
-// Setup 2 variables:
-// 1. hold the final result as an object
-// 2. hold the temp value of current dinosaurs, as an object
-// ??let currentDino = {};
-// Create a for loop to go through the array until it finds the tallest dino.
-// Edge case: if the dinosaurs array is empty, return an empty object.
-//dino = dinosaurs.length[i];
-// Convert meters into feet by * 3.281
-
+// Create a helper function to convert from meters to feet. 
 function convertToFeet(n) {
   return n * 3.281;
 }
 function getTallestDinosaur(dinosaurs) {
+  // What is the input? An array of objects called dinosaurs
+  // What is the output? An object: key = name. Figure out the value of the tallest dinosaur, convert it from meters to feet.
+  
+  // Declare a variable that will hold the final result in an object or return an empty object as the default value (edge case).
+  let tallestDino = {};
+  // If statement to account for an empty array of objects. 
   if (dinosaurs.length === 0) {
     return {};  
   }
-  let tallestDino = {};
+  // 2. hold the temp value of current dinosaurs, as an object
+  // ??let currentDino = {};
   let currentDino = dinosaurs[0]; //Element #1
+  // Create a for loop to go through the array until it finds the tallest dino.
   for (let i = 1; i < dinosaurs.length; i++) {
     let dino = dinosaurs[i];
+    // // When the dino we're looping through is taller than currentDino.
     if (dino.lengthInMeters >
       currentDino.lengthInMeters) {
         currentDino = dino;
       }
     }
+    // Convert tallestDino result from meters into feet. Use the helper function called converToFeet.
     tallestDino[currentDino.name] = convertToFeet(currentDino.lengthInMeters);
-    return tallestDino; //tallestDino.name: .length
+    
+    return tallestDino; 
   }
+getTallestDinosaur(exampleDinosaurData);
   
-  //getTallestDinosaur(exampleDinosaurData);
-  // tallestDino[currentDino.name] =
-  //   currentDino.lengthInMeters;
-  
-  // if (dinosaurs.length === id) {
-  //   return `A dinosaur with an ID of '${id}' cannot be found.`;
-  // }
-// OR If using the helper function called convertToFeet. Use the next 2 lines of code.
-//tallestDino[currentDino.name] =
-//convertToFeet(currentDino.lengthInMeters)
-
-// // Looping through the inputted array
-// for (let i = 1; i < dinosaurs.length; i++) {
-//   let dino = dinosaurs[i];
-// // If the dino we're looping through is taller than currentDino, then
-//  if (dinosaurs[i].lengthInMeters > currentDino.lengthInMeters) {
-//    currentDino = dino;
-//    //  let name = currentDino = dinosaurs[i].name
-//    //  let height = currentDino = dinosaurs[i].lengthInMeters
-//   }
-//   //tallest[currentDino.name] = currentDino.lengthInMeters
-// }
-//   // What is our output? Return { name: heightInFeet },
-//   tallest[currentDino.name] = convertToFeet(currentDino.lengthInMeters);
-//   return tallest;
-//   // we need to format it to look like this:
-//   // Meters to feet conversion, operation: meters * 3.281
-// // tallest[currentDino.name] = currentDino.lengthInMeters * 3.281
-// }
-// getTallestDinosaur(exampleDinosaurData);
 /**
  * getDinosaurDescription()
  * ---------------------
@@ -106,28 +75,34 @@ function getTallestDinosaur(dinosaurs) {
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-
-// ERRORS
-// should return a string description of a dinosaur, by ID
-// should work for dinosaurs with only one value in `mya`
-// should return an error message if the dinosaur cannot be found
-
-// COMMENTS
-// Identify the input: an array of dinosaur objects
-// Identify the output: return a string with error message or the description of the dinosaur.
-//
-
 function getDinosaurDescription(dinosaurs, id) {
-
-  for (let i = 0; 1 < dinosaurs.length; i++) {
-    if (dinosaurs[i].dinosaurId === id) {
-      return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.`;
+  // What is the output data & default value? 
+  // 1. Output data: returns a detailed description of a dinosaur. 
+  // Define a loop to go through the dinosaur array. 
+  for (let i = 0; i < dinosaurs.length; i++) {
+    let dino = dinosaurs[i];
+    if (dino.dinosaurId === id) {
+      return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`;
     }
   }
-    if (!dinosaurs.dinosaurId) {
-    return `A dinosaur with an ID of '${id}cannot be found.`
-  }
+      // Default value: When dinosaur id is not in the array, return an error message as a string. ERROR MESSAGE: 'A dinosaur with an ID of 'incorrect-id' cannot be found.
+      return `A dinosaur with an ID of '${id}' cannot be found.`    
 }
+
+
+//console.log(getDinosaurDescription(exampleDinosaurData));
+
+
+
+//   for (let i = 0; 1 < dinosaurs.length; i++) {
+//     if (dinosaurs[i].dinosaurId === id) {
+//       return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.`;
+//     }
+//   }
+//     if (!dinosaurs.dinosaurId) {
+//     return `A dinosaur with an ID of '${id}cannot be found.`
+//   }
+// }
 // getDinosaurDescription();
 // for (let dino of dinosaurs) {
 // if (dino.length === 0) {
