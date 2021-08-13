@@ -233,28 +233,28 @@ function loopThroughTheExtras(eachTicket){
     }
 
 
-  const purchases = [
-    {
-      ticketType: "general",
-      entrantType: "adult",
-      extras: ["movie", "terrace"],
-    },
-    {
-      ticketType: "general",
-      entrantType: "senior",
-      extras: ["terrace"],
-    },
-    {
-      ticketType: "general",
-      entrantType: "child",
-      extras: ["education", "movie", "terrace"],
-    },
-    {
-      ticketType: "general",
-      entrantType: "child",
-      extras: ["education", "movie", "terrace"],
-    },
-  ];
+  // const purchases = [
+  //   {
+  //     ticketType: "general",
+  //     entrantType: "adult",
+  //     extras: ["Movie Access", "terrace"],
+  //   },
+  //   {
+  //     ticketType: "general",
+  //     entrantType: "senior",
+  //     extras: ["terrace"],
+  //   },
+  //   {
+  //     ticketType: "general",
+  //     entrantType: "child",
+  //     extras: ["education", "movie", "terrace"],
+  //   },
+  //   {
+  //     ticketType: "general",
+  //     entrantType: "child",
+  //     extras: ["education", "movie", "terrace"],
+  //   },
+  // ];
 
 // console.log(loopThroughTheExtras(purchases));   //
 //find a way to capitalize the first letter of each extra  
@@ -273,26 +273,28 @@ function purchaseTickets(ticketData, purchases) {
   // let allTheExtras = '';
   // //loop through to gather information from each ticket, looping through an array
   for (const eachTicket of purchases) {
+    //create an accumulator for the extras
     let allTheExtras = '';
+    //gather all the values returned in the loopThroughExtras
     allTheExtras += `${loopThroughTheExtras(eachTicket)}`
+    //conditional if there aren't any extras in the ticket then the values stored will not have the extras variable
     if (allTheExtras.length === 0) {
       eachTicketTicketValues += `${eachTicket.entrantType.charAt(0).toUpperCase() + eachTicket.entrantType.slice(1)} ${eachTicket.ticketType.charAt(0).toUpperCase() + eachTicket.ticketType.slice(1)} Admission: $${convertToDollars(calculateTicketPrice(ticketData,eachTicket)).toFixed(2)}\n`;
 
     }
+    //if there are extras in the ticket then the values store will have the extra variable
     else {
       eachTicketTicketValues += `${eachTicket.entrantType.charAt(0).toUpperCase() + eachTicket.entrantType.slice(1)} ${eachTicket.ticketType.charAt(0).toUpperCase() + eachTicket.ticketType.slice(1)} Admission: $${convertToDollars(calculateTicketPrice(ticketData,eachTicket)).toFixed(2)} (${allTheExtras})\n`;
     }
-    // (${eachTicket.extras.join(' Access,').charAt(0).toUpperCase() + eachTicket.extras.toUpperCase()} Access)
-    // allTheExtras = `${loopThroughTheExtras(eachTicket)}`
-    costOfAllTickets += calculateTicketPrice(ticketData,eachTicket); 
-
+    //gather all the ticket prices and add them to the grand total variable
+    costOfAllTickets += calculateTicketPrice(ticketData,eachTicket);
   // }
   }
-  //loop and grab the values of entrant type
+  //convert the grand total to a number with decimals
   costOfAllTickets = convertToDollars(costOfAllTickets);
-return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${eachTicketTicketValues}-------------------------------------------\nTOTAL: $${costOfAllTickets.toFixed(2)}`;}
+return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${eachTicketTicketValues}-------------------------------------------\nTOTAL: $${costOfAllTickets.toFixed(2)}`;
+}
 //${eachTicketTicketValues} \n /
-console.log(purchaseTickets(ticketData,purchases));
 //create a helper function that converts the cents to dollars
 //create a helper function the loops all the extras that's in someone's purchase
 
