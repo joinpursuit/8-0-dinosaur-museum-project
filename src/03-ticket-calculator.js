@@ -1,5 +1,6 @@
 /*
-  Do not change the line below. If you'd like to run code from this file, you may use the `exampleTicketData` variable below to gain access to tickets data. This data is pulled from the `data/tickets.js` file.
+  Do not change the line below. If you'd like to run code from this file, 
+  you may use the `exampleTicketData` variable below to gain access to tickets data. This data is pulled from the `data/tickets.js` file.
 
   You may use this data to test your functions. You may assume the shape of the data remains the same but that the values may change.
 
@@ -12,14 +13,16 @@ const exampleTicketData = require("../data/tickets");
 /**
  * calculateTicketPrice()
  * ---------------------
- * Returns the ticket price based on the ticket information supplied to the function. The `ticketInfo` will be in the following shape. See below for more details on each key.
+ * Returns the ticket price based on the ticket information supplied to the function. 
+ * The `ticketInfo` will be in the following shape. See below for more details on each key.
  * const ticketInfo = {
     ticketType: "general",
     entrantType: "child",
     extras: ["movie"],
   };
  *
- * If either the `ticketInfo.ticketType` value or `ticketInfo.entrantType` value is incorrect, or any of the values inside of the `ticketInfo.extras` key is incorrect, an error message should be returned.
+ * If either the `ticketInfo.ticketType` value or `ticketInfo.entrantType` value is incorrect, or any of the values inside of 
+ * the `ticketInfo.extras` key is incorrect, an error message should be returned.
  *
  * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
  * @param {Object} ticketInfo - An object representing data for a single ticket.
@@ -57,11 +60,11 @@ const exampleTicketData = require("../data/tickets");
  */
 
 function calculateTicketPrice(ticketData, ticketInfo) {
-  // the result will hold the correct value of the function
+  //directoey to ticketType and ticketInfo.
   const ticketType = ticketInfo.ticketType;
   const entrantType = ticketInfo.entrantType;
-  const extrasParam = ticketInfo.extras;
-
+  const extras = ticketInfo.extras;
+  //if ticketType or entrantType value is invalid log erroe message.
   if (!(ticketType in ticketData)) {
     return `Ticket type '${ticketType}' cannot be found.`;
   }
@@ -69,21 +72,19 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   if (!(entrantType in ticketData[ticketType].priceInCents)) {
     return `Entrant type '${entrantType}' cannot be found.`;
   }
-
-  for (const extra of extrasParam) {
+  for (const extra of extras) {
     if (!(extra in ticketData.extras)) {
-      return `Extra type '${extra}' cannot be found.`;
+      return `Extra type '${extras}' cannot be found.`;
     }
   }
 
   let price = ticketData[ticketType].priceInCents[entrantType];
-  let extrasPrice = 0;
 
-  for (const extra of extrasParam) {
-    extrasPrice += ticketData.extras[extra].priceInCents[entrantType];
+  for (const extra of extras) {
+    price += ticketData.extras[extra].priceInCents[entrantType];
   }
 
-  return price + extrasPrice;
+  return price;
 }
 
 /**
@@ -126,7 +127,12 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       },
     ];
     purchaseTickets(tickets, purchases);
-    //> "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
+    //> "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------
+    \nAdult General Admission: $50.00 (Movie Access, Terrace Access)
+    \nSenior General Admission: $35.00 (Terrace Access)
+    \nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)
+    \nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)
+    \n-------------------------------------------\nTOTAL: $175.00"
 
  * EXAMPLE:
     const purchases = [
@@ -139,6 +145,9 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
+function priceInDollars(price) {
+  return `$${(price / 100).toFixed(2)}`;
+}
 
 function purchaseTickets(ticketData, purchases) {
   let output = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
@@ -152,16 +161,15 @@ function purchaseTickets(ticketData, purchases) {
     }
     const description = ticketData[obj.ticketType].description;
     const ageGroup = obj.entrantType.substring(0, 1).toUpperCase() + obj.entrantType.substring(1).toLowerCase();
-    const priceInDollars = (price / 100).toFixed(2);
 
     totalPrice += price;
-    extrasLabel = obj.extras.map((extra) => tickets.extras[extra].description).join(", ");
+    extrasLabel = obj.extras.map((extra) => ticketData.extras[extra].description).join(", ");
     const extraText = extrasLabel ? ` (${extrasLabel})` : "";
 
-    let line = `${ageGroup} ${description}: $${priceInDollars}${extraText}\n`;
+    let line = `${ageGroup} ${description}: ${priceInDollars(price)}${extraText}\n`;
     output += line;
   }
-  output += `-------------------------------------------\nTOTAL: $${(totalPrice / 100).toFixed(2)}`;
+  output += `-------------------------------------------\nTOTAL: ${priceInDollars(totalPrice)}`;
 
   return output;
 }
