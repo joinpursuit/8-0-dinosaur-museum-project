@@ -33,7 +33,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   let roomName; // matching room name if second condition is met 
     
   for (let i = 0 ; i < dinosaurs.length; i++){ // looping through dinosaurs.name to determine if first condition is met 
-      let dinoName = dinosaurs[i].name;
+      let dinoName = dinosaurs[i].name; // setting a variable for all index postionas of dinosaurs.name
 
     if (dinosaurName === dinoName){
         dinoID = dinosaurs[i].dinosaurId; // if dinosaurName argument matches dinoName , we are adding the dinosaurs.dinosaurID value to dinoID at [i]index postion
@@ -82,30 +82,28 @@ console.log(getRoomByDinosaurName(exampleDinosaurData, exampleRoomData,"Dracorex
  */
 function getConnectedRoomNamesById(rooms, id) {
   let connectedRooms = []; // I am declaring an empty array to return the names of rooms connected to given room id. 
-  // we are comparing the ** id ** argument to **rooms.roomId** , to produce matching **rooms.connectsTo** values
-  //If there is a match between id & rooms.roomID , I will push the matching values of rooms[i].connectsTo , into the array 
-  let connectedNames =[];
-  let iDNameObj = {};
-  let idArray = [];
+  let connectedNames =[]; // declaring an empty array to push in any names that match the connected rooms IDs
+  let iDNameObj = {}; // creating an object that I can generate with ID's as keys, with the corresponding names as values
+  let idArray = []; // creating an empty array to push in ID's, in order to iterate through later on in the function
   
-  for (let room of rooms){ 
-    iDNameObj[room.roomId] = room.name;
-    idArray.push(room.roomId);// creating an ID array to be iterated through
+  for (let room of rooms){ // looping through given rooms array
+    iDNameObj[room.roomId] = room.name; // each loop allows me to generate a unique key value pair with roomIds as keys and corresponding rooms names as values.
+    idArray.push(room.roomId);// pushing in roomIds into array to be iterated through
 
-    if (room.roomId === id){
-      for (let ID of room.connectsTo){
+    if (room.roomId === id){ // checking to see if the id entered matches any of the roomIds in the rooms array
+      for (let ID of room.connectsTo){ // if the id DOES match one of the roomIds within the rooms array, we will iterate through the connectsTo array to generate connectedRooms array
         connectedRooms.push(ID)
       } 
     } 
   } 
 
-  if (!connectedRooms.length){
+  if (!connectedRooms.length){// if the id entered does not match any the rooms.Ids that we iterate through above, connectedRooms array will not be generated, resulting in error msg
     return `Room with ID of '${id}' could not be found.`
   }
-  for (let connected of connectedRooms){   // looping through connectedRooms  
-    if(idArray.includes(connected)){
-      connectedNames.push(iDNameObj[connected])
-    } else { 
+  for (let connected of connectedRooms){   // if the Id is found in the first loop above, we will loop through connectedRooms array that matches the roomId
+    if(idArray.includes(connected)){ // idArray generated above is now checked to see if includes the ID's of index position of connectedRooms
+      connectedNames.push(iDNameObj[connected]);// if any of the Id's within the array of connectedRooms match, the correspinding name is pushed into connectedNames array using iDNameObj
+    } else { // if none of the connected ID's are found within the idArray, which corresponds with names , the error message is returned.
       return `Room with ID of '${connected}' could not be found.`
     }   
   }
