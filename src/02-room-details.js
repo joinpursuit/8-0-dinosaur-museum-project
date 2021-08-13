@@ -27,32 +27,29 @@ const exampleRoomData = require("../data/rooms");
  */
 
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  let nameOfRoom = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
-  let dinoIdstring = "";
-
-  //loop through the dinosaurs to find dinosaurId and push the value to the  dinoIdArray
-  for (const i of dinosaurs) {
-    if (i.name === dinosaurName) {
-      dinoIdstring += i.dinosaurId;
+  //Loop through dinosaurs to check for dinosaurName.
+  for (const dino of dinosaurs) {
+    if (dino.name === dinosaurName) {
+      // if dinosaurName existes loop throug rooms.
+      for (const room of rooms) {
+        // check if dinosaus array includes dinosaur Id.
+        if (room.dinosaurs.includes(dino.dinosaurId)) {
+          // return room name if it exiest.
+          return room.name;
+        }
+      } // return error if dinosaurName cannot br found in any room.
+      return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
     }
   }
-  if (!dinoIdstring) {
-    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
-  }
-  //loop through the rooms to check if the dinosaurId = to dinosaurs: value by looping through both array and pass the name if there is a connection.
-  for (const j of rooms) {
-    if (j.dinosaurs.includes(dinoIdstring)) {
-      nameOfRoom = j.name;
-    }
-  }
-
-  return nameOfRoom;
+  // return error if dinosaurName cannot br found.
+  return `Dinosaur with name '${dinosaurName}' cannot be found.`;
 }
-
+// getRoomByDinosaurName(exampleDinosaurData, exampleRoomData, "Parasaurolophus");
 /**
  * getConnectedRoomNamesById()
  * ---------------------
- * Returns an array of strings, where each string is the name of a room connected to the given room. If a room ID cannot be found, an error message is returned.
+ * Returns an array of strings, where each string is the name of a room connected to the given room. If a room ID cannot be found, 
+ * an error message is returned.
  *
  * @param {Object[]} rooms - An array of room objects. See the `data/rooms.js` file for an example of the input.
  * @param {string} id - A unique room identifier.
@@ -71,23 +68,61 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
+// 1. find room with id matching input id
+// 2. store room in foundRoom
+// 3. if no room found return error
+// 4. fetch connectedTo room ids array from foundRoom
+// 5. loop through each connected room id and extract corresponding name
+// 6. store each name in an array
+// 7. return array
 function getConnectedRoomNamesById(rooms, id) {
-  let array = [];
+  // the array that will hold where each string is the name of a room connected to the given room.
+  const roomNames = [];
 
+  // the variable tha will hold room.
+  let foundRoom = "";
+
+  // 1. find room with id matching input id
   for (const room of rooms) {
-    for (const element of room.connectsTo) {
-      if (element === id && element !== "incorrect-id") {
-        array.push(room.name);
-      } else if (element === "incorrect-id") {
-        return `Room with ID of 'incorrect-id' could not be found.`;
-      }
+    if (room.roomId === id) {
+      // 2. store room in foundRoom
+      foundRoom = room;
+      break;
     }
   }
-  if (array.length === 0) {
+  // 3. if no room found return error
+  if (!foundRoom) {
     return `Room with ID of '${id}' could not be found.`;
   }
 
-  return array;
+  // 4. fetch connectedTo room ids array from foundRoom
+  const connectRoomIds = foundRoom.connectsTo;
+
+  // 5. loop through each connected room id and extract corresponding name
+  for (const id of connectRoomIds) {
+    // 6. the variable that will hold room.
+    let foundConnectedRoom;
+
+    // 7. find room with room id matching connected room id .
+    for (const room of rooms) {
+      if (id === room.roomId) {
+        //8. Store room in foundConnectedRoom
+        foundConnectedRoom = room;
+        break;
+      }
+    }
+    //9. return error if room with id doesnt exiset.
+    if (!foundConnectedRoom) {
+      return `Room with ID of '${id}' could not be found.`;
+    }
+
+    //10. store each name in an array
+    roomNames.push(foundConnectedRoom.name);
+  }
+
+  // 11. return array
+
+  return roomNames;
 }
 
 module.exports = {
