@@ -31,7 +31,7 @@ const exampleDinosaurData = require("../data/dinosaurs");
   function getTallestDinosaur(dinosaurs) {
     
     //if the array is empty return a falsey value
-    if (!dinosaurs.length) return []
+    if (!dinosaurs.length) return {}
     
     let tallest = {}
     //have to make my currentDino the first dino because i need something to compare the other dinos too
