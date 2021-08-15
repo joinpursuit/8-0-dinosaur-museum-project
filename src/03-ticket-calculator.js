@@ -57,9 +57,25 @@ const exampleTicketData = require("../data/tickets");
 function calculateTicketPrice(ticketData, ticketInfo) {
 // is the ticket type valid?
 let ticketTypeObj = ticketData[ticketInfo.ticketType];
+
 if(ticketTypeObj === undefined){
   return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
 }
+
+let ticketCost = ticketTypeObj.priceInCents[ticketInfo.entrantType];
+if(ticketCost===undefined){
+  return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+}
+
+let extraCost=0;
+for(extra of ticketInfo.extras){
+  let extraObj = ticketData.extras[extra];
+  if(extraObj===undefined){
+    return `Extra type '${extra}' cannot be found.`
+  }
+  extraCost += extraObj.priceInCents[ticketInfo.entrantType];
+}
+return ticketCost + extraCost;
 }
 /**
  * purchaseTickets()
@@ -114,14 +130,49 @@ if(ticketTypeObj === undefined){
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {
-  for(let purchase of purchases){
-    let purchaseTotal = calculateTicketPrice(ticketData, purchase);
-    if(typeof purchaseTotal === 'string'){
-      return purchaseTotal
+function createExtraSummary (extras, ticketData){
+  let accumulator ='';
+  for(let i=0; i < extras.length; i++){
+    accumulator += ticketData.extras[extras[i]].description;
+    if( i !== extras.length-1){
+      accumulator += ', ';
     }
   }
+  return accumulator;
 }
+
+function capatalize(str){
+  return str[0].toUppercase() + str.slice(1);
+}
+
+function purchaseTickets(ticketData, purchases) {
+  let purchaseTotal = 0;
+  let receiptSummary ='';
+  for( let purchase of purchases){
+    let resultFromCalc = calculateTicketPrice(ticketData, purchase);
+    if(typeof resultFromCalc === 'string'){
+      return resultFromCalc
+    }
+}
+  
+
+
+
+let extras = purchases.extras;
+
+let extrasSummary = createExtraSummary(extras, ticketData);
+
+
+let capitalizedEntrantType = capatalize(purchase.entrantType);
+receipt += `\n${capitalizedEntrantType} ${ticketData[purchase.ticketType].description}: $ ${resultFromCalc/100}.00`;
+if(extras.length >0){
+  receiptSummary += ' (' + extrasSummary + ')';
+purchaseTotal += resultFromCalc;
+}
+
+return receipt + `"Thank you for visiting the Dinosaur Museum!\n-------------------------------------------${receiptSummary}\n-------------------------------------------\n${purchaseTotal}; `
+}
+
 
 // Do not change anything below this line.
 module.exports = {
