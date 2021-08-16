@@ -63,37 +63,34 @@ const exampleTicketData = require("../data/tickets");
       extras: [], };
     
 function calculateTicketPrice(ticketData, ticketInfo) {
-  let admissionTypesArr =  Object.keys(ticketData);
-  let costInCents = {};
   
-  let givenType = ticketInfo.ticketType; // these values are strings.
-  let givenEntrant = ticketInfo.entrantType;// declaring a variable for ticketInfo with a key of entrantType => "adult"
-  //let admission = ; // admission is the value for the first key value pair in tickets => "general" , 
-  let givenExtras = ticketInfo.extras; // we want to compare this to tickets.extras
-    
-  for (let i = 0 ; i < admissionTypesArr.length; i ++) {
-      
-      if (givenType === admissionTypesArr[i]){    
-        costInCents = ticketData[givenType].priceInCents;
-        let entrantArr = Object.keys(costInCents);
-        //console.log (entrantArr);
+  let givenType = ticketInfo.ticketType; // givenType varible is set to the value of ticketInfo.ticketType 
+  let givenEntrant = ticketInfo.entrantType;// declaring a variable for ticketInfo.entrantType 
+  let givenExtras = ticketInfo.extras; // setting a variable for ticketInfo.extras which are given as arrays to loop through later .. 
+  let ticketTypeObj = ticketData[givenType]; // varible set to the object that matches ticketInfo.givenType
+  
+  
 
-        return costInCents[givenEntrant]; 
+      if (!ticketData[givenType]){ // checking to see if tickettype is valid. if invalid, return error message
+        return `Ticket type '${givenType}' cannot be found.`;
       } 
-        if (givenType !== ticketData[givenType]){
-
-        return `Ticket type '${givenType}' cannot be found.`
+      let costInCents = ticketTypeObj.priceInCents[givenEntrant]; // cost of basic ticket according to ticket.type and entrant 
+      if (!costInCents) {
+        return `Entrant type '${givenEntrant}' cannot be found.`;  
       } 
-      for (let j = 0; j < entrantArr.length; j++) {
-          if (givenEntrant !== entrantArr[j]){
-
-          return `Entrant type '${givenEntrant}' cannot be found.`
+      let sumOfExtras = 0;
+      for (let extra of givenExtras){ // looping through given Extras 
+        let ticketExtrasObj = ticketData.extras[extra];
+        if(!ticketExtrasObj){
+          return `Extra type '${extra}' cannot be found.`
+        } 
+        let extraCost = ticketExtrasObj.priceInCents[givenEntrant]; 
+        sumOfExtras += extraCost;
       }
-        }
-    } 
-    
-}
+      return sumOfExtras + costInCents;
+      
 
+}
 
 console.log(calculateTicketPrice(exampleTicketData,ticketInfo));
 
@@ -137,7 +134,8 @@ console.log(calculateTicketPrice(exampleTicketData,ticketInfo));
       },
     ];
     purchaseTickets(tickets, purchases);
-    //> "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
+    //> "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n
+    Adult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
 
  * EXAMPLE:
     const purchases = [
@@ -150,28 +148,44 @@ console.log(calculateTicketPrice(exampleTicketData,ticketInfo));
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {
+
+    //let capitlizedEntrantType = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)// capitilizes only the first letter of the entranttype, adding second portion to give full word
+function purchaseTickets(ticketData, purchases) { // double accumulator pattern
   let summaryReceipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
   let totalPurchases = 0;
 
-  for ( let purchase of purchases){
-    let resultOf;
-    if (typeof resultOf === "string")
-    return resultOf;
-  }
-  let extrasSummary = "";
-  for(let i = 0; i < purchase.extras.length;i++){
-    extrasSummary += ticketData.extras[i].description;
-    if (i !== purchase.extras.length -1){
-      extrasSummary += ", ";
-      
+  for (let purchase of purchases){
+    let resultOfCalcPrice = calculateTicketPrice(ticketData, ticketInfo);
+
+    if (typeof resultOfCalcPrice === "string")
+      return resultOfCalcPrice;
     }
-    
+  let extrasSummary = "";
+  let extras = purchase.extras;
+  for(let i = 0; i < extras.length;i++){
+    extrasSummary += ticketData.extras[extras[i]].description ;
+    if (i !== purchase.extras.length -1){
+      extrasSummary += ", ";// (Movie Access, Terrace Access)
+    }
+  } if (extras.length > 0){
+    summaryReceipt += (extras)
+
+
+
   }
-  summaryReceipt = ``;
+  //let  = ``; 
+  //  purchase.entrantType , ticketData[purchase.ticketType].description , resultOfCalcPrice
 }
+//    Adult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\n
+//Child General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n
+//Child General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\n
+//TOTAL: $175.00"
 
 
+// loop through purchases and use calculateTicketPrice to determine totl of purchase
+// if return type is a string return iut .. 
+// nested accumulator to determine extra cost total number and summeray string for the receipt
+// format the receipt with totals and receipt sumaries
 
 
 
