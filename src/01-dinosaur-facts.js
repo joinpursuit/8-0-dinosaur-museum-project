@@ -110,18 +110,25 @@ function getDinosaurDescription(dinosaurs, id) {
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   let dinosaurAlive = []
+  //looping through the dinosaurs objects
   for (let dino of dinosaurs){
+    //checking if the mya is only through one period of time 
     if (dino.mya.length === 1){
-      if(dino.mya[0]===mya|| dino.mya[0-1]===mya){
-        if(key in dino){
-          dinosaurAlive.push(dino.dinosaurId)
+      //if mya[indexnumber] equals to mya or is equal to one less 
+      if(dino.mya[0]===mya|| dino.mya[0]-1 ===mya){
+        // checking for key inside of dino
+        if(dino[key]){
+          dinosaurAlive.push(dino[key]);
+        }
+        else {
+          dinosaurAlive.push(dino.dinosaurId);
         }
       }
     } 
     else {
-      if (dino.mya[1] <= dino.mya[0]){
-        if (key in dino){
-          dinosaurAlive.push(dino["key"])
+      if (dino.mya[0] >= mya && dino.mya[1] <= mya){
+        if (dino[key]){
+          dinosaurAlive.push(dino[key])
         }
         else {
           dinosaurAlive.push(dino.dinosaurId)
