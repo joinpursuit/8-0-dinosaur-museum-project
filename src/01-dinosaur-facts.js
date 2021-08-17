@@ -29,25 +29,22 @@ const exampleDinosaurData = require("../data/dinosaurs");
 
 function getTallestDinosaur(dinosaurs) {
 
-  if (!dinosaurs.length) 
-  { //
+  if (!dinosaurs.length) { //
     return {};
   }
 
   let tallestDinosaur = dinosaurs[0];
 
-  for (let i = 1; i < dinosaurs.length; i++) 
-  {
+  for (let i = 1; i < dinosaurs.length; i++) {
     let dino = dinosaurs[i];
-    if (dino.lengthInMeters > tallestDinosaur.lengthInMeters) 
-    {
+    if (dino.lengthInMeters > tallestDinosaur.lengthInMeters) {
       tallestDinosaur = dino;
     }
   }
 
   let lengthInFeet = tallestDinosaur.lengthInMeters * 3.281;
   return { [tallestDinosaur.name]: lengthInFeet };
-  
+
 }
 
 
@@ -78,17 +75,16 @@ function getDinosaurDescription(dinosaurs, id) {
   //if a target dino fpund, return the target value
   //if target is not found after loop completes return and error message
   //pay close attention to formating
+  let dinoDescriptionArr = [];
 
   let errorMessage = `A dinosaur with an ID of '${id}' cannot be found.`
 
   //loop though dinosaurs array
-  for (let i = 0; i < dinosaurs.length; i++)
-  {
-      currentDino = dinosaurs[i].dinosaurId
-      if (currentDino === id) 
-      {
+  for (let i = 0; i < dinosaurs.length; i++) {
+    currentDino = dinosaurs[i].dinosaurId
+    if (currentDino === id) {
       return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${Math.min(...dinosaurs[i].mya)} million years ago.`
-      } 
+    }
   }
   return errorMessage
 }
@@ -138,27 +134,41 @@ getDinosaurDescription(dinosaurs, "U9vuZmgKwUr")
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) { 
+function getDinosaursAliveMya(dinosaurs, mya, key) {
 
 
-
-  
-//outPut = Array
+  //define the out put = which is an empty array
   let dinoLifeStatus = [];
-//loop along the dinosaurs array
-  for(let i = 0; i < dinosaurs.length; i++) 
-  {
-    if (dinoCheck.mya.length === 1) 
-    {
-      dinoLifeStatus.push(dinosaurs[i].dinosaurId)
-    }
-    else if (dinoCheck.mya = mya && dinosaurs.name == true)
-    {//how to push both mya and name
-      dinoLifeStatus.push(dinosaurs)[i].mya
+  //loop along the dinosaurs array
+  for (let dinosaur of dinosaurs) {
+    //
+    if (dinosaur.mya.length === 1) {
+      //if `MYA` is equal in the index of the MYA or the index of the MYA - 1
+      if (dinosaur.mya[0] === mya || dinosaur.mya[0] - 1 === mya) {
+        //If the key we are looking for is present
+        if (dinosaur[key]) {
+          //push key into our array
+          dinoLifeStatus.push(dinosaur[key])
+        } else {
+          //push the ID
+          dinoLifeStatus.push(dinosaur.dinosaurId)
+        }
+      }
+    } else {
+      //create our range: if my given is greater than mya and seconds is less than mya
+      if (dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya) {
+        if (dinosaur[key]) {
+          dinoLifeStatus.push(dinosaur[key])
+        } else {
+          dinoLifeStatus.push(dinosaur.dinosaurId)
+        }
+      }
     }
   }
-  return dinoLifeStatus;
+  return dinoLifeStatus
 }
+
+
 
 module.exports = {
   getTallestDinosaur,

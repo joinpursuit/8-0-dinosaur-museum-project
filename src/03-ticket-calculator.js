@@ -157,14 +157,14 @@ let extrasDescription = ""
 /*access the extras*/
 let extras = purchases.extras;
 /*loop along extras lenght*/
-for(let i = 0; i < extras.length i++)
+for(let i = 0; i < extras.length; i++)
 {
   /* and add the description to the data we pulled from extras */
   extrasDescription + ticketData.extras[extras[i]].description
 }
 
 }
-
+}
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
