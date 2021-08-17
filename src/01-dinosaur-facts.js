@@ -116,7 +116,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
     if (dino.mya.length === 1){
       //if mya[indexnumber] equals to mya or is equal to one less 
       if(dino.mya[0]===mya|| dino.mya[0]-1 ===mya){
-        // checking for key inside of dino
+        // checking for valid key inside of dino
         if(dino[key]){
           dinosaurAlive.push(dino[key]);
         }
@@ -125,6 +125,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
         }
       }
     } 
+    // in order to make sure if its within the range . 
     else {
       if (dino.mya[0] >= mya && dino.mya[1] <= mya){
         if (dino[key]){
