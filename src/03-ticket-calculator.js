@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -61,7 +62,26 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   // Accumulator pattern to calculate all of the extras
   // Inside of for loop of accumulator pattern: Is the extra type valid?
   // return total of ticket cost plus the cost of exxtras
-  
+
+  if (!(ticketInfo.ticketType in ticketData)) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+  if (
+    !(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents)
+  ) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+  let ticketPrice =
+    ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+
+  for (let extra of ticketInfo.extras) {
+    if (extra in ticketData.extras) {
+      ticketPrice +=
+        ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+    } else return `Extra type '${extra}' cannot be found.`;
+  }
+
+  return ticketPrice;
 }
 
 /**
@@ -119,15 +139,15 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  */
 function purchaseTickets(ticketData, purchases) {
   // Double accumulator pattern
-   // Keep track of purchase total(Number) and receipt purchase summary(String)
+  // Keep track of purchase total(Number) and receipt purchase summary(String)
   // Loop through purchases and use calculateTicketPrice to determine total of purchase
-   // If the return type is a String return it 
-   // A nested accumulator to determine the extra cost total(number) and a summary(String) for the 
-   // 
+  // If the return type is a String return it
+  // A nested accumulator to determine the extra cost total(number) and a summary(String) for the
+  //
 
-  for(let purchase of purchases){
+  for (let purchase of purchases) {
     let purchaseTotal = calculateTicketPrice(ticketData, purchase);
-    if(typeof purchaseTotal === "string"){
+    if (typeof purchaseTotal === "string") {
       return purchaseTotal;
     }
   }
