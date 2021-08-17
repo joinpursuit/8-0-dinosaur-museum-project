@@ -54,7 +54,32 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  //ticket with no extras 
+  let ticketTypeObj = ticketData[ticketInfo.ticketType];
+  if(ticketTypeObj===undefined){
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+    
+  }
+  //this is going to total ticketCost with no extras
+ let ticketCost= ticketTypeObj.priceInCents[ticketInfo.entrantType];
+ if(ticketCost=== undefined){
+   return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+ }
+ //calculate extra type 
+ let extraTotal= 0;
+ for ( extra of ticketInfo.extras) {
+   let extraObj = ticketData.extras[extra]
+  if (extraObj === undefined) {
+    return `Extra type '${extra}' cannot be found.`;
+  }
+ extraTotal += extraObj.priceInCents[ticketInfo.entrantType];
+}
+
+//adding both to get calculations 
+return ticketCost + extraTotal;
+
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +134,19 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  //what gets printed
+  let print = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+
+  //going through a for of loop 
+  for (let buy of purchases) {
+    // total 
+    let result = calculateTicketPrice(ticketData, buy);
+    if(typeof result === 'string'){
+      return result
+    }
+}
+}
 
 // Do not change anything below this line.
 module.exports = {
