@@ -29,9 +29,9 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   let nameOfDino = "";
   let location = "";
 
-  for (const i of dinosaurs) {
-    if (i.name === dinosaurName) {
-      nameOfDino = i.dinosaurId;
+  for (const dino of dinosaurs) {
+    if (dino.name === dinosaurName) {
+      nameOfDino = dino.dinosaurId;
     }
   }
   if (nameOfDino === "")
@@ -56,7 +56,8 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 /**
  * getConnectedRoomNamesById()
  * ---------------------
- * Returns an array of strings, where each string is the name of a room connected to the given room. If a room ID cannot be found, an error message is returned.
+ * Returns an array of strings, where each string is the name of a room connected to the given room. 
+ * If a room ID cannot be found, an error message is returned.
  *
  * @param {Object[]} rooms - An array of room objects. See the `data/rooms.js` file for an example of the input.
  * @param {string} id - A unique room identifier.
@@ -75,34 +76,37 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
+
 function getConnectedRoomNamesById(rooms, id) {
-  let list = [];
-  let finalList = [];
-  let eachRoomId = "";
+  // return an array of room names or an error message
+  let toConnected = [];
 
-  // Check if input id is found in the rooms array
   for (const room of rooms) {
+    // ---------------Loop starts here
+    // Look through rooms
     if (room.roomId === id) {
-      // if input 'id' is present in rooms
-      list = room.connectsTo;
-    }
-  }
+      // IF the inputted id is valid
 
-  for (const i of list) {
-    eachRoomId = i;
-    for (const i2 of rooms) {
-      if (i === i2.roomId) {
-        finalList.push(i2.name);
+      for (const i of room.connectsTo) {
+        //------------------------------- Inside the loop rooms
+        // Loop through element of the array 'connectsto'
+        let check = false; // Declare a variable to check i matches with room.roomId later
+        for (const room of rooms) {
+          // Loop through rooms again to check if i from connectsTo matches with any roomId
+          if (i === room.roomId) {
+            // Check if i is found in rooms
+            toConnected.push(room.name); // IF it is, push room's name to the array
+            check = true; // IF it is, reassign check's value to true
+          }
+        }
+        if (!check) return `Room with ID of '${i}' could not be found.`; // IF check is not true, it will return this message
       }
+      return toConnected;
     }
   }
-
-  if (eachRoomId === "" || eachRoomId === "incorrect-id")
-    return `Room with ID of 'incorrect-id' could not be found.`;
-
-  return finalList;
+  return `Room with ID of '${id}' could not be found.`;
 }
-// getConnectedRoomNamesById(rooms, "A6QaYdyKra")
+// console.log(getConnectedRoomNamesById(exampleRoomData, "A6QaYdyKra"));
 
 module.exports = {
   getRoomByDinosaurName,
