@@ -21,7 +21,7 @@ const exampleTicketData = require("../data/tickets");
  * If either the `ticketInfo.ticketType` value or `ticketInfo.entrantType` value is incorrect, or any of the values inside of the `ticketInfo.extras` key is incorrect, an error message should be returned.
  *
  * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
- * @param {Object} ticketInfo - An object representing data for a single ticket.
+ * @param {Object} ticket- An object representing data for a single ticket.
  * @param {string} ticketInfo.ticketType - Represents the type of ticket. Could be any string except the value "extras".
  * @param {string} ticketInfo.entrantType - Represents the type of entrant. Prices change depending on the entrant.
  * @param {string[]} ticketInfo.extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
@@ -67,46 +67,31 @@ const exampleTicketData = require("../data/tickets");
 //calculate price for each ticket
 //return error or a number
 function calculateTicketPrice(ticketData, ticketInfo) {
-    const type = ticketInfo.ticketType; // general, membership, and extras
-      const entrant = ticketInfo.entrantType; // priceInCents
-     // const tickets = ticketData; // tickets entire object
-      const extrasParam = ticketInfo.extras;
+  // 1. find the ticket price for our entrantType and ticketType.
+  if (!(ticketInfo.ticketType in ticketData)) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+  if (
+    !(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents)
+  ) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+  let ticketPrice =
+    ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
 
-      if (!(type in tickets)) {
-        return `Ticket type ‘${type}’ cannot be found.`;
-      }
-      if (!(age in tickets[type].priceInCents)) {
-        return `Entrant type ‘${entrant}’ cannot be found.`;
-      }
-      for (const extra of extrasParam) {
-        if (!(extra in ticketData.extras)) {
-          return `Extra type ‘${extra}’ cannot be found.`;
-        }
-      }
-    let price = tickets[type].priceInCents[age];
-      // general admission price
-      //tickets.general.priceInCents.child
-      let extrasPrice = 0;
-      let totalPrice = 0;
-      if (extrasParam.length >= 1) {
-        for (const extra of extrasParam) {
-          // For loop option:
-          // for (let i = 0; i < extrasParam.length; i++) {
-          extrasPrice = extrasPrice + tickets.extras[extra].priceInCents[age];
-          // If using the for i loop option:
-          // extrasPrice + tickets.extras[extrasParam[i]].priceInCents[age]; // index position of the parameter
-          // tickets.extras.movie.priceInCents.child
-          totalPrice = price + extrasPrice;
-        }
-      } else {
-        return price;
-      }
-      return totalPrice;
-    }
+  for (let extra of ticketInfo.extras) {
+    if (extra in ticketData.extras) {
+      ticketPrice +=
+        ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+    } else return `Extra type '${extra}' cannot be found.`;
+  }
+
+  return ticketPrice;
+}
 
 
 
-
+    
 
 
 

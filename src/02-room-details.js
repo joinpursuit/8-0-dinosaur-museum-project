@@ -49,6 +49,8 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     }
   }
   return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+
+  
 }
 
 /**
@@ -82,30 +84,40 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 function getConnectedRoomNamesById(rooms, id) {
   let newArray = [];
   let foundRoom = [];
-  for (let i = 0; i > rooms.length; i++) {
+  for (let i = 0; i < rooms.length; i++) {
     let room = rooms[i];
     if (room.roomId === id) {
       newArray = room.connectsTo;
+     
     }
   }
   if (newArray.length === 0) {
-    return `Room with ID of 'incorrect-id' could not be found.`
+    return `Room with ID of 'incorrect-id' could not be found.`;
   }
   for (let a = 0; a < newArray.length; a++) {
-    let tagArray = newArray[a];
+    let tagElement = newArray[a];
     for (let r = 0; r < rooms.length; r++) {
       let room = rooms[r];
-      if (tagArray = room.roomId) {
-        foundRoom.push(room.roomId.name);
+      if (tagElement === room.roomId) {
+        foundRoom.push(room.name);
       }
     }
-    return "Room with ID of 'incorrect-id' could not be found.";
-  }
-  //if (newArray.length !== foundRoom.length) {
-    return newArray;
-  }
-// }
+    
 
+    if(!newArray.length){
+      return `Room with ID of '${id}' could not be found.`
+  } if(foundRoom.includes("incorrect-id")){
+      return `Room with ID of 'incorrect-id' could not be found.`
+    // if (newArray.length === foundRoom.length) {
+    //   return `Room with ID of '${id}' could not be found.`;
+    // }
+    // return newArray;
+  }
+}
+  return foundRoom;
+}
+
+getConnectedRoomNamesById(exampleRoomData, "A6QaYdyKra")
 module.exports = {
   getRoomByDinosaurName,
   getConnectedRoomNamesById,

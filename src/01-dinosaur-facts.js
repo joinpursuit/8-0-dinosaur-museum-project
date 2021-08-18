@@ -30,22 +30,24 @@ function getTallestDinosaur(dinosaurs) {
   //converts from meter to feet by multiplying lengthInMeters times 3.281
   // step 1: create a new object to copy info into (tallest)
   //step 3: for every loop we would have to store the current highest (example we have to save our loops so we can compare ) set currentDino = the tallest dino
-  // if the dino we are looping through is taller than currentDino, then set currentDino = the current loop dino
+  //if the dino we are looping through is taller than currentDino, then set currentDino = the current loop dino
 
   if (dinosaurs.length === 0) {
     return {};
   }
-  let tallest = {};
   let currentDino = dinosaurs[0];
+
+  let tallest = {};
 
   for (i = 1; i < dinosaurs.length; i++) {
     if (dinosaurs[i].lengthInMeters > currentDino.lengthInMeters) {
       currentDino = dinosaurs[i];
     }
   }
-
+  // below we are create the returned object
   tallest[currentDino.name] = currentDino.lengthInMeters * 3.281;
 
+  //
   return tallest;
 }
 
@@ -74,9 +76,9 @@ function getTallestDinosaur(dinosaurs) {
 //output: a formatted description of the dinosaur
 //Step1: iterate through (dinosaurs) array, each dinosaur called (dino)
 //Step2: Compare (if statement) (dino.dinosaurId) to"===" (id)
-//
 function getDinosaurDescription(dinosaurs, id) {
   for (const dino of dinosaurs) {
+    //dino is the current loops dino
     if (dino.dinosaurId === id) {
       return `${dino.name} (${dino.pronunciation})\n${
         dino.info

@@ -1,3 +1,4 @@
+
 const tickets = {
   general: {
     description: "General Admission",
