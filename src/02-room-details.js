@@ -33,6 +33,8 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   //Creating error Messages - I will keep these
   let errorMessage = `Dinosaur with name '${dinosaurName}' cannot be found.`;
 
+  let errorMessage2 = `hi`
+
 
   //**** Dino project redo - I like to be able to call my error messages - 
 
@@ -61,6 +63,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       return room.name;
     } 
   }
+  return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
 
   //4) if no matching room is found in the rooms arrauy return the appropriate error message
  /*reminder to look at test! Extra "of" Punctuation */
