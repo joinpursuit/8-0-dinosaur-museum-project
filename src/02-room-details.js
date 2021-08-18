@@ -27,49 +27,49 @@ const exampleRoomData = require("../data/rooms");
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 
-//returning a string
-let dinoCheck = "";
+  //returning a string
+  let dinoCheck = {};
 
-//Creating error Messages
-let errorOne = `Dinosaur with name '${dinosaurName}' cannot be found.`;
-
-let errorTwo = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+  //Creating error Messages - I will keep these
+  let errorMessage = `Dinosaur with name '${dinosaurName}' cannot be found.`;
 
 
-//1) Use a loop on dinosaurs array to find dinosaurId that corresponds to the given dinosaurName
+  //**** Dino project redo - I like to be able to call my error messages - 
 
-   for (let i = 0; i < dinosaurs.length; i++) 
-   {
-     if(dinosaurs[i].name === dinosaurName)
-     {
-      dinoCheck = dinosaurs[i]; 
-     }
-  }
-  
-//2) If no mathcing dinosaudId is found in the dinosaurs array, return the appriate error message
+  //1) Use a loop on dinosaurs array to find dinosaurId that corresponds to the given dinosaurName
 
-  if (!dinoCheck)
-  {
-    return errorOne;
+  // **** Dino project redo end of module one - Now that I am confortable with the "for of" loop - I will get rid of the messy for loop and replace with for of.
+
+  for (let dino of dinosaurs) {
+    if (dino.name === dinosaurName) {
+      dinoCheck = dino;
+    }
   }
 
-//3) use a loops on the rooms array to see which room the target dino is located in based on it's dinosaurID
+  //2) If no mathcing dinosaudId is found in the dinosaurs array, return the appriate error message
 
-  for (let i = 0; i < rooms.length; i++) 
-  {
-    if (rooms[i].dinosaurs.includes(dinoCheck.dinosuarId)) 
-    {
-     return rooms[i].name;
+  if (!("name" in dinoCheck)) {
+    return errorMessage
+  }
+
+
+  //3) use a loops on the rooms array to see which room the target dino is located in based on it's dinosaurID
+  // **** Dino project redo end of module one - removing the for loop - trading for a for of
+
+  for (let room of rooms) {
+    if (room.dinosaurs.includes(dinoCheck.dinosaurId)) { //be concious of updating variables - 'rooms' was still here from when I had a for loop
+      return room.name;
     } 
   }
 
-//4) if no matching room is found in the rooms arrauy return the appropriate error message
+  //4) if no matching room is found in the rooms arrauy return the appropriate error message
+ /*reminder to look at test! Extra "of" Punctuation */
 
-return errorTwo /*reminder to look at test! Extra "of" Punctuation */
+
 
 }
 
-
+//Be concious of spelling! 'dinosaur' in 'dinosaurId' was spelled wrong in line 60!!!! Causiong test to not pass!
 
 /**
  * getConnectedRoomNamesById()
@@ -93,32 +93,17 @@ return errorTwo /*reminder to look at test! Extra "of" Punctuation */
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {
+function getConnectedRoomNamesById(rooms, id) { }
+//Dino Project revisit: We need to make use of an array - this is correct. 
+let roomNames = []
+let errorMessage = `Room with ID of 'incorrect-id' could not be found.`
 
-  roomNames = []
-
-  for (let i = 0; i < rooms.length; i++) 
- {
-  roomsId = room.name
- }
- if (!roomId) {
-   return `Room with ID of '${id}' could not be found.`;
- }
- 
- for(let i = 0; i < rooms.length; i++) {
-   if (roomId = id) 
-   {
-     let connectingRoom = rooms.connectsTo
-     roomNames.push(connectingRoom)
-   }
-   else
-   {
-return `Room with ID of '${connectingRoom}' could not be found.`
-   }
- }
+//Now that I understand for of loop - I will use that in place of the for loop.
+//Was close here - let fix synat - comparing the roomId of
 
 
-}
+
+
 
 
 
