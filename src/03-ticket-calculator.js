@@ -64,27 +64,27 @@ const exampleTicketData = require("../data/tickets");
     
 function calculateTicketPrice(ticketData, ticketInfo) {
   
-  let givenType = ticketInfo.ticketType; // givenType varible is set to the value of ticketInfo.ticketType 
-  let givenEntrant = ticketInfo.entrantType;// declaring a variable for ticketInfo.entrantType 
+  let givenType = ticketInfo.ticketType; // givenType varible is set to the value of ticketInfo.ticketType , general, membership
+  let givenEntrant = ticketInfo.entrantType;// declaring a variable for ticketInfo.entrantType . Adult/ Child / Senior
   let givenExtras = ticketInfo.extras; // setting a variable for ticketInfo.extras which are given as arrays to loop through later .. 
-  let ticketTypeObj = ticketData[givenType]; // varible set to the object that matches ticketInfo.givenType
+  let ticketTypeObj = ticketData[givenType]; // varible set to the object TicketData with a key of ticketInfo.TicketType , with the values = objects containing description and PriceInCents
   
   
 
-      if (!ticketData[givenType]){ // checking to see if tickettype is valid. if invalid, return error message
+      if (!ticketData[givenType]){ // checking to see if ticketInfo.ticketType exists as a key in the object TicketData. If not valid, error message returned.
         return `Ticket type '${givenType}' cannot be found.`;
       } 
-      let costInCents = ticketTypeObj.priceInCents[givenEntrant]; // cost of basic ticket according to ticket.type and entrant 
-      if (!costInCents) {
+      let costInCents = ticketTypeObj.priceInCents[givenEntrant]; // If the TicketData[givenType] is matched, priceInCents is accessed using [givenEntrant] , the variable set = ticketInfo.entrantType
+      if (!costInCents) { // if costInCents does not exist, it is because the [givenEntrant] was not matched.  If so, an error message is returned.
         return `Entrant type '${givenEntrant}' cannot be found.`;  
       } 
-      let sumOfExtras = 0;
-      for (let extra of givenExtras){ // looping through given Extras 
-        let ticketExtrasObj = ticketData.extras[extra];
-        if(!ticketExtrasObj){
+      let sumOfExtras = 0; // This varible is set to add in costs if giventExtras / ticketInfo.extras is valid .
+      for (let extra of givenExtras){ // looping through givenExtras to determine if TicketInfo.extras includes membership, education or terrace, to match with TicketData.extras[extra]
+        let ticketExtrasObj = ticketData.extras[extra]; // We are declaring an object , & setting the key values to [extra], which is being dynamically looped through givenExtras.
+        if(!ticketExtrasObj){ // if extras do not exist in ticketInfo, ticketExtraObj will not be valid.  If so, error message returned.
           return `Extra type '${extra}' cannot be found.`
         } 
-        let extraCost = ticketExtrasObj.priceInCents[givenEntrant]; 
+        let extraCost = ticketExtrasObj.priceInCents[givenEntrant]; // here we are declaring a variable to accumulate values for ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
         sumOfExtras += extraCost;
       }
       return sumOfExtras + costInCents;
