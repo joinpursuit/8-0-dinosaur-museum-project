@@ -61,12 +61,12 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   for (let room of rooms) {
     if (room.dinosaurs.includes(dinoCheck.dinosaurId)) { //be concious of updating variables - 'rooms' was still here from when I had a for loop
       return room.name;
-    } 
+    }
   }
   return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
 
   //4) if no matching room is found in the rooms arrauy return the appropriate error message
- /*reminder to look at test! Extra "of" Punctuation */
+  /*reminder to look at test! Extra "of" Punctuation */
 
 
 
@@ -96,16 +96,43 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) { }
-//Dino Project revisit: We need to make use of an array - this is correct. 
-let roomNames = []
-let errorMessage = `Room with ID of 'incorrect-id' could not be found.`
+function getConnectedRoomNamesById(rooms, id) {
+  //Dino Project revisit: We need to make use of an array - this is correct. 
+  let roomNames = []
+  let errorMessage = `Room with ID of 'incorrect-id' could not be found.`
 
-//Now that I understand for of loop - I will use that in place of the for loop.
-//Was close here - let fix synat - comparing the roomId of
+  //Now that I understand for of loop - I will use that in place of the for loop.
+  for (let room of rooms) {
+    //Was close here - let fix synatax - comparing the roomId of the room index to the id given
+    if (room.roomId === id) {
+      //gain access to the connecting rooms of each index that applies
+      roomNames = room.connectsTo
+    }
+  }
+//Now if there are no inputs at all we place a errormessage 
+  if (!roomNames.length) {
+    return errorMessage
+  }
 
+  //If the ID is not correct - we return the error message again.
+  if (roomNames.includes("incorrect-id")) {
+    return errorMessage
+  }
 
+  //create an array to capture the connectinr rooms 
+  connectingRooms = [];
 
+  for (let room of rooms) {
+
+    //if the the index of the rooms we access inludes the roomId 
+    if (roomNames.includes(room.roomId)) {
+      //Then we can push those name into the array
+      connectingRooms.push(room.name)
+    }
+  }
+//....and return them
+  return connectingRooms
+}
 
 
 
