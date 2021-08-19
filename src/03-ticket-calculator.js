@@ -158,7 +158,7 @@ function purchaseTickets(ticketData, purchases) {
   //helper function
   // loop through the extras array to locate description of the ticket 
   // final reciept
-  
+
   for (let i = 0; i < extras.length; i++) {
   let total = 0;
   let receipt =
@@ -167,7 +167,7 @@ function purchaseTickets(ticketData, purchases) {
   for (let i = 0; i < purchases.length; i++) {
     purchase = purchases[i];
   }
-  let totalReceipt = calculateTicketPrice(ticketData, purchase);
+  let totalReceipt = calculateTicketPrice(ticketData, ticketInfo);
   if (typeof totalReceipt === "string") {
     return totalReceipt;
   }
