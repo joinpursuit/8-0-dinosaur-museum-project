@@ -58,20 +58,16 @@ const exampleTicketData = require("../data/tickets");
  */
 
 //ticketData.general.priceInCents.adult
-//declare several separate variables
-//variable for error messages
-//first check for errors -- if/else statments or undefined, string, etc
+//declare variables
+//check for errors -- IF/ELSE statments 
 //return right away the error messages
-//looping through extras, etras = array
+//looping through extras array
 //only loop through the purchases
-//looping through estas, extras = array
 //use info from Ticket info to get info Ticketdata
 //calculate price for each ticket
-//return error or a number
+
 function calculateTicketPrice(ticketData, ticketInfo) {
-  //Get into ticket type and entrant type.
-  //ticketData.general.priceInCents.adult, standard way to get to 3000 ticket
-  //ticketData[ticketInfo.ticketType]["priceInCents"][ticketInfo.entrantType] = basePrice > gives us one ticket at a time
+  
 
   if (ticketInfo.ticketType in ticketData === false) {
     return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
@@ -88,87 +84,21 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       return `Extra type '${extra}' cannot be found.`;
     }
   }
-  //Declare a variable to store basePrice
-  let Price =
+  //Declare a variable to store price
+  let price =
     ticketData[ticketInfo.ticketType]["priceInCents"][ticketInfo.entrantType];
 
-  //how to get extra cost into basePrice
-  //If length of ticketInfo.extras array is not equal to 0
+  //how to get extra cost into price
+  //IF length of ticketInfo.extras array is not equal to 0
   if (ticketInfo.extras.length !== 0) {
-    //Iterate thru ticketInfo.extras array with For of loop
+    //Iterate through ticketInfo.extras array with for of loop
     for (const extra of ticketInfo.extras) {
-      Price += ticketData.extras[extra]["priceInCents"][ticketInfo.entrantType];
+      price += ticketData.extras[extra]["priceInCents"][ticketInfo.entrantType];
     }
   }
-  return Price;
+  return price;
 }
 
-// const ticketType = ticketInfo.ticketType;
-// const entrantType = ticket.entrantType;
-// const extras = ticket.extras;
-// let total = ticketData[ticketType].priceInCents[entrantType];
-// // add each extra to the total
-// for (let i = 0; i < extras.length; i++) {
-//   //find the price for entraType for that extra
-//   const extra = extras[i];
-//   const extraType = ticketData.extras[extra];
-//   if (extraType === undefined) {
-//     return `Extra type '${extra}' cannot be found.`;
-//   }
-//   const extraPrice = extraType.priceInCents[entrantType];
-//   total = total + extraPrice;
-// }
-// return total;
-
-// if (
-//   ticketInfo.ticketType !== "membership" &&
-//   ticketInfo.ticketType !== "general"
-// ) {
-//   return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
-// }
-// if (
-//   ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType] ===
-//   undefined
-// ) {
-//   return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
-// }
-// let total = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
-
-//   for (let i = 0; i < ticketInfo.extras.length; i++) {
-//     let ticketInfo.extra = ticketInfo.extras[i]}
-//  if (ticketData.extras[extra]{
-//   if(extraType === undefined) {
-//     return `Extra type '${ticketData.extras[extra]}' cannnot be found`
-//   }
-//     total = total +
-
-//   let total = 0
-//   const ticketType = ticket.ticketType
-
-//     if (ticketData[ticketType === undefined]) {
-//       return `Ticket type '${ticketType}' cannot be found.`
-//     }
-
-//   const entrantType = ticket.entrantType
-//     if(ticketData[ticketType].priceInCents[entrantType] === undefined) {
-//       return `Entrant type '${entrantType}' cannot be found.`
-//     }
-
-//   total = ticketData[ticketType].priceInCents[entrantType]
-
-//   for (let i = 0; i < extras.length; i++) {
-//     const extra = extras[i]
-
-//     ticketData.extras[extra]) {
-//       if (extra in ticketData.extras) {
-//         ticketPrice +=
-//           ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
-//       } else return `Extra type '${extra}' cannot be found.`;
-//       return ticketPrice;
-//     }
-//   }
-
-// }
 /**
  * purchaseTickets()
  * ---------------------
@@ -223,42 +153,44 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  // creating a variable named to add the cost
-  let totalCost = 0;
+  // creating a variable named total to add the cost
+  //loop through purchases array
+  //helper function
+  // loop through the extras array to locate description of the ticket 
+  // final reciept
+  
+  for (let i = 0; i < extras.length; i++) {
+  let total = 0;
   let receipt =
     "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
   let purchase = [];
-
   for (let i = 0; i < purchases.length; i++) {
     purchase = purchases[i];
   }
-  let totalPrice = calculateTicketPrice(ticketData, purchase);
-  if (typeof totalPrice === "string") {
-    return totalPrice;
+  let totalReceipt = calculateTicketPrice(ticketData, purchase);
+  if (typeof totalReceipt === "string") {
+    return totalReceipt;
   }
-  totalCost += totalPrice;
+  total += totalReceipt;
   let extras = purchase.extras;
-  let extrasReceipt = "";
-  for (let i = 0; i < extras.length; i++) {
+  let extrasReceipt = ''
     extrasReceipt += ticketData.extras[extras[i]].description;
     if (i !== extras.length - 1) {
-      extrasReceipt = ", ";
+      extrasReceipt += ", ";
     }
   }
   let purchaseType =
     purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
   receipt += `${purchaseType} ${
     ticketData[purchase.ticketType].description
-  }: $${totalPrice / 100}.00`;
+  }: $${totalReceipt / 100}.00`;
   if (extras.length > 0) {
     receipt += `(${extrasReceipt})\n`;
   } else {
     receipt += "\n";
   }
-  return (
-    receipt +
-    `-------------------------------------------\nTOTAL: $${totalCost / 100}.00`
-  );
+  return receipt +
+    `-------------------------------------------\nTOTAL: $${total / 100}.00`;
 }
 
 // Do not change anything below this line.
