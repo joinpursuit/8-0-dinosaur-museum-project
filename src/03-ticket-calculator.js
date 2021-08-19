@@ -57,7 +57,7 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-//returning a number, total priceincents
+//return a number, total priceincents
 //check if tickets.property[key] = ticketsInfo.ticketType
 //check tickets.description = ticketInfo.ticketType
 //check tickets.priceIncents[key] = ticketInfo.entrantType
@@ -156,51 +156,48 @@ function calculateTicketPrice(tickets, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 
-    //return a custom message with the priceInCents converted to a string "$0.00" calling the function above
-    //return error messages calling the function above if the key value doesn't match
-    //how do we use helper function
-
-    function purchaseTickets(tickets, purchases) {
-      let finalTotal = 0;
-      let total = 0;
-      let receiptLines = "";
-      let receiptAdd = "";
-      let receiptX = "";
-      for (let purchase of purchases){
-        if(typeof(calculateTicketPrice(tickets, purchase)) === 'string'){
-          return calculateTicketPrice(tickets, purchase)
-        }
-        let capEntrant = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1) + " "
-        if (tickets.hasOwnProperty(purchase.ticketType)){
-          receiptAdd = tickets[purchase.ticketType].description + ": " + "$"
-        }
-        let centsTotal = calculateTicketPrice(tickets, purchase)
-        let extraTicks = purchase.extras
-        if(purchase.extras.length > 0){
-          centsTotal = (centsTotal/100).toFixed(2)
-          let ticketsPlus = tickets.extras
-          for (let i = 0; i < extraTicks.length; i++){
-            let extraTick = extraTicks[i]
-            if(ticketsPlus.hasOwnProperty(extraTick)){
-              if (i === extraTicks.length - 1){
-                receiptX += ticketsPlus[extraTick].description + ")\n"
-              }if(i !== extraTicks.length - 1){
-                receiptX += ticketsPlus[extraTick].description + ", "
-              }
-            }
-          }
-          receiptX = " (" + receiptX
-        }else{
-          centsTotal = (centsTotal/100).toFixed(2) + "\n"
-        }
-        total += calculateTicketPrice(tickets, purchase)
-        receiptLines += (capEntrant + receiptAdd + centsTotal + receiptX)
-        receiptX = "";
-      }
-      finalTotal = (total/100).toFixed(2)
-      return "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n" + receiptLines
-      + "-------------------------------------------\nTOTAL: $" + finalTotal;
+    
+function purchaseTickets(tickets, purchases) {
+  let finalTotal = 0;
+  let total = 0;
+  let receiptLines = "";
+  let receiptAdd = "";
+  let receiptX = "";
+  for (let purchase of purchases){
+    if(typeof(calculateTicketPrice(tickets, purchase)) === 'string'){
+      return calculateTicketPrice(tickets, purchase)
     }
+    let capEntrant = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1) + " "
+    if (tickets.hasOwnProperty(purchase.ticketType)){
+      receiptAdd = tickets[purchase.ticketType].description + ": " + "$"
+    }
+    let centsTotal = calculateTicketPrice(tickets, purchase)
+    let extraTicks = purchase.extras
+    if(purchase.extras.length > 0){
+      centsTotal = (centsTotal/100).toFixed(2)
+      let ticketsPlus = tickets.extras
+      for (let i = 0; i < extraTicks.length; i++){
+        let extraTick = extraTicks[i]
+        if(ticketsPlus.hasOwnProperty(extraTick)){
+          if (i === extraTicks.length - 1){
+            receiptX += ticketsPlus[extraTick].description + ")\n"
+          }if(i !== extraTicks.length - 1){
+            receiptX += ticketsPlus[extraTick].description + ", "
+          }
+        }
+      }
+      receiptX = " (" + receiptX
+    }else{
+      centsTotal = (centsTotal/100).toFixed(2) + "\n"
+    }
+    total += calculateTicketPrice(tickets, purchase)
+    receiptLines += (capEntrant + receiptAdd + centsTotal + receiptX)
+    receiptX = "";
+  }
+  finalTotal = (total/100).toFixed(2)
+  return "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n" + receiptLines
+  + "-------------------------------------------\nTOTAL: $" + finalTotal;
+}
 
 
 // Do not change anything below this line.

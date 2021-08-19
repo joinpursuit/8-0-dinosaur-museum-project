@@ -23,6 +23,15 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 
+//return an object
+//the object is going to be the dinosaur objects that is the tallest in height
+//the tallest height is in meters
+//convert it to feet
+//create a helper function to convert the length from meters to feet
+//create a loop
+//the loop is to check for the tallest dinosaur
+//set an initial value to be the tallest ... 
+//return the tallest dinosaur (object)
 
 function convertToFeet(n){
   return n * 3.281
@@ -64,6 +73,14 @@ if (dinosaurs[i].lengthInMeters > currentDino.lengthInMeters){
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
+
+//returns a string
+//with details from an array of objects
+//create a loop 
+//the loop is to check for the dinosaur (objects) that match the id
+//return a string with the dinosaur that match the id with a specific message //> string
+//the (string) message has details that need to be accessed from the array of objects
+//if not (so any id that doesn't match) return error message //> string
 
 function getDinosaurDescription(dinosaurs, id) {
   
@@ -111,6 +128,15 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
+//returns an array 
+//the array will be of dinosaurs that lived during a given time period
+//the array will include the values of keys that match that are in the parameter/ if they are in the parameter
+//create a loop
+//the loop will check if dinosaur is alive during that given time period
+//the loop will also check if the dinosaur (object) includes the key if provided in the parameter
+//returns an array with the id of dinosaur that lived during the given time period & values of keys in the parameter (if given)
+//need to access these details from the array of objects 
+
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   let dinoArray = []
   for (let dino of dinosaurs){
