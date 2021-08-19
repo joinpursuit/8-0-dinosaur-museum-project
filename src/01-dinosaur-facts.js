@@ -87,7 +87,7 @@ function getDinosaurDescription(dinosaurs, id) {
       } million years ago.`;
     }
   }
-  return "A dinosaur with an ID of 'incorrect-id' cannot be found.";
+  return `A dinosaur with an ID of '${id}' cannot be found.`;
 }
 
 /**
@@ -120,7 +120,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   //create a variable an set it equal to an empty array 
   //loop through array of dinosaurs
   //if dinosaur was alive between mya[0] and mya[1]
-  
+
   let liveDino = [];
   for (let dinosaur of dinosaurs)
     if (dinosaur.mya.length > 1) {

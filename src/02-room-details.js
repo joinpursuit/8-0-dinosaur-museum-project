@@ -91,7 +91,7 @@ function getConnectedRoomNamesById(rooms, id) {
     }
   }
   if (newArray.length === 0) {
-    return `Room with ID of 'incorrect-id' could not be found.`;
+    return `Room with ID of '${id}' could not be found.`;
   }
   for (let a = 0; a < newArray.length; a++) {
     let tagElement = newArray[a];
