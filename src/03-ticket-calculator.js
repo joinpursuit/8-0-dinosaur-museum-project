@@ -75,7 +75,7 @@ const exampleTicketData = require("../data/tickets");
 // variables for error message and numbers
 
 function calculateTicketPrice(ticketData, ticketInfo) {
-let total = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]; // default value
+let total = 0; // default value
 
 //entrant type is inside of ticketInfo
 
@@ -86,19 +86,22 @@ let total = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantTyp
 //error messages//
 if(!ticketData[ticketInfo.ticketType]){ //if incorrect ticket type
   return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
-} else if(!ticketData[ticketInfo.ticketType].priceInCents) { //if entrant type is incorrect
+} else if(!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]) { //if entrant type is incorrect
   return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
 }
+
+total +=
+ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]; //reassigned total because test was giving me undefined
+
 // * @param {string[]} ticketInfo.extras - An array of strings where each string represent a different 
 //  * "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
 
 //looping through extras because extras is an array//
 for(let i = 0; i < ticketInfo.extras.length; i++){
   if(!ticketData.extras[ticketInfo.extras[i]]){ //if extras is incorrect
-    return `Extra type ${ticketInfo.extras[i]} cannot be found.` //error message
+    return `Extra type '${ticketInfo.extras[i]}' cannot be found.` //error message
   }
-  total += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType] //total based on entrant type
-
+  total += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType];
 
 
 
