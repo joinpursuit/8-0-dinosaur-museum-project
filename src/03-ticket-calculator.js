@@ -1,7 +1,10 @@
 /*
-  Do not change the line below. If you'd like to run code from this file, you may use the `exampleTicketData` variable below to gain access to tickets data. This data is pulled from the `data/tickets.js` file.
+  Do not change the line below. If you'd like to run code from this file, 
+  you may use the `exampleTicketData` variable below to gain access to tickets data. 
+  This data is pulled from the `data/tickets.js` file.
 
-  You may use this data to test your functions. You may assume the shape of the data remains the same but that the values may change.
+  You may use this data to test your functions. 
+  You may assume the shape of the data remains the same but that the values may change.
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
@@ -12,7 +15,8 @@ const exampleTicketData = require("../data/tickets");
 /**
  * calculateTicketPrice()
  * ---------------------
- * Returns the ticket price based on the ticket information supplied to the function. The `ticketInfo` will be in the following shape. See below for more details on each key.
+ * Returns the ticket price based on the ticket information supplied to the function. 
+ * The `ticketInfo` will be in the following shape. See below for more details on each key.
  * const ticketInfo = {
     ticketType: "general",
     entrantType: "child",
@@ -60,24 +64,30 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
+
+
+//first check for errors [if/else statements] || undefined, string, etc.
+//returns an error mssg
+//looping through extras, extras = array
+//use info from Ticketinfo to get info from Ticketdata
+//calculate price for each ticket
+//returns a number
+// variables for error message and numbers
+
 function calculateTicketPrice(ticketData, ticketInfo) {
-  //first check for errors [if/else statements] || undefined, string, etc.
-  //returns an error mssg
-  //looping through extras, extras = array
-  //use info from Ticketinfo to get info from Ticketdata
-  //calculate price for each ticket
-  //returns a number
-  // variables for error message and numbers
+let total = 0;
 
-const ticket = "Ticket type 'incorrect-type' cannot be found.";
-const entrant = "Entrant type 'incorrect-entrant' cannot be found.";
-let cost = 0;
+//entrant type is inside of ticketInfo
 
-if(!ticketInfo.ticketType){
-  return ticket;
-}
-if(!ticketInfo.entrantType){
-  return entrant;
+// * If either the `ticketInfo.ticketType` value or `ticketInfo.entrantType` 
+// * value is incorrect, or any of the values inside of the `ticketInfo.extras` key is incorrect, 
+// * an error message should be returned.
+
+//error messages//
+if(!ticketData[ticketInfo.ticketType]){ //if incorrect ticket type
+  return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+} else if(!ticketData[ticketInfo.ticketType].priceInCents) { //if entrant type is incorrect
+  return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
 }
 
 
@@ -85,6 +95,8 @@ if(!ticketInfo.entrantType){
 
 
 
+
+return total;
 }
 
 /**
