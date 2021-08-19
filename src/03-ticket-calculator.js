@@ -57,11 +57,14 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-//return a number, total priceincents
+//return a number 
+//the total of priceincents
+//create a loop
 //check if tickets.property[key] = ticketsInfo.ticketType
 //check tickets.description = ticketInfo.ticketType
 //check tickets.priceIncents[key] = ticketInfo.entrantType
-//ticketsplus.
+//add accordingly
+//if not return error message //> string
 
 function calculateTicketPrice(tickets, ticketInfo) {
   let total = 0;
@@ -155,7 +158,15 @@ function calculateTicketPrice(tickets, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-
+//return a string
+//a string with each ticket purchased 
+//the total price of each ticket
+//create a loop
+//the loop is to check if the total from the above function (that is being used as a helper function) returns a string
+//create a loop
+//this loop is to check if there are any extras
+//if there are we need to add that to the total receipt
+//the price has to be converted to 0.00 from cents
     
 function purchaseTickets(tickets, purchases) {
   let finalTotal = 0;
