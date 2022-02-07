@@ -93,7 +93,30 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  const dinosAlive = [];
+  for (const dinosaur of dinosaurs) {
+    if (dinosaur.mya.length === 1) {
+      if (dinosaur.mya[0] === mya || dinosaur.mya[0] - 1 === mya) {
+        if (dinosaur[key]) {
+          dinosAlive.push(dinosaur[key]);
+        }
+        else {
+          dinosAlive.push(dinosaur.dinosaurId);
+        }
+      }
+    }
+    else if (dinosaur.mya[1] <= mya && mya <= dinosaur.mya[0]) {
+      if (key) {
+        dinosAlive.push(dinosaur[key]);
+      }
+      else {
+        dinosAlive.push(dinosaur.dinosaurId);
+      }
+    }
+  }
+  return dinosAlive;
+}
 
 module.exports = {
   getTallestDinosaur,
