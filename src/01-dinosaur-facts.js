@@ -22,7 +22,33 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+
+  const tallestDinosaurObject = {}; // Accumulator default type and value
+
+  if (dinosaurs.length === 0) { // Validation for empty dinosaurs array
+    return tallestDinosaurObject;
+  }
+
+  let iteratedTallestDinosaur = dinosaurs[0]; 
+  // Sets the first dinosaur object as the "tallest" to be compared with the others in the following loop
+  // This also takes care of a dinosaurs array with only one dinosaur object
+
+  for (let i = 1; i < dinosaurs.length; ++i) {
+     if (iteratedTallestDinosaur.lengthInMeters < dinosaurs[i].lengthInMeters) {
+      iteratedTallestDinosaur = dinosaurs[i];
+     }
+  }
+
+  tallestDinosaurObject[iteratedTallestDinosaur.name] = iteratedTallestDinosaur.lengthInMeters * 3.281; 
+  // Creates height property for output object
+
+  return tallestDinosaurObject;
+}
+
+// Test Cases
+console.log("Test case for getTallestDinosaur([]): >> {} ?", getTallestDinosaur([]));
+console.log(("Test case for getTallestDinosaur(exampleDinosaurData): >> {Brachiosaurus: 98.43} ?", getTallestDinosaur(exampleDinosaurData)));
 
 /**
  * getDinosaurDescription()
