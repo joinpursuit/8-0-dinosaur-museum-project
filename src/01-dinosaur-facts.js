@@ -58,7 +58,15 @@ function getTallestDinosaur(dinosaurs) {
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let dinoDescription = `A dinosaur with an ID of '${id}' cannot be found.`;
+  for (const dinosaur of dinosaurs) {
+    if (dinosaur.dinosaurId === id) {
+      dinoDescription = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[dinosaur.mya.length - 1]} million years ago.`
+    }
+  }
+  return dinoDescription;
+}
 
 /**
  * getDinosaursAliveMya()
