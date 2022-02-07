@@ -86,8 +86,8 @@ function getDinosaurDescription(dinosaurs, id) {
 }
 
 // Test Cases
-console.log(getDinosaurDescription(exampleDinosaurData, "73gehe"));
-console.log(getDinosaurDescription(exampleDinosaurData, "WHQcpcOj0G"));
+// console.log(getDinosaurDescription(exampleDinosaurData, "73gehe"));
+// console.log(getDinosaurDescription(exampleDinosaurData, "WHQcpcOj0G"));
 
 
 /**
@@ -115,7 +115,37 @@ console.log(getDinosaurDescription(exampleDinosaurData, "WHQcpcOj0G"));
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinosaursAliveMya = [];
+
+  for (let dinosaur of dinosaurs) {
+
+    if (dinosaur.mya[1] <= mya && mya <= dinosaur.mya[0]) {
+
+      if (key === "name") {
+        dinosaursAliveMya.push(dinosaur.name);
+      } else if (key === "unknown-key" || key === undefined) {
+        dinosaursAliveMya.push(dinosaur.dinosaurId);
+      }
+
+    } else if (dinosaur.mya[0] === mya || dinosaur.mya[0] - 1 === mya) {
+
+      if (key === "name") {
+        dinosaursAliveMya.push(dinosaur.name);
+      } else if (key === "unknown-key" || key === undefined) {
+        dinosaursAliveMya.push(dinosaur.dinosaurId);
+      }
+    }
+  }
+
+  return dinosaursAliveMya;
+}
+
+// Test Cases
+console.log(getDinosaursAliveMya(exampleDinosaurData, 150));
+console.log(getDinosaursAliveMya(exampleDinosaurData, 65, "unknown-key"));
+// console.log(getDinosaursAliveMya(exampleDinosaurData, 65, "name"));
+// console.log(getDinosaursAliveMya(exampleDinosaurData, 65, "unknown-key"));
 
 module.exports = {
   getTallestDinosaur,
