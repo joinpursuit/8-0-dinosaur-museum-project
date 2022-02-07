@@ -24,7 +24,7 @@ const exampleDinosaurData = require("../data/dinosaurs");
  */
 function getTallestDinosaur(dinosaurs) {
 
-  const tallestDinosaurObject = {}; // Accumulator default type and value
+  const tallestDinosaurObject = {}; // Default type and value
 
   if (dinosaurs.length === 0) { // Validation for empty dinosaurs array
     return tallestDinosaurObject;
@@ -47,8 +47,8 @@ function getTallestDinosaur(dinosaurs) {
 }
 
 // Test Cases
-console.log("Test case for getTallestDinosaur([]): >> {} ?", getTallestDinosaur([]));
-console.log(("Test case for getTallestDinosaur(exampleDinosaurData): >> {Brachiosaurus: 98.43} ?", getTallestDinosaur(exampleDinosaurData)));
+// console.log("Test case for getTallestDinosaur([]): >> {} ?", getTallestDinosaur([]));
+// console.log(("Test case for getTallestDinosaur(exampleDinosaurData): >> {Brachiosaurus: 98.43} ?", getTallestDinosaur(exampleDinosaurData)));
 
 /**
  * getDinosaurDescription()
@@ -70,7 +70,25 @@ console.log(("Test case for getTallestDinosaur(exampleDinosaurData): >> {Brachio
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+
+  let dinosaurDescription = `A dinosaur with an ID of '${id}' cannot be found.`; // Default type and value
+
+  for (let dinosaur of dinosaurs) { // Loops through dinosaurs array to find matching id
+    if (id === dinosaur.dinosaurId) {
+      dinosaurDescription = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[dinosaur.mya.length - 1]} million years ago.`;
+    } 
+    // Creates string with template literals inputting specified dinosaur info into the output string. 
+    // The final ${dinosaur.mya[dinosaur.mya.length - 1]} template literal chooses the second year number if there are more then one.
+  }
+
+  return dinosaurDescription;
+}
+
+// Test Cases
+console.log(getDinosaurDescription(exampleDinosaurData, "73gehe"));
+console.log(getDinosaurDescription(exampleDinosaurData, "WHQcpcOj0G"));
+
 
 /**
  * getDinosaursAliveMya()
