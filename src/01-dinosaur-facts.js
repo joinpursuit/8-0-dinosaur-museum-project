@@ -23,6 +23,7 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
+
 function getTallestDinosaur(dinosaurs) {
   let tallestDino = {};
   let tallest = dinosaurs[0];
@@ -64,10 +65,18 @@ function getTallestDinosaur(dinosaurs) {
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
+
 function getDinosaurDescription(dinosaurs, id) {
+  let descriptionDino = `A dinosaur with an ID of '${id}' cannot be found.`;
 
-
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].dinosaurId === id) {
+      descriptionDino = `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.`;
+    } 
+    //console.log(dinosaurs[i])
+  }
   
+  return descriptionDino;
 }
 
 /**
