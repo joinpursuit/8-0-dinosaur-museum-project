@@ -23,7 +23,11 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  for(let i = 0; i < dinosaurs.length; i++) {
+    
+  }
+}
 
 /**
  * getDinosaurDescription()
@@ -48,7 +52,7 @@ function getTallestDinosaur(dinosaurs) {}
 function getDinosaurDescription(dinosaurs, id) {
   for(let dino of dinosaurs) {
     if(id !== "incorrect-id") {
-      return `${dino.name} (${dino.pronunciation})\n${dino.info}. It lived in the ${dino.period}, over ${dino.mya[dino.mya.length-1]} million years ago.`
+      return `${dinosaurs.name} (${dinosaurs.pronunciation})\n${dinosaurs.info}. It lived in the ${dinosaurs.period}, over ${dinosaurs.mya} million years ago.`
     }
   };
   return "A dinosaur with an ID of 'incorrect-id' cannot be found."
