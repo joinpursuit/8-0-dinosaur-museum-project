@@ -44,3 +44,24 @@ const tickets = {
 };
 
 module.exports = tickets;
+
+/*
+
+Thank you for visiting the Dinosaur Museum!
+\n-------------------------------------------
+\nAdult General Admission: $50.00 (Movie Access, Terrace Access)
+\nSenior General Admission: $35.00 (Terrace Access)
+\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)
+\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)
+\n-------------------------------------------
+\nTOTAL: $175.00"
+
+*/
+
+
+/*
+
+
+${ticketInfo.ticketType.slice(1, ticketData.ticketType.length -1)}
+
+*/

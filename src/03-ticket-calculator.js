@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,31 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let price = 0;
+  //get base ticket price
+  if (ticketInfo.ticketType in ticketData){ 
+    if (ticketInfo.entrantType in ticketData.general.priceInCents){
+      price += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+    }else{
+      return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+    }
+  }else{
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+  //add those UPSELLS
+  if (ticketInfo.extras.length > 0){
+   for (let extra of ticketInfo.extras) {
+     if (extra in ticketData.extras){
+      price += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+     }else{
+       return `Extra type '${extra}' cannot be found.`;
+     }
+   } 
+  }
+  return price;
+
+}
 
 /**
  * purchaseTickets()
@@ -96,7 +121,15 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
       },
     ];
     purchaseTickets(tickets, purchases);
-    //> "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
+    //> "
+
+    Thank you for visiting the Dinosaur Museum!
+    \n-------------------------------------------
+    \nAdult General Admission: $50.00 (Movie Access, Terrace Access)
+    \nSenior General Admission: $35.00 (Terrace Access)
+    \nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)
+    \nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------
+    \nTOTAL: $175.00"
 
  * EXAMPLE:
     const purchases = [
@@ -109,8 +142,75 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------`;
+  let grandTotal = 0;
 
+  for (let ticketInfo of purchases) {
+    let price = 0;
+    if (ticketInfo.ticketType in ticketData){ 
+      if (ticketInfo.entrantType in ticketData.general.priceInCents){
+        price += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+      }else{
+        return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+      }
+    }else{
+      return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+    }
+    //add those UPSELLS
+    if (ticketInfo.extras.length > 0){
+     for (let extra of ticketInfo.extras) {
+       if (extra in ticketData.extras){
+        price += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+       }else{
+         return `Extra type '${extra}' cannot be found.`;
+       }
+     } 
+    }
+
+    //generate receipt entry
+    
+    receipt += `\n${ticketInfo.entrantType.slice(0,1).toUpperCase()}${ticketInfo.entrantType.slice(1, ticketInfo.entrantType.length)} ${ticketData[ticketInfo.ticketType].description}: $${(Math.round((price / 100) *100 ) / 100).toFixed(2)}`;
+    if (ticketInfo.extras.length > 0){
+      receipt += ` (`;
+      for (extra of ticketInfo.extras){
+        receipt += `${ticketData.extras[extra].description}, `;
+      }
+      //could've added a check to not add ", " to last entry but lets get fancy
+      receipt = receipt.slice(0, receipt.length - 2) + `)`;
+    }
+    grandTotal += price;
+  }
+  receipt += `\n-------------------------------------------\nTOTAL: $${(Math.round((grandTotal / 100) *100 ) / 100).toFixed(2)}`;
+  
+  return receipt;
+}
+
+purchaseTickets(
+  exampleTicketData,
+  [
+    {
+      ticketType: "general",
+      entrantType: "adult",
+      extras: ["movie", "terrace"],
+    },
+    {
+      ticketType: "general",
+      entrantType: "senior",
+      extras: ["terrace"],
+    },
+    {
+      ticketType: "general",
+      entrantType: "child",
+      extras: ["education", "movie", "terrace"],
+    },
+    {
+      ticketType: "general",
+      entrantType: "child",
+      extras: ["education", "movie", "terrace"],
+    },
+  ]
+);
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,

@@ -59,8 +59,7 @@ function getDinosaurDescription(dinosaurs, id) {
   for (let dino of dinosaurs){
     if (dino.dinosaurId === id){
       return (
-        `${dino.name} (${dino.pronunciation})
-${dino.info} It lived in the ${dino.period} period, over ${dino.mya.length > 1 ? dino.mya[1] : dino.mya[0]} million years ago.`);
+        `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya.length > 1 ? dino.mya[1] : dino.mya[0]} million years ago.`);
     }
   }
   return `A dinosaur with an ID of '${id}' cannot be found.`;
