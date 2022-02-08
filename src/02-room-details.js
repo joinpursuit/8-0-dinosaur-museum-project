@@ -25,7 +25,26 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let message = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`// default error
+  let word;
+  for (let dino of dinosaurs){
+    if(dino.name === dinosaurName) {
+      word = dino
+      }
+    }
+  if (!word) {// if dinosaurName doesnt match anything in the dinosaurs array, give an error message.
+      message = `Dinosaur with name '${dinosaurName}' cannot be found.`
+      return message
+  }
+//now look for dinosaurId to be found in rooms.dinosaurs array
+  for (let room of rooms) {
+    if (room.dinosaurs.includes(word.dinosaurId)) {
+       message = `${room.name}`
+      }         
+    }
+  return message
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +68,26 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let roomy = []
+    for (let room of rooms){
+      if (id === room.roomId) {
+        roomy = room.connectsTo;
+    } else if (id === 'incorrect-id'){// not sure if this is specifically needed to be searched for? maybe just if (roomy is empty?)
+      return `Room with ID of '${id}' could not be found.`;
+    } 
+  }
+    let finalArray = []; //new array to push the names that qualify
+    for (let job of roomy){
+      for (bob of rooms) {
+      if (job === bob.roomId) {
+        finalArray.push(bob.name);
+      } else if (job === 'incorrect-id')
+      return `Room with ID of '${job}' could not be found.`
+    }
+  }
+  return finalArray
+}
 
 module.exports = {
   getRoomByDinosaurName,
