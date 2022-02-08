@@ -132,8 +132,8 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
 
   let result = [];
   for(let element of arr){
-    if(key === 'name'){
-      result.push(element.name);
+    if(element[key]){
+      result.push(element[key]);
     }else{
       result.push(element.dinosaurId);
     }
