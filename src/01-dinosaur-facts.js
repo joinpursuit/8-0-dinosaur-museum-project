@@ -8,6 +8,21 @@
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
+//data example.
+// //const dinosaurs = [
+//   {
+//     dinosaurId: "YLtkN9R37",
+//     name: "Allosaurus",
+//     pronunciation: "AL-oh-sore-us",
+//     meaningOfName: "other lizard",
+//     diet: "carnivorous",
+//     lengthInMeters: 12,
+//     period: "Late Jurassic",
+//     mya: [156, 144],
+//     info: "Allosaurus was an apex predator in the Late Jurassic in North America.",
+//   },
+
+
 /**
  * getTallestDinosaur()
  * ---------------------
@@ -22,7 +37,24 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  let result = {};
+  let compare = dinosaurs[0]
+
+  if (dinosaurs.length === 0){
+    return result;
+  } else {
+  for (let i = 1; i < dinosaurs.length; i++){
+    if (dinosaurs[i].lengthInMeters > compare.lengthInMeters){
+      compare = dinosaurs[i];
+    } 
+  }
+  result[compare.name] = (compare.lengthInMeters * 3.281);
+  //console.log(result);
+  return result;
+
+  }
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +76,27 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+let result =`A dinosaur with an ID of '${id}' cannot be found.`;;
+  for (let i = 0; i < dinosaurs.length; i++){
+    if (dinosaurs[i].dinosaurId.includes(id) && dinosaurs[i].mya.length === 2){
+      //console.log(dinosaurs[i].dinosaurId)//
+      //console.log(id)//;
+      result=`${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[1]} million years ago.`; 
+    
+    } else if (dinosaurs[i].dinosaurId.includes(id) && dinosaurs[i].mya.length === 1){
+      result=`${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[0]} million years ago.`; 
+
+    }
+    // else {
+    //   result = `A dinosaur with an ID of ${id} cannot be found.`;
+    // }
+  }
+
+
+
+return result;
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,8 +123,31 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+let result = [];
 
+for (let i = 0; i < dinosaurs.length; i++){
+  if (dinosaurs[i].mya.length > 1){
+    if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya){
+      if (key in dinosaurs[i]){ //use the the in // 
+        //console.log(dinosaurs[i][key]);
+        result.push(dinosaurs[i][key]);
+      } else {
+         result.push(dinosaurs[i].dinosaurId);
+      }
+    }
+  } else if (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] - 1 === mya){
+    if (dinosaurs[i][key]){//figure out you can use this too. 
+      result.push(dinosaurs[i][key]);
+    } else {
+      result.push(dinosaurs[i].dinosaurId);
+    }
+  }
+}
+
+return result;
+}
+// get the if in to check if a key is in an object from here  https://www.geeksforgeeks.org/how-to-check-a-key-exists-in-javascript-object/#:~:text=There%20are%20mainly%20two%20methods,property%20is%20in%20the%20object. 
 module.exports = {
   getTallestDinosaur,
   getDinosaurDescription,
