@@ -26,19 +26,12 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+
   let roomByDinosaurNameMessage = `Dinosaur with name '${dinosaurName}' cannot be found.`;
   let dinosaurId = "";
 
-  // for (let dinosaur of dinosaurs) {
-  //   if (dinosaur.name === dinosaurName) {
-  //     dinosaurId = dinosaur.dinosaurId;
-  //     break;
-  //   } else {
-  //     roomByDinosaurNameMessage = `Dinosaur with name '${dinosaurName}' cannot be found.`
-  //   }
-  // }
-
   for (let room of rooms) {
+
     for (let dinosaur of dinosaurs) {
       if (dinosaur.name === dinosaurName) {
         dinosaurId = dinosaur.dinosaurId;
@@ -62,8 +55,8 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 }
 
 //Test Cases
-console.log(getRoomByDinosaurName(exampleDinosaurData, exampleRoomData, "Tyrannosaurus"))
-console.log(getRoomByDinosaurName(exampleDinosaurData, exampleRoomData, "Pterodactyl"))
+// console.log(getRoomByDinosaurName(exampleDinosaurData, exampleRoomData, "Tyrannosaurus"))
+// console.log(getRoomByDinosaurName(exampleDinosaurData, exampleRoomData, "Pterodactyl"))
 
 /**
  * getConnectedRoomNamesById()
@@ -87,7 +80,71 @@ console.log(getRoomByDinosaurName(exampleDinosaurData, exampleRoomData, "Pteroda
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+
+const input = [
+      {
+        roomId: "xwG7O4wQl",
+        name: "Room A",
+        requiredTicketPermissions: [],
+        dinosaurs: [],
+        connectsTo: [
+          "GHPLI7EmD", // Room B
+          "eU46gvYUF", // Room C
+          "incorrect-id", // Incorrect Room. Does not exist.
+        ],
+      },
+      {
+        roomId: "GHPLI7EmD",
+        name: "Room B",
+        requiredTicketPermissions: [],
+        dinosaurs: [],
+        connectsTo: [
+          "xwG7O4wQl", // Room A
+        ],
+      },
+      {
+        roomId: "eU46gvYUF", // 3
+        name: "Room C",
+        requiredTicketPermissions: [],
+        dinosaurs: [],
+        connectsTo: [
+          "xwG7O4wQl", // Room A
+        ],
+      },
+];
+
+function getConnectedRoomNamesById(rooms, id) {
+  let connectedRooms = [];
+
+  for (let room of rooms) {
+    if (room.roomId === id) {
+      connectedRooms = room.connectsTo;
+    }
+  }
+
+  if (connectedRooms.length === 0) {
+    return `Room with ID of '${id}' could not be found.`;
+  }
+
+  for (let i = 0; i < connectedRooms.length; ++i) {
+    for (let room of rooms) {
+      if (connectedRooms[i] === room.roomId) {
+        connectedRooms[i] = room.name;
+      }
+    }
+  }
+
+  for (let connectedRoom of connectedRooms) {
+    if (!connectedRoom.includes(" ")) {
+      return `Room with ID of '${connectedRoom}' could not be found.`;
+    }
+  }
+
+  return connectedRooms;
+}
+
+// Test Cases
+console.log(getConnectedRoomNamesById(input, "incorrect-id"));
 
 module.exports = {
   getRoomByDinosaurName,
