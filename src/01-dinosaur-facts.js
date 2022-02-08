@@ -22,7 +22,30 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  if (!dinosaurs){
+    return {};
+  }
+
+  for (let i = 1; i < dinosaurs.length; i++){
+    let tallestDinoHeight = dinosaurs[0].lengthInMeters;
+    let nameOfTallestDino = dinosaurs[0].name;
+    let dinoObject = {};
+
+    if(tallestDinoHeight < dinosaurs[i].lengthInMeters){
+      tallestDinoHeight = dinosaurs[i].lengthInMeters;
+      nameOfTallestDino = dinosaurs[i].name;
+    } else if (tallestDinoHeight = dinosaurs[i].lengthInMeters){
+      tallestDinoHeight;
+      nameOfTallestDino;
+    }
+    dinoObject.nameOfTallestDino = (tallestDinoHeight * 3.281);
+    return dinoObject;
+  }
+
+}
+
+
 
 /**
  * getDinosaurDescription()
@@ -40,11 +63,31 @@ function getTallestDinosaur(dinosaurs) {}
  * EXAMPLE:
  *  getDinosaurDescription(dinosaurs, "U9vuZmgKwUr");
  *  //> "Xenoceratops (ZEE-no-SEH-ruh-tops)\nXenoceratops had horns and a bony frill with elaborate ornamentation of projections, knobs, and spikes. It lived in the Early Cretaceous period, over 77.5 million years ago."
+ *   {
+    dinosaurId: "U9vuZmgKwUr",
+    name: "Xenoceratops",
+    pronunciation: "ZEE-no-SEH-ruh-tops",
+    meaningOfName: "alien horned face",
+    diet: "herbivorous",
+    lengthInMeters: 6,
+    period: "Early Cretaceous",
+    mya: [78.5, 77.5],
+    info: "Xenoceratops had horns and a bony frill with elaborate ornamentation of projections, knobs, and spikes.",
+  },
  *
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  for (let dino of dinosaurs){
+    if(dino.dinosaurId === id){
+      return `${dino.name} (${dino.pronunciation})`
+      `${dino.info}. It lived in the ${dino.period}, over ${dino.mya[1]} million years ago.`
+    } else if (dino.dinosaurId !== id){
+      return `A dinosaur with an ID of '${id}' cannot be found.`
+    }
+  } 
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +114,16 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinosAlive = [];
+  for (let i = 0; i < dinosaurs.length; i++){
+    if (dinosaurs[i].mya.lengthInMeters === 2){
+      if (dinosaurs[i].mya[0] == mya){
+        dinosaurs.push(dinosaurs[i].dinosaurId)
+      }
+    }
+  }
+}
 
 module.exports = {
   getTallestDinosaur,
