@@ -25,7 +25,26 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  //let found= false;
+  for(let dino of dinosaurs){
+    if(dino.name === dinosaurName){
+      //dino exists. search rooms
+      for(let room of rooms){
+        for(let x of room.dinosaurs){
+          if(x === dino.dinosaurId){
+            //dino found; return room name
+            return `${room.name}`;
+          }
+        }
+      }
+      //dino lost. no room. help!
+      return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+    } 
+  }
+  return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +68,44 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) { //FIXME needs refactoring lols
+  let connectedRooms=[];
+  let found= false;
+  for(let room of rooms){
+    if(room.roomId === id){
+      //room found. find adjacents
+      connectedRooms= room.connectsTo;
+      found=true;
+    }
+  }
+  if(found){
+    for(let x=0; x< connectedRooms.length; x++){
+      //search entire connected room list.
+      for(let i of rooms){
+      //search entire museum for the room name.
+        if(connectedRooms[x] === i.roomId){
+          connectedRooms[x]= i.name;
+          continue;
+        }
+        //return `Room with ID of '${id}' could not be found.`;
+      } 
+    }
+     for(let x of connectedRooms){
+      //check connected rooms for existence.
+      let boo= false;
+      for(let i of rooms){ // 
+        if(x === i.name){
+          boo= true;
+        }
+      }
+      if(!boo){
+        return `Room with ID of '${x}' could not be found.`;
+      }
+    }
+    return connectedRooms;
+  }
+  return `Room with ID of '${id}' could not be found.`;
+}
 
 module.exports = {
   getRoomByDinosaurName,
