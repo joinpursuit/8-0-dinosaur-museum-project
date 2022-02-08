@@ -73,7 +73,6 @@ function getDinosaurDescription(dinosaurs, id) {
     if (dinosaurs[i].dinosaurId === id) {
       descriptionDino = `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.`;
     } 
-    //console.log(dinosaurs[i])
   }
   
   return descriptionDino;
