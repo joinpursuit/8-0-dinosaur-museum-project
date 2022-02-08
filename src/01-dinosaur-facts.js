@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -22,7 +23,26 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  let tallestDino = {};
+  let tallest = dinosaurs[0];
+
+  // Guard clause to see if the array is empty or not
+  if (dinosaurs.length < 1) {
+    return tallestDino;
+  }
+  
+  for (let i = 1; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].lengthInMeters > tallest.lengthInMeters) {
+      tallest = dinosaurs[i];
+    }
+  }
+
+  const lengthInFeet = tallest.lengthInMeters * 3.281;
+  tallestDino[tallest.name] = lengthInFeet;
+  
+  return tallestDino;
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +64,11 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+
+
+  
+}
 
 /**
  * getDinosaursAliveMya()
