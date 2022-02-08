@@ -22,7 +22,23 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  const obj = {}
+  let tallest = dinosaurs[0]
+  
+  if (!dinosaurs.length) {
+    return obj
+  } else {
+    for (const dinosaur of dinosaurs) {
+      if (dinosaur.lengthInMeters > tallest.lengthInMeters) {
+        tallest = dinosaur
+      }
+    }
+  }
+  obj[tallest.name] = tallest.lengthInMeters
+  obj[tallest.name] = tallest.lengthInMeters * 3.281
+  return obj
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +60,17 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let str = ''
+
+  for (const dino of dinosaurs) {
+    if (dino.dinosaurId === id) {
+      return str = `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length - 1]} million years ago.`
+    }
+  }
+
+  return str = `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +97,43 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let arr = []
+
+  for (const dino of dinosaurs) {
+    if (dino.mya.length > 1) {
+      dinoLengthAboveOne(dino, arr, key)
+    } else {
+      dinoLengthBelowOne(dino, arr, key)
+    }
+  }
+
+  function dinoLengthAboveOne(dino, arr, key) {
+    for (let i = 0; i < dino.mya.length; i++) {
+      if (mya <= dino.mya[i] && mya >= dino.mya[i+1]) {
+        if (key in dino) {
+          arr.push(dino[key])
+        } else {
+          arr.push(dino.dinosaurId)
+        }
+      }
+    }
+    return arr
+  }
+
+  function dinoLengthBelowOne(dino, arr, key) {
+    if (dino.mya[0] >= mya && (dino.mya[0] - 1) <= mya) {
+      if (key in dino) {
+        arr.push(dino[key])
+      } else {
+        arr.push(dino.dinosaurId)
+      }
+    }
+    return arr
+  }
+
+  return arr
+}
 
 module.exports = {
   getTallestDinosaur,
