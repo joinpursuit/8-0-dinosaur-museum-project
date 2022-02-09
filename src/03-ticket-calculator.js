@@ -55,7 +55,36 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
+  let ticketType = ["general", "membership"];
+  let entrantType = ["adult", "child", "senior"];
+  let extras = ["movie", "education", "terrace"];
 
+  if (!ticketType.includes(ticketInfo.ticketType)) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+  if (!entrantType.includes(ticketInfo.entrantType)) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+
+  if (ticketInfo.extras.length > 0) {
+    for (let extra of ticketInfo.extras) {
+      if (!extras.includes(extra)) {
+        return `Extra type '${extra}' cannot be found.`;
+      }
+    }
+  }
+
+  //calculate the cost
+  let cost = 0;
+  cost +=
+    ticketData[ticketInfo.ticketType]["priceInCents"][ticketInfo.entrantType];
+
+  //for extras
+  for (let extraType of ticketInfo.extras) {
+    cost +=
+      ticketData["extras"][extraType]["priceInCents"][ticketInfo.entrantType];
+  }
+  return cost;
 }
 
 /**
@@ -111,7 +140,76 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let ticketType = ["general", "membership"];
+  let entrantType = ["adult", "child", "senior"];
+  let extras = ["movie", "education", "terrace"];
+
+  for (let i = 0; i < purchases.length; i++) {
+    if (!ticketType.includes(purchases[i].ticketType)) {
+      return `Ticket type '${purchases[i].ticketType}' cannot be found.`;
+    }
+    if (!entrantType.includes(purchases[i].entrantType)) {
+      return `Entrant type '${purchases[i].entrantType}' cannot be found.`;
+    }
+    if (purchases[i].extras.length > 0) {
+      for (let extra of purchases[i].extras) {
+        if (!extras.includes(extra)) {
+          return `Extra type '${extra}' cannot be found.`;
+        }
+      }
+    }
+  }
+
+  let output =
+    "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+
+  let costInTotal = 0;
+  for (let purchase of purchases) {
+    let temp = "";
+    let ticketType =
+      purchase.ticketType[0].toUpperCase() + purchase.ticketType.slice(1);
+    let entrantType =
+      purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
+    let extraAccess = "";
+
+    if (purchase.extras.length > 0) {
+      extraAccess += " (";
+      for (let i = 0; i < purchase.extras.length - 1; i++) {
+        extraAccess +=
+          purchase.extras[i][0].toUpperCase() +
+          purchase.extras[i].slice(1) +
+          " Access, ";
+      }
+      extraAccess +=
+        purchase.extras[purchase.extras.length - 1][0].toUpperCase() +
+        purchase.extras[purchase.extras.length - 1].slice(1) +
+        " Access)";
+    }
+    //calculate the cost
+    let cost = 0;
+    cost +=
+      ticketData[purchase.ticketType]["priceInCents"][purchase.entrantType];
+
+    //for extras
+    for (let extraType of purchase.extras) {
+      cost +=
+        ticketData["extras"][extraType]["priceInCents"][purchase.entrantType];
+    }
+
+    costInTotal += cost;
+    temp =
+      `${entrantType} ${ticketType} Admission:` +
+      ` $${(cost / 100).toFixed(2)}${extraAccess}\n`;
+    output += temp;
+  }
+
+  output +=
+    `-------------------------------------------\n` +
+    `TOTAL: $${(costInTotal / 100).toFixed(2)}`;
+
+  return output;
+}
 
 // Do not change anything below this line.
 module.exports = {
