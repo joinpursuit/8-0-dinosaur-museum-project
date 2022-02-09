@@ -82,7 +82,7 @@ let roomIdArr = [];
 if (roomIdArr.length === 0){
  result  =`Room with ID of '${id}' could not be found.`
  return result;
-}  else if (roomIdArr.includes("incorrect-id")){
+}  else if (roomIdArr.includes("incorrect-id")){//OMG... should have looked at the test sooner, did not know there is literally a value called "incorrect-id" in the connetsTo array.
   result = `Room with ID of 'incorrect-id' could not be found.`
   return result;
 } else {
@@ -94,16 +94,6 @@ if (roomIdArr.length === 0){
     } 
   }
 }
-
-
-
-
-
-//else {
-//   return `Room with ID of '${id}' could not be found.`;
-//   }
-
-
 
 return result;
 }
