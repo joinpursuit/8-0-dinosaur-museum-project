@@ -31,15 +31,11 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       //then check to see if it's in a room
       for (let room of rooms) {
         //loop through the rooms, looking at dinosaurs
-        if (dino.dinosaurId in room.dinosaurs) {
+        if (room.dinosaurs.includes(dino.dinosaurId)) {
           return room.name;
-        } else {
-          continue;
         }
       }
-    } else {
-      //continue the loop until we find one or fuck it
-      continue;
+      return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
     }
   }
   return `Dinosaur with name '${dinosaurName}' cannot be found.`;
