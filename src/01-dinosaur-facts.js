@@ -23,26 +23,22 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getTallestDinosaur(dinosaurs) {
-  if (!dinosaurs){
-    return {};
-  }
-
-  for (let i = 1; i < dinosaurs.length; i++){
-    let tallestDinoHeight = dinosaurs[0].lengthInMeters;
-    let nameOfTallestDino = dinosaurs[0].name;
-    let dinoObject = {};
-
-    if(tallestDinoHeight < dinosaurs[i].lengthInMeters){
-      tallestDinoHeight = dinosaurs[i].lengthInMeters;
-      nameOfTallestDino = dinosaurs[i].name;
-    } else if (tallestDinoHeight = dinosaurs[i].lengthInMeters){
-      tallestDinoHeight;
-      nameOfTallestDino;
-    }
-    dinoObject.nameOfTallestDino = (tallestDinoHeight * 3.281);
+  let tallestDino = dinosaurs[0];
+  let dinoObject = {};
+  
+  if (!dinosaurs.length){
     return dinoObject;
   }
 
+  for (let i = 1; i < dinosaurs.length; i++){
+    if(tallestDino.lengthInMeters < dinosaurs[i].lengthInMeters){
+      tallestDino = dinosaurs[i];
+    } else if (tallestDino.lengthInMeters === dinosaurs[i].lengthInMeters){
+      tallestDino = tallestDino;
+    }
+  }
+  dinoObject[tallestDino.name] = (tallestDino.lengthInMeters * 3.281);
+  return dinoObject
 }
 
 
@@ -79,14 +75,17 @@ function getTallestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  for (let dino of dinosaurs){
-    if(dino.dinosaurId === id){
-      return `${dino.name} (${dino.pronunciation})`
-      `${dino.info}. It lived in the ${dino.period}, over ${dino.mya[1]} million years ago.`
-    } else if (dino.dinosaurId !== id){
-      return `A dinosaur with an ID of '${id}' cannot be found.`
+  for (let i = 0; i < dinosaurs.length; i++){
+    if(dinosaurs[i].dinosaurId === id){
+      if (dinosaurs[i].mya.length === 1){
+        return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[0]} million years ago.` 
+      } else if (dinosaurs[i].mya.length === 2){
+        return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[1]} million years ago.` 
+      }
+      
     }
   } 
+  return `A dinosaur with an ID of '${id}' cannot be found.`;
 }
 
 /**
@@ -117,12 +116,29 @@ function getDinosaurDescription(dinosaurs, id) {
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   let dinosAlive = [];
   for (let i = 0; i < dinosaurs.length; i++){
-    if (dinosaurs[i].mya.lengthInMeters === 2){
-      if (dinosaurs[i].mya[0] == mya){
-        dinosaurs.push(dinosaurs[i].dinosaurId)
+    if(key){ 
+      if (dinosaurs[i].mya.length === 1){
+        if ((dinosaurs[i].mya[0] - mya) <= 1 && (dinosaurs[i].mya[0] - mya) >= -1){
+          dinosAlive.push(dinosaurs[i][key])
+        }
+      } else if(dinosaurs[i].mya.length === 2){
+        if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya){
+          dinosAlive.push(dinosaurs[i][key])
+        }
+      }
+    } else {
+      if (dinosaurs[i].mya.length === 1){
+        if ((dinosaurs[i].mya[0] - mya) <= 1 && (dinosaurs[i].mya[0] - mya) >= -1){
+          dinosAlive.push(dinosaurs[i].dinosaurId)
+        }
+      } else if(dinosaurs[i].mya.length === 2){
+        if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya){
+          dinosAlive.push(dinosaurs[i].dinosaurId)
+        }
       }
     }
   }
+  return dinosAlive;
 }
 
 module.exports = {
