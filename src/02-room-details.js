@@ -70,11 +70,11 @@ function getConnectedRoomNamesById(rooms, id) {
   let realRooms = [];
   let hallOfMirrors = [];
 
-  for (let room of rooms){
+  for (let room of rooms) {
     //console.log(room);
-    for (hallway of room.connectsTo){
+    for (hallway of room.connectsTo) {
       //console.log(hallway);
-      if (!hallOfMirrors.includes(hallway)){
+      if (!hallOfMirrors.includes(hallway)) {
         hallOfMirrors.push(hallway);
       }
     }
@@ -96,14 +96,30 @@ function getConnectedRoomNamesById(rooms, id) {
       }
     }
   }
+  realRooms.sort();
+  hallOfMirrors.sort();
+
   if (!foundRoom) {
     return `Room with ID of '${id}' could not be found.`;
   }
-  if (realRooms.length != hallOfMirrors.length){
+
+  if (realRooms.length != hallOfMirrors.length) {
     //Then this means that the number of rooms and potential connectors is off, and this is bad. It's a museum, not a fun house.
     //Compare the two arrays, and pull the odd man out... out.
-    
-  }  
+    if (realRooms.length > hallOfMirrors.length) {
+      for (let i = 0; i < hallOfMirrors.length; i++) {
+        if (realRooms[i] != hallOfMirrors[i]) {
+          return `Room with ID of '${realRooms[i]}' could not be found`;
+        }
+      }
+    } else {
+      for (let i = 0; i < realRooms.length; i++) {
+        if (hallOfMirrors[i] != realRooms[i]) {
+          return `Room with ID of '${hallOfMirrors[i]}' could not be found.`;
+        }
+      }
+    }
+  }
   return roomba;
 }
 
