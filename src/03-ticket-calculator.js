@@ -55,27 +55,26 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  let ticketPrice = 0;
+  let ticketPrice;
 
-  let admissionType = ticketInfo.ticketType;
-  let guestType = ticketInfo.entrantType;
-  let extrasArray = ticketInfo.extras;
-
-  if (admissionType !== "general" && admissionType !== "membership") {
-    return `Ticket type '${admissionType}' cannot be found.`;
+  if (
+    ticketInfo.ticketType !== "general" &&
+    ticketInfo.ticketType !== "membership"
+  ) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
   }
 
   if (
-    guestType !== "child" &&
-    guestType !== "adult" &&
-    guestType !== "senior"
+    ticketInfo.entrantType !== "child" &&
+    ticketInfo.entrantType !== "adult" &&
+    ticketInfo.entrantType !== "senior"
   ) {
-    return `Entrant type '${guestType}' cannot be found.`;
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
   }
 
-  for (let extra of extrasArray) {
+  for (let extra of ticketInfo.extras) {
     if (
-      extrasArray.length > 0 &&
+      ticketInfo.extras.length > 0 &&
       extra !== "movie" &&
       extra !== "education" &&
       extra !== "terrace"
@@ -84,11 +83,13 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     }
   }
 
-  ticketPrice = ticketData[admissionType].priceInCents[guestType];
+  ticketPrice =
+    ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
 
-  if (extrasArray.length > 0) {
-    for (let extra of extrasArray) {
-      ticketPrice += ticketData.extras[extra].priceInCents[guestType];
+  if (ticketInfo.extras.length > 0) {
+    for (let extra of ticketInfo.extras) {
+      ticketPrice +=
+        ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
     }
   }
 
