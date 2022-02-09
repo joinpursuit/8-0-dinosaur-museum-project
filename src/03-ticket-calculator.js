@@ -54,7 +54,52 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+
+    
+function calculateTicketPrice(ticketData, ticketInfo) {
+  //setting variables for each ticketinfo object key. I will separate regular price and extras price and add them at the end. start them all off at 0. I set boolean variables for if each key contains valid entries.
+  let type = ticketInfo.ticketType
+  let entrants = ticketInfo.entrantType
+  let extraType = ticketInfo.extras// this will be an array
+  let hasCorrectType = false
+  let hasCorrectEntrant = false
+  let hasCorrectExtra = false
+  let regPrice = 0
+  let extraPrice = 0
+  let totalPrice = 0
+
+  //setting error messages. // extras error message is for if there are extras inside the ticketInfo.extras array and if the extras aren't either "movie","education", or "terrace". if the length is 0, then its boolean stays at false
+  if (type === 'general' || type === 'membership') {
+    hasCorrectType = true
+  } else {
+    return `Ticket type 'incorrect-type' cannot be found.`
+  }
+  if (entrants === 'child' || entrants === 'adult' || entrants === 'senior') {
+    hasCorrectEntrant = true
+  } else {
+    return `Entrant type 'incorrect-entrant' cannot be found.`
+  }
+  if(extraType.length > 0){
+    if (extraType.includes('movie') || extraType.includes('education') || extraType.includes('terrace')) {
+      hasCorrectExtra = true
+  } else {
+      return `Extra type 'incorrect-extra' cannot be found.`
+  }
+}
+// if ticket.info has valid type, entrant, and extras. Need to cycle through extras array to set an index variable and to also add the price of each onto itself. else if statement will be for if extras array is empty
+if (hasCorrectType && hasCorrectEntrant && hasCorrectExtra){
+    regPrice = ticketData[type].priceInCents[entrants]
+    for (let ext of extraType){
+      extraPrice += ticketData.extras[ext].priceInCents[entrants]
+  }
+} else if (hasCorrectType && hasCorrectEntrant){
+  regPrice = ticketData[type].priceInCents[entrants]
+  extraPrice = 0
+}
+
+totalPrice = regPrice + extraPrice
+return totalPrice
+}
 
 /**
  * purchaseTickets()

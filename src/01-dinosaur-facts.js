@@ -24,16 +24,16 @@ const exampleDinosaurData = require("../data/dinosaurs");
  */
 function getTallestDinosaur(dinosaurs) {
   if (!dinosaurs.length) {
-    return{};
+    return {};
   }
   let tall = dinosaurs[0];
-    for (let dino of dinosaurs) {
-      if (dino.lengthInMeters > tall.lengthInMeters) {
-        tall = dino;
+  for (let dino of dinosaurs) {
+    if (dino.lengthInMeters > tall.lengthInMeters) {
+      tall = dino;
     }
   }
   let feetLength = tall.lengthInMeters * 3.281;
-  return {[tall.name]: feetLength};
+  return { [tall.name]: feetLength };
 }
 
 /**
@@ -57,14 +57,18 @@ function getTallestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  let message = `A dinosaur with an ID of '${id}' cannot be found.`;// default error message if id doesnt match 
+  let message = `A dinosaur with an ID of '${id}' cannot be found.`; // default error message if id doesnt match
 
-  for(let dino of dinosaurs){
-    if (dino.dinosaurId === id){
-      message = `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length -1]} million years ago.`// we need the last element of the mya array for the sentence to make sense
+  for (let dino of dinosaurs) {
+    if (dino.dinosaurId === id) {
+      message = `${dino.name} (${dino.pronunciation})\n${
+        dino.info
+      } It lived in the ${dino.period} period, over ${
+        dino.mya[dino.mya.length - 1]
+      } million years ago.`; // we need the last element of the mya array for the sentence to make sense
     }
   }
-  return message
+  return message;
 }
 
 /**
@@ -115,7 +119,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
       }
     }
   }
-   return newArray;
+  return newArray;
 }
 
 module.exports = {
