@@ -93,62 +93,63 @@ tallestDinosaur={[nameOfTheTallestDinosur] :tallestHeight}
 
 function getDinosaurDescription(dinosaurs, id) {
 
-  // variable to compare the id of the dinosaur
-  let identificationStringOfDinosaur ;
-
-  //variable to print out the description of the dinosaur
-  let detailedDescriptionOfDinosaur ;
-
-  //variable found  is used to toggle the value if the dinosaur is found 
-  let found = false
-
-  //object that returns the dinosaur details
-  let dinoDetails = null
-
-  //variables used to display the year and the period of the dinosaur
-  let year=period=0
-
-  //variables used to display the name ,information and prononunciation in the message if found
-  let name=info=pronunciation=''
- 
-  //iterate through the dinosaur array to find the result 
-  for (let i = 0;i < dinosaurs.length; i++) {
-
-     //assign the value of the array of objects to the variable to compare
-     identificationStringOfDinosaur = dinosaurs[i].dinosaurId
-
-     //using condition statement compare the value of the id provided by the user and chek if it matches that in the array of objects
-      if(identificationStringOfDinosaur  === id){
-             
-        // change the value to true as the id matches
-        found = true
-
-        //assign all the values of the  object in the current iteration 
-        dinoDetails = dinosaurs[i]
-        year=dinoDetails.mya[dinoDetails.mya.length-1]
-        name=dinoDetails.name
-        pronunciation=dinoDetails.pronunciation
-        info=dinoDetails.info
-        period=dinoDetails.period
+         // variable to compare the id of the dinosaur
+         let identificationStringOfDinosaur ;
        
-        //break as the condition is met
-        break;
-      }
-  } 
+         //variable to print out the description of the dinosaur
+         let detailedDescriptionOfDinosaur ;
        
+         //variable found  is used to toggle the value if the dinosaur is found 
+         let found = false
+       
+         //object that returns the dinosaur details
+         let dinoDetails = null
+       
+         //variables used to display the year and the period of the dinosaur
+         let year=period=0
+       
+         //variables used to display the name ,information and prononunciation in the message if found
+         let name=info=pronunciation=''
+        
+         //iterate through the dinosaur array to find the result 
+         for (let i = 0;i < dinosaurs.length; i++) {
+       
+                 //assign the value of the array of objects to the variable to compare
+                 identificationStringOfDinosaur = dinosaurs[i].dinosaurId
+            
+                 //using condition statement compare the value of the id provided by the user and chek if it matches that in the array of objects
+                  if(identificationStringOfDinosaur  === id){
+                         
+                         // change the value to true as the id matches
+                         found = true
+                 
+                         //assign all the values of the  object in the current iteration 
+                         dinoDetails = dinosaurs[i]
+                         year=dinoDetails.mya[dinoDetails.mya.length-1]
+                         name=dinoDetails.name
+                         pronunciation=dinoDetails.pronunciation
+                         info=dinoDetails.info
+                         period=dinoDetails.period
+                        
+                         //break as the condition is met
+                         break;
+                  }
+         } 
+              
+       
+            
+        //ir else statement to check if the value found or not found and display the messages respectively
+         if (found){ 
 
-     
-       //ir else statement to check if the value found or not found and display the messages respectively
-       if (found){
-
-          detailedDescriptionOfDinosaur = `${name} (${pronunciation})\n${info} It lived in the ${period} period, over ${year} million years ago.`
-      } else{
-    
-          detailedDescriptionOfDinosaur = `A dinosaur with an ID of 'incorrect-id' cannot be found.`
-      }
-
-//return the message to the called function
- return detailedDescriptionOfDinosaur 
+           detailedDescriptionOfDinosaur = `${name} (${pronunciation})\n${info} It lived in the ${period} period, over ${year} million years ago.`
+         
+         }else {
+      
+           detailedDescriptionOfDinosaur = `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+         }
+       
+    //return the message to the called function
+    return detailedDescriptionOfDinosaur 
 }
 
 /**
@@ -181,57 +182,51 @@ function getDinosaurDescription(dinosaurs, id) {
 
 function getDinosaursAliveMya(dinosaurs, mya, key) {
 
-  //Declare a dinosaur array to hold the result 
-  let dinosaurArr=[]
-  
-  //iterate through the dinosaurs array of obejcts
-  for (let dinosaur of dinosaurs){
-
-    //variable len to find the value of the mya array 
-    let len=dinosaur.mya.length
-    
-       //condition statement  to check if the len of the mya array is 2 and if the passed mya value exists 
-       //between the given period in the mya array in the object
-
-       if (len===2 && dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya  ){
-     
-           //check if key is passed to the function by the user. If the key passed add the key to the array, 
-           //if not then add the dinosaur Id to the array
-           if(key){
-          
-               dinosaurArr.push(dinosaur[key])
-
-           }else{ 
-
-              dinosaurArr.push(dinosaur.dinosaurId)
-           }
-
-      //if the length of the mya is not 2 
-       }else{ 
-
-           // check for another condition where the value of the given year is  less or the value provided
-           if(  dinosaur.mya[0]===mya || (dinosaur.mya[0])-1===mya){
+          //Declare a dinosaur array to hold the result 
+          let dinosaurArr=[]
            
-                // check if the key is provided by the user and push the respective value to the array
-                if(key){
-
-                     dinosaurArr.push(dinosaur[key])
-
-                }else{
-
-                    dinosaurArr.push(dinosaur.dinosaurId)
-                }
-               
-              }
-
-       } 
-  
-
-   }
-  
-   //return the result to the passed function
-  return dinosaurArr
-
+          //iterate through the dinosaurs array of obejcts
+          for (let dinosaur of dinosaurs){
+         
+                //variable len to find the value of the mya array 
+                let len=dinosaur.mya.length
+             
+                //condition statement  to check if the len of the mya array is 2 and if the passed mya value exists 
+                //between the given period in the mya array in the object
+         
+                if (len===2 && dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya  ){
+              
+                        //check if key is passed to the function by the user. If the key passed add the key to the array, 
+                        //if not then add the dinosaur Id to the array
+                        if(key){
+                            dinosaurArr.push(dinosaur[key])
+                        }else{ 
+                            dinosaurArr.push(dinosaur.dinosaurId)
+                        }
+         
+                 //if the length of the mya is not 2 
+                }else{ 
+         
+                        // check for another condition where the value of the given year is  less or the value provided
+                        if(  dinosaur.mya[0]===mya || (dinosaur.mya[0])-1===mya){
+                        
+                             // check if the key is provided by the user and push the respective value to the array
+                             if(key){
+                                   dinosaurArr.push(dinosaur[key])
+                             }else{
+                                  dinosaurArr.push(dinosaur.dinosaurId)
+                             }
+                            
+                        }
+         
+                } 
+           
+         
+            }
+           
+    //return the result to the passed function
+    return dinosaurArr
+         
 }
 
 module.exports = {
