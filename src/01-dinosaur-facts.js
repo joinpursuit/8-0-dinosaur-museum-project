@@ -22,7 +22,24 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  let obj = {}
+  let tallestOne = dinosaurs[0]
+  if(!dinosaurs.length){
+  return {};
+}
+for(let i =1; i <dinosaurs.length; i++){
+if(dinosaurs[i].lengthInMeters> tallestOne.lengthInMeters){
+  tallestOne = dinosaurs[i];
+    }
+  }
+  let footLength = tallestOne.lengthInMeters*3.281;
+
+ obj[tallestOne.name] = footLength
+return obj
+}
+
+// getTallestDinosaur(exampleDinosaurData);
 
 /**
  * getDinosaurDescription()
@@ -47,7 +64,7 @@ function getTallestDinosaur(dinosaurs) {}
 function getDinosaurDescription(dinosaurs, id) {}
 
 /**
- * getDinosaursAliveMya()
+ * getDinosaursAliveMya() lenght-1
  * ---------------------
  * Returns an array of dinosaurs who were alive at the given `mya` (i.e. "millions of years ago") value. If a `key` is provided, returns the value of that key for each dinosaur alive at that time. Otherwise, returns the ID.
  *
