@@ -72,19 +72,19 @@ function getConnectedRoomNamesById(rooms, id) {
 
   //Build the arrays for later comparison
   for (let room of rooms) {
-    for (hallway of room.connectsTo) {
+    for (let hallway of room.connectsTo) {
       if (!hallOfMirrors.includes(hallway)) {
         hallOfMirrors.push(hallway);
       }
     }
-  }  
+  }
 
   //Go through the rooms and connectors looking for basic match
   for (let room of rooms) {
     realRooms.push(room.roomId);
     if (room.roomId.includes(id)) {
       foundRoom = true;
-      for (connectors of room.connectsTo) {
+      for (let connectors of room.connectsTo) {
         for (let room2 of rooms) {
           if (room2.roomId.includes(connectors)) {
             roomba.push(room2.name);
