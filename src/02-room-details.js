@@ -65,9 +65,11 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
  */
 function getConnectedRoomNamesById(rooms, id) {
   let roomba = [];
-  
+  let foundRoom = false;
+
   for (let room of rooms) {
     if (room.roomId.includes(id)) {
+      foundRoom = true;
       for (connectors of room.connectsTo) {
         for (let room2 of rooms) {
           if (room2.roomId.includes(connectors)) {
@@ -75,10 +77,10 @@ function getConnectedRoomNamesById(rooms, id) {
           }
         }
       }
-    }    
+    }
   }
-  if (roomba.length == 0){
-    return 
+  if (!foundRoom) {
+    return `Room with ID of '${id}' could not be found.`;
   }
   return roomba;
 }
