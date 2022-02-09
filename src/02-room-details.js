@@ -71,21 +71,41 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  let connectedRooms = [];
-  let connectedRoomNames = [];
+  let connectedRooms = []; //array where connected rooms id numbers will be stored
+  let connectedRoomNames = []; //array where connected rooms names will be stored
+  let doesInputExist = false; //boolean that will later check if input id exists
+
+  //iterate through rooms array. The purpose of this loop is to get connected room by id number
   for (const room of rooms) {
+    //if the given room id matches id input, Input exists in the array
     if (room.roomId === id) {
+      //change doesInputExist to true
+      doesInputExist = true;
+      //iterate through 'connectsTo' key/array of the given room
       for (let i = 0; i < room.connectsTo.length; i++) {
+        //pushes given room id to connectedRomos
         connectedRooms.push(room.connectsTo[i]);
       }
     }
   }
+  //iterate through rooms array. The purpose of this loop is to get connected room by name
   for (const room of rooms) {
+    //iterate through connectedRooms array
     for (const connected of connectedRooms) {
+      //if the given room object id name in rooms is equal to the connected room id name
       if (room.roomId === connected) {
+        //push connected room id name to connectedRoomNames array
+        doesRoomExist = true;
         connectedRoomNames.push(room.name);
       }
     }
+  }
+  //if doesInputExist remains false, id input does not exist in rooms array
+  //else if not every id found in connectedRooms has a "name", it has not been found in rooms array and does not exist
+  if (doesInputExist === false) {
+    return `Room with ID of '${id}' could not be found.`;
+  } else if (connectedRoomNames.length != connectedRooms.length) {
+    return `Room with ID of 'incorrect-id' could not be found.`;
   }
   return connectedRoomNames;
 }
