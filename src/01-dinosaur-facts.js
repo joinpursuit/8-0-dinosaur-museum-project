@@ -37,7 +37,6 @@ tallest[tall.name] = tall.lengthInMeters * 3.281
   return tallest
 }
 
-
 /**
  * getDinosaurDescription()
  * ---------------------
@@ -59,16 +58,13 @@ tallest[tall.name] = tall.lengthInMeters * 3.281
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-let result = `A dinosaur with an ID of '${id}' cannot be found.`
- for (let dinosaur of dinosaurs){
-if (dinosaur.dinosaurId === id){
+    let result = `A dinosaur with an ID of '${id}' cannot be found.`
+     for (let dinosaur of dinosaurs){
+    if (dinosaur.dinosaurId === id){
+    
+      result = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[dinosaur.mya.length-1]} million years ago.`
 
   result = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[dinosaur.mya.length-1]} million years ago.`
-}
- }
-return result
-}
-console.log(getDinosaurDescription(exampleDinosaurData))
 /**
  * getDinosaursAliveMya()
  * ---------------------
@@ -116,8 +112,8 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   }
 
 return aliveDino
+}
 
-  }
 module.exports = {
   getTallestDinosaur,
   getDinosaurDescription,
