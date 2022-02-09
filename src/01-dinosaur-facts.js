@@ -22,7 +22,25 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+
+let tallestDino = dinosaurs[0];
+let tallestDinoObj = {};
+
+if (!dinosaurs.length){
+  return {};
+}
+
+for (let i = 0; i < dinosaurs.length; i ++){
+  if ( dinosaurs[i].lengthInMeters > tallestDino.lengthInMeters ){
+    tallestDino = dinosaurs[i];
+  }
+}
+
+tallestDinoObj[tallestDino.name] = (tallestDino.lengthInMeters * 3.281);
+
+return tallestDinoObj;
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +62,17 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  
+  for (let i = 0; i < dinosaurs.length; i ++){
+    if (dinosaurs[i].dinosaurId === id){
+      return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.`;
+    }
+  }
+
+  return "A dinosaur with an ID of 'incorrect-id' cannot be found.";
+}
+
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +99,36 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinosAliveMya = [];
+
+
+for (let i = 0; i < dinosaurs.length; i ++){
+
+  if (dinosaurs[i].mya.length === 2) {
+    if (dinosaurs[i].mya[0] >= mya && mya >= dinosaurs[i].mya[1]){
+      if(key in dinosaurs[i]){
+        dinosAliveMya.push(dinosaurs[i][key])
+      }else{
+        dinosAliveMya.push(dinosaurs[i].dinosaurId)
+      }
+    }
+    
+  } else {
+    if (dinosaurs[i].mya.includes(mya) || dinosaurs[i].mya.includes((mya + 1))){
+      if(key in dinosaurs[i]){
+        dinosAliveMya.push(dinosaurs[i][key])
+      }else{
+      dinosAliveMya.push(dinosaurs[i].dinosaurId)
+      }
+    }
+  }
+}
+
+  return dinosAliveMya;
+}
+
+
 
 module.exports = {
   getTallestDinosaur,
