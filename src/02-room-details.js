@@ -70,19 +70,16 @@ function getConnectedRoomNamesById(rooms, id) {
   let realRooms = [];
   let hallOfMirrors = [];
 
+  //Build the arrays for later comparison
   for (let room of rooms) {
-    //console.log(room);
     for (hallway of room.connectsTo) {
-      //console.log(hallway);
       if (!hallOfMirrors.includes(hallway)) {
         hallOfMirrors.push(hallway);
       }
     }
-  }
+  }  
 
-  //Why not take advantage of these loops, and build two arrays for helping to check the last test condition. An array of available roomId's, and an array of connectors. Add only new Id's to the connector array, and all rooms to the room array. If they don't match, then there's a problem.
-  //I was able to use this for the rooms, but not the connects to array. Hm.
-
+  //Go through the rooms and connectors looking for basic match
   for (let room of rooms) {
     realRooms.push(room.roomId);
     if (room.roomId.includes(id)) {
@@ -96,9 +93,12 @@ function getConnectedRoomNamesById(rooms, id) {
       }
     }
   }
+
+  //Sort the arrays for comparison
   realRooms.sort();
   hallOfMirrors.sort();
 
+  //For if we never the room
   if (!foundRoom) {
     return `Room with ID of '${id}' could not be found.`;
   }
@@ -120,6 +120,7 @@ function getConnectedRoomNamesById(rooms, id) {
       }
     }
   }
+  //Everything's cool
   return roomba;
 }
 
