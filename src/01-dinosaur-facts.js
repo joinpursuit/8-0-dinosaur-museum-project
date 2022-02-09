@@ -24,7 +24,7 @@ const exampleDinosaurData = require("../data/dinosaurs");
  */
 function getTallestDinosaur(dinosaurs) {
   let result = {};
-  if(!dinosaurs[0]){
+  if (!dinosaurs[0]) {
     return result;
   }
   let name = dinosaurs[0].name;
@@ -38,7 +38,6 @@ function getTallestDinosaur(dinosaurs) {
   value *= 3.281;
   result[name] = value;
   return result;
-  
 }
 
 /**
@@ -65,11 +64,10 @@ function getDinosaurDescription(dinosaurs, id) {
   let result = `A dinosaur with an ID of '${id}' cannot be found.`;
   //find dino we care about, then create decription
   for (let dinosaur of dinosaurs) {
-    if ((dinosaur.dinosaurId === id) && (dinosaur.mya.length === 2)){
+    if (dinosaur.dinosaurId === id && dinosaur.mya.length === 2) {
       result = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[1]} million years ago.`;
-    }
-    else if ((dinosaur.dinosaurId === id) && (dinosaur.mya.length === 1)){
-    result = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[0]} million years ago.`;
+    } else if (dinosaur.dinosaurId === id && dinosaur.mya.length === 1) {
+      result = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[0]} million years ago.`;
     }
   }
   return result;
@@ -78,13 +76,23 @@ function getDinosaurDescription(dinosaurs, id) {
 /**
  * getDinosaursAliveMya()
  * ---------------------
- * Returns an array of dinosaurs who were alive at the given `mya` (i.e. "millions of years ago") value. If a `key` is provided, returns the value of that key for each dinosaur alive at that time. Otherwise, returns the ID.
+ * Returns an array of dinosaurs who were alive at the given `mya` (i.e. "millions of years ago") value.
+ * RETURNS ARRAY: dinosaurs who were alive at a given mya. so check when mya is equal to the mya in the array of object. Loop through array of objects @ .mya.
+ * compare it with the mya.
  *
- * If the dinosaur only has a single value for `mya`, allows for the `mya` value to be equal to the given value or one less. For example, if a dinosaur has a `mya` value of `[29]`, the dinosaur's information will be returned if `29` is entered or `28` is entered.
+ * If a `key` is provided, returns the value of that key for each dinosaur alive at that time. Otherwise, returns the ID.
+ * If 3rd parameter is provided, it returns the value for that key.
+ * else return ID
+ *
+ * If the dinosaur only has a single value for `mya`, allows for the `mya` value to be equal to the given value or one less.
+ * if the array.length === 1;
+ * (mya[0] - 1) can be the input and it'll be fine to return the dinos inforamtion
+ * For example, if a dinosaur has a `mya` value of `[29]`, the dinosaur's information will be returned if `29` is entered or `28` is entered.
  *
  * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file for an example of the input.
  * @param {number} mya - "Millions of years ago."
- * @param {string} key - An optional parameter. If included, for dinosaurs that lived during the `mya` value given, will return the value of the supplied key. Otherwise, returns the ID.
+ * @param {string} key - An optional parameter. If included, for dinosaurs that lived during the `mya` value given, will return the value of the supplied key.
+ * Otherwise, returns the ID.
  * @returns {*[]} An array of values, which depend on the key given. The array should only include data of dinosaurs who lived during the given time period.
  *
  * EXAMPLE:
@@ -100,7 +108,33 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let result = [];
+
+  for (let dinosaur of dinosaurs) {
+    if (dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya) {
+      if (dinosaur[key] !== undefined) {
+        result.push(dinosaur[key]);
+      } else {
+        result.push(dinosaur.dinosaurId);
+      }
+    }
+    if (dinosaur.mya[0] === mya || dinosaur.mya[0] === mya + 1) {
+      if (dinosaur[key] !== undefined) {
+        result.push(dinosaur[key]);
+      } else {
+        result.push(dinosaur.dinosaurId);
+      }
+    }
+  }
+  return result;
+}
+
+// } else if ((dinosaur.mya[0] === mya) || (dinosaur.mya[0] === (mya + 1))) {
+//   result.push(dinosaur.dinosaurId);
+// }
+// else if (dinosaur.mya.length === 1) {
+//   result.push(dinosaur.dinosaurId);
 
 module.exports = {
   getTallestDinosaur,
