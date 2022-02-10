@@ -59,13 +59,15 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   let entrantType = ["adult", "child", "senior"];
   let extras = ["movie", "education", "terrace"];
 
+  //if the ticketInfo.ticketType is invalid return error
   if (!ticketType.includes(ticketInfo.ticketType)) {
     return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
   }
+  //if the ticketInfo.entrantType is invalid return error
   if (!entrantType.includes(ticketInfo.entrantType)) {
     return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
   }
-
+  //if the ticketInfo.extras is invalid return error
   if (ticketInfo.extras.length > 0) {
     for (let extra of ticketInfo.extras) {
       if (!extras.includes(extra)) {
@@ -74,16 +76,19 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     }
   }
 
+  //if the ticketInfo has correct ticketType, entrantType and extras, then we can
   //calculate the cost
   let cost = 0;
+  //calculate the cost of 'general' or 'membership' tickeType
   cost +=
     ticketData[ticketInfo.ticketType]["priceInCents"][ticketInfo.entrantType];
 
-  //for extras
+  //if the ticket has extras, include the extras cost
   for (let extraType of ticketInfo.extras) {
     cost +=
       ticketData["extras"][extraType]["priceInCents"][ticketInfo.entrantType];
   }
+
   return cost;
 }
 
@@ -145,6 +150,7 @@ function purchaseTickets(ticketData, purchases) {
   let entrantType = ["adult", "child", "senior"];
   let extras = ["movie", "education", "terrace"];
 
+  //iterate through every tickets, if found any error, then return error message
   for (let i = 0; i < purchases.length; i++) {
     if (!ticketType.includes(purchases[i].ticketType)) {
       return `Ticket type '${purchases[i].ticketType}' cannot be found.`;
@@ -165,43 +171,10 @@ function purchaseTickets(ticketData, purchases) {
     "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
 
   let costInTotal = 0;
+  //add the message of each ticket into the output
   for (let purchase of purchases) {
-    let temp = "";
-    let ticketType =
-      purchase.ticketType[0].toUpperCase() + purchase.ticketType.slice(1);
-    let entrantType =
-      purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
-    let extraAccess = "";
-
-    if (purchase.extras.length > 0) {
-      extraAccess += " (";
-      for (let i = 0; i < purchase.extras.length - 1; i++) {
-        extraAccess +=
-          purchase.extras[i][0].toUpperCase() +
-          purchase.extras[i].slice(1) +
-          " Access, ";
-      }
-      extraAccess +=
-        purchase.extras[purchase.extras.length - 1][0].toUpperCase() +
-        purchase.extras[purchase.extras.length - 1].slice(1) +
-        " Access)";
-    }
-    //calculate the cost
-    let cost = 0;
-    cost +=
-      ticketData[purchase.ticketType]["priceInCents"][purchase.entrantType];
-
-    //for extras
-    for (let extraType of purchase.extras) {
-      cost +=
-        ticketData["extras"][extraType]["priceInCents"][purchase.entrantType];
-    }
-
-    costInTotal += cost;
-    temp =
-      `${entrantType} ${ticketType} Admission:` +
-      ` $${(cost / 100).toFixed(2)}${extraAccess}\n`;
-    output += temp;
+    output += messageOfSingleTicket(ticketData, purchase);
+    costInTotal += priceOfSingleTicket(ticketData, purchase);
   }
 
   output +=
@@ -209,6 +182,57 @@ function purchaseTickets(ticketData, purchases) {
     `TOTAL: $${(costInTotal / 100).toFixed(2)}`;
 
   return output;
+}
+
+function messageOfSingleTicket(ticketData, purchase) {
+  let returnStr = "";
+  let extraAccess = "";
+  //capitlaize the first letter of the ticketType
+  let ticketType =
+    purchase.ticketType[0].toUpperCase() + purchase.ticketType.slice(1);
+  //capitalize the first letter of the entrantType
+  let entrantType =
+    purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
+
+  //if we have one or more extras, add it to the message
+  if (purchase.extras.length > 0) {
+    extraAccess += " ("; //opening of the extras
+    //add each extras to the message, except for the last one
+    for (let i = 0; i < purchase.extras.length - 1; i++) {
+      extraAccess +=
+        purchase.extras[i][0].toUpperCase() +
+        purchase.extras[i].slice(1) +
+        " Access, ";
+    }
+    //closing of the extras
+    extraAccess +=
+      purchase.extras[purchase.extras.length - 1][0].toUpperCase() +
+      purchase.extras[purchase.extras.length - 1].slice(1) +
+      " Access)";
+  }
+
+  let cost = priceOfSingleTicket(ticketData, purchase);
+
+  //the return message format
+  returnStr =
+    `${entrantType} ${ticketType} Admission:` +
+    ` $${(cost / 100).toFixed(2)}${extraAccess}\n`;
+
+  return returnStr;
+}
+
+function priceOfSingleTicket(ticketData, purchase) {
+  let cost = 0;
+  //calculate the cost of the 'general' or 'membership' ticket
+  cost += ticketData[purchase.ticketType]["priceInCents"][purchase.entrantType];
+
+  //calculate the cost of extras
+  for (let extraType of purchase.extras) {
+    cost +=
+      ticketData["extras"][extraType]["priceInCents"][purchase.entrantType];
+  }
+
+  return cost;
 }
 
 // Do not change anything below this line.
