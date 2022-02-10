@@ -26,25 +26,31 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  let dinosaurExist = false;
-  let roomExist = false;
-  let id = '';
-  let roomName = '';
+  let dinosaurExist = false; //assume dinosaur no exist
+  let roomExist = false; // assume room not exist
+  let id = "";
+  let roomName = "";
 
-  for(let dinosaur of dinosaurs){
-    if(dinosaur.name === dinosaurName){
+  //iterate through the dinosaurs array, looking for the given dinosaurName
+  for (let dinosaur of dinosaurs) {
+    if (dinosaur.name === dinosaurName) {
       dinosaurExist = true;
-      id = dinosaur.dinosaurId;
+      id = dinosaur.dinosaurId; //if dinosaur exist, store it's id
+      break;
     }
   }
 
-  if(!dinosaurExist){
-    return `Dinosaur with name '${dinosaurName}' cannot be found.`
+  //if given dinosaurName not exist in the dinosaurs array, return error
+  if (!dinosaurExist) {
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
   }
 
-  for(let room of rooms){
-    for(let dinosaurId of room.dinosaurs){
-      if(dinosaurId === id){
+  //iterate through the rooms array
+  for (let room of rooms) {
+    //iterate through the dinosaurs array inside the room object
+    for (let dinosaurId of room.dinosaurs) {
+      //if the dinosaur exist in the room
+      if (dinosaurId === id) {
         roomExist = true;
         roomName = room.name;
         break;
@@ -52,12 +58,12 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     }
   }
 
-  if(roomExist){
+  //if room exist, then return the room name, otherwise return an error message
+  if (roomExist) {
     return roomName;
-  }else{
+  } else {
     return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
   }
-
 }
 
 /**
@@ -83,33 +89,37 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  let connectedRooms = [];
-  let roomIdFound = false;
-  let allRoomIds = [];
+  let connectedRooms = []; //rooms connected to the given room id
+  let roomIdFound = false; //assume the given room id not exist
+  let allRoomIds = []; //stores all room's id
 
-  for(let room of rooms){
-    if(room.roomId === id){
+  //iterate through rooms array
+  for (let room of rooms) {
+    //looking for the room with the given room id
+    if (room.roomId === id) {
       roomIdFound = true;
+      //store the rooms id where the given room connects to
       connectedRooms = room.connectsTo;
     }
-    allRoomIds.push(room.roomId);
+    allRoomIds.push(room.roomId); //store all room's id
   }
 
-  if(!roomIdFound){
+  //if the given roomId not exist, return an error message.
+  if (!roomIdFound) {
     return `Room with ID of '${id}' could not be found.`;
   }
 
   //test for connected room exist
-  for(let connectedRoom of connectedRooms){
-    if(!allRoomIds.includes(connectedRoom)){
+  for (let connectedRoom of connectedRooms) {
+    if (!allRoomIds.includes(connectedRoom)) {
       return `Room with ID of '${connectedRoom}' could not be found.`;
     }
   }
 
   //convert connected room id to connected room names;
   let result = [];
-  for(let room of rooms){
-    if(connectedRooms.includes(room.roomId)){
+  for (let room of rooms) {
+    if (connectedRooms.includes(room.roomId)) {
       result.push(room.name);
     }
   }
