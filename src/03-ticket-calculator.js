@@ -54,7 +54,69 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  //check ticket info for abnormalities: wrong type, wrong entrant type, wrong extra types (search with ambiguity, aka make sure loop thru key names instead of hardcoding it lols)
+  //let tickType= '';
+  let total=0;
+  if(ticketInfo.ticketType === 'general'){
+    //continue parsing
+    if(ticketInfo.entrantType === 'adult'){
+      total += ticketData.general.priceInCents.adult;
+    } else if(ticketInfo.entrantType  === 'child'){
+      total += ticketData.general.priceInCents.child;
+    } else if(ticketInfo.entrantType  === 'senior'){
+      total += ticketData.general.priceInCents.senior;
+    } else {
+      return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+    }
+  } else if (ticketInfo.ticketType === 'membership'){
+    tickType= 'membership';
+    //continue parsing
+    if(ticketInfo.entrantType  === 'adult'){
+      total+= ticketData.membership.priceInCents.adult;
+    } else if(ticketInfo.entrantType  === 'child'){
+      total+= ticketData.membership.priceInCents.child;
+    } else if(ticketInfo.entrantType  === 'senior'){
+      total+= ticketData.membership.priceInCents.senior;
+    } else {
+      return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;    
+    }
+  } else {
+    //error
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+  if(!ticketInfo.extras){
+    //no extras. return base ticket price
+    return total;
+  } else {
+    //add extras in the entire list. return once finished.
+    for(let extra of ticketInfo.extras){
+      //check if extra is valid 
+      if(ticketData.extras.hasOwnProperty(extra)){
+        if(ticketInfo.entrantType=== 'adult'){
+          total+= ticketData.extras[extra].priceInCents.adult;
+        } else if(ticketInfo.entrantType=== 'child'){
+          total+= ticketData.extras[extra].priceInCents.child;
+        } else if(ticketInfo.entrantType === 'senior'){
+          total+= ticketData.extras[extra].priceInCents.senior;
+        } 
+      } else {
+        //extra is not valid. return error
+        return `Extra type '${extra}' cannot be found.`;
+      }
+    }
+    //finished parsing extras. total should be complete here. return it!
+    return total;
+  }
+  //accumulate a cost based on: ticket type, entrant type discount
+  //accumulate extra ticket costs by entrant type as well [search frugally, and by searching for key existence first. ticketData can change its keys it seems]
+
+
+}
+
+function ageDiscount(ticketType){
+
+}
 
 /**
  * purchaseTickets()
