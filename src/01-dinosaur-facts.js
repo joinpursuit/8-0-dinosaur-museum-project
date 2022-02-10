@@ -101,7 +101,20 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  //Return an array [] of all the dinos who were alive at the given time frame (mya).
+  //If a 'key' is provided, then return that value for each dino that is alive during that time.  Otherwise, return ID.
+  //If the dino only has one mya, then the value will be equal to the given or a year less.
+  let aliveArr = [];
+
+  for(let i = 0; i < dinosaurs.length; i++) {
+    if(dinosaurs[i].mya && [key]) {
+      aliveArr.push(dinosaurs[i].name);
+    } else if(dinosaurs[i].mya && ![key]) {
+      aliveArr.push(dinosaurs[i].dinosaurId);
+    } else if()
+  }
+}
 
 module.exports = {
   getTallestDinosaur,
