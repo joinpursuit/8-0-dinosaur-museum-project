@@ -22,7 +22,25 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+// Sorry this looks so ugly ! if I can think of a way to fix this this probably wont be here!
+function getTallestDinosaur(dinosaurs) {
+  let obj = {}
+  let save = dinosaurs[0]
+  let DinoName = ''
+  let lengthInFeet = 0
+    if (!dinosaurs.length){
+      return obj
+    }
+  for (let index = 1; index < dinosaurs.length; index++){
+    if (save.lengthInMeters < dinosaurs[index].lengthInMeters){
+      save = dinosaurs[index]
+    }
+  }
+  lengthInFeet = save.lengthInMeters * 3.281
+  DinoName = save.name
+  obj[DinoName] = lengthInFeet
+  return obj
+};
 
 /**
  * getDinosaurDescription()
@@ -44,7 +62,17 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  // Error Return :
+  let str = `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+    for (elm of dinosaurs){
+      // If the id === that elm.dinosaurId = 
+    if (elm.dinosaurId === id){
+      str = `${elm.name} (${elm.pronunciation})\n${elm.info} It lived in the ${elm.period} period, over ${elm.mya[elm.mya.length -1]} million years ago.`
+    }
+    }return str
+};
+
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +99,36 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+// I recived help from Pratima on this Function, please let me know if you'd like me to explain.
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let arr = []
+  for (elm of dinosaurs){
+    // If the Indexes.mya has 2 myas AND that Index.mya[First index] is Greater than or equal to mya AND Indexs.mya[Second index (index 1)]
+    // is less than or equal to mya : create a nester if. This was basically Written to get the range.
+    if (elm.mya.length === 2 && elm.mya[0] >= mya && elm.mya[1] <= mya){
+    // if Key is in our params.
+      if (key){
+        // Push the value into arr.
+        arr.push(elm[key])
+      } else {
+        // Otherwise push the Dinos ID.
+        arr.push(elm.dinosaurId)
+      }
+      // Back into our starting condtion
+      // If current Index.mya[Index 0] === mya OR The last index of the current elm === mya, Prefrom our next condtional.
+    } else if (elm.mya[0] === mya || (elm.mya[0]) - 1 === mya){
+      // If there is a key
+      if (key){
+        // Push the key.
+        arr.push(elm[key])
+        // Otherwise
+      } else {
+        // Push the Dinos Id.
+        arr.push(elm.dinosaurId)
+      }
+    }
+  } return arr
+};
 
 module.exports = {
   getTallestDinosaur,

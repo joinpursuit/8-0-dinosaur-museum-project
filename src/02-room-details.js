@@ -25,8 +25,20 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
-
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let str = `Dinosaur with name '${dinosaurName}' cannot be found.`
+  for (elm of dinosaurs){
+    if (dinosaurName === elm.name){
+      for (roomElm of rooms){
+        if (roomElm.dinosaurs.includes(elm.dinosaurId)){
+          str = roomElm.name
+          return str
+        } 
+      } str = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+    }
+  } return str
+};
+  
 /**
  * getConnectedRoomNamesById()
  * ---------------------
@@ -49,7 +61,35 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  // Return an array of Strings.
+  // Each string is a name. ie. "Coat Check Room" | but is connected to that "id".
+  let save = []
+  let arr = []
+  let error = `Room with ID of 'incorrect-id' could not be found.`
+  for (elm of rooms){
+    // If we have the ID
+    if (elm.roomId === id){
+      for (let i = 0; i < elm.connectsTo.length; i++){
+      // This now has all the ConnectTo id's. Even incorrect-id.
+      save.push(elm.connectsTo[i])
+      }
+    } 
+  } if (save.length === 0){
+    return error
+  }
+  for (elm2 of rooms){
+    for (foo of save){
+    if(elm2.roomId === foo){
+      arr.push(elm2.name)
+    }
+  }
+  } if (save.length === arr.length){
+    return arr
+  } else {
+    return error
+  }
+};
 
 module.exports = {
   getRoomByDinosaurName,
