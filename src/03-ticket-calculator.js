@@ -92,7 +92,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //add extras in the entire list. return once finished.
     for(let extra of ticketInfo.extras){
       //check if extra is valid 
-      if(ticketData.extras.hasOwnProperty(extra)){
+      if(ticketData.extras.hasOwnProperty(extra)){ //thanks, https://stackoverflow.com/questions/455338/how-do-i-check-if-an-object-has-a-key-in-javascript
         if(ticketInfo.entrantType=== 'adult'){
           total+= ticketData.extras[extra].priceInCents.adult;
         } else if(ticketInfo.entrantType=== 'child'){
@@ -108,15 +108,8 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //finished parsing extras. total should be complete here. return it!
     return total;
   }
-  //accumulate a cost based on: ticket type, entrant type discount
-  //accumulate extra ticket costs by entrant type as well [search frugally, and by searching for key existence first. ticketData can change its keys it seems]
-
-
 }
 
-function ageDiscount(ticketType){
-
-}
 
 /**
  * purchaseTickets()
@@ -171,7 +164,44 @@ function ageDiscount(ticketType){
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function purchaseTickets(ticketData, purchases) {
+  let grandTotal=0;
+  let receipt= 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n';
+  for(let ticket of purchases){
+    let price= calculateTicketPrice(ticketData, ticket);
+    if(typeof price === 'number'){
+      //ticket is valid. add to the total and to the receipt
+      grandTotal+= price;
+      //add individual info to receipt (somehow)
+      receipt+= `${capitalizeFirstLetter(ticket.entrantType)} ${ticketData[ticket.ticketType].description}: $${(price/100).toFixed(2)}`;
+      if(ticket.extras.length){
+        //if there are extras, parse through them by description name
+        receipt+= '(';
+        for(let extra of ticket.extras){
+          receipt+= `${ticketData[extra.description]}, `;
+        }
+        //remove the last comma that you hardcoded (smooth.) and add the last ')'.
+        receipt[receipt.length]= ')'
+      }
+    } else {
+      //error! (this shuold just return the error string from the first function)
+      return price; 
+    }
+    receipt+= '\n';
+  }
+  //add the final ------ line and then the total.
+  receipt+= `\n-------------------------------------------\nTOTAL: $`;
+  //at the end of the VALID tickets parsing, return the total receipt.
+  //return the string, it is complete.
+  receipt+= String((grandTotal/100).toFixed(2));
+  return receipt;
+
+
+}
 
 // Do not change anything below this line.
 module.exports = {
