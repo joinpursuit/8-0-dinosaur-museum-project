@@ -54,7 +54,32 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  //Declared variable for ticketInfo.ticketType called type and same thing for entrant
+  //Declared variable for priceInCent called price
+  const type = ticketInfo.ticketType
+  const entrant = ticketInfo.entrantType
+  const price = 'priceInCents'
+  //Included the array and used the if/else statement and for of loop
+  const array = ['general', 'membership', `adult`, `child`, `senior`, `movie`, `education`, `terrace`]
+  // Used the if statement to see if the array does not include the type and entrant then it will return a message, for the second one used the string interpolation
+  if(!array.includes(type)) {
+    return "Ticket type 'incorrect-type' cannot be found."
+  } else if (!array.includes(entrant)) {
+    return `Entrant type '${entrant}' cannot be found.`
+  }
+  for (const extra of ticketInfo.extras) {
+    if(!array.includes(extra)) {
+      return "Extra type 'incorrect-extra' cannot be found."
+    }
+  }
+  //Declared variable totalCost and used += to add the totalCost
+  let totalCost = ticketData[type][price][entrant]
+  for (const extra of ticketInfo.extras) {
+    totalCost += ticketData.extras[extra][price][entrant]
+  }
+  return totalCost;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +134,52 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let receiptStr = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  let purchaseTotal = 0;
+ //Declared the purchaseTotal to equal 0 and let receiptStr print out the message
+  for (let purchase of purchases) {
+    let sum = calculateTicketPrice(ticketData, purchase);
+  //Used for of loop and sum equal to calculate ticket price with the given parameters
+    if (typeof sum === "string") {
+      return sum;
+    } 
+    receiptStr += upperCaseFirstLetter(purchase.entrantType) + " " + ticketData[purchase.ticketType].description + ": " + "$" + (sum/100).toFixed(2) + extraTicketData(ticketData, purchase) + "\n";
+    purchaseTotal += sum/100;
+  }
+  return receiptStr + "-------------------------------------------\n" + "TOTAL: $" + purchaseTotal.toFixed(2);
+}
+// In order to print it like a receipt I had to meet the expected by capitalizing and adding the $ and making a decimal point
+// In the receiptStr it needs to add the first uppercase letter for purchase entrant type and concatenate with ticketdata description with : and using string interpolation the sum/100 to a fixed decimal
+
+function upperCaseFirstLetter(ticketString){
+  let firstLetter = ticketString.charAt(0);
+  let upperCaseFirst = firstLetter.toUpperCase();
+  let restOfWord = ticketString.slice(1);
+
+  return upperCaseFirst + restOfWord;
+}
+//Creating another function to capitalize the first letter. Used the charAt to return a specific position in string and the restOfWord gets to not be changed
+//Then return uppercase and concatenate the rest of the word
+function extraTicketData(ticketData, ticketInfo) {
+  let arr = ticketInfo.extras.slice(0);
+  if (!arr.length) {
+    return '';
+  } 
+
+  let str = ' (';
+  //Used the accumulator pattern to iterate through the array
+  // Created an if statement stating i to compare === the last length in array
+  for (let i = 0; i < arr.length; i++) {
+    if (i === arr.length-1) {
+      str += ticketData.extras[arr[i]].description + ')';
+    } else {
+      str += ticketData.extras[arr[i]].description + ', ';
+    }
+  }
+  return str;
+}
+
 
 // Do not change anything below this line.
 module.exports = {

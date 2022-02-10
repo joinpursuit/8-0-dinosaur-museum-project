@@ -25,7 +25,33 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let foundRoom = false
+  let foundId = false
+  // Declared variables and iterating through the dinosaurs array
+  // Equaling/comparing dino.name to dinosaurName 
+  //Declared a variable for dino.dinosaurId called foundId
+  for (const dino of dinosaurs) {
+    if(dino.name === dinosaurName) {
+      foundId = dino.dinosaurId
+      //Iterating through rooms array
+      //Then compare current foundId using .includes
+      for (const room of rooms) {
+        if (room.dinosaurs.includes(foundId)) {
+          foundRoom = room.name
+          //Assigning foundRoom to room.name
+        }
+      }
+    }
+  }
+  //Utlized the if else condtion to print the message
+  if(!foundId) {
+    foundRoom = `Dinosaur with name '${dinosaurName}' cannot be found.`
+  } else if (!foundRoom) {
+    foundRoom = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+  }
+  return foundRoom;
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +75,35 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let getRoom = [];
+  //Declared an empty array
+  let foundRoom = false;
+  let foundConnected;
+  //Utilizing two for of loops and the first one is iterating through rooms called room and called connected
+  //Compare current room.roomId to id
+  for (const room of rooms) {
+    if (room.roomId === id) {
+       foundRoom = true
+  for (const connectedRoom of room.connectsTo) {
+  for (const connected of rooms) {
+       foundConnected = false
+    if (connected.roomId === connectedRoom) {
+       foundConnected = true
+       getRoom.push(connected.name)
+       //Push connected.name into newArray
+        break;
+        }
+       }
+      }
+      break;
+    }
+  } // Used the not and Or operator to meet this conditon and run the message.
+   if (!foundRoom || !foundConnected) {
+    getRoom = `Room with ID of 'incorrect-id' could not be found.`
+  }
+  return getRoom;
+}
 
 module.exports = {
   getRoomByDinosaurName,
