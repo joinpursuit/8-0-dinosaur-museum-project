@@ -118,11 +118,11 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
       dinosaur.mya[0] === mya ||
       dinosaur.mya[0] - 1 === mya
     ) {
-      // Loops through dinosaurs array and runs the following code for dinosaurs that fall within time frame given (mya)
-      // The conditional above works for both dinosaurs with two years in the dinosaur.mya array and for dinosaurs with one year
+      // Loops through dinosaurs array and runs the succeeding code for dinosaurs that fall within the time frame given (mya)
+      // The conditional above works for dinosaurs with two years in the dinosaur.mya array and for dinosaurs with one year
       if (dinosaur[key]) {
         dinosaursAliveMya.push(dinosaur[key]);
-        // If the key parameter is provided and it is a key in the dinosaur object it pushes that key for the specific dinosaur instead of the ID
+        // If the key parameter is provided and it is a key in the dinosaur object it pushes that key for the specific dinosaur instead of its ID
       } else {
         dinosaursAliveMya.push(dinosaur.dinosaurId);
         // If a key parameter is provided and it is not a key in the dinosaur object it pushes the dinosaur's ID instead
