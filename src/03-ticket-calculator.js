@@ -54,7 +54,82 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+let result = 0;
+//let personType = ticketInfo.entrantType;// should be "kid"
+//console.log(personType);
+//let personEntrantType = 
+//console.log(ticketData.extras);
+// result += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+
+  
+if (ticketData[ticketInfo.ticketType]){
+  //console.log(ticketData[ticket].priceInCents = );
+  if (ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]){//figure out how to do it with out hasOwnProperty or using in. 
+    //console.log("ahdahsida");
+        result += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+
+  } else {
+    result = `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+    return result;
+  }
+} else {
+  result = `Ticket type '${ticketInfo.ticketType}' cannot be found.`; 
+  return result;
+}
+
+
+if (ticketInfo.extras){
+  for (let extra of ticketInfo.extras){
+     if (extra === ticketData.extras){
+       result += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+      }
+  } 
+} else {
+  result = `Extra type '${extra}' cannot be found.`;
+  return result;
+}
+ 
+  // // if (ticketInfo.extras.length > 0){
+  //   for (let extra of ticketInfo.extras){
+  //     // console.log(ticket.extras);
+  //      if (extra === ticket.extras){
+  //        result += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+  //      }else {
+  //        result = `Extra type '${extra}' cannot be found.`;
+  //        return result;
+  //      }
+  //    }
+  
+  // }
+
+
+
+
+
+
+
+
+// for (const ticket in ticketData){
+// if (ticket === ticketInfo.ticketType){
+  
+//   for (const typeOfPrice in ticket.priceInCents){//this might not work. 
+//     console.log(result);
+//     if (ticketInfo.entrantType === typeOfPrice){
+//       personType = ticketInfo.entrantType;
+//       result = result + typeOfPrice.personType;
+      
+//     }
+//   }
+
+// }
+
+// }
+
+
+
+return result;
+}
 
 /**
  * purchaseTickets()
