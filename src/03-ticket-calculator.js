@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,37 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let general = tickets.general
+  let ticketPrice = 0
+  let age = ticketInfo.entrantType
+  let extraS = ticketInfo.extras
+
+// general admissioon if else for : adults, child, senior
+
+// if (ticketInfo.ticketType === general){
+//   if (ticketInfo.entrantType === child ){
+//     priceInCents = 2000
+//   }else if (ticketInfo.entrantType === adult){
+//     priceInCents = 3000
+//   }else if (ticketInfo.entrantType === senior){
+//     priceInCents = 2500
+// }
+// if (ticketInfo.extras === movie ){
+//   if (ticketInfo.entrantType === child){
+//     priceInCents = 1000
+//   }else if (ticketInfo.entrantType === adult){
+//     priceInCents = 1000
+// }else if (ticketInfo.entrantType === senior){
+//   priceInCents = 1000
+// } else if (!extras)
+
+// membership admissioon if else for : adults, child, senior
+
+  // return ticket priced based on info provided
+  return ticketPrice
+}
+
 
 /**
  * purchaseTickets()
