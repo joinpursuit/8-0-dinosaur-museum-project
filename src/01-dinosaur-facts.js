@@ -23,10 +23,9 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getTallestDinosaur(dinosaurs) {
-  const tallestDinosaur = {}; // Default type and value
+  const tallestDinosaur = {};
 
   if (dinosaurs.length === 0) {
-    // Validation for empty dinosaurs array
     return tallestDinosaur;
   }
 
@@ -39,11 +38,11 @@ function getTallestDinosaur(dinosaurs) {
       iteratedTallestDinosaur = dinosaurs[i];
     }
   }
-  // Loops through dinosaurs array and assigns tallest dinosaur object to iteratedTallestDinosaur
+  // Loops through dinosaurs array and compares heights
+  // If it finds a taller dinosaur it assigns it to iteratedTallestDinosaur.
 
   tallestDinosaur[iteratedTallestDinosaur.name] =
     iteratedTallestDinosaur.lengthInMeters * 3.281;
-  // Creates height property (in feet) for tallestDinosaur output object
 
   return tallestDinosaur;
 }
@@ -70,7 +69,6 @@ function getTallestDinosaur(dinosaurs) {
  */
 function getDinosaurDescription(dinosaurs, id) {
   let dinosaurDescription = `A dinosaur with an ID of '${id}' cannot be found.`;
-  // Default type and value
 
   for (let dinosaur of dinosaurs) {
     if (id === dinosaur.dinosaurId) {
@@ -81,10 +79,8 @@ function getDinosaurDescription(dinosaurs, id) {
         dinosaur.mya[dinosaur.mya.length - 1]
       } million years ago.`;
     }
-    // Creates string with template literals inputting specified dinosaur info into the output string.
-    // The final ${dinosaur.mya[dinosaur.mya.length - 1]} template literal chooses the second year number if there is more than one.
+    // If a matching dinosaur is found the function creates a string with the dinosaur's info
   }
-
   return dinosaurDescription;
 }
 
@@ -114,34 +110,28 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let dinosaursAliveMya = []; // Default type and value
+  let dinosaursAliveMya = [];
 
   for (let dinosaur of dinosaurs) {
-    if (dinosaur.mya[1] <= mya && mya <= dinosaur.mya[0]) {
+    if (
+      (dinosaur.mya[1] <= mya && mya <= dinosaur.mya[0]) ||
+      dinosaur.mya[0] === mya ||
+      dinosaur.mya[0] - 1 === mya
+    ) {
+      // Loops through dinosaurs array and runs the following code for dinosaurs that fall within time frame given (mya)
+      // The conditional above works for both dinosaurs with two years in the dinosaur.mya array and for dinosaurs with one year
       if (dinosaur[key]) {
         dinosaursAliveMya.push(dinosaur[key]);
+        // If the key parameter is provided and it is a key in the dinosaur object it pushes that key for the specific dinosaur instead of the ID
       } else {
         dinosaursAliveMya.push(dinosaur.dinosaurId);
-      }
-    } else if (dinosaur.mya[0] === mya || dinosaur.mya[0] - 1 === mya) {
-      if (dinosaur[key]) {
-        dinosaursAliveMya.push(dinosaur[key]);
-      } else {
-        dinosaursAliveMya.push(dinosaur.dinosaurId);
+        // If a key parameter is provided and it is not a key in the dinosaur object it pushes the dinosaur's ID instead
       }
     }
   }
 
   return dinosaursAliveMya;
 }
-
-// Test Cases
-console.log([]);
-console.log(getDinosaursAliveMya(exampleDinosaurData, 150));
-console.log(getDinosaursAliveMya(exampleDinosaurData, 65, "34234"));
-console.log(getDinosaursAliveMya(exampleDinosaurData, 66, "name"));
-console.log(getDinosaursAliveMya(exampleDinosaurData, 65, "info"));
-
 module.exports = {
   getTallestDinosaur,
   getDinosaurDescription,
