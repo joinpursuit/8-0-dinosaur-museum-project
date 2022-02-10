@@ -35,12 +35,12 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
          let roomFound = false
      
          //object to hold the results
-         let dinoInfo = null
+         //let dinoInfo = null
      
          //variables to hold inidividual properties of the objects
          let dinoId = ''
          let roomName = ''
-         let roomId = ''
+         //let roomId = ''
          
      
          // iterate through the array of dinosaur objects
@@ -53,7 +53,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
                   dinoFound = true
         
                   //assign the properties of the dinosaur object
-                  dinoInfo = dinosaur
+                  // dinoInfo = dinosaur
                   dinoId = dinosaur.dinosaurId
                 }
         
@@ -73,13 +73,12 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
                                 if(rooms[i].dinosaurs[j] === dinoId){
                       
                                          //change the value of the variable to indicate that the dinosaurs 
-                                         //
                                          roomFound = true     
                                          
                                          //assign the individual properties of the rooms object to respective variables
-                                         roomId = rooms[i].roomId
+                                         //roomId = rooms[i].roomId
                                          roomName = rooms[i].name
-                                         dinoId=rooms[i].dinosaurs[j]
+                                         //dinoId=rooms[i].dinosaurs[j]
                                          break
                                 }
                        }     
@@ -128,8 +127,9 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     function getConnectedRoomNamesById(rooms, id) {
 
               //declare the individual property variables for the object
-              let roomId = roomName = ''
-        
+              let roomName = ''
+               //let roomId = ''
+
               //variable to indicate if the room and the connectto rooms exists or not
               let roomFound = false
               let connectionNotFound = false
@@ -141,17 +141,18 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
               for(let room of rooms){
                  
                     // check if the rooms object id matches with id provided by the user
-                      
-                    if(room.roomId === id){
+                   if(room.roomId === id){
               
                           //change the value to indicate the room exists
                           roomFound = true
                
                           // assign the values of the individual property of the room object
-                          roomId = room.roomId
-                          roomName = room.name
+                          //roomId = room.roomId
+                          //roomName = room.name
+                          //console.log("room id matched",roomId)
+                          
                           roomConnected = room.connectsTo
-                          //  console.log("room id matched",roomId)
+                          
             
                           // iterate through the connectsto array to check if it contains valid id values
                           for(let connection of roomConnected){
@@ -186,7 +187,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
             }         
             //  console.log(roomFound,connectionNotFound)
         
-            //         check if room is found 
+            // check if room is found 
             if(roomFound===true){
         
                  // check if the value in the connectsto array is not invalid 

@@ -24,50 +24,49 @@ const exampleDinosaurData = require("../data/dinosaurs");
  */
 function getTallestDinosaur(dinosaurs) {
 
-  // checking if the dinosaurs array is empty. If so return empty object 
-  if(dinosaurs.length===0){
-    return {}
-}
-
-// returned object with  value as the tallest dinosaur
-let tallestDinosaur = {} 
-
-// a variable to store the value of the tallest while traversing through the arrray
-let tallestHeight = 0 
-
-let nameOfTheTallestDinosur =  ''
-
-// for loop to loop through the array
-for(let i = 0;i < dinosaurs.length;i++){ 
-
- //a variable to store the value of the height of each dinosaur while travesring the array
- let  lengthOfDinosaurInMeters = dinosaurs[i].lengthInMeters 
-
- //convert the length from meters into feer
- let lengthOfDinosaurInFeet = lengthOfDinosaurInMeters * 3.281
-
- //comparing if the value of height of  current dinosaur in the array with the tallest one encountered yet in the array
- if(lengthOfDinosaurInFeet   > tallestHeight ){  
-
-     //if the height of the dinosaur is taller than the value of the variable tallestHeight assign the  current value 
-     //of the dinosaur length to the tallestDinosaur variable
-     
-     tallestHeight = lengthOfDinosaurInFeet
-
-      // assign the name of the  tallest dinosaur to the variable nameOfTheTallestDinosur
-     nameOfTheTallestDinosur = dinosaurs[i].name 
- }
-
+         // checking if the dinosaurs array is empty. If so return empty object 
+         if(dinosaurs.length===0){
+           return {}
+        }
+       
+       // returned object with  value as the tallest dinosaur
+        //let tallestDinosaur = {} 
+       
+       // a variable to store the value of the tallest while traversing through the arrray
+        let tallestHeight = 0 
+       
+        let nameOfTheTallestDinosur =  ''
+       
+        // for loop to loop through the array
+        for(let i = 0;i < dinosaurs.length;i++){ 
+       
+               //a variable to store the value of the height of each dinosaur while travesring the array
+               //  let  lengthOfDinosaurInMeters = dinosaurs[i].lengthInMeters 
+              
+               //convert the length from meters into feet
+               let lengthOfDinosaurInFeet = dinosaurs[i].lengthInMeters  * 3.281
+              
+               //comparing if the value of height of  current dinosaur in the array with the tallest one encountered yet in the array
+               if(lengthOfDinosaurInFeet   > tallestHeight ){  
+              
+                   //if the height of the dinosaur is taller than the value of the variable tallestHeight assign the  current value 
+                   //of the dinosaur length to the tallestDinosaur variable
+                   
+                   tallestHeight = lengthOfDinosaurInFeet
+              
+                    // assign the name of the  tallest dinosaur to the variable nameOfTheTallestDinosur
+                   nameOfTheTallestDinosur = dinosaurs[i].name 
+               }
+              
 
  
-}
- // assign the name of the tallestdinosaur found to the tallestDinosuar object as the key and the value of the variable tallest
- // as value
-tallestDinosaur={[nameOfTheTallestDinosur] :tallestHeight}
-
-//another way to assign the key value to the object 
-//tallestDinosaur[nameOfTheTallestDinosur] = tallestHeight
- return tallestDinosaur
+     }
+        // assign the name of the tallestdinosaur found to the tallestDinosuar object as the key and the value of the variable tallest
+        // as value
+        //tallestDinosaur={[nameOfTheTallestDinosur] :tallestHeight}
+       
+      
+   return {[nameOfTheTallestDinosur] :tallestHeight}
 }
 
 /**
@@ -94,7 +93,7 @@ tallestDinosaur={[nameOfTheTallestDinosur] :tallestHeight}
 function getDinosaurDescription(dinosaurs, id) {
 
          // variable to compare the id of the dinosaur
-         let identificationStringOfDinosaur ;
+         //let identificationStringOfDinosaur ;
        
          //variable to print out the description of the dinosaur
          let detailedDescriptionOfDinosaur ;
@@ -103,7 +102,7 @@ function getDinosaurDescription(dinosaurs, id) {
          let found = false
        
          //object that returns the dinosaur details
-         let dinoDetails = null
+         //let dinoDetails = null
        
          //variables used to display the year and the period of the dinosaur
          let year=period=0
@@ -115,21 +114,21 @@ function getDinosaurDescription(dinosaurs, id) {
          for (let i = 0;i < dinosaurs.length; i++) {
        
                  //assign the value of the array of objects to the variable to compare
-                 identificationStringOfDinosaur = dinosaurs[i].dinosaurId
+                 //identificationStringOfDinosaur = dinosaurs[i].dinosaurId
             
                  //using condition statement compare the value of the id provided by the user and chek if it matches that in the array of objects
-                  if(identificationStringOfDinosaur  === id){
+                  if(dinosaurs[i].dinosaurId  === id){
                          
                          // change the value to true as the id matches
                          found = true
                  
                          //assign all the values of the  object in the current iteration 
-                         dinoDetails = dinosaurs[i]
-                         year=dinoDetails.mya[dinoDetails.mya.length-1]
-                         name=dinoDetails.name
-                         pronunciation=dinoDetails.pronunciation
-                         info=dinoDetails.info
-                         period=dinoDetails.period
+                         //dinoDetails = dinosaurs[i]
+                         year=dinosaurs[i].mya[dinosaurs[i].mya.length-1]
+                         name=dinosaurs[i].name
+                         pronunciation=dinosaurs[i].pronunciation
+                         info=dinosaurs[i].info
+                         period=dinosaurs[i].period
                         
                          //break as the condition is met
                          break;
@@ -182,6 +181,17 @@ function getDinosaurDescription(dinosaurs, id) {
 
 function getDinosaursAliveMya(dinosaurs, mya, key) {
 
+        //refactored my code to add helper function to push the respective value of the array
+        function isKeyProvided(dinosaur,key){
+             if(key){
+                  dinosaurArr.push(dinosaur[key])
+             }else{
+                  dinosaurArr.push(dinosaur.dinosaurId)
+             }
+           return 
+
+        }
+
           //Declare a dinosaur array to hold the result 
           let dinosaurArr=[]
            
@@ -189,20 +199,22 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
           for (let dinosaur of dinosaurs){
          
                 //variable len to find the value of the mya array 
-                let len=dinosaur.mya.length
+                //let len=dinosaur.mya.length
              
                 //condition statement  to check if the len of the mya array is 2 and if the passed mya value exists 
                 //between the given period in the mya array in the object
          
-                if (len===2 && dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya  ){
+                if (dinosaur.mya.length===2 && dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya  ){
               
+                         
                         //check if key is passed to the function by the user. If the key passed add the key to the array, 
                         //if not then add the dinosaur Id to the array
-                        if(key){
-                            dinosaurArr.push(dinosaur[key])
-                        }else{ 
-                            dinosaurArr.push(dinosaur.dinosaurId)
-                        }
+                        // if(key){
+                        //     dinosaurArr.push(dinosaur[key])
+                        // }else{ 
+                        //     dinosaurArr.push(dinosaur.dinosaurId)
+                        // }
+                        isKeyProvided(dinosaur,key)
          
                  //if the length of the mya is not 2 
                 }else{ 
@@ -210,12 +222,14 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
                         // check for another condition where the value of the given year is  less or the value provided
                         if(  dinosaur.mya[0]===mya || (dinosaur.mya[0])-1===mya){
                         
+                             
                              // check if the key is provided by the user and push the respective value to the array
-                             if(key){
-                                   dinosaurArr.push(dinosaur[key])
-                             }else{
-                                  dinosaurArr.push(dinosaur.dinosaurId)
-                             }
+                            //  if(key){
+                            //        dinosaurArr.push(dinosaur[key])
+                            //  }else{
+                            //       dinosaurArr.push(dinosaur.dinosaurId)
+                            //  }
+                            isKeyProvided(dinosaur,key)
                             
                         }
          

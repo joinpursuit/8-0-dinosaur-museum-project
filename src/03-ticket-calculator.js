@@ -60,7 +60,11 @@ const exampleTicketData = require("../data/tickets");
     };
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
+
+
  */
+
+
 function calculateTicketPrice(ticketData, ticketInfo) {
             //ticketType cannot be extras but general or membership
             //entrants -adult,senior,child
@@ -74,17 +78,17 @@ function calculateTicketPrice(ticketData, ticketInfo) {
             let extraArr=['movie','education','terrace']
           
             //assign the variables their respective ticketInfo object properties
-            let ticketInfoType=ticketInfo.ticketType
-            let ticketInfoEntrant=ticketInfo.entrantType
+            //let ticketInfoType=ticketInfo.ticketType
+            //let ticketInfoEntrant=ticketInfo.entrantType
             
            //check if ticket is of any other type than general and memebership
            //display the error message if the condition staisfies
-            if (!ticketType.includes(ticketInfoType)){
+            if (!ticketType.includes(ticketInfo.ticketType)){
               return `Ticket type 'incorrect-type' cannot be found.`
             }
             //check if the entrants are of any other option other than in entrants array and 
             //display the error message if the condition staisfies
-            if(!entrants.includes(ticketInfoEntrant)){
+            if(!entrants.includes(ticketInfo.entrantType)){
               return `Entrant type 'incorrect-entrant' cannot be found.`
             }
           
@@ -98,14 +102,14 @@ function calculateTicketPrice(ticketData, ticketInfo) {
             }
           
             //calculate the total amount according to the admissions and the entrants age 
-            let total = ticketData[ticketInfoType]['priceInCents'][ticketInfoEntrant]
+            let total = ticketData[ticketInfo.ticketType]['priceInCents'][ticketInfo.entrantType]
           
             //calculate the price for the extras from the ticketInfo object by iterating through
             //the array and add to the total to find the total ticketprice based on the entrants choices
           
             for(let extra of ticketInfo.extras){
 
-                   total+=ticketData.extras[extra]['priceInCents'][ticketInfoEntrant]
+                   total+=ticketData.extras[extra]['priceInCents'][ticketInfo.entrantType]
           
             }
            
@@ -192,7 +196,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
        
              //variable that holds the result value as a string
              let receiptStr='Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n'
-       
+              
              // arrays to store the allowed values for dataType , entrants and the extras Array
              let ticketDataType=['general','membership']
              let ticketDataEntrants=['child','adult','senior']
@@ -201,21 +205,22 @@ function calculateTicketPrice(ticketData, ticketInfo) {
              //iterate through the purchases to find the total of purchased tickets
              for(let i =0 ;i < purchases.length; i++){
        
+                         
                          //declare the array extrastr to hold the values of the extras that user provides
-                         let extraStr=[]
+                          let extraStr=[]
                         
                          //variables to hold the values of individual properties of purchases object
-                         let purchaseTicketType = purchases[i].ticketType
-                         let purchaseEntrantType = purchases[i].entrantType
-                        //  let price='priceInCents'
+                         //let purchaseTicketType = purchases[i].ticketType
+                         //let purchaseEntrantType = purchases[i].entrantType
+                         //let price='priceInCents'
                       
                         //check if the purchaseTicketType is not a valid orption and return the error
-                        if(!ticketDataType.includes(purchaseTicketType)){
+                        if(!ticketDataType.includes(purchases[i].ticketType)){
                           return `Ticket type 'incorrect-type' cannot be found.`
                         }
                   
                          //check if the purchaseEntrantType is not a valid orption and return the error
-                        if(!ticketDataEntrants.includes(purchaseEntrantType)){
+                        if(!ticketDataEntrants.includes(purchases[i].entrantType)){
                           return `Entrant type 'incorrect-entrant' cannot be found.`
                         }
                   
@@ -227,18 +232,16 @@ function calculateTicketPrice(ticketData, ticketInfo) {
                         }
                   
                         //add the value of the current iterative object to the variable sum
-                        sum = ticketData[purchaseTicketType]['priceInCents'][purchaseEntrantType]
+                        sum = ticketData[purchases[i].ticketType]['priceInCents'][purchases[i].entrantType]
                   
                         //add all the values of the extras array to the sum
                         for (let extra of purchases[i].extras){
-              
-                           sum+=ticketData.extras[extra]['priceInCents'][purchaseEntrantType]
-                           
+                           sum+=ticketData.extras[extra]['priceInCents'][purchases[i].entrantType]
                            extraStr.push(upperCase(extra) +' Access')
                         }       
                         
                         // a string variable to hold all the values and the messages to output
-                        receiptStr+=`${upperCase(purchaseEntrantType)} ${upperCase(purchaseTicketType)} Admission: $${(sum/100).toFixed(2)}` 
+                        receiptStr+=`${upperCase(purchases[i].entrantType)} ${upperCase(purchases[i].ticketType)} Admission: $${(sum/100).toFixed(2)}` 
                         
                         //check if there are values to be added from the extras array 
                         //from the current iterative object
@@ -250,9 +253,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
                          //if there are no values to be added ,just add tne newline symbol to print the 
                          //next iterative message in a new line
                         }else{ 
-       
                               receiptStr+=`\n`
-                             
                              }
                         
                        //calculate the price for the extras from the ticketInfo object by iterating through
