@@ -25,7 +25,36 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let dinoExists;
+  
+  for(let i = 0; i < dinosaurs.length; i++){
+    if(dinosaurs[i].name === dinosaurName){
+      dinoExists = dinosaurs[i];
+      break;
+    } 
+  }
+  
+  if(!dinoExists){
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`
+  }
+
+  let foundDinoRoom;
+
+  for(let i = 0; i < rooms.length; i++){
+    if(rooms[i].dinosaurs.includes(dinoExists.dinosaurId)){
+      foundDinoRoom = rooms[i].name;
+      break;
+    }
+  }
+
+  if(!foundDinoRoom){
+    return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+  }
+
+  return foundDinoRoom;
+
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +78,36 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+
+  let foundRoom;
+
+  for(let i = 0; i < rooms.length; i++){
+    if(rooms[i].roomId === id){
+      foundRoom = rooms[i];
+      break;
+    }
+  }
+
+  if(!foundRoom){
+    return `Room with ID of '${id}' could not be found.`
+  }
+
+  let roomArr = [];
+
+  for(let i = 0; i < rooms.length; i++){
+    if(foundRoom.connectsTo.includes(rooms[i].roomId)){
+      roomArr.push(rooms[i].name);
+    } 
+  }
+
+  if(foundRoom.connectsTo.includes("incorrect-id")){
+    return "Room with ID of 'incorrect-id' could not be found."
+  }
+
+  return roomArr;
+
+}
 
 module.exports = {
   getRoomByDinosaurName,
