@@ -106,17 +106,20 @@ function getDinosaurDescription(dinosaurs, id) {
  */
 
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  // Check if the `key` is contained in each dinosaurs object in the array. Is it valid?
+  // Check if the key has any value or is undefined.
   if (key === undefined) {
     key = 'dinosaurId';
   }
-
+  // Check if the key is contained within any dinosaurs object's keys in the array. Is it a valid key?
+  // The third option is that the key is defined and is in the dinosaurs object(s).
   if (dinosaurs[0][key] === undefined) {
     key = 'dinosaurId';
   }
 
+  // Declare and define an empty array.
   let dataOfDinosAlive = [];
 
+  // For loop for iterating over the dinosaurs array in order to retrieve the needed values.
   for (let i = 0; i < dinosaurs.length; i++) {
     if (dinosaurs[i].mya.length === 1 && (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] - 1 === mya)) {
       dataOfDinosAlive.push(dinosaurs[i][key]);
@@ -125,6 +128,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
     }
   }
 
+  // Return the new array.
   return dataOfDinosAlive;
 }
 
