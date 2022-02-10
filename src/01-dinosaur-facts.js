@@ -65,14 +65,16 @@ function getDinosaurDescription(dinosaurs, id) {
     for(let dino of dinosaurs){
       if(dino.dinosaurId === id){
         return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length -1]} million years ago.`;
+//It doesn't work if the code is placed on seperate lines...needs to be one looonglooong line...mehhh//
       }
     }
+  
     return `A dinosaur with an ID of '${id}' cannot be found.`
   }
   getDinosaurDescription(exampleDinosaurData);
 
 /**
- * getDinosaursAliveMya() length-1
+ * getDinosaursAliveMya() [you need to use length-1,gurrl]
  * ---------------------
  * Returns an array of dinosaurs who were alive at the given `mya` (i.e. "millions of years ago") value. If a `key` is provided, returns the value of that key for each dinosaur alive at that time. Otherwise, returns the ID.
  *
