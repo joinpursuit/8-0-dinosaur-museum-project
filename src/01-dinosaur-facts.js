@@ -73,6 +73,7 @@ function getDinosaurDescription(dinosaurs, id) {
     if (dinosaurs[i].dinosaurId === id) {
       descriptionDino = `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.`;
     } 
+  
   }
   
   return descriptionDino;
@@ -103,7 +104,29 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  // Check if the `key` is contained in each dinosaurs object in the array. Is it valid?
+  if (key === undefined) {
+    key = 'dinosaurId';
+  }
+
+  if (dinosaurs[0][key] === undefined) {
+    key = 'dinosaurId';
+  }
+
+  let dataOfDinosAlive = [];
+
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].mya.length === 1 && (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] - 1 === mya)) {
+      dataOfDinosAlive.push(dinosaurs[i][key]);
+    } else if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya) {
+      dataOfDinosAlive.push(dinosaurs[i][key]);
+    }
+  }
+
+  return dataOfDinosAlive;
+}
 
 module.exports = {
   getTallestDinosaur,
