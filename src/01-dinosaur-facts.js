@@ -61,10 +61,18 @@ return obj
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+    for(let dino of dinosaurs){
+      if(dino.dinosaurId === id){
+        return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length -1]} million years ago.`;
+      }
+    }
+    return `A dinosaur with an ID of '${id}' cannot be found.`
+  }
+  getDinosaurDescription(exampleDinosaurData);
 
 /**
- * getDinosaursAliveMya() lenght-1
+ * getDinosaursAliveMya() length-1
  * ---------------------
  * Returns an array of dinosaurs who were alive at the given `mya` (i.e. "millions of years ago") value. If a `key` is provided, returns the value of that key for each dinosaur alive at that time. Otherwise, returns the ID.
  *
@@ -88,7 +96,36 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinoArray= []; 
+
+  for (i = 0; i < dinosaurs.length; i++) {
+    let dinoInfo = dinosaurs[i]
+    let min = dinoInfo.mya[1];
+    let max = dinoInfo.mya[0];
+
+  if(dinoInfo.mya.length === 1) {
+    if (max === mya || max -1 === mya) {
+     if (key in dinoInfo) {
+      dinoArray.push(dinoInfo[key]);
+     } else {
+      dinoArray.push(dinoInfo.dinosaurId);
+      }
+     }
+    } else {
+    if (mya <= max && mya >= min) {
+      if (key in dinoInfo) {
+        dinoArray.push(dinoInfo[key])
+      } else {
+        dinoArray.push(dinoInfo.dinosaurId)
+      }
+    }
+  } 
+}
+
+ return dinoArray;
+}
+
 
 module.exports = {
   getTallestDinosaur,
