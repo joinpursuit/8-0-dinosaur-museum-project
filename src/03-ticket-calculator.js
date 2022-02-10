@@ -78,56 +78,21 @@ if (ticketData[ticketInfo.ticketType]){
   return result;
 }
 
-
+//console.log(ticketInfo.extras); 
 if (ticketInfo.extras){
+ // console.log("asdasdasdkojwodo")
   for (let extra of ticketInfo.extras){
-     if (extra === ticketData.extras){
+    //console.log(ticketData.extras[extra]);
+     if (ticketData.extras[extra]){//problem here, comparing string to object.
+       //console.log('sdasd')
        result += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+      } else {
+        result = `Extra type '${extra}' cannot be found.`;
+        return result;
       }
   } 
-} else {
-  result = `Extra type '${extra}' cannot be found.`;
-  return result;
-}
+} 
  
-  // // if (ticketInfo.extras.length > 0){
-  //   for (let extra of ticketInfo.extras){
-  //     // console.log(ticket.extras);
-  //      if (extra === ticket.extras){
-  //        result += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
-  //      }else {
-  //        result = `Extra type '${extra}' cannot be found.`;
-  //        return result;
-  //      }
-  //    }
-  
-  // }
-
-
-
-
-
-
-
-
-// for (const ticket in ticketData){
-// if (ticket === ticketInfo.ticketType){
-  
-//   for (const typeOfPrice in ticket.priceInCents){//this might not work. 
-//     console.log(result);
-//     if (ticketInfo.entrantType === typeOfPrice){
-//       personType = ticketInfo.entrantType;
-//       result = result + typeOfPrice.personType;
-      
-//     }
-//   }
-
-// }
-
-// }
-
-
-
 return result;
 }
 
