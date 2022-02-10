@@ -155,31 +155,32 @@ return totalPrice
  */
 function purchaseTickets(ticketData, purchases) {
   //set some price variables. prices will need to be divided by 100 and .toFixed(2) 
-  let total = 0 // grand total
-  let welcome = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+let total = 0 // grand total
+let welcome = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
   // beginning of the receipt will start with this. I can add the other parts down the line
-  let cost
+let cost
   //I need to calculate the price for each iteration of purchases. so i will use calculateTicketPrice function and have purchases iterations as a parameter. i will also set a variable cost = to the output.
   
 
-for(let purchase of purchases){
- cost = calculateTicketPrice(ticketData, purchase);
-  if(typeof(cost) === "string"){
-    return cost  // if the function outputs an error message string, return that string AKA the function output. the work below applies to if cost = a number
-  }
-  let descript = []
-    for (let extra of purchase.extras) {
-    descript.push(ticketData.extras[extra].description)
-    }
-    if (purchase.extras.length) {
-    descript = ` (${descript.join(", ")})`
-    } 
+  for(let purchase of purchases) {
+    cost = calculateTicketPrice(ticketData, purchase)
+     if(typeof(cost) === "string") {
+      return cost
+     }  // if the function outputs an error message string, return that string AKA the function output. the work below applies to if cost = a number
+  
+      let descript = []
+      for (let extra of purchase.extras) {
+        descript.push(ticketData.extras[extra].description)
+      }
+      if (purchase.extras.length) {
+      descript = ` (${descript.join(", ")})`
+      } 
     //^^ made an array, cycled through extras array in the current purchase iteration and add the extras description strings to the array for now. decript changes from an array to the "loose" description strings seperated by comma and space
     
     welcome += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(cost/100).toFixed(2)}${descript}\n`
     // ex.^^ 'Adult General Admission: $50.00 (Movie Access, Terrace Access)'
     total += cost/100 
-      }// for loop closes
+  }// end of main for of loop
   welcome += `-------------------------------------------\nTOTAL: $${total.toFixed(2)}`
       //  welcome plus the end of the receipt which are the dashes and total price
   return welcome
