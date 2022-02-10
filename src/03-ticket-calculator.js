@@ -5,6 +5,8 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { membership } = require("../data/tickets");
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +56,74 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  const tickTypeArr = ['general', 'membership']
+  const tickEntrantArr = ['child', 'adult', 'senior']
+  const tickExtrasArr = ['movie', 'education', 'terrace']
+  
+  let error = false
+  let typeError = ''
+  let entrantError = ''
+  let extraError = ''
+  let total = 0
+
+        // ERROR CHECKER \\
+  error = ticketErrorChecker(ticketInfo, error)
+
+  function ticketErrorChecker(ticketInfo, error) {
+
+    if (!tickTypeArr.includes(ticketInfo.ticketType)) {
+      typeError = `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+      error = true
+    } else if (!tickEntrantArr.includes(ticketInfo.entrantType)) {
+      entrantError = `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+      error = true
+    }
+    for (const extra of ticketInfo.extras) {
+      if (!tickExtrasArr.includes(extra)) {
+        extraError = `Extra type '${ticketInfo.extras}' cannot be found.`
+        error = true
+      }
+    }
+    return error
+  }
+  
+        //  MAIN SOLUTION \\
+  total = ticketsTotal(ticketData, ticketInfo, total)
+
+  function ticketsTotal(ticketData, ticketInfo, total) {
+    const type = ticketInfo.ticketType
+    const entrant = ticketInfo.entrantType
+    const extras = ticketInfo.extras
+
+    if (type in ticketData) {
+      if (entrant in ticketData[type].priceInCents) {
+        total += ticketData[type].priceInCents[entrant]
+      }
+    }
+    if (extras.length > 0) {
+      for (const extra of extras) {
+        if (extra in ticketData.extras) {
+          total += ticketData.extras[extra].priceInCents[entrant]
+        }
+      }
+    }
+    return total
+  }
+
+        // CHECK ERROR \\
+  if (error === false) {
+    return total
+  } else {
+    if (typeError !== '') {
+      return typeError
+    } else if (entrantError !== '') {
+      return entrantError
+    } else if (extraError !== '') {
+      return extraError
+    }
+  }
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +178,51 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+function purchaseTickets(ticketData, purchases) {
+
+  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+  let totalPrice = 0
+
+  for (const purchase of purchases) {
+    let total = calculateTicketPrice(ticketData, purchase)
+
+    if (typeof total !== 'number') {
+      return total
+    } else {
+      if (purchase.extras.length > 0) {
+        receipt += `${capitalizeFirstLetter(purchase.entrantType)} ${ticketData[purchase.ticketType].description}: $${(total/100).toFixed(2)}${ticketExtras(ticketData, purchase)}\n`
+      } else {
+        receipt += `${capitalizeFirstLetter(purchase.entrantType)} ${ticketData[purchase.ticketType].description}: $${(total/100).toFixed(2)}\n`
+      }
+      totalPrice += total / 100
+    }
+  }
+
+  function capitalizeFirstLetter(str) {
+    let letter = str.charAt(0).toUpperCase()
+    let word = str.slice(1)
+
+    return str = letter + word
+  }
+
+  function ticketExtras(ticketData, purchase) {
+    let str = ' ('
+    let arr = purchase.extras
+
+    for (let i = 0; i < arr.length; i++) {
+      if (i === arr.length - 1) {
+        str += `${ticketData.extras[arr[i]].description})`
+      } else {
+        str += `${ticketData.extras[arr[i]].description}, `
+      }
+    }
+    
+    return str
+  }
+
+  return receipt + `-------------------------------------------\nTOTAL: $${totalPrice.toFixed(2)}`
+}
 
 // Do not change anything below this line.
 module.exports = {
