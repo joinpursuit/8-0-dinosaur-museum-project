@@ -128,4 +128,4 @@ module.exports = {
 };
 
 
-console.log(getDinosaursAliveMya(exampleDinosaurData, 65));
+//console.log(getDinosaursAliveMya(exampleDinosaurData, 65));

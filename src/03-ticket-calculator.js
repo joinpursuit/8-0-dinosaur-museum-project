@@ -180,12 +180,17 @@ function purchaseTickets(ticketData, purchases) {
       receipt+= `${capitalizeFirstLetter(ticket.entrantType)} ${ticketData[ticket.ticketType].description}: $${(price/100).toFixed(2)}`;
       if(ticket.extras.length){
         //if there are extras, parse through them by description name
-        receipt+= '(';
+        receipt+= ' (';
         for(let extra of ticket.extras){
-          receipt+= `${ticketData[extra.description]}, `;
+          receipt+= `${ticketData.extras[extra].description}, `;
         }
         //remove the last comma that you hardcoded (smooth.) and add the last ')'.
-        receipt[receipt.length]= ')'
+        //forgive me, but i'm going ghetto for this...
+        receipt= receipt.split('');
+        receipt.pop(); //GET RID OF THAT LITTLE COMMA
+        receipt.pop();// and the SPACE TOO
+        receipt= receipt.join(''); //rejoin string
+        receipt += ')';
       }
     } else {
       //error! (this shuold just return the error string from the first function)
@@ -194,7 +199,7 @@ function purchaseTickets(ticketData, purchases) {
     receipt+= '\n';
   }
   //add the final ------ line and then the total.
-  receipt+= `\n-------------------------------------------\nTOTAL: $`;
+  receipt+= `-------------------------------------------\nTOTAL: $`;
   //at the end of the VALID tickets parsing, return the total receipt.
   //return the string, it is complete.
   receipt+= String((grandTotal/100).toFixed(2));
