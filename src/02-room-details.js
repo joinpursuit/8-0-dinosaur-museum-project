@@ -73,16 +73,13 @@ function getConnectedRoomNamesById(rooms, id) {
       connectedRoomIds = room.connectsTo.slice(0);
     }
   }
-  if (!connectedRoomIds.length) {
-    return `Room with ID of '${id}' could not be found.`;
-  }
-  if (connectedRoomIds.includes("incorrect-id")) {
-    return `Room with ID of 'incorrect-id' could not be found.`;
-  }
   for (const room of rooms) {
     if (connectedRoomIds.includes(room.roomId)) {
       connectedRoomNames.push(room.name);
     }
+  }
+  if (!connectedRoomIds.length || connectedRoomIds.includes("incorrect-id")) {
+    return `Room with ID of 'incorrect-id' could not be found.`;
   }
   return connectedRoomNames;
 }
