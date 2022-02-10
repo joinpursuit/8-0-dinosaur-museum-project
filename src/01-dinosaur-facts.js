@@ -23,15 +23,18 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getTallestDinosaur(dinosaurs) {
+  //if dinosaurs array is empty, simply return empty obj.
   if (!dinosaurs.length) {
     return {};
   }
+  // iterate through dinosaurs array and compare each iteration based on the lengthinMeters value. biggest one gets assigned to tall variable.
   let tall = dinosaurs[0];
   for (let dino of dinosaurs) {
     if (dino.lengthInMeters > tall.lengthInMeters) {
       tall = dino;
     }
   }
+  //convert meters to feet and return an object with the name: height
   let feetLength = tall.lengthInMeters * 3.281;
   return { [tall.name]: feetLength };
 }
@@ -57,15 +60,10 @@ function getTallestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  let message = `A dinosaur with an ID of '${id}' cannot be found.`; // default error message if id doesnt match
-
-  for (let dino of dinosaurs) {
-    if (dino.dinosaurId === id) {
-      message = `${dino.name} (${dino.pronunciation})\n${
-        dino.info
-      } It lived in the ${dino.period} period, over ${
-        dino.mya[dino.mya.length - 1]
-      } million years ago.`; // we need the last element of the mya array for the sentence to make sense
+let message = `A dinosaur with an ID of '${id}' cannot be found.`; // default error message if id doesnt match
+for (let dino of dinosaurs) {
+  if (dino.dinosaurId === id) {
+    message = `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length - 1]} million years ago.`; // we need the last element of the mya array (if there are 2 in the array) for the sentence to make sense
     }
   }
   return message;
@@ -97,29 +95,29 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let newArray = [];
-  let dino;
-  for (let i = 0; i < dinosaurs.length; i++) {
-    dino = dinosaurs[i];
-    if (dino.mya.length === 1) {
-      if (dino.mya[0] === mya || dino.mya[0] - 1 === mya) {
-        if (dino[key]) {
-          newArray.push(dino[key]);
-        } else {
-          newArray.push(dino.dinosaurId);
-        }
-      }
+let newArray = []
+//cycle through dinosaurs array. 2 main scenarios- mya.length is 1 or 2. if length is 1, mya neeeds to = dino.mya or 1 mya less than that. if the length is 2, mya needs to be inbetween the 2 dino.mya (inclusive). if a key exists, push that into the array. otherwise push its ID ( goes for both mya length scenarios)
+
+for (let dino of dinosaurs) {
+  if (dino.mya.length === 1) {
+    if (dino.mya[0] === mya || dino.mya[0] - 1 === mya) {
+      if (dino[key]) {
+        newArray.push(dino[key]);
     } else {
+      newArray.push(dino.dinosaurId)
+       }
+    }
+} else {
       if (dino.mya[0] >= mya && dino.mya[1] <= mya) {
         if (dino[key]) {
-          newArray.push(dino[key]);
-        } else {
-          newArray.push(dino.dinosaurId);
+          newArray.push(dino[key])
+      } else {
+          newArray.push(dino.dinosaurId)
         }
       }
     }
   }
-  return newArray;
+  return newArray
 }
 
 module.exports = {

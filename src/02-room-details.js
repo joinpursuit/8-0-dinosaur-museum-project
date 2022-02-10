@@ -30,16 +30,16 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   let word;
   for (let dino of dinosaurs){
     if(dino.name === dinosaurName) {
-      word = dino
+      word = dino.dinosaurId// word is the dino id 
       }
     }
   if (!word) {// if dinosaurName doesnt match anything in the dinosaurs array, give an error message.
       message = `Dinosaur with name '${dinosaurName}' cannot be found.`
       return message
   }
-//now look for dinosaurId to be found in rooms.dinosaurs array
+//now look for dinosaurId to be found in rooms.dinosaurs array with .includes()
   for (let room of rooms) {
-    if (room.dinosaurs.includes(word.dinosaurId)) {
+    if (room.dinosaurs.includes(word)) {
        message = `${room.name}`
       }         
     }
@@ -69,21 +69,23 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
+  // set roomy variable as a blank array. cycle through rooms to see if roomId matches id. if so, roomy will be the connectsTo array
   let roomy = []
     for (let room of rooms){
       if (id === room.roomId) {
-        roomy = room.connectsTo;
-    } else if (id === 'incorrect-id'){// not sure if this is specifically needed to be searched for? maybe just if (roomy is empty?)
+        roomy = room.connectsTo; // roomy is an array of valid roomids ["zwfsfPU5u","aIA6tevTne",etc]
+    } else if (id === 'incorrect-id'){
       return `Room with ID of '${id}' could not be found.`;
     } 
   }
-    let finalArray = []; //new array to push the names that qualify
-    for (let job of roomy){
-      for (bob of rooms) {
-      if (job === bob.roomId) {
-        finalArray.push(bob.name);
-      } else if (job === 'incorrect-id')
-      return `Room with ID of '${job}' could not be found.`
+    let finalArray = []; //need a new array to push the room names that qualify vs the room id #s
+    for (let num of roomy){
+      for (spot of rooms) {
+        if (num === spot.roomId) {
+          finalArray.push(spot.name);
+      } else if (num === 'incorrect-id') {
+      return `Room with ID of '${num}' could not be found.`
+      }
     }
   }
   return finalArray

@@ -79,7 +79,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   } else {
     return `Entrant type 'incorrect-entrant' cannot be found.`
   }
-  if(extraType.length > 0){
+  if (extraType.length > 0){
     if (extraType.includes('movie') || extraType.includes('education') || extraType.includes('terrace')) {
       hasCorrectExtra = true
   } else {
@@ -87,7 +87,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   }
 }
 // if ticket.info has valid type, entrant, and extras. Need to cycle through extras array to set an index variable and to also add the price of each onto itself. else if statement will be for if extras array is empty
-if (hasCorrectType && hasCorrectEntrant && hasCorrectExtra){
+  if (hasCorrectType && hasCorrectEntrant && hasCorrectExtra){
     regPrice = ticketData[type].priceInCents[entrants]
     for (let ext of extraType){
       extraPrice += ticketData.extras[ext].priceInCents[entrants]
@@ -95,8 +95,7 @@ if (hasCorrectType && hasCorrectEntrant && hasCorrectExtra){
 } else if (hasCorrectType && hasCorrectEntrant){
   regPrice = ticketData[type].priceInCents[entrants]
   extraPrice = 0
-}
-
+  }
 totalPrice = regPrice + extraPrice
 return totalPrice
 }
@@ -154,7 +153,37 @@ return totalPrice
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  //set some price variables for now. might not need all of them. prices will need to be divided by 100 and .toFixed(2) 
+  let price = 0
+  let welcome = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";// beginning of the receipt will start with this. I can add the other parts down the line?
+  let extraPrice = 0
+  let cost
+  //I need to calculate the price for each iteration of purchases. so i will use calculateTicketPrice function and have purchases iterations as a parameter. i will also set a variable cost = to the output.
+  
+
+for(let purchase of purchases){
+let cost = calculateTicketPrice(ticketData, purchase);
+  if(typeof(cost) === "string"){
+    return cost  //this^^ if statement will let me return error messages if the function output is an error message string instead of a number
+  }
+  
+  // set an array, cycle through extras array for the current purchase iteration and add the extras description strings to the array for now
+  let descript = []
+  for (let extra of purchase.extras) {
+    descript.push(ticketData.extras[extra].description)
+    }
+  if (purchase.extras.length) {
+    descript = ` (${descript.join(", ")})` // decript changes from an array to the "loose" description strings seperated by comma and space
+      }
+        extraPrice = cost
+        welcome += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(extraPrice/100).toFixed(2)}${descript}\n`
+        price += extraPrice/100 
+      }
+      // return welcome plus the dashes and total price at the end
+      return `${welcome}-------------------------------------------\nTOTAL: $${price.toFixed(2)}`
+    }
+
 
 // Do not change anything below this line.
 module.exports = {
