@@ -24,20 +24,25 @@ const exampleDinosaurData = require("../data/dinosaurs");
  */
 function getTallestDinosaur(dinosaurs) {
   let tallestDinosaur = {};
+
+  //if parameter dinosaurs is an empty array, return an empty object
   if (dinosaurs.length === 0) {
     return tallestDinosaur;
   } else {
+    //if dinosaurs is not empty array, assume the first dinosaur in the array is the highest
     tallestDinosaur = dinosaurs[0];
   }
 
+  //iterate through the dinosaurs array
   for (let dinosaur of dinosaurs) {
+    //if find dinosaur with higher height, update the tallestDinosaur
     if (tallestDinosaur.lengthInMeters < dinosaur.lengthInMeters) {
       tallestDinosaur = dinosaur;
     }
   }
 
   let name = tallestDinosaur.name;
-  let heightInFeet = tallestDinosaur.lengthInMeters * 3.281;
+  let heightInFeet = tallestDinosaur.lengthInMeters * 3.281; //convert meter to feet
   let result = {};
   result[name] = heightInFeet;
 
@@ -65,10 +70,7 @@ function getTallestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  if (dinosaurs.length === 0) {
-    return `A dinosaur with an ID of '${id}' cannot be found.`;
-  }
-
+  //looking for the dinosaur with the given id
   let selectedDinosaur = {};
   for (let dinosaur of dinosaurs) {
     if (dinosaur.dinosaurId === id) {
@@ -76,17 +78,21 @@ function getDinosaurDescription(dinosaurs, id) {
     }
   }
 
+  //if the given id can not be found inside the dinosaurs array, return an error message
   if (selectedDinosaur.dinosaurId !== id) {
     return `A dinosaur with an ID of '${id}' cannot be found.`;
   }
 
   let mya;
   if (selectedDinosaur.mya.length > 1) {
+    //pick the second mya element if there are two mya inside the mya array
     mya = selectedDinosaur.mya[1];
   } else {
+    //pick the only mya element within the mya array
     mya = selectedDinosaur.mya[0];
   }
 
+  //return the description
   return `${selectedDinosaur.name} (${selectedDinosaur.pronunciation})\n${selectedDinosaur.info} It lived in the ${selectedDinosaur.period} period, over ${mya} million years ago.`;
 }
 
@@ -118,12 +124,15 @@ function getDinosaurDescription(dinosaurs, id) {
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   let arr = [];
 
+  //iterate through dinosaurs array
   for (let dinosaur of dinosaurs) {
     if (dinosaur.mya.length === 1) {
+      //if found dinosaur live in the given mya push it into the array
       if (dinosaur.mya[0] === mya || dinosaur.mya[0] - 1 === mya) {
         arr.push(dinosaur);
       }
     } else if (dinosaur.mya.length === 2) {
+      //if found dinosaur live in the given mya push it into the array
       if (dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya) {
         arr.push(dinosaur);
       }
@@ -132,9 +141,11 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
 
   let result = [];
   for (let element of arr) {
-    if (element[key]) {
+    //if the dinosaur object has the given key, push that property into the result array
+    if (element.hasOwnProperty(key)) {
       result.push(element[key]);
     } else {
+      //if the property of the dinosaur object not exist, just push the dinosaur id into the result array
       result.push(element.dinosaurId);
     }
   }
