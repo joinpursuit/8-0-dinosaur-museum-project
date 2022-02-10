@@ -54,7 +54,57 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+let total = 0;
+if(ticketInfo.ticketType === 'general'){
+
+  if(ticketInfo.entrantType === 'adult') {
+  total += ticketData.general.priceInCents.adult;
+} else if(ticketInfo.entrantType === 'child'){
+  total += ticketData.general.priceInCents.child;
+} else if(ticketInfo.entrantType === 'senior'){
+  total += ticketData.general.priceInCents.senior;
+} else {
+  return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+}
+}else if (ticketInfo.ticketType === 'membership'){
+  tickType= 'membership';
+
+  if(ticketInfo.ticketType === 'adult') {
+    total += ticketData.membership.priceInCents.adult;
+  }else if(ticketInfo.entrantType === 'child'){
+    total += ticketData.membership.priceInCents.child;
+  }else if(ticketInfo.entrantType === 'senior'){
+    total += ticketData.membership.priceInCents.senior;
+  }else {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+} else {
+  return `Ticket type '${ticketInfo.ticketType}' cannot be found.`; 
+}
+if (!ticketInfo.extras){
+  return total;
+} else {
+  for(let extra of ticketInfo.extras){
+
+  if(ticketData.extras.hasOwnProperty(extra)){
+  
+    if(ticketInfo.entrantType === 'adult') {
+      total += ticketData.extras[extra].priceInCents.adult;
+    } else if(ticketInfo.entrantType === 'child'){
+      total += ticketData.extras[extra].priceInCents.child;
+    }else if(ticketInfo.entrantType === 'senior'){
+      total += ticketData.extras[extra].priceInCents.senior;
+    }   
+    }else {
+      return `Extra type '${extra}' cannot be found.`;
+    }
+
+  }
+  return total;
+  }
+}
+
 
 /**
  * purchaseTickets()
