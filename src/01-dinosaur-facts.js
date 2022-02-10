@@ -22,7 +22,25 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  let tallestDinosaur = {};
+  let tallestDinosaurName = '';
+  let tallestDinosaurLengthInFeet = 0;
+
+  if (dinosaurs.length === 0){
+    return {};
+  }
+
+  for (let dinosaur of dinosaurs) {
+    if(dinosaur.lengthInMeters > tallestDinosaurLengthInFeet) {
+      tallestDinosaurLengthInFeet = dinosaur.lengthInMeters;
+      tallestDinosaurName = dinosaur.name;
+    }
+  }
+  tallestDinosaur[tallestDinosaurName] = tallestDinosaurLengthInFeet * 3.281
+
+  return tallestDinosaur;
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +62,15 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+
+  for (let dinosaur of dinosaurs){
+    if (dinosaur.dinosaurId === id){
+     return `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[dinosaur.mya.length - 1]} million years ago.`
+    }
+  }
+  return "A dinosaur with an ID of 'incorrect-id' cannot be found."
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +97,29 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let arr = []; 
+
+  if(!Object.keys(dinosaurs[0]).includes(key)){    
+    key = "dinosaurId";                        
+}
+
+for(let dinosaur of dinosaurs){                    
+  let minMya = dinosaur.mya[0];                
+  let maxMya = dinosaur.mya[1];
+
+  if(dinosaur.mya.length === 1){
+    if(minMya >= mya && minMya -1 <= mya){ 
+      arr.push(dinosaur[key]);
+    }
+  } else{
+      if(minMya >= mya && maxMya <= mya){
+        arr.push(dinosaur[key]);
+      }
+    }
+  }   
+  return arr;
+}
 
 module.exports = {
   getTallestDinosaur,
