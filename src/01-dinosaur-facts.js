@@ -23,32 +23,30 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getTallestDinosaur(dinosaurs) {
+  const tallestDinosaur = {}; // Default type and value
 
-  const tallestDinosaurObject = {}; // Default type and value
-
-  if (dinosaurs.length === 0) { // Validation for empty dinosaurs array
-    return tallestDinosaurObject;
+  if (dinosaurs.length === 0) {
+    // Validation for empty dinosaurs array
+    return tallestDinosaur;
   }
 
-  let iteratedTallestDinosaur = dinosaurs[0]; 
+  let iteratedTallestDinosaur = dinosaurs[0];
   // Sets the first dinosaur object as the "tallest" to be compared with the others in the following loop
   // This also takes care of a dinosaurs array with only one dinosaur object
 
   for (let i = 1; i < dinosaurs.length; ++i) {
-     if (iteratedTallestDinosaur.lengthInMeters < dinosaurs[i].lengthInMeters) {
+    if (iteratedTallestDinosaur.lengthInMeters < dinosaurs[i].lengthInMeters) {
       iteratedTallestDinosaur = dinosaurs[i];
-     }
+    }
   }
+  // Loops through dinosaurs array and assigns tallest dinosaur object to iteratedTallestDinosaur
 
-  tallestDinosaurObject[iteratedTallestDinosaur.name] = iteratedTallestDinosaur.lengthInMeters * 3.281; 
-  // Creates height property for output object
+  tallestDinosaur[iteratedTallestDinosaur.name] =
+    iteratedTallestDinosaur.lengthInMeters * 3.281;
+  // Creates height property (in feet) for tallestDinosaur output object
 
-  return tallestDinosaurObject;
+  return tallestDinosaur;
 }
-
-// Test Cases
-// console.log("Test case for getTallestDinosaur([]): >> {} ?", getTallestDinosaur([]));
-// console.log(("Test case for getTallestDinosaur(exampleDinosaurData): >> {Brachiosaurus: 98.43} ?", getTallestDinosaur(exampleDinosaurData)));
 
 /**
  * getDinosaurDescription()
@@ -71,24 +69,24 @@ function getTallestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
+  let dinosaurDescription = `A dinosaur with an ID of '${id}' cannot be found.`;
+  // Default type and value
 
-  let dinosaurDescription = `A dinosaur with an ID of '${id}' cannot be found.`; // Default type and value
-
-  for (let dinosaur of dinosaurs) { // Loops through dinosaurs array to find matching id
+  for (let dinosaur of dinosaurs) {
     if (id === dinosaur.dinosaurId) {
-      dinosaurDescription = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[dinosaur.mya.length - 1]} million years ago.`;
-    } 
-    // Creates string with template literals inputting specified dinosaur info into the output string. 
-    // The final ${dinosaur.mya[dinosaur.mya.length - 1]} template literal chooses the second year number if there are more then one.
+      // Loops through dinosaurs array to find matching id
+      dinosaurDescription = `${dinosaur.name} (${dinosaur.pronunciation})\n${
+        dinosaur.info
+      } It lived in the ${dinosaur.period} period, over ${
+        dinosaur.mya[dinosaur.mya.length - 1]
+      } million years ago.`;
+    }
+    // Creates string with template literals inputting specified dinosaur info into the output string.
+    // The final ${dinosaur.mya[dinosaur.mya.length - 1]} template literal chooses the second year number if there is more than one.
   }
 
   return dinosaurDescription;
 }
-
-// Test Cases
-// console.log(getDinosaurDescription(exampleDinosaurData, "73gehe"));
-// console.log(getDinosaurDescription(exampleDinosaurData, "WHQcpcOj0G"));
-
 
 /**
  * getDinosaursAliveMya()
@@ -116,23 +114,19 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let dinosaursAliveMya = [];
+  let dinosaursAliveMya = []; // Default type and value
 
   for (let dinosaur of dinosaurs) {
-
     if (dinosaur.mya[1] <= mya && mya <= dinosaur.mya[0]) {
-
-      if (key === "name") {
-        dinosaursAliveMya.push(dinosaur.name);
-      } else if (key === "unknown-key" || key === undefined) {
+      if (dinosaur[key]) {
+        dinosaursAliveMya.push(dinosaur[key]);
+      } else {
         dinosaursAliveMya.push(dinosaur.dinosaurId);
       }
-
     } else if (dinosaur.mya[0] === mya || dinosaur.mya[0] - 1 === mya) {
-
-      if (key === "name") {
-        dinosaursAliveMya.push(dinosaur.name);
-      } else if (key === "unknown-key" || key === undefined) {
+      if (dinosaur[key]) {
+        dinosaursAliveMya.push(dinosaur[key]);
+      } else {
         dinosaursAliveMya.push(dinosaur.dinosaurId);
       }
     }
@@ -142,10 +136,11 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
 }
 
 // Test Cases
+console.log([]);
 console.log(getDinosaursAliveMya(exampleDinosaurData, 150));
-console.log(getDinosaursAliveMya(exampleDinosaurData, 65, "unknown-key"));
-// console.log(getDinosaursAliveMya(exampleDinosaurData, 65, "name"));
-// console.log(getDinosaursAliveMya(exampleDinosaurData, 65, "unknown-key"));
+console.log(getDinosaursAliveMya(exampleDinosaurData, 65, "34234"));
+console.log(getDinosaursAliveMya(exampleDinosaurData, 66, "name"));
+console.log(getDinosaursAliveMya(exampleDinosaurData, 65, "info"));
 
 module.exports = {
   getTallestDinosaur,
