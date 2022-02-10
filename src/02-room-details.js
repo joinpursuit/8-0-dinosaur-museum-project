@@ -27,20 +27,19 @@ const exampleRoomData = require("../data/rooms");
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   let dinosaurAvailability = `Dinosaur with name '${dinosaurName}' cannot be found.`;
-  // Default value and type
 
   for (let room of rooms) {
     for (let dinosaur of dinosaurs) {
-      // This nested loop goes through the dinosaurs array before the rooms array in order to find the dinosaur there first
+      // This nested loop goes through the whole dinosaurs array first, for each room, in order to find the dinosaurName there first
 
       if (dinosaur.name === dinosaurName) {
-        // If the dinosaur exists in this array then we can get its Id code and use it to search for it in the rooms array
+        // If the dinosaur exists in the dinosaurs array then we can get its ID code and use it to search for it in the rooms array
 
         dinosaurAvailability = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
-        // Reassigns the default statement before even searching in the rooms array
+        // Reassigns the default statement before even searching in the rooms array in case it can't be found in any room
 
         if (room.dinosaurs.includes(dinosaur.dinosaurId)) {
-          return room.name; // Returns room name if dinosaur is found in rooms array
+          return room.name; // Returns room name if dinosaur is found in rooms array too
         }
       }
     }
@@ -71,32 +70,35 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  let connectedRooms = [];
+  let connectedRooms = []; // Default accumulator value and type for final output array of connected rooms
+  let existingRooms = []; // Empty array that will hold all possible rooms
 
   for (let room of rooms) {
+    existingRooms.push(room.roomId);
+    // Iterates through all possible rooms and pushes each onto the existingRooms array
     if (room.roomId === id) {
       connectedRooms = room.connectsTo;
+      // Iterates through each room and pushes the "rooms.connectsTo" array of the room matching the "id" parameter into the connectedRooms accumulator
     }
   }
 
-  if (connectedRooms.length === 0) {
+  if (!existingRooms.includes(id)) {
     return `Room with ID of '${id}' could not be found.`;
   }
+  // Returns error message if "id" parameter does not refer to an existing room
 
   for (let i = 0; i < connectedRooms.length; ++i) {
+    if (!existingRooms.includes(connectedRooms[i])) {
+      return `Room with ID of '${connectedRooms[i]}' could not be found.`;
+    }
+    // Returns error message if any element of the connectedRooms array does not refer to an existing room
     for (let room of rooms) {
       if (connectedRooms[i] === room.roomId) {
         connectedRooms[i] = room.name;
+        // Changes the connectedRooms array elemnts from room ID's to actual names
       }
     }
   }
-
-  for (let connectedRoom of connectedRooms) {
-    if (!connectedRoom.includes(" ")) {
-      return `Room with ID of '${connectedRoom}' could not be found.`;
-    }
-  }
-
   return connectedRooms;
 }
 
