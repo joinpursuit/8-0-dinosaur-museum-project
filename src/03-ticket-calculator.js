@@ -55,34 +55,18 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  //check ticket info for abnormalities: wrong type, wrong entrant type, wrong extra types (search with ambiguity, aka make sure loop thru key names instead of hardcoding it lols)
-  //let tickType= '';
+  let validEntrants= ['adult', 'child', 'senior'];
+  let validType= ['general','membership'];
   let total=0;
-  if(ticketInfo.ticketType === 'general'){
-    //continue parsing
-    if(ticketInfo.entrantType === 'adult'){
-      total += ticketData.general.priceInCents.adult;
-    } else if(ticketInfo.entrantType  === 'child'){
-      total += ticketData.general.priceInCents.child;
-    } else if(ticketInfo.entrantType  === 'senior'){
-      total += ticketData.general.priceInCents.senior;
+  if(validType.includes(ticketInfo.ticketType)){
+    if(validEntrants.includes(ticketInfo.entrantType)){
+      total+= ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
     } else {
-      return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
-    }
-  } else if (ticketInfo.ticketType === 'membership'){
-    tickType= 'membership';
-    //continue parsing
-    if(ticketInfo.entrantType  === 'adult'){
-      total+= ticketData.membership.priceInCents.adult;
-    } else if(ticketInfo.entrantType  === 'child'){
-      total+= ticketData.membership.priceInCents.child;
-    } else if(ticketInfo.entrantType  === 'senior'){
-      total+= ticketData.membership.priceInCents.senior;
-    } else {
+      //error: entrant type invalid
       return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;    
     }
   } else {
-    //error
+    //error: ticket type invalid
     return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
   }
   if(!ticketInfo.extras){
@@ -93,19 +77,13 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     for(let extra of ticketInfo.extras){
       //check if extra is valid 
       if(ticketData.extras.hasOwnProperty(extra)){ //thanks, https://stackoverflow.com/questions/455338/how-do-i-check-if-an-object-has-a-key-in-javascript
-        if(ticketInfo.entrantType=== 'adult'){
-          total+= ticketData.extras[extra].priceInCents.adult;
-        } else if(ticketInfo.entrantType=== 'child'){
-          total+= ticketData.extras[extra].priceInCents.child;
-        } else if(ticketInfo.entrantType === 'senior'){
-          total+= ticketData.extras[extra].priceInCents.senior;
-        } 
+        total+= ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
       } else {
         //extra is not valid. return error
         return `Extra type '${extra}' cannot be found.`;
       }
     }
-    //finished parsing extras. total should be complete here. return it!
+    //finished parsing extras. total should be complete here. return!
     return total;
   }
 }
@@ -167,42 +145,38 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
-
+function normalizePriceInCents(num){
+  return (num/100).toFixed(2);
+}
 function purchaseTickets(ticketData, purchases) {
   let grandTotal=0;
   let receipt= 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n';
   for(let ticket of purchases){
     let price= calculateTicketPrice(ticketData, ticket);
     if(typeof price === 'number'){
-      //ticket is valid. add to the total and to the receipt
+      //ticket is valid. add $ to the total
       grandTotal+= price;
-      //add individual info to receipt (somehow)
-      receipt+= `${capitalizeFirstLetter(ticket.entrantType)} ${ticketData[ticket.ticketType].description}: $${(price/100).toFixed(2)}`;
+      //add individual info to receipt
+      receipt+= `${capitalizeFirstLetter(ticket.entrantType)} ${ticketData[ticket.ticketType].description}: $${normalizePriceInCents(price)}`;
       if(ticket.extras.length){
         //if there are extras, parse through them by description name
         receipt+= ' (';
         for(let extra of ticket.extras){
           receipt+= `${ticketData.extras[extra].description}, `;
         }
-        //remove the last comma that you hardcoded (smooth.) and add the last ')'.
-        //forgive me, but i'm going ghetto for this...
-        receipt= receipt.split('');
-        receipt.pop(); //GET RID OF THAT LITTLE COMMA
-        receipt.pop();// and the SPACE TOO
-        receipt= receipt.join(''); //rejoin string
+        receipt= receipt.substring(0, receipt.length-2);
         receipt += ')';
       }
     } else {
       //error! (this shuold just return the error string from the first function)
       return price; 
     }
+    //end of entries;
     receipt+= '\n';
   }
-  //add the final ------ line and then the total.
+  //add the final ------ line and then the grand total. return the receipt.
   receipt+= `-------------------------------------------\nTOTAL: $`;
-  //at the end of the VALID tickets parsing, return the total receipt.
-  //return the string, it is complete.
-  receipt+= String((grandTotal/100).toFixed(2));
+  receipt+= String(normalizePriceInCents(grandTotal));
   return receipt;
 
 
@@ -213,4 +187,3 @@ module.exports = {
   calculateTicketPrice,
   purchaseTickets,
 };
-//hi git
