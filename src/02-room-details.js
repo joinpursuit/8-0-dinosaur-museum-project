@@ -3,6 +3,7 @@
 
   You may use this data to test your functions. You may assume the shape of the data remains the same but that the values may change.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 const exampleRoomData = require("../data/rooms");
 // Do not change the lines above.
@@ -25,7 +26,28 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let dinoId = '';
+
+  // Iterate over the dinosaurs array to check for a particular id of a dinosaur.
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].name === dinosaurName) {
+      dinoId = dinosaurs[i].dinosaurId;
+    }
+  }
+  // If `dinoId` found, use nested for loop to find the room of the dinosaur.
+  for (let i = 0; i < rooms.length; i++) {
+    for (let j = 0; j < rooms[i].dinosaurs.length; j++) {
+      if(rooms[i].dinosaurs[j] === dinoId) {
+        return rooms[i].name;
+      } 
+    }
+  }
+  // If dinosaur isn't found, return appropriate error message.
+  let errorMessage = (!dinoId) ? `Dinosaur with name '${dinosaurName}' cannot be found.` : `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+  return errorMessage;
+}
 
 /**
  * getConnectedRoomNamesById()
