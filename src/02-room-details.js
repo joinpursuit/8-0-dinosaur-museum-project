@@ -98,7 +98,7 @@ function getConnectedRoomNamesById(rooms, id) {
   realRooms.sort();
   hallOfMirrors.sort();
 
-  //For if we never the room
+  //For if we never find the room
   if (!foundRoom) {
     return `Room with ID of '${id}' could not be found.`;
   }
