@@ -82,15 +82,15 @@ function getConnectedRoomNamesById(rooms, id) {
       foundConnectedRoom = true
       newArr.push(connected.name)
 
-    }
-    }
   }
-}
-if(!found || !foundConnectedRoom) {
+  }
+  }
+  }
+if(!foundRoom || !foundConnectedRoom) {
   newArr = `Room with ID of 'incorrect-id' could not be found.`
 }
+return newArr
 }
-
 module.exports = {
   getRoomByDinosaurName,
   getConnectedRoomNamesById,
