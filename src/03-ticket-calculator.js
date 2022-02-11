@@ -137,7 +137,66 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let purchaseArray = []; //array of strings detailing each purchase, each element being an object from purchases
+  let firstLine = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  let finalString = ''; //the final string that will be returned at the end of the function
+  let middleString = ''; //placeholder string to format multiple objects
+  let extrasString = ''; //placeholder string for when purchases objects have 'extras'
+  let endString = "-------------------------------------------\nTOTAL: $";
+  let total = 0; //the initial total after calculateTicketPrice is called on given object
+  let finalSum = 0; //the sum cost of all objects
+  //gets total cost of each ticket purchase in purchases, but if calculateTicketPrice is not an integer, purchase must not be a valid object
+  for (const purchase of purchases) {
+    total = calculateTicketPrice(ticketData, purchase)
+    if (!Number.isInteger(total)) {
+      return total;
+    } else {
+      finalSum += total;
+    }
+  }
+
+  //divide finalSum by 100 and fix to two decimal places to get dollars value
+  finalSum /= 100;
+  finalSum = finalSum.toFixed(2);
+
+  let ticketString = ''; //variable that will be used to manipulate ticketType
+  let entrantString = ''; //variable that will be used to manipulate entrantType 
+
+  //loop through purchases array, if 'extras' exist, otherwise get total of objects and push information to purchaseArray 
+  for (const purchase of purchases) {
+
+    //capitzalize first letter entrantType of purchase, set new strings equal to ticketString and entrantString
+    ticketString = ticketData[purchase["ticketType"]]['description'];
+    entrantString = purchase['entrantType'].charAt(0).toUpperCase() + purchase['entrantType'].slice(1);
+    //get ticket price of purchase with previous funciton, format with toFixed(2)
+    total = calculateTicketPrice(ticketData, purchase) / 100;
+    total = total.toFixed(2);
+    if (purchase['extras'].length > 0) {
+      for (const extra of purchase['extras']) {
+        extrasString += ticketData.extras[extra]["description"];
+        extrasString += ", ";
+      }
+      extrasString = extrasString.substring(0, extrasString.length - 2);
+      purchaseArray.push(`${entrantString} ${ticketString}: $${total} (${extrasString})`);
+      extrasString = "";
+    } else {
+    //push string of interpolated variables into purchaseArray
+    purchaseArray.push(`${entrantString} ${ticketString}: $${total}`);
+    }
+  }
+  
+  //loop through purchaseArray and add each element to middleString for formatting
+  for (let i = 0; i < purchaseArray.length; i++) {
+    middleString += purchaseArray[i];
+    middleString += '\n';
+  }
+  //cut off last character of middleString since last character is a space, then set finalString value
+  middleString = middleString.substring(0, middleString.length - 1);
+  finalString = firstLine + middleString + '\n' + endString + finalSum;
+
+  return finalString;
+}
 
 // Do not change anything below this line.
 module.exports = {
