@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -22,7 +23,21 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  if (!dinosaurs.length) {
+    return {};
+  } // return empty object if there is no dinosaurs
+  // why is it when I try to define the key here it causes my test to fail?
+  let height = dinosaurs[1].lengthInMeters;
+  for (let dinosaur of dinosaurs) {
+    if (dinosaur.lengthInMeters > height) {
+      height = dinosaur.lengthInMeters;
+      key = dinosaur.name;
+    }
+  }
+  let lengthInFeet = height * 3.281;
+  return { [key]: lengthInFeet };
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +59,19 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let message = `A dinosaur with an ID of '${id}' cannot be found.`;
+  for (let dinosaur of dinosaurs) {
+    if (dinosaur.dinosaurId.includes(id)) {
+      message = `${dinosaur.name} (${dinosaur.pronunciation})\n${
+        dinosaur.info
+      } It lived in the ${dinosaur.period} period, over ${
+        dinosaur.mya[dinosaur.mya.length - 1]
+      } million years ago.`;
+    }
+  }
+  return message;
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +98,28 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let youAlive = [];
+  for (let dinosaur of dinosaurs) {
+    if (dinosaur.mya.length === 1) {
+      if (dinosaur.mya[0] === mya || mya === dinosaur.mya[0] - 1) {
+        if (key in dinosaur) {
+          youAlive.push(dinosaur[key]);
+        } else {
+          youAlive.push(dinosaur.dinosaurId);
+        }
+      }
+    }
+    if (dinosaur.mya[0] >= mya && mya >= dinosaur.mya[1]) {
+      if (key in dinosaur) {
+        youAlive.push(dinosaur[key]);
+      } else {
+        youAlive.push(dinosaur.dinosaurId);
+      }
+    }
+  }
+  return youAlive;
+}
 
 module.exports = {
   getTallestDinosaur,
