@@ -100,25 +100,24 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
         aliveDinos.push(dino);
       }
     } else {
-      if((dino.mya[0]=== mya) || (dino.mya[0]-1 === mya)){ //no wayyyyyyyyyyy wtf
+      if((dino.mya[0]=== mya) || (dino.mya[0]-1 === mya)){ 
         //it's ALIVE!
         aliveDinos.push(dino);
       }
     }
   }
-  let returnArr=[]; //TODO this will surely be trash 
   if(dinosaurs[0][key]){
     //if key is given as a param && if that key is VALID:
     for(let i=0; i< aliveDinos.length; i++){
-        returnArr.push(aliveDinos[i][key]);
+        aliveDinos[i]= aliveDinos[i][key];
       }
   } else {
     //if the key given is NOT real || key isn't given 
     for(let i=0; i< aliveDinos.length; i++){
-      returnArr.push(aliveDinos[i]["dinosaurId"]);
+      aliveDinos[i]= (aliveDinos[i]["dinosaurId"]);
     }
   }
-  return returnArr;
+  return aliveDinos;
 }
 
 module.exports = {
