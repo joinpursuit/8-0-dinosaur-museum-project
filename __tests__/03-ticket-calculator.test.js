@@ -15,7 +15,7 @@ describe("calculateTicketPrice()", () => {
         extras: [],
       };
       const actual = calculateTicketPrice(tickets, ticketInfo);
-      const expected = "Ticket type 'incorrect-type' cannot be found.";
+      const expected = "Ticket type 'incorrect-type' cannot be found."; 
       expect(actual).toEqual(expected);
     });
 
