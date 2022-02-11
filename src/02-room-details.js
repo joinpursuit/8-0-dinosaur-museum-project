@@ -25,7 +25,43 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+//create a function called getRoomByDinosaurName with the given parameters of dinosaur which is an [] of dinosaur objects, rooms which is an array [] of room objects and dinosaurName which is a string of dinosaur name
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+
+  let dinosaurId //creates a variable with let called dinosaursId
+  let roomName //creates a variable with let called roomName
+
+  //create a loop through the array of dinosaur objects called [dinosaurs]
+  for(let i = 0; i < dinosaurs.length; i++){
+    //conditional statement while the loop runs, once it reached key name (dinosaurs[i].name check if that name is equal to the paramater give called dinosaurName)
+    if(dinosaurs[i].name === dinosaurName){
+      //If that specific dinosaurId is equal to the variable dinosaurId 
+      dinosaurId = dinosaurs[i].dinosaurId
+    }
+  }
+  //if the dinosaurId doesn't match the dinosaurId[i]
+  if(!dinosaurId){
+    //return error messaage concatenation 'Dinosaur with name given parameter '${dinosaurName}'cannot be found.`
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`
+  }
+  //create another loop through the array of room objects called [rooms]
+  for(let i = 0; i < rooms.length; i++){
+    //create a nested for loop through the array of dinosaur objects called [dinosaurs]
+    for(let j =0; j < dinosaurs.length; j++){
+      //conditional statment as you loop through the array of rooms[i] and the array of dinosaurs[j] if the dinosaurId match the paramater given 
+      if(rooms[i].dinosaurs[j] === dinosaurId){
+        //then let rooms[i] of the name key equal the roomName variable
+        roomName = rooms[i].name
+        //return that rooms name which is a string
+         return roomName;
+      }
+      
+    }
+    
+  }
+  //if the given parameter of dinosaurName cannot be found it will returh the following concatenated error message with the ${dinosaurName} in the message
+  return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +85,45 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+//creates a function called getConnectedRoomNamesById with the given parameters rooms which is array of room objects and id which a unique identifier in the form of a string
+function getConnectedRoomNamesById(rooms, id) {
+  
+  //create a loop through the array of room objects called [rooms]
+  console.log("BEFORE: ",id)
+  let roomNames = [];
+  let roomConnects = [];
+  
+
+  for(let i = 0; i < rooms.length; i++){
+    if(rooms[i].roomId === id){
+      
+      
+       for(let j = 0; j < rooms[i].connectsTo.length; j++){
+          roomConnects.push(rooms[i].connectsTo[j])
+       }
+       console.log("ROOM CONNECTS: ",roomConnects)
+    } 
+    console.log("ID: ",room_id)
+    if(!room_id){
+      return `Room with ID of '${id}' could not be found.`  
+    }
+
+     for(let i= 0; i < roomConnects.length; i++){
+       for(let j = 0; j < rooms.length; j++){
+         if(roomConnects[i] === rooms[j].roomId){
+           roomNames.push(rooms[j].name)
+         }
+         else{
+          return `Room with ID of 'incorrect-id' could not be found.`
+         }
+       }
+     }     
+      
+
+  }
+  console.log("ROOM: ",roomNames)
+  return roomNames;
+}
 
 module.exports = {
   getRoomByDinosaurName,

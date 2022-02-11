@@ -22,22 +22,34 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
+//creates a function called getTallestDinosaur with the parameter dinosaurs which is an array of dinosaur objects
 function getTallestDinosaur(dinosaurs) {
+  //conditional statement if the length of the dinosaurs array is 0(no dinosaurs); return an empty object
   if(dinosaurs.length === 0) {
     return {};
   }
+  //creates a variable with let called obj to equal in empty object
   let obj = {} 
+  //creates a variable with let called dino_name
   let dino_name;
+  //creates a statemet let the tallestDino variable equal the dinosaurs array at it's first element (index 0)
   let tallestDino = dinosaurs[0];//lengthInMeter;
+  //creates a for loop that iterates through the dinosaurs array 
   for(let i = 1; i < dinosaurs.length; i++) {
+    //conditional statement if the iteration through the dinosaurs array hits the lengthInMeters key and the value is greater than the lengthInMeters of the tallestDino (which is equal to 12 right now -dinosaurs[0])
     if(dinosaurs[i].lengthInMeters > tallestDino.lengthInMeters){
 
+      //then replace the tallestDino at dinosaurs[0] with the dinosaur iteration
     tallestDino = dinosaurs[i];
   }
 }
-let heightInFeet = tallestDino.lengthInMeters *3.281;
+//create a variable with let called heightInFeeet to convert the tallestDino.lengthInMeter to feet by multiplying by 3.281
+let heightInFeet = tallestDino.lengthInMeters * 3.281;
+//create a variable with let called diino to equal the new tallestDino.name (which is the name attached to the new tallestDino)
 let dino = tallestDino.name    // var obj={this.name= height}
+//assigns the object obj with the key of [dino] which is now the tallestDino name and the value of heightInFeet 
  obj[dino] = heightInFeet;
+ //return that newly created object called obj
       return obj; 
 }
 
@@ -112,16 +124,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
       aliveMya.push(dinosaurs[i].key)
     }
   
-      for (let j=start;j<end ; j++){
-        for(let k=0;k<dinosaurs[i].mya.length;k++){
-          if(dinosaurs[i].mya[k] === j){
-            aliveMya.push(dinosaurs[i].key)
-          }
-        }
-
-        
       
-    }
     // if(dinosaurs[i].mya === mya.length -1){
     //   aliveMya.push(dinosaurs[i].dinosaurId);
     // //} else{
