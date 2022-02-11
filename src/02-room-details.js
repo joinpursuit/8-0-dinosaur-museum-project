@@ -28,53 +28,36 @@ const exampleRoomData = require("../data/rooms");
 
 
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-         // console.log(dinosaurs,rooms,dinosaurName)
-     
-         // variables to hold the value if the dinosaur and the room exists intitalized to false
+        //object to hold the results
+        //let dinoInfo = null
+        //let roomId = ''
+        // variables to hold the value if the dinosaur and the room exists intitalized to false
          let dinoFound = false
          let roomFound = false
-     
-         //object to hold the results
-         //let dinoInfo = null
-     
          //variables to hold inidividual properties of the objects
          let dinoId = ''
          let roomName = ''
-         //let roomId = ''
-         
-     
          // iterate through the array of dinosaur objects
-         for(let dinosaur of dinosaurs){
-           
+         for (let dinosaur of dinosaurs) {
                 //check if the name  provided by user exists in the array of objects
-                if(dinosaur.name === dinosaurName){
-        
+                if (dinosaur.name === dinosaurName) {
                   //change the value to indicate that the dinosaur exsists
                   dinoFound = true
-        
-                  //assign the properties of the dinosaur object
                   // dinoInfo = dinosaur
+                  //assign the properties of the dinosaur object
                   dinoId = dinosaur.dinosaurId
                 }
-        
          }
-     
          //if the dinosaur not found then dipslay the error message
-         if(!dinoFound ) return `Dinosaur with name '${dinosaurName}' cannot be found.`
-     
+         if (!dinoFound ) return `Dinosaur with name '${dinosaurName}' cannot be found.`
                  //iterate through the roooms array of objects
-                 for(let i = 0;i < rooms.length;i++){
-                   
+                 for (let i = 0; i < rooms.length; i++) {
                        //iterate through the dinosaurs array of objects
-                       for(let j = 0;j < dinosaurs.length;j++){
-                 
-                              //if the rooms object has the property dinosaurs and the value of the dinosaur ID
-                              //matches with value of the id entered by the user
-                                if(rooms[i].dinosaurs[j] === dinoId){
-                      
+                       for (let j = 0; j < dinosaurs.length; j++) {
+                              //check if the rooms objectproperty dinosaurs with value of the dinosaur ID matches with value of the id entered by the user
+                              if (rooms[i].dinosaurs[j] === dinoId) {
                                          //change the value of the variable to indicate that the dinosaurs 
                                          roomFound = true     
-                                         
                                          //assign the individual properties of the rooms object to respective variables
                                          //roomId = rooms[i].roomId
                                          roomName = rooms[i].name
@@ -82,12 +65,9 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
                                          break
                                 }
                        }     
-                   
-             
-                 }
-                
+                 }  
          // if the room is found return the roomname else return the message that the dinosaur cannot be found       
-         if(roomFound){
+         if (roomFound) {
            return roomName
          } else{
            return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
@@ -125,80 +105,53 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 
 
     function getConnectedRoomNamesById(rooms, id) {
-
               //declare the individual property variables for the object
+              //let roomId = ''
               let roomName = ''
-               //let roomId = ''
-
               //variable to indicate if the room and the connectto rooms exists or not
               let roomFound = false
               let connectionNotFound = false
-        
               //array to hold the values of the connected rooms if they are valid rooms
               let connectedToRoomArr = []
-              
               //iterate through the rooms array of objects
-              for(let room of rooms){
-                 
+              for (let room of rooms) {
                     // check if the rooms object id matches with id provided by the user
-                   if(room.roomId === id){
-              
+                   if (room.roomId === id) {
                           //change the value to indicate the room exists
                           roomFound = true
-               
                           // assign the values of the individual property of the room object
                           //roomId = room.roomId
                           //roomName = room.name
-                          //console.log("room id matched",roomId)
-                          
                           roomConnected = room.connectsTo
-                          
-            
                           // iterate through the connectsto array to check if it contains valid id values
-                          for(let connection of roomConnected){
-                            // console.log("connected",connection)
-                            
+                          for (let connection of roomConnected) {
                                //iterate through the rooms to find the name of the room associated with the valid id values
-                               for(let element of rooms){
-                              
-                                //console.log("ele=",ele)
-            
+                               for (let element of rooms) {
                                      //assign the values of roomid and roomname to the variables
                                      roomIdMatch=element.roomId
                                      roomNameMatch=element.name
-                   
-                                      // if the id in the connectsto array matches the id in the room object 
-                                      if(connection === roomIdMatch){
-                   
-                                       //add the roomname to the array connectedToRoomArr to store the result
-                                        connectedToRoomArr.push(roomNameMatch) 
-                   
-                                       // if the id is an incorrect-id 
-                                       }else if(connection ==='incorrect-id'){
-                   
+                                         // if the id in the connectsto array matches the id in the room object 
+                                         if (connection === roomIdMatch) {
+                                               //add the roomname to the array connectedToRoomArr to store the result
+                                               connectedToRoomArr.push(roomNameMatch) 
+                                          // if the id is an incorrect-id 
+                                         }else if (connection ==='incorrect-id') {             
                                              //assign the value to indicate the value is an invalid entry in the rooms object
                                              connectionNotFound = true
                                              break
                                        }
                                }
-                          }  
-                  
+                          }                  
                      }    
-            }         
-            //  console.log(roomFound,connectionNotFound)
-        
+            }             
             // check if room is found 
-            if(roomFound===true){
-        
+            if (roomFound===true) {
                  // check if the value in the connectsto array is not invalid 
-                  if(!connectionNotFound){
-                      //  console.log("itis")
-        
-                      // return the names of the rooms connected stored in the array 
+                  if (!connectionNotFound) {
+                     // return the names of the rooms connected stored in the array 
                        return connectedToRoomArr
                   }
-            }
-        
+            }  
     //return error message if it is an invalid roomId or invalid connected room id
      return `Room with ID of 'incorrect-id' could not be found.`
      

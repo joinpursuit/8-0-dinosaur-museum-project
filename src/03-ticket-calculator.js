@@ -66,54 +66,43 @@ const exampleTicketData = require("../data/tickets");
 
 
 function calculateTicketPrice(ticketData, ticketInfo) {
+            //****** Given information ********
             //ticketType cannot be extras but general or membership
             //entrants -adult,senior,child
             //extra -movie, education, terrace if not in extras it is invalid
             // and each string can be added to the ticket
             //calculate extra just with the movie,education and terrace
           
-            //arrays of allowed values
-            let ticketType=['general','membership']
-            let entrants=['child','adult','senior']
-            let extraArr=['movie','education','terrace']
-          
             //assign the variables their respective ticketInfo object properties
             //let ticketInfoType=ticketInfo.ticketType
             //let ticketInfoEntrant=ticketInfo.entrantType
             
-           //check if ticket is of any other type than general and memebership
-           //display the error message if the condition staisfies
-            if (!ticketType.includes(ticketInfo.ticketType)){
+            //arrays of allowed values
+            let ticketType = ['general','membership']
+            let entrants = ['child','adult','senior']
+            let extraArr = ['movie','education','terrace']         
+            //check if ticket is of any other type than general and memebership to dispaly error message
+            if (!ticketType.includes(ticketInfo.ticketType)) {
               return `Ticket type 'incorrect-type' cannot be found.`
             }
-            //check if the entrants are of any other option other than in entrants array and 
-            //display the error message if the condition staisfies
-            if(!entrants.includes(ticketInfo.entrantType)){
+            //check if the entrants are of any other option other than in entrants array to dispaly error message
+            if (!entrants.includes(ticketInfo.entrantType)) {
               return `Entrant type 'incorrect-entrant' cannot be found.`
             }
-          
             //checking for the invalid extras in the ticketInfo extra array other than movie,education and terrace
-            for(let extra of ticketInfo.extras){
-          
+            for (let extra of ticketInfo.extras) {
                    //if the value of the extras in incorrect then display the respective message
-                   if(!extraArr.includes(extra)){
+                   if (!extraArr.includes(extra)) {
                       return `Extra type 'incorrect-extra' cannot be found.`
                    }
-            }
-          
+            }       
             //calculate the total amount according to the admissions and the entrants age 
-            let total = ticketData[ticketInfo.ticketType]['priceInCents'][ticketInfo.entrantType]
-          
+            let total = ticketData[ticketInfo.ticketType]['priceInCents'][ticketInfo.entrantType]   
             //calculate the price for the extras from the ticketInfo object by iterating through
-            //the array and add to the total to find the total ticketprice based on the entrants choices
-          
-            for(let extra of ticketInfo.extras){
-
-                   total+=ticketData.extras[extra]['priceInCents'][ticketInfo.entrantType]
-          
-            }
-           
-          
+            //the array and add to the total to find the total ticketprice based on the entrants choices        
+            for (let extra of ticketInfo.extras) {
+                  total+=ticketData.extras[extra]['priceInCents'][ticketInfo.entrantType]        
+            }         
    return total
 }
 
@@ -178,22 +167,15 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 
     //helper function to convert the first letter of the word to uppercase
     function upperCase(str){
-
       return str[0].toUpperCase()+str.slice(1)
-    }
-      
+    }    
     function purchaseTickets(ticketData, purchases) {
-    
-    
              //ticketData is the original tickets object passed on to the function
              //purchases is an array of objects that has all the information needed to print a receipt
              //iterate through purchases array to calcuate all the purchases made 
              // return a string with all the purchases made with formatting as each array item  printed in a new line
-           
-             
              //variable to hold the value of the sum of 
              let total=sum=0
-       
              //variable that holds the result value as a string
              let receiptStr='Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n'
               
@@ -204,9 +186,6 @@ function calculateTicketPrice(ticketData, ticketInfo) {
            
              //iterate through the purchases to find the total of purchased tickets
              for(let i =0 ;i < purchases.length; i++){
-       
-                         
-                         //declare the array extrastr to hold the values of the extras that user provides
                           let extraStr=[]
                         
                          //variables to hold the values of individual properties of purchases object
@@ -218,51 +197,37 @@ function calculateTicketPrice(ticketData, ticketInfo) {
                         if(!ticketDataType.includes(purchases[i].ticketType)){
                           return `Ticket type 'incorrect-type' cannot be found.`
                         }
-                  
                          //check if the purchaseEntrantType is not a valid orption and return the error
                         if(!ticketDataEntrants.includes(purchases[i].entrantType)){
                           return `Entrant type 'incorrect-entrant' cannot be found.`
-                        }
-                  
+                        }              
                          //check if the values of purchase extras are valid orptions and return the error
                         for(let extra of purchases[i].extras){
                           if(!ticketDataExtraArr.includes(extra)){
                              return `Extra type 'incorrect-extra' cannot be found.`
                           }
-                        }
-                  
+                        }                            
                         //add the value of the current iterative object to the variable sum
-                        sum = ticketData[purchases[i].ticketType]['priceInCents'][purchases[i].entrantType]
-                  
+                        sum = ticketData[purchases[i].ticketType]['priceInCents'][purchases[i].entrantType]           
                         //add all the values of the extras array to the sum
                         for (let extra of purchases[i].extras){
                            sum+=ticketData.extras[extra]['priceInCents'][purchases[i].entrantType]
                            extraStr.push(upperCase(extra) +' Access')
-                        }       
-                        
+                        }                             
                         // a string variable to hold all the values and the messages to output
-                        receiptStr+=`${upperCase(purchases[i].entrantType)} ${upperCase(purchases[i].ticketType)} Admission: $${(sum/100).toFixed(2)}` 
-                        
+                        receiptStr+=`${upperCase(purchases[i].entrantType)} ${upperCase(purchases[i].ticketType)} Admission: $${(sum/100).toFixed(2)}`                        
                         //check if there are values to be added from the extras array 
-                        //from the current iterative object
-                        if(extraStr.length>0){
-              
+                        if(extraStr.length>0){           
                              //add the extras array values and the next value will be displayed in a new line
-                             receiptStr+=` (${extraStr.join(', ')})\n`
-              
-                         //if there are no values to be added ,just add tne newline symbol to print the 
-                         //next iterative message in a new line
+                             receiptStr+=` (${extraStr.join(', ')})\n`             
+                        //no values to be added add a new line 
                         }else{ 
                               receiptStr+=`\n`
-                             }
-                        
-                       //calculate the price for the extras from the ticketInfo object by iterating through
-                       //the array and add to the total to find the total ticketprice based on the entrants choices
+                       }
+                       //add total value of all ticket purchases done
                        total+=sum/100
-
              }
-
-            // add the total value of all objects in the array and display the total 
+            // display the total 
             receiptStr+=`-------------------------------------------\nTOTAL: $${total.toFixed(2)}`
                  
         return receiptStr
