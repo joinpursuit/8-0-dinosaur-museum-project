@@ -56,30 +56,33 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  let cost = 0;
-  let typeOfTicket = ticketInfo["ticketType"];
-  let typeOfEntrant = ticketInfo["entrantType"]; 
-  let typeOfExtras = ticketInfo['extras'][0]; 
-  //if type of ticket in ticketInfo is in ticketData (general/membership)
+  let cost = 0; //Declare variable cost, set equal to 0
+  let typeOfTicket = ticketInfo["ticketType"]; //Declare typeOfTicket, set equl to ticketInfo["ticketType"]
+  let typeOfEntrant = ticketInfo["entrantType"]; //Declare typeOfTicket, set equl to ticketInfo["entrantType"]
+  //If type of ticket in ticketInfo is in ticketData (general/membership)
   if (typeOfTicket in ticketData) {
-    //if type of entrant in ticketInfo is in ticketData (child/adult/senior)
+    //If type of entrant in ticketInfo is in ticketData (child/adult/senior)
     if (typeOfEntrant in ticketData[typeOfTicket]["priceInCents"]) {
-      cost += ticketData[typeOfTicket]['priceInCents'][typeOfEntrant];
+      //Update cost to priceInCents using typeOfTicket and typeOfEntrant
+      cost += ticketData[typeOfTicket]["priceInCents"][typeOfEntrant];
     } else {
-      return `Entrant type '${ticketInfo["entrantType"]}' cannot be found.`;
+      return `Entrant type '${ticketInfo["entrantType"]}' cannot be found.`; //Otherwise, did not find entrant
     }
   } else {
-    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`; //Otherwise, did not find ticket type
   }
 
-  for (const type of ticketInfo['extras']) {
-  if (type in ticketData["extras"]) {
-    cost += ticketData['extras'][type]['priceInCents'][typeOfEntrant];
-  } else if (ticketInfo['extras'][0] === undefined) {
-    return cost;
-  } else {
-    return "Extra type 'incorrect-extra' cannot be found.";
-  }
+  //Loop through ticketInfo["extras"]
+  for (const type of ticketInfo["extras"]) {
+    //If given element "type" is in ticketData["extras"]
+    if (type in ticketData["extras"]) {
+      //Update cost to priceInCents using given element "type" and typeOfEntrant
+      cost += ticketData["extras"][type]["priceInCents"][typeOfEntrant];
+    } else if (ticketInfo["extras"][0] === undefined) {
+      return cost; //Otherwise, just return cost
+    } else {
+      return "Extra type 'incorrect-extra' cannot be found."; //Otherwise, the given ticketInfo['extras'] value does not exist in ticketData
+    }
   }
   return cost;
 }
@@ -138,21 +141,25 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  let purchaseArray = []; //array of strings detailing each purchase, each element being an object from purchases
-  let firstLine = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
-  let finalString = ''; //the final string that will be returned at the end of the function
-  let middleString = ''; //placeholder string to format multiple objects
-  let extrasString = ''; //placeholder string for when purchases objects have 'extras'
-  let endString = "-------------------------------------------\nTOTAL: $";
-  let total = 0; //the initial total after calculateTicketPrice is called on given object
-  let finalSum = 0; //the sum cost of all objects
-  //gets total cost of each ticket purchase in purchases, but if calculateTicketPrice is not an integer, purchase must not be a valid object
+  let purchaseArray = []; //Declare an empty array that will later include strings detailing each purchase, each element being an object from purchases
+  let firstLine =
+    "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"; //Declare first line for formatting
+  let finalString = ""; //Declare empty string, the final string that will be returned at the end of the function
+  let middleString = ""; //Declare empty string, a placeholder string to format multiple objects
+  let extrasString = ""; //Declare empty string, a placeholder string for when purchases objects have 'extras'
+  let endString = "-------------------------------------------\nTOTAL: $"; //Declare last line for formatting
+  let initialTotal = 0; //Declare initial total, the initial total after calculateTicketPrice is called on given object in purchases
+  let finalSum = 0; //the sum cost of all objects in purhchases
+  //Loop through purchases
   for (const purchase of purchases) {
-    total = calculateTicketPrice(ticketData, purchase)
-    if (!Number.isInteger(total)) {
-      return total;
+    //Get total cost of each ticket purchase in purchases using calculateTicketPrice function
+    initialTotal = calculateTicketPrice(ticketData, purchase);
+    //If initialTotal is not an integer, purchase must not be a valid object
+    if (!Number.isInteger(initialTotal)) {
+      return initialTotal;
     } else {
-      finalSum += total;
+      //Otherwise, add initialTotal of given object in purchases to finalSum
+      finalSum += initialTotal;
     }
   }
 
@@ -160,40 +167,48 @@ function purchaseTickets(ticketData, purchases) {
   finalSum /= 100;
   finalSum = finalSum.toFixed(2);
 
-  let ticketString = ''; //variable that will be used to manipulate ticketType
-  let entrantString = ''; //variable that will be used to manipulate entrantType 
+  let ticketString = ""; //variable that will be used to manipulate ticketType
+  let entrantString = ""; //variable that will be used to manipulate entrantType
 
-  //loop through purchases array, if 'extras' exist, otherwise get total of objects and push information to purchaseArray 
+  //Loop through purchases array, otherwise get total of objects and push information to purchaseArray
   for (const purchase of purchases) {
-
-    //capitzalize first letter entrantType of purchase, set new strings equal to ticketString and entrantString
-    ticketString = ticketData[purchase["ticketType"]]['description'];
-    entrantString = purchase['entrantType'].charAt(0).toUpperCase() + purchase['entrantType'].slice(1);
-    //get ticket price of purchase with previous funciton, format with toFixed(2)
-    total = calculateTicketPrice(ticketData, purchase) / 100;
-    total = total.toFixed(2);
-    if (purchase['extras'].length > 0) {
-      for (const extra of purchase['extras']) {
+    //set ticketString to the description of the given purchase ticketType (ex: "General Admission")
+    ticketString = ticketData[purchase["ticketType"]]["description"];
+    //capitzalize first letter entrantType of purchase, set equal to entrantString (ex: "Adult")
+    entrantString =
+      purchase["entrantType"].charAt(0).toUpperCase() +
+      purchase["entrantType"].slice(1);
+    //get ticket price of purchase with calculateTicketPrice, format with toFixed(2) and divide by 100 for dollar value
+    initialTotal = calculateTicketPrice(ticketData, purchase) / 100;
+    initialTotal = initialTotal.toFixed(2);
+    //If the given purchase object has an "extras" array
+    if (purchase["extras"].length > 0) {
+      //Loop through extras array
+      for (const extra of purchase["extras"]) {
+        //Add the description of the given element in extras array with a comma
         extrasString += ticketData.extras[extra]["description"];
         extrasString += ", ";
       }
-      extrasString = extrasString.substring(0, extrasString.length - 2);
-      purchaseArray.push(`${entrantString} ${ticketString}: $${total} (${extrasString})`);
-      extrasString = "";
+      extrasString = extrasString.substring(0, extrasString.length - 2); //remove extras comma and space at the end of extrasString
+      //Push string to purchaseArray using string interpolation
+      purchaseArray.push(
+        `${entrantString} ${ticketString}: $${initialTotal} (${extrasString})`
+      );
+      extrasString = ""; //reset value of extrasString to empty
     } else {
-    //push string of interpolated variables into purchaseArray
-    purchaseArray.push(`${entrantString} ${ticketString}: $${total}`);
+      //Push string of interpolated variables into purchaseArray
+      purchaseArray.push(`${entrantString} ${ticketString}: $${initialTotal}`);
     }
   }
-  
+
   //loop through purchaseArray and add each element to middleString for formatting
   for (let i = 0; i < purchaseArray.length; i++) {
     middleString += purchaseArray[i];
-    middleString += '\n';
+    middleString += "\n"; //Add new line after each element in purchaseArray
   }
   //cut off last character of middleString since last character is a space, then set finalString value
   middleString = middleString.substring(0, middleString.length - 1);
-  finalString = firstLine + middleString + '\n' + endString + finalSum;
+  finalString = firstLine + middleString + "\n" + endString + finalSum;
 
   return finalString;
 }

@@ -26,26 +26,29 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  let foundRoom = "";
-  let dinoId = "";
-  let didNotFindStr = "";
+  let dinoId = "";  //Declare empty string to set to dinosaurId later
+  let didNotFind = ""; //Declare empty string for when a match to dinosaurName is not found
   for (const dinosaur of dinosaurs) {
+    //If the given dinosaur name equals the input dinosaurName
     if (dinosaur.name === dinosaurName) {
-      dinoId = dinosaur.dinosaurId;
+      dinoId = dinosaur.dinosaurId; //Set dinoId value to the given dinosaurId
+      //Loop through rooms array
       for (const room of rooms) {
+        //If the given room['dinosaurs'] array includes dinoId
         if (room["dinosaurs"].includes(dinoId)) {
-          foundRoom = room.name;
-          return foundRoom;
+          return room.name; //Return the given room name
         }
       }
     }
   }
+  //If dinoId remains an empty string after looping, a match was never found for the input dinosaurName so it does not exist, update didNotFind string
   if (dinoId === "") {
-    didNotFindStr = `Dinosaur with name '${dinosaurName}' cannot be found.`;
+    didNotFind = `Dinosaur with name '${dinosaurName}' cannot be found.`;
   } else {
-    didNotFindStr = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+    //If no room name was never returned, the input dinosuaurName was never found in rooms array
+    didNotFind = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
   }
-  return didNotFindStr;
+  return didNotFind;
 }
 
 /**
@@ -71,40 +74,39 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  let connectedRooms = []; //array where connected rooms id numbers will be stored
-  let connectedRoomNames = []; //array where connected rooms names will be stored
-  let doesInputExist = false; //boolean that will later check if input id exists
+  let connectedRooms = []; //Declare empty array where connected rooms id numbers will be stored
+  let connectedRoomNames = []; //Declare empty array where connected rooms names will be stored
+  let doesInputExist = false; //Declare boolean that will later check if input id exists, begins as false
 
-  //iterate through rooms array. The purpose of this loop is to get connected room by id number
+  //Loop through rooms array. The purpose of this loop is to get connected room by id number
   for (const room of rooms) {
-    //if the given room id matches id input, Input exists in the array
+    //If the given room id matches id input, input exists in the array
     if (room.roomId === id) {
       //change doesInputExist to true
       doesInputExist = true;
-      //iterate through 'connectsTo' key/array of the given room
+      //Iterate through 'connectsTo' key/array of the given room
       for (let i = 0; i < room.connectsTo.length; i++) {
-        //pushes given room id to connectedRomos
+        //Push given room id to connectedRooms
         connectedRooms.push(room.connectsTo[i]);
       }
     }
   }
-  //iterate through rooms array. The purpose of this loop is to get connected room by name
+  //Loop through rooms array. The purpose of this loop is to get connected rooms by name
   for (const room of rooms) {
-    //iterate through connectedRooms array
+    //Loop through connectedRooms array 
     for (const connected of connectedRooms) {
       //if the given room object id name in rooms is equal to the connected room id name
       if (room.roomId === connected) {
-        //push connected room id name to connectedRoomNames array
-        doesRoomExist = true;
+        //Push connected room id name to connectedRoomNames array
         connectedRoomNames.push(room.name);
       }
     }
   }
-  //if doesInputExist remains false, id input does not exist in rooms array
+  //If doesInputExist remains false, id input does not exist in rooms array
   //else if not every id found in connectedRooms has a "name", it has not been found in rooms array and does not exist
   if (doesInputExist === false) {
     return `Room with ID of '${id}' could not be found.`;
-  } else if (connectedRoomNames.length != connectedRooms.length) {
+  } else if (connectedRoomNames.length != connectedRooms.length) { 
     return `Room with ID of 'incorrect-id' could not be found.`;
   }
   return connectedRoomNames;

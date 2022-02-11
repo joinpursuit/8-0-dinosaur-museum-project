@@ -23,21 +23,24 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getTallestDinosaur(dinosaurs) {
-  let tallestDino = {};
+  let tallestDino = {}; //Create new object
+  //If dinosaurs object does not have an element at index 0, it is empty, return empty object
   if (!dinosaurs[0]) {
     return tallestDino;
   }
+  //Create key and value variable and set them to respective dinosaurs.name and dinosaurs.lengthInMeters from first index
   let key = dinosaurs[0].name;
   let value = dinosaurs[0].lengthInMeters;
-  //Make key in new object dinosaurs name, make value length in feet
+  //Iterate through dinosaurs array
   for (const dinosaur of dinosaurs) {
+    //If the given dinosaur.lengthInMeters is greater than value, reassign value and key to given dinosaur
     if (dinosaur.lengthInMeters > value) {
       key = dinosaur.name;
       value = dinosaur.lengthInMeters;
     }
   }
-  value *= 3.281;
-  tallestDino[key] = value;
+  value *= 3.281;  //Convert value to feet
+  tallestDino[key] = value; //Create key in tallestDino object using key varaibl and give value of 'value' variable
   return tallestDino;
 }
 
@@ -62,24 +65,23 @@ function getTallestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  let str = "";
-  //find dinosaur in array
+  let str = ""; //Declare empty string str
+  //Iterate through dinosaur array
   for (const dinosaur of dinosaurs) {
-    //create description
+    //If given dinosaurId matches input id
     if (dinosaur.dinosaurId === id) {
-      //return description
+      //If given dinosaur['mya'] array has more than 1 element, using string interpolation, dinosaur['mya'] second index is used
+      //Otherwise, dinosar['mya'] first index is used for str
       if (dinosaur["mya"].length > 1) {
-        str = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[1]} million years ago.`;
-        return str;
+        str = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur['mya'][1]} million years ago.`;
       } else {
-        str = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[0]} million years ago.`;
-        return str;
+        str = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur['mya'][0]} million years ago.`;
       }
-    } else {
-      //return cannot find ID
-      str = `A dinosaur with an ID of '${id}' cannot be found.`;
-    }
+      return str; //return str here so the loop ends
+    } 
   }
+  //If dinosaurIds never equal input id, there was no match/no return, so id cannot be found
+  str = `A dinosaur with an ID of '${id}' cannot be found.`;
   return str;
 }
 
@@ -109,18 +111,25 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let alive = [];
+  let alive = []; //Declare new array called alive
+  //Loop through dinosaurs array
   for (const dinosaur of dinosaurs) {
+    //If input mya value falls between first and second elements of the given dinosaur['mya'] array
     if (dinosaur.mya[1] <= mya && mya <= dinosaur.mya[0]) {
+      //If a key is inputted, push the key value of the given dinosaur to alive array
       if (dinosaur[key] != undefined) {
         alive.push(dinosaur[key]);
+        //Otherwise just push given dinosaurId to alive array
       } else {
         alive.push(dinosaur.dinosaurId);
       }
     }
+    //if input mya is equal to the first element of given dinosaur['mya'] array, or 1 less then first element
     if (dinosaur.mya[0] === mya || dinosaur.mya[0] - 1 === mya) {
+      //If a key is inputted, push the key value of the given dinosaur to alive array
       if (dinosaur[key] != undefined) {
         alive.push(dinosaur[key]);
+        //Otherwise just push given dinosaurId to alive array
       } else {
         alive.push(dinosaur.dinosaurId);
       }
