@@ -23,20 +23,20 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getTallestDinosaur(dinosaurs) {
-  let obj = {}
-  let tallestOne = dinosaurs[0]
-  if(!dinosaurs.length){
-  return {};
+let obj = {}
+let tallestOne = dinosaurs[0]
+     if(!dinosaurs.length){
+     return {};
 }
-for(let i =1; i <dinosaurs.length; i++){
-if(dinosaurs[i].lengthInMeters> tallestOne.lengthInMeters){
+     for(let i =1; i <dinosaurs.length; i++){
+     if(dinosaurs[i].lengthInMeters> tallestOne.lengthInMeters){
   tallestOne = dinosaurs[i];
-    }
-  }
-  let footLength = tallestOne.lengthInMeters*3.281;
+}
+}
+let footLength = tallestOne.lengthInMeters*3.281;
 
- obj[tallestOne.name] = footLength
-return obj
+obj[tallestOne.name] = footLength
+     return obj
 }
 
 // getTallestDinosaur(exampleDinosaurData);
@@ -62,15 +62,17 @@ return obj
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-    for(let dino of dinosaurs){
+      for(let dino of dinosaurs){
       if(dino.dinosaurId === id){
-        return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length -1]} million years ago.`;
-//It doesn't work if the code is placed on seperate lines...needs to be one looonglooong line...mehhh//
-      }
-    }
+        //comparison...
+      return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length -1]} million years ago.`;
+//It doesn't work if the code is placed on seperate lines in a block...//
+//needs to be one looonglooong line...mehhh D:< //
+}
+}
   
-    return `A dinosaur with an ID of '${id}' cannot be found.`
-  }
+      return `A dinosaur with an ID of '${id}' cannot be found.`
+}
   getDinosaurDescription(exampleDinosaurData);
 
 /**
