@@ -92,6 +92,11 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   let ticketType = ticketInfo.ticketType;
   let age = ticketInfo.entrantType;
   let extras = ticketInfo.extras;
+  let ticketTotal = 0;
+
+  if (ticketType == 'general'){
+    for (let whatever in ticketData)
+  }
 
   return 'Placeholder for actually getting somewhere';
 }
