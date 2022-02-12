@@ -54,7 +54,16 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  for(let key in ticketInfo){
+    console.log(ticketInfo);
+    console.log(ticketInfo.ticketType)
+    if(ticketInfo[ticketType] !== ticketInfo || ticketInfo[entrantType] !== ticketInfo || ticketInfo[extras] !== ticketInfo){
+      return error;
+    }
+  }
+
+}
 
 /**
  * purchaseTickets()

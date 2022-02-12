@@ -87,36 +87,20 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
  */
 //creates a function called getConnectedRoomNamesById with the given parameters rooms which is array of room objects and id which a unique identifier in the form of a string
 function getConnectedRoomNamesById(rooms, id) {
-  
-  //create a loop through the array of room objects called [rooms]
-  
-  let roomNames = [];
-  let roomConnects = [];
-  
 
-  for(let i = 0; i < rooms.length; i++){
+  let connectedRooms ;
+  console.log(connectedRooms);
+  for(let i =0; i < rooms.length; i++) {
+  
+   //else if (rooms[i].connectsTo !== id){
     if(rooms[i].roomId === id){
-      return room[i].connectsTo;
-      //roomNames.push(rooms[i])
+      connectedRooms = rooms[i].connectsTo;
       
-      
-       for(let j = 0; j < rooms[i].connectsTo.length; j++){
-         if(rooms[i].connectsTo[j] === id)
-          roomConnects.push(rooms[i].connectsTo[j])
-       }
-       let roomNamesBy = roomNames.concat(roomConnects);
-    } 
-        //return roomNamesById;
-    {
-    
-    
+    }
+  }
+  ret
+}     
 
-  
-          return `Room with ID of 'incorrect-id' could not be found.`
-         }
-       }
-     }     
-      
 
   
   
