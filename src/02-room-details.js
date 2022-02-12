@@ -72,32 +72,47 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 
-function getConnectedRoomNamesById(rooms, id) {
-  let connectedRooms;
-  let roomMap = {};
+    function getConnectedRoomNamesById(rooms, id) {
+      // Declare a variable to store an array of connected rooms connected to the room with correct room id passed in by the user. Else, this variable will remain `undefined` if the id is incorrect.
+      let connectedRooms;
 
-  for (let i = 0; i < rooms.length; i++) {
-    if (rooms[i].roomId === id) {
-      connectedRooms = rooms[i].connectsTo;   
+      // Create an empty object to store key/value pairs for the entire `rooms` array. The `keys` will be the `roomId`s and the matching values will be the `name`s of the rooms. Sometimes an object is a better choice to store data than an array depending on the situation and need. Here, we are extracting a smaller object from a larger object of just the key/value pairs we need to use.
+      let roomMap = {};
+    
+      // `For loop` to loop over the `rooms` array, in order to see if the inputted `id` argument is valid and if it is, assign the array stored at the `rooms[i].connectsTo` key associated with the room object at the particular room id to the `connectedRooms` variable. Also, populate the empty object declared above `roomMap` in order to create a map of the room objects' id keys and name values.
+      for (let i = 0; i < rooms.length; i++) {
+        // If `id` is equal to one of the room ids, then assign the array stored at the `connectsTo` key for that room.
+        if (rooms[i].roomId === id) {
+          connectedRooms = rooms[i].connectsTo;   
+        }
+        // As we are looping over the array of room objects, add key/value pairs to the empty object. Since keys are strings, they go in brackets. The room ids (i.e. rooms[i].roomId) will become the keys in the new object. And the values assigned to each key will be the names associated with each id (i.e. rooms[i].name)
+        roomMap[rooms[i].roomId] = rooms[i].name;
+      }
+      //console.log(connectedRooms)
+      //console.log(roomMap)
+    
+      // If `connectedRooms` is falsy, meaning it is empty and still undefined or in other words no id was found in the whole rooms array above in the `for loop`, then return the error message which is a template literal with a string interpolation of the `id` that was passed in as the argument to the function indicating that it couldn't be found and thus is not valid or correct.
+      if (!connectedRooms) {
+        return `Room with ID of '${id}' could not be found.`
+      }
+    
+      // Iterate over the `connectedRooms` array.
+      for (let i = 0; i < connectedRooms.length; i++) {
+        // If the `key` in the roomMap object matches the connectedRooms room `id`, then...
+        if (roomMap[connectedRooms[i]]) {
+          // ...assign it to the `connectedRooms` array. The value will be a `name` since this is the value associatedd with the `id` keys of the roomMap object(i.e. roomMap[rooms[i].roomId] = rooms[i].name; from line 467)
+          connectedRooms[i] = roomMap[connectedRooms[i]];
+          console.log()
+        } else {
+          return `Room with ID of '${connectedRooms[i]}' could not be found.`;
+        }
+      
+      }
+      
+      return connectedRooms;
+    
     }
-    roomMap[rooms[i].roomId] = rooms[i].name;
-  }
-
-  if (!connectedRooms) {
-    return `Room with ID of '${id}' could not be found.`
-  }
-
-  for (let i = 0; i < connectedRooms.length; i++) {
-    if (roomMap[connectedRooms[i]]) {
-      connectedRooms[i] = roomMap[connectedRooms[i]];
-    } else {
-      return `Room with ID of '${connectedRooms[i]}' could not be found.`;
-    }
-  }
-  return connectedRooms;
-
-}
-
+    
 module.exports = {
   getRoomByDinosaurName,
   getConnectedRoomNamesById,
