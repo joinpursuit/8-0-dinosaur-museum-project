@@ -56,17 +56,9 @@ const exampleTicketData = require("../data/tickets");
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
 let result = 0;
-//let personType = ticketInfo.entrantType;// should be "kid"
-//console.log(personType);
-//let personEntrantType = 
-//console.log(ticketData.extras);
-// result += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
 
-  
 if (ticketData[ticketInfo.ticketType]){
-  //console.log(ticketData[ticket].priceInCents = );
   if (ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]){//figure out how to do it with out hasOwnProperty or using in. 
-    //console.log("ahdahsida");
         result += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
 
   } else {
@@ -78,13 +70,9 @@ if (ticketData[ticketInfo.ticketType]){
   return result;
 }
 
-//console.log(ticketInfo.extras); 
 if (ticketInfo.extras){
- // console.log("asdasdasdkojwodo")
   for (let extra of ticketInfo.extras){
-    //console.log(ticketData.extras[extra]);
-     if (ticketData.extras[extra]){//problem here, comparing string to object.
-       //console.log('sdasd')
+     if (ticketData.extras[extra]){ 
        result += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
       } else {
         result = `Extra type '${extra}' cannot be found.`;
@@ -157,8 +145,7 @@ for (ticketInfo of purchases) {
   tempPrice = 0;
 
   if (ticketData[ticketInfo.ticketType]){//check if tickettype is there
-
-    if (ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]){//check if ficket entrant type is there
+    if (ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]){//check if ticket entrant type is there
       tempPrice += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
       total += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
       
@@ -175,83 +162,35 @@ for (ticketInfo of purchases) {
   }
 
 
-
-
-//checking for extras
 if (ticketInfo.extras.length > 0){
   for (let extra of ticketInfo.extras){
-     //let asdasd = `${ticketData.extras[extra].description},,,,`;
-    //console.log(extra[1]);
+     
       if (ticketData.extras[extra]){
         tempPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
         total += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
-        //console.log(ticketData.extras[extra].description);
-        // result += `$${(tempPrice/100).toFixed(2)}`;
-        // result += ` (${ticketData.extras[extra].description})`
-
-       // console.log(asdasd);
-
-        //reset cuz it would have keept the change from before
-          // result = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${ticketInfo.entrantType.charAt(0).toUpperCase()}${ticketInfo.entrantType.substring(1,ticketInfo.entrantType.length)} ${ticketData[ticketInfo.ticketType].description}: $${(tempPrice/100).toFixed(2)} (`; 
-          
-          
-          // result += ' ' + ticketData.extras([ticketInfo.extras][i]).description + ',';
-          //console.log(ticketData.extras);
-          //console.log(ticketInfo.extras)
-
-          // for (let i = 0; i < ticketInfo.extras.length; i++){
-          //     if (ticketData.extras[ticketInfo.extras[i]]){
-          //       result += ' ' + ticketData.extras([ticketInfo.extras][i]).description + ',';
-          //     } else {
-          //       result += ticketData.extras([ticketInfo.extras][i]).description + ')';
-          //     }
-          // }
-          
-
-
       } else {
         result = `Extra type '${extra}' cannot be found.`
         return result;
       }
-
-
-      
-
   }
 }
-//console.log(ticketInfo.extras.length); 
 
- 
+
 result += `\n${ticketInfo.entrantType.charAt(0).toUpperCase()}${ticketInfo.entrantType.substring(1,ticketInfo.entrantType.length)} ${ticketData[ticketInfo.ticketType].description}: $${(tempPrice/100).toFixed(2)}`
 
 if (ticketInfo.extras.length > 0){
   result += " ("
   for (let i = 0; i < ticketInfo.extras.length; i++){
-    //result += ticketData.extras[ticketInfo.extras[i]].description + ',';
       if (i === ticketInfo.extras.length-1) {  
-    //if (ticketData.extras[ticketInfo.extras[i]]){///something with length? - 
-         //result += ticketData.extras[ticketInfo.extras[i]].description + ',';
          result += ticketData.extras[ticketInfo.extras[i]].description + ')';
 
        } else {
-         //result += ticketData.extras[extra].description + ')';
           result += ticketData.extras[ticketInfo.extras[i]].description + ', ';
        }
     }
-   // result += ticketData.extras[extra].description + ')';
   }
 
 }
-
-
-//console.log(result);
-
-
-//.charAt(0).toUpperCase()
-//.substring(1,ticketInfo.entrantType.length)
-
-//console.log(result);
-
 
 result += `\n-------------------------------------------\nTOTAL: $${(total/100).toFixed(2)}`;
 

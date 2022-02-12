@@ -50,7 +50,7 @@ function getTallestDinosaur(dinosaurs) {
     } 
   }
   result[compare.name] = (compare.lengthInMeters * 3.281);
-  //console.log(result);
+
   return result;
 
   }
@@ -80,17 +80,11 @@ function getDinosaurDescription(dinosaurs, id) {
 let result =`A dinosaur with an ID of '${id}' cannot be found.`;;
   for (let i = 0; i < dinosaurs.length; i++){
     if (dinosaurs[i].dinosaurId.includes(id) && dinosaurs[i].mya.length === 2){
-      //console.log(dinosaurs[i].dinosaurId)//
-      //console.log(id)//;
       result=`${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[1]} million years ago.`; 
     
     } else if (dinosaurs[i].dinosaurId.includes(id) && dinosaurs[i].mya.length === 1){
       result=`${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[0]} million years ago.`; 
-
     }
-    // else {
-    //   result = `A dinosaur with an ID of ${id} cannot be found.`;
-    // }
   }
 
 
@@ -130,7 +124,6 @@ for (let i = 0; i < dinosaurs.length; i++){
   if (dinosaurs[i].mya.length > 1){
     if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya){
       if (key in dinosaurs[i]){ //use the the in // 
-        //console.log(dinosaurs[i][key]);
         result.push(dinosaurs[i][key]);
       } else {
          result.push(dinosaurs[i].dinosaurId);
