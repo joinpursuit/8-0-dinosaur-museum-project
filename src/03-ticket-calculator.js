@@ -69,7 +69,12 @@ function calculateTicketPrice(ticketData, ticketInfo) {
         }
       }
     }
-  } // Validates whether ticket has correct information to reference ticket Data
+  } // Validates whether ticket has correct information on it
+  const validator = ticketValidator(ticketData, ticketInfo);
+
+  if (validator) {
+    return validator;
+  }
 
   function priceCalculator(ticketData, ticketInfo) {
     let ticketPrice =
@@ -83,12 +88,9 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     }
     return ticketPrice;
   } // Calculates ticket price
+  const calculator = priceCalculator(ticketData, ticketInfo);
 
-  if (ticketValidator(ticketData, ticketInfo)) {
-    return ticketValidator(ticketData, ticketInfo);
-  } else {
-    return priceCalculator(ticketData, ticketInfo);
-  }
+  return calculator;
 }
 /**
  * purchaseTickets()
