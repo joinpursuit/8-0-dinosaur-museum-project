@@ -313,18 +313,15 @@ function purchaseTickets(ticketData, purchases) {
       case "general":
         switch (age) {
           case "child":
-            ticketPrice += ticketData.general.priceInCents.child;
-            grandTotal += ticketPrice;
+            ticketPrice += ticketData.general.priceInCents.child;            
             lineItem = childGeneral;
             break;
           case "adult":
-            ticketPrice += ticketData.general.priceInCents.adult;
-            grandTotal += ticketPrice;
+            ticketPrice += ticketData.general.priceInCents.adult;            
             lineItem = adultGeneral;
             break;
           case "senior":
-            ticketPrice += ticketData.general.priceInCents.senior;
-            grandTotal += ticketPrice;
+            ticketPrice += ticketData.general.priceInCents.senior;            
             lineItem = seniorGeneral;
             break;
         }
@@ -332,18 +329,15 @@ function purchaseTickets(ticketData, purchases) {
       case "membership":
         switch (age) {
           case "child":
-            ticketPrice += ticketData.membership.priceInCents.child;
-            grandTotal += ticketPrice;
+            ticketPrice += ticketData.membership.priceInCents.child;            
             lineItem = childMember;
             break;
           case "adult":
-            ticketPrice += ticketData.membership.priceInCents.adult;
-            grandTotal += ticketPrice;
+            ticketPrice += ticketData.membership.priceInCents.adult;            
             lineItem = adultMember;
             break;
           case "senior":
-            ticketPrice += ticketData.membership.priceInCents.senior;
-            grandTotal += ticketPrice;
+            ticketPrice += ticketData.membership.priceInCents.senior;            
             lineItem = seniorMember;
             break;
         }
@@ -353,23 +347,18 @@ function purchaseTickets(ticketData, purchases) {
     //What, if any, extras.
     if (extras.length != 0) {
       for (let choice in extras) {
-        //choiceExtras.push(extras[choice]); //Remember this is zeroed at at the beginning of the loop
-
         switch (extras[choice]) {
           case "movie":
             choiceExtras.push("Movie Access");
             switch (age) {
               case "child":
                 ticketPrice += ticketData.extras.movie.priceInCents.child;
-                grandTotal += ticketPrice;
                 break;
               case "adult":
                 ticketPrice += ticketData.extras.movie.priceInCents.adult;
-                grandTotal += ticketPrice;
                 break;
               case "senior":
                 ticketPrice += ticketData.extras.movie.priceInCents.senior;
-                grandTotal += ticketPrice;
                 break;
             }
             break;
@@ -378,15 +367,12 @@ function purchaseTickets(ticketData, purchases) {
             switch (age) {
               case "child":
                 ticketPrice += ticketData.extras.education.priceInCents.child;
-                grandTotal += ticketPrice;
                 break;
               case "adult":
                 ticketPrice += ticketData.extras.education.priceInCents.adult;
-                grandTotal += ticketPrice;
                 break;
               case "senior":
                 ticketPrice += ticketData.extras.education.priceInCents.senior;
-                grandTotal += ticketPrice;
                 break;
             }
             break;
@@ -395,15 +381,12 @@ function purchaseTickets(ticketData, purchases) {
             switch (age) {
               case "child":
                 ticketPrice += ticketData.extras.terrace.priceInCents.child;
-                grandTotal += ticketPrice;
                 break;
               case "adult":
                 ticketPrice += ticketData.extras.terrace.priceInCents.adult;
-                grandTotal += ticketPrice;
                 break;
               case "senior":
                 ticketPrice += ticketData.extras.terrace.priceInCents.senior;
-                grandTotal += ticketPrice;
                 break;
             }
             break;
@@ -422,8 +405,8 @@ function purchaseTickets(ticketData, purchases) {
       }
       lineItem += ")";
     }
-
     lineItems.push(lineItem);
+    grandTotal += ticketPrice;
 
     /* /!\ /!\ END OF LOOP RIGHT HERE - RIGHT HERE YOU BUFFOON /!\ /!\ */
   }
