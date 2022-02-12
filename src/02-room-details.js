@@ -25,7 +25,19 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName){
+  let dinosaurRoom = `Dinosaur with name '${dinosaurName}' cannot be found.`
+  for (let dinosaur of dinosaurs){
+    if (dinosaurName === dinosaur.name){
+      dinosaurRoom = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+  for (let room of rooms){
+    if (room.dinosaurs.includes(dinosaur.dinosaurId)){
+      dinosaurRoom = room.name
+    }
+  }
+    }
+  } return dinosaurRoom;
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +61,35 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id){
+  let dinoArrayNames = [];
+  let connectedByid = [];
+  for (let i = 0; i < rooms.length; i++){
+    let room = rooms[i];
+    if (room.roomId === id){
+      connectedByid.push(...room.connectsTo);
+      // ...^ gets all of its properties, and overwrites any existing properties with ones that are newly created
+      // pushes all properties of the rooms' connectsTo
+      // results in an array with duplicate elements/values
+      for (let id of connectedByid){
+        for (let room of rooms){
+          if (id === room.roomId){
+            dinoArrayNames.push(room.name);
+          }
+        }
+      }
+    }
+  }
+  if (dinoArrayNames.length !== connectedByid.length) {
+    return `Room with ID of 'incorrect-id' could not be found.`
+  }
+  if (dinoArrayNames.length === 0) {
+    return `Room with ID of '${id}' could not be found.`
+  }
+  return dinoArrayNames
+}
+
+
 
 module.exports = {
   getRoomByDinosaurName,
