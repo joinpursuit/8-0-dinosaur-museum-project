@@ -73,6 +73,8 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
  */
 
     function getConnectedRoomNamesById(rooms, id) {
+      // @Gigi Scarborough's help - 
+
       // Declare a variable to store an array of connected rooms connected to the room with correct room id passed in by the user. Else, this variable will remain `undefined` if the id is incorrect.
       let connectedRooms;
 
