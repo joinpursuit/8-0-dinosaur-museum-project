@@ -96,7 +96,8 @@ function getConnectedRoomNamesById(rooms, id) {
 
   for(let i = 0; i < rooms.length; i++){
     if(rooms[i].roomId === id){
-      roomNames.push(rooms[i])
+      return room[i].connectsTo;
+      //roomNames.push(rooms[i])
       
       
        for(let j = 0; j < rooms[i].connectsTo.length; j++){
@@ -105,14 +106,16 @@ function getConnectedRoomNamesById(rooms, id) {
        }
        let roomNamesBy = roomNames.concat(roomConnects);
     } 
-        
+        //return roomNamesById;
     {
-      return `Room with ID of 'incorrect-id' could not be found.`
-      
-    }
+    
+    
+
+  
+          return `Room with ID of 'incorrect-id' could not be found.`
          }
        }
-          
+     }     
       
 
   

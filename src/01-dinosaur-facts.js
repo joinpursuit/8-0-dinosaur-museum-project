@@ -73,12 +73,17 @@ let dino = tallestDino.name    // var obj={this.name= height}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
+//creates a fundtion called getDinosaurDescription with the parameters dinosaurs which is an array of dinosaur objects and if a d unique identifier
 function getDinosaurDescription(dinosaurs, id) {
+  //creates a for loop through the dinosaurs array
   for(let i = 0; i < dinosaurs.length; i++){
+    //conditional statement as i iterates through the dinosaurs array and reaches the key dinosaurId if it is equal to id (unique identifier)
 if(dinosaurs[i].dinosaurId === id){
+  //return formatted description of the dinosaur as an inerpolated string with back ticks 
   return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length -1]} million years ago.`;
 } 
   }
+  //conditional statement if dinosaurs[i]dinosaurId doesn't match id the unique identifer return the interpolated error message with back ticks 
   return `A dinosaur with an ID of '${id}' cannot be found.`
   }
 
@@ -108,22 +113,35 @@ if(dinosaurs[i].dinosaurId === id){
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
+  //creates a function called getDinosaursAliveMya with the parameters dinosaurs which is an array of dinosaur objects, mya which is a key in the object and key optional for mya given value
 function getDinosaursAliveMya(dinosaurs, mya, key) {
+  //conditional statement if the key give is blank key is given the default value of dinosaurId
   if(key === undefined){
     key = 'dinosaurId';
-  } 
+    //conditional statement  else if dinosaurs first element doensn't (!) have the given key (dinosaurColor) within (.hasOwnProperty - checks if key is listed) the give key is given default value of dinosaurId
+  } else if (!dinosaurs[0].hasOwnProperty(key)){
+    key = "dinosaurId";
+  }
+  //creates an empty array called aliveMya
   let aliveMya = [];
-  let start = mya;
-  let end=mya+5
-
-  for (let i = 0; i < dinosaurs.length; i++){
-    if(dinosaurs[i].mya.length ===1){
-      if(dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0]=== mya -1){
-        aliveMya.push(dinosaurs[i].key)
-      }
-      aliveMya.push(dinosaurs[i].key)
-    }
   
+  
+  //creates a for loop that iterates through the dinosaurs array
+  for (let i = 0; i < dinosaurs.length; i++){
+    //conditional statment as i iterates through the dinosaurs array if it reaches the key mya length is greater than 1 ([154, 145]) and mya first element is greater than the given mya parameter and the mya at the second element is less than (given mya is in between 1st and 2nd element of the mya array) or equal to give mya push that dinosaur into the empty array called aliveMya
+    if(dinosaurs[i].mya.length > 1 && dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya ){
+      aliveMya.push(dinosaurs[i][key])
+
+      ///conditional statment as i iterates through the dinosaurs array else if it reaches the key mya length is 1 ([154]) and mya first element is greater than or equal to the given mya parameter and the mya at the element minus 1(given mya is in between element# and element# minus 1) less than or  equal to give mya push that dinosaur into the empty array called aliveMya
+    } else if (dinosaurs[i].mya.length === 1 && dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[0] - 1 <= mya){
+      aliveMya.push(dinosaurs[i][key])
+      console.log(dinosaurs[i][key]);
+    }
+      
+  }
+  //return the aliveMya array with the pushed dinosaurs inside
+  return aliveMya;
+
       
     // if(dinosaurs[i].mya === mya.length -1){
     //   aliveMya.push(dinosaurs[i].dinosaurId);
@@ -134,10 +152,10 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
     //aliveMya.push(dinosaurs[i].dinosaurId)
   
     //return dinosaurs[i].dinosaurId
-  return aliveMya;
-  }//else if(dinosaurs[i].name === dinosaurs)
-  return aliveMya;
-}
+  //return aliveMya;
+}//else if(dinosaurs[i].name === dinosaurs)
+  
+
 
 module.exports = {
   getTallestDinosaur,
