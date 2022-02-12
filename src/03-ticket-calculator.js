@@ -55,50 +55,41 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  let ticketPrice;
-
-  if (
-    ticketInfo.ticketType !== "general" &&
-    ticketInfo.ticketType !== "membership"
-  ) {
-    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
-  }
-
-  if (
-    ticketInfo.entrantType !== "child" &&
-    ticketInfo.entrantType !== "adult" &&
-    ticketInfo.entrantType !== "senior"
-  ) {
-    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
-  }
-
-  for (let extra of ticketInfo.extras) {
-    if (
-      ticketInfo.extras.length > 0 &&
-      extra !== "movie" &&
-      extra !== "education" &&
-      extra !== "terrace"
+  function ticketValidator(ticketData, ticketInfo) {
+    if (!ticketData[ticketInfo.ticketType]) {
+      return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+    } else if (
+      !ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
     ) {
-      return `Extra type '${extra}' cannot be found.`;
+      return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+    } else if (ticketInfo.extras.length) {
+      for (let extra of ticketInfo.extras) {
+        if (!ticketData.extras[extra]) {
+          return `Extra type '${extra}' cannot be found.`;
+        }
+      }
     }
-  }
+  } // Validates whether ticket has correct information to reference ticket Data
 
-  ticketPrice =
-    ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+  function priceCalculator(ticketData, ticketInfo) {
+    let ticketPrice =
+      ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
 
-  if (ticketInfo.extras.length > 0) {
-    for (let extra of ticketInfo.extras) {
-      ticketPrice +=
-        ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+    if (ticketInfo.extras.length > 0) {
+      for (let extra of ticketInfo.extras) {
+        ticketPrice +=
+          ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+      }
     }
-  }
+    return ticketPrice;
+  } // Calculates ticket price
 
-  return ticketPrice;
+  if (ticketValidator(ticketData, ticketInfo)) {
+    return ticketValidator(ticketData, ticketInfo);
+  } else {
+    return priceCalculator(ticketData, ticketInfo);
+  }
 }
-
-// Test Cases
-// console.log(calculateTicketPrice());
-
 /**
  * purchaseTickets()
  * ---------------------
@@ -155,7 +146,6 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 function purchaseTickets(ticketData, purchases) {
   let receipt = "";
   let itemizedPurchases = "";
-  let itemizedExtras = "";
   let totalPrice = 0;
 
   for (let purchase of purchases) {
@@ -164,9 +154,7 @@ function purchaseTickets(ticketData, purchases) {
       purchase.ticketType !== "membership"
     ) {
       return `Ticket type '${purchase.ticketType}' cannot be found.`;
-    }
-
-    if (
+    } else if (
       purchase.entrantType !== "child" &&
       purchase.entrantType !== "adult" &&
       purchase.entrantType !== "senior"
@@ -195,7 +183,6 @@ function purchaseTickets(ticketData, purchases) {
       }
     }
 
-    ticketPrice = ticketPrice;
     totalPrice += ticketPrice;
 
     let itemizedPurchase = `\n${
@@ -205,22 +192,22 @@ function purchaseTickets(ticketData, purchases) {
       ticketPrice / 100
     ).toFixed(2)}`;
 
-    if (purchase.extras.length === 1) {
-      itemizedPurchase += ` (${
-        ticketData.extras[purchase.extras[0]].description
-      })`;
-    } else if (purchase.extras.length === 2) {
-      itemizedPurchase += ` (${
-        ticketData.extras[purchase.extras[0]].description
-      }, ${ticketData.extras[purchase.extras[1]].description})`;
-    } else if (purchase.extras.length === 3) {
-      itemizedPurchase += ` (${
-        ticketData.extras[purchase.extras[0]].description
-      }, ${ticketData.extras[purchase.extras[1]].description}, ${
-        ticketData.extras[purchase.extras[2]].description
-      })`;
+    if (purchase.extras.length) {
+      itemizedPurchase += ` (`;
+      for (let i = 0; i < purchase.extras.length; ++i) {
+        if (i === 0) {
+          itemizedPurchase += `${
+            ticketData.extras[purchase.extras[i]].description
+          }`;
+        }
+        if (i > 0) {
+          itemizedPurchase += `, ${
+            ticketData.extras[purchase.extras[i]].description
+          }`;
+        }
+      }
+      itemizedPurchase += `)`;
     }
-
     itemizedPurchases += itemizedPurchase;
   }
 
@@ -230,33 +217,6 @@ function purchaseTickets(ticketData, purchases) {
 
   return receipt;
 }
-
-// "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
-
-const purchases1 = [
-  {
-    ticketType: "general",
-    entrantType: "adult",
-    extras: ["movie", "terrace"],
-  },
-  {
-    ticketType: "general",
-    entrantType: "senior",
-    extras: ["terrace"],
-  },
-  {
-    ticketType: "general",
-    entrantType: "child",
-    extras: ["education", "movie", "terrace"],
-  },
-  {
-    ticketType: "general",
-    entrantType: "child",
-    extras: ["education", "movie", "terrace"],
-  },
-];
-
-console.log(purchaseTickets(exampleTicketData, purchases1));
 
 // Do not change anything below this line.
 module.exports = {
