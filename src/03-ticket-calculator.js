@@ -56,49 +56,125 @@ const exampleTicketData = require("../data/tickets");
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
   //check against ticket types
-  if (ticketInfo.ticketType !== 'general' && ticketInfo.ticketType !== 'membership'){
+  if (
+    ticketInfo.ticketType !== "general" &&
+    ticketInfo.ticketType !== "membership"
+  ) {
     return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
-    }
+  }
   //check against entrant types
-  if (ticketInfo.entrantType !== 'senior' && ticketInfo.entrantType !== 'child' && ticketInfo.entrantType !== 'adult'){
+  if (
+    ticketInfo.entrantType !== "senior" &&
+    ticketInfo.entrantType !== "child" &&
+    ticketInfo.entrantType !== "adult"
+  ) {
     return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
-  } 
+  }
   //check against extras
   // (I don't like this)
-  let extraLegit = false;
+  let tooLegit = false;
 
-  if (ticketInfo.extras.length !== 0){
-    for (let i = 0; i < ticketInfo.extras.length; i++){
-      if (ticketInfo.extras[i] == 'movie'){
-        extraLegit = true;
+  if (ticketInfo.extras.length !== 0) {
+    for (let i = 0; i < ticketInfo.extras.length; i++) {
+      if (ticketInfo.extras[i] == "movie") {
+        tooLegit = true;
       }
-      if (ticketInfo.extras[i] == 'terrace'){
-        extraLegit = true;
+      if (ticketInfo.extras[i] == "terrace") {
+        tooLegit = true;
       }
-      if (ticketInfo.extras[i] == 'education'){
-        extraLegit = true;
+      if (ticketInfo.extras[i] == "education") {
+        tooLegit = true;
       }
     }
-    if (!extraLegit){
+    if (!tooLegit) {
       return `Extra type '${ticketInfo.extras}' cannot be found.`;
     }
   }
 
   //calculations
-    //What kind of ticket?
-    //What age
-    //What, if any, extras.
-
   let ticketType = ticketInfo.ticketType;
   let age = ticketInfo.entrantType;
   let extras = ticketInfo.extras;
-  let ticketTotal = 0;
+  let ticketPrice = 0;
+  //What kind of ticket?
 
-  if (ticketType == 'general'){
-    for (let whatever in ticketData)
+  switch (ticketType) {
+    case "general":
+      switch (age) {
+        case "child":
+          ticketPrice += ticketData.general.priceInCents.child;
+          break;
+        case "adult":
+          ticketPrice += ticketData.general.priceInCents.adult;
+          break;
+        case "senior":
+          ticketPrice += ticketData.general.priceInCents.senior;
+          break;
+      }
+      break;
+    case "membership":
+      switch (age) {
+        case "child":
+          ticketPrice += ticketData.membership.priceInCents.child;
+          break;
+        case "adult":
+          ticketPrice += ticketData.membership.priceInCents.adult;
+          break;
+        case "senior":
+          ticketPrice += ticketData.membership.priceInCents.senior;
+          break;
+      }
+      break;
   }
 
-  return 'Placeholder for actually getting somewhere';
+  //What, if any, extras.
+  //gonna need a loop here before the switch on the 'extras' array (NOT WHAT IS PASSED IN);
+
+  for (choice in extras){
+    switch (extras[choice]) {
+      case "movie":
+        switch (age) {
+          case "child":
+            ticketPrice += ticketData.extras.movie.priceInCents.child;
+            break;
+          case "adult":
+            ticketPrice += ticketData.extras.movie.priceInCents.adult;
+            break;
+          case "senior":
+            ticketPrice += ticketData.extras.movie.priceInCents.senior;
+            break;
+        }
+        break;
+      case "education":
+        switch (age) {
+          case "child":
+            ticketPrice += ticketData.extras.education.priceInCents.child;
+            break;
+          case "adult":
+            ticketPrice += ticketData.extras.education.priceInCents.adult;
+            break;
+          case "senior":
+            ticketPrice += ticketData.extras.education.priceInCents.senior;
+            break;
+        }
+        break;
+      case "terrace":
+        switch (age) {
+          case "child":
+            ticketPrice += ticketData.extras.terrace.priceInCents.child;
+            break;
+          case "adult":
+            ticketPrice += ticketData.extras.terrace.priceInCents.adult;
+            break;
+          case "senior":
+            ticketPrice += ticketData.extras.terrace.priceInCents.senior;
+            break;
+        }
+        break;
+    }
+  }
+  
+  return ticketPrice;
 }
 
 /**
