@@ -71,9 +71,66 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+
+function getConnectedRoomNamesById(rooms, id) {
+  let connectedRooms;
+  let roomMap = {};
+
+  for (let i = 0; i < rooms.length; i++) {
+    if (rooms[i].roomId === id) {
+      connectedRooms = rooms[i].connectsTo;   
+    }
+    roomMap[rooms[i].roomId] = rooms[i].name;
+  }
+
+  if (!connectedRooms) {
+    return `Room with ID of '${id}' could not be found.`
+  }
+
+  for (let i = 0; i < connectedRooms.length; i++) {
+    if (roomMap[connectedRooms[i]]) {
+      connectedRooms[i] = roomMap[connectedRooms[i]];
+    } else {
+      return `Room with ID of '${connectedRooms[i]}' could not be found.`;
+    }
+  }
+  return connectedRooms;
+
+}
 
 module.exports = {
   getRoomByDinosaurName,
   getConnectedRoomNamesById,
-};
+}
+
+//const connectedRoomsIds = [];
+  // const connectedRoomsNames = [];
+  // let result = '';
+  // // Error message no. 1
+  // if (!rooms[0].roomId.includes(id) ) {
+  //   result = `Room with ID of '${id}' could not be found.`;
+  // } 
+  
+  // // Error message no. 2
+  // if (!connectedRoomsIds.includes(rooms[0].roomId)) {
+  //   result = `Room with ID of '${id}' could not be found.`;
+  // }
+
+  // for (let i = 0; i < rooms.length; i++) {
+  //   if (rooms[i].roomId === id) {
+  //     for (let j = 0; j < rooms[i].connectsTo.length; j++) {
+  //       connectedRoomsIds.push(rooms[i].connectsTo[j]);
+  //     } 
+  //   } 
+  // }
+
+  // for (let i = 0; i < rooms.length; i++) {
+  //   for (let j = 0; j < connectedRoomsIds.length; j++) {
+  //     if (connectedRoomsIds[j] === rooms[i].roomId) {
+  //       connectedRoomsNames.push(rooms[i].name);
+  //       result = connectedRoomsNames;
+  //     } 
+  //   }
+  // }
+
+  // return result;
