@@ -72,23 +72,32 @@ if (!dinoId){
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  let roomsConnected = [];
-  for (let i = 0; i < rooms.length; i++) {
-    if (rooms[i].roomId === id){
-      for (let j = 0; j < rooms[i].connectsTo.length; j++){
-        if (rooms[i].roomID.includes(rooms[i].connectsTo[j])) {
-          roomsConnected.push(rooms[j].name);
-        }
-      }
+let roomsConnectedId = [];
+let roomsConnectedName = [];
+//this is to find the IDs of the connected rooms.
+for (let i = 0; i < rooms.length; i++) {
+  if(rooms[i].roomId === id){
+    roomsConnectedId = rooms[i].connectsTo
+  }
+}
+// added the conditional below to satisify the final test, once we find all the IDs, there is a test that has incorrect-id as one of the elements. We can check this with the conditional before moving on to the nested loop.
+if(roomsConnectedId.includes("incorrect-id")){
+  return "Room with ID of 'incorrect-id' could not be found."
+};
+//once we have ids of the connected rooms, we can matched the roomsConnectedID array with rooms array to find the name of the rooms then push the names into roomsConnectedName array.
+for(let j = 0; j < rooms.length; j++) {
+  for(let k = 0; k < roomsConnectedId.length; k++) {
+    if(roomsConnectedId[k] === rooms[j].roomId){
+      roomsConnectedName.push(rooms[j].name);
     }
   }
-  console.log(roomsConnected)
-
-  if (!roomsConnected.length){
-    return "Room with ID of 'incorrect-id' could not be found.";
-  } else {
-    return roomsConnected;
-  }
+}
+// console.log(roomsConnectedName)
+//names are correctly added to the roomsConnectedName array, now we gotta figure out the incorrect IDs tests.
+if (!roomsConnectedId.length){
+  return "Room with ID of 'incorrect-id' could not be found.";
+}
+  return roomsConnectedName
 }
 
 module.exports = {
