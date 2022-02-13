@@ -44,7 +44,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   return roomMessage;
 }
 
-console.log(getConnectedRoomNamesById(exampleRoomData, exampleDinosaurData));
+
 
 /**
  * getConnectedRoomNamesById()
@@ -99,7 +99,7 @@ function getConnectedRoomNamesById(rooms, id) {
   return arrayOfRoomNames;
 }
 
-console.log(getConnectedRoomNamesById(exampleRoomData, exampleDinosaurData));
+
 
 //Do not change anything below this line.
 

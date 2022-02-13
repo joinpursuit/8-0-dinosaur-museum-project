@@ -45,7 +45,7 @@ function getTallestDinosaur(dinosaurs) {
   return theTallestDinosaurObject;
 }
 
-console.log(getTallestDinosaur(exampleDinosaurData))
+//console.log(getTallestDinosaur(exampleDinosaurData))
 
 /**
  * getDinosaurDescription()
@@ -87,7 +87,7 @@ function getDinosaurDescription(dinosaurs, id) {
   return description;
 }
 
-console.log(getDinosaurDescription(exampleDinosaurData))
+
 
 /**
  * getDinosaursAliveMya()
@@ -141,7 +141,8 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   return aliveDinosaurs;
 }
 
-console.log(getDinosaursAliveMya(exampleDinosaurData))
+
+
 
 //Do not change anything below this line.
 
