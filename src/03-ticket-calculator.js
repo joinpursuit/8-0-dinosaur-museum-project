@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { extras } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,36 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let validEntrants = ['adult', 'child', 'senior'];
+  let validTicketType = ['general', 'membership'];
+  let validExtras = ['movie', 'education', 'terrace'];
+  let totalCost = 0;
+  let costWithExtras = 0;
+
+  if (validTicketType.includes(ticketInfo.ticketType)){ //object 'ticketInfo' at key 'ticketType'
+    if (validEntrants.includes(ticketInfo.entrantType)){//object 'ticketInfo' at key 'entrantType'
+      totalCost += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+    } else {
+      return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+    }
+  } else {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+  }
+
+
+  for (let i = 0; i < ticketInfo.extras.length; i++){ 
+    if (validExtras.includes(ticketInfo.extras[i])){
+      if (validEntrants.includes(ticketInfo.entrantType)){
+        costWithExtras += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType];
+      }
+    } 
+    else if (!validExtras.includes(ticketInfo.extras[i])){
+      return `Extra type '${ticketInfo.extras}' cannot be found.`
+    }
+  }
+  return totalCost + costWithExtras;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +139,80 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  //console.log(ticketData);
+  //console.log(purchases);
+
+  let validEntrants = ['adult', 'child', 'senior'];
+  let validTicketType = ['general', 'membership'];
+  let validExtras = ['movie', 'education', 'terrace'];
+  let totalCost = [];
+  let extraCost = [];
+  let finalCost = [];
+  let admissionType = [];
+  let entrantType = [];
+  let extrasType = [];
+  let topOfReceipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  let bottomOfReceipt = '\n-------------------------------------------\nTOTAL:';
+  let receiptTotal = 0;
+
+
+  for (i = 0; i < purchases.length; i++){ //loops through purchase array
+    if (validTicketType.includes(purchases[i].ticketType)){ //checks to see 'ticketType' is valid
+      admissionType.push(purchases[i].ticketType.charAt(0).toUpperCase() + purchases[i].ticketType.slice(1));
+
+      if (validEntrants.includes(purchases[i].entrantType)){ //checks to see 'entrantType' is valid
+        entrantType.push(purchases[i].entrantType.charAt(0).toUpperCase() + purchases[i].entrantType.slice(1));
+        totalCost.push(ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType])
+
+      
+      } else {
+        return `Entrant type '${purchases[i].entrantType}' cannot be found.`
+      } 
+    } else {
+      return `Ticket type '${purchases[i].ticketType}' cannot be found.`
+    }
+  }
+
+  for (i = 0; i < purchases.length; i++){
+    if (purchases[i].extras.length){
+      for (j = 0; j < purchases[i].extras.length; j++){
+        if (validExtras.includes(purchases[i].extras[j])){ //checks to see 'extras' is valid
+          if (purchases[i].extras[j] === 'movie'){
+           extrasType.push('Movie Access');
+            extraCost.push(ticketData.extras[purchases[i].extras[j]].priceInCents[purchases[i].entrantType]);
+          } else if (purchases[i].extras[j] === 'terrace'){
+           extrasType.push('Terrace Acess');
+           extraCost.push(ticketData.extras[purchases[i].extras[j]].priceInCents[purchases[i].entrantType]);
+         } else if (purchases[i].extras[j] === 'education'){
+           extrasType.push('Education Acess');
+           extraCost.push(ticketData.extras[purchases[i].extras[j]].priceInCents[purchases[i].entrantType]);
+         }
+        //} else {
+
+        }
+
+      }
+    }
+  }
+
+  for(let k = 0; k < totalCost.length; k++){
+    finalCost.push(((totalCost[k] += extraCost[k]) / 100).toFixed(2));
+  }
+
+  for (l = 0; l < purchases.length; l++){
+    if (purchases[l].extras.length){
+      topOfReceipt += `${entrantType[l]} ${admissionType[l]} Admission: $${finalCost[l]} (${extrasType[l]})\n`;
+    } 
+    else{
+      topOfReceipt += `${entrantType[l]} ${admissionType[l]} Admission: $${finalCost[l]}\n`;
+    }
+    receiptTotal += Number(finalCost[l])
+  }
+
+  return topOfReceipt + bottomOfReceipt + ' $' + receiptTotal.toFixed(2)
+
+}
 
 // Do not change anything below this line.
 module.exports = {
