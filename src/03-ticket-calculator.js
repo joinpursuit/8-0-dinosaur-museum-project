@@ -27,49 +27,8 @@ const exampleTicketData = require("../data/tickets");
  * @param {string[]} ticketInfo.extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
  * @returns {number} The cost of the ticket in cents.
  *
- * EXAMPLE:
- *  const ticketInfo = {
-      ticketType: "general",
-      entrantType: "adult",
-      extras: [],
-    };
-    calculateTicketPrice(tickets, ticketInfo);
-    //> 3000
- *  
- * EXAMPLE:
- *  const ticketInfo = {
-      ticketType: "membership",
-      entrantType: "child",
-      extras: ["movie"],
-    };
-    calculateTicketPrice(tickets, ticketInfo);
-    //> 2500
-
- * EXAMPLE:
- *  const ticketInfo = {
-      ticketType: "general",
-      entrantType: "kid", // Incorrect
-      extras: ["movie"],
-    };
-    calculateTicketPrice(tickets, ticketInfo);
-    //> "Entrant type 'kid' cannot be found."
  */
-// function errors(ticketData, ticketInfo) {
-//   let ticType = ticketInfo.ticketType; //member or gen
-//   let entType = ticketInfo.entrantType; // child adult senior
-//   let addOns = ticketInfo.extras; // extras added sum
 
-//   for (let addOn of addOns) {
-//     if (!ticketData.extras[addOn]) {
-//       return `Extra type '${addOn}' cannot be found.`;
-//     }
-//   }
-//   if (!ticketData[ticType]) {
-//     return `Ticket type '${ticType}' cannot be found.`;
-//   } else if (!ticketData[ticType].priceInCents[entType]) {
-//     return `Entrant type '${entType}' cannot be found.`;
-//   }
-// }
 
 function calculateTicketPrice(ticketData, ticketInfo) {
   let ticType = ticketInfo.ticketType; //member or gen
@@ -112,42 +71,6 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  * @param {string[]} purchases[].extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
  * @returns {string} A full receipt, with each individual ticket bought and the total.
  *
- * EXAMPLE:
- *  const purchases = [
-      {
-        ticketType: "general",
-        entrantType: "adult",
-        extras: ["movie", "terrace"],
-      },
-      {
-        ticketType: "general",
-        entrantType: "senior",
-        extras: ["terrace"],
-      },
-      {
-        ticketType: "general",
-        entrantType: "child",
-        extras: ["education", "movie", "terrace"],
-      },
-      {
-        ticketType: "general",
-        entrantType: "child",
-        extras: ["education", "movie", "terrace"],
-      },
-    ];
-    purchaseTickets(tickets, purchases);
-    //> "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
-
- * EXAMPLE:
-    const purchases = [
-      {
-        ticketType: "discount", // Incorrect
-        entrantType: "adult",
-        extras: ["movie", "terrace"],
-      }
-    ]
-    purchaseTickets(tickets, purchases);
-    //> "Ticket type 'discount' cannot be found."
  */
 
 function itemLine(ticketData, ticketInfo) {
@@ -190,28 +113,6 @@ function purchaseTickets(ticketData, purchases) {
 }
 
 
-// const purchases = [
-//   {
-//     ticketType: "general",
-//     entrantType: "adult",
-//     extras: ["movie"],
-//   },
-//   {
-//     ticketType: "general",
-//     entrantType: "senior",
-//     extras: ["terrace"],
-//   },
-//   {
-//     ticketType: "general",
-//     entrantType: "child",
-//     extras: ["education", "movie", "terrace"],
-//   },
-//   {
-//     ticketType: "general",
-//     entrantType: "child",
-//     extras: ["education", "movie", "terrace"],
-//   },
-// ];
 // console.log(purchaseTickets(exampleTicketData, purchases))
 
 // Do not change anything below this line.
