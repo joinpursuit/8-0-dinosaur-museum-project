@@ -15,7 +15,7 @@ const exampleRoomData = require("../data/rooms");
  * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file for an example of the input.
  * @param {Object[]} rooms - An array of room objects. See the `data/rooms.js` file for an example of the input.
  * @param {string} dinosaurName - The name of the dinosaur.
- * @returns {string} The name of the room where the dinosaur can be found. Alternatively, an error message.
+ * @returns {string} The name of the room where the dinosaur can be found. Alternatively, an error message.    rooms.name
  *
  * EXAMPLE:
  *  getRoomByDinosaurName(dinosaurs, rooms, "Tyrannosaurus");
@@ -25,7 +25,22 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+// dinoName => dinosaur.js  @ dinoName => dinoId => rooms@dinosuars[] => return room.name
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let idDino = '';
+  for (let i = 0; i < rooms.length; i++){
+    if(dinosaurs[i].name === dinosaurName) {
+      idDino = dinosaurs[i].dinosaurId;
+    }
+  }
+  for (let i = 0; i < rooms.length; i++){
+    for (let j = 0; j < rooms[i].dinosaurs.length; j++) {
+      if(rooms[i].dinosaurs[j] === idDino){
+        return rooms[i].name;
+      }
+    }
+  }
+}
 
 /**
  * getConnectedRoomNamesById()
