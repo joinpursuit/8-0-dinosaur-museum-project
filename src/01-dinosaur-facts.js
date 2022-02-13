@@ -43,6 +43,7 @@ function getTallestDinosaur(dinosaurs) {
 
   tallestDinosaur[iteratedTallestDinosaur.name] =
     iteratedTallestDinosaur.lengthInMeters * 3.281;
+  // converts dinosaur height to feet and creates a property for the dinosaur's height in the output object
 
   return tallestDinosaur;
 }
@@ -125,7 +126,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
         // If the key parameter is provided and it is a key in the dinosaur object it pushes that key for the specific dinosaur instead of its ID
       } else {
         dinosaursAliveMya.push(dinosaur.dinosaurId);
-        // If a key parameter is provided and it is not a key in the dinosaur object it pushes the dinosaur's ID instead
+        // If a key parameter is not provided or if it is provided and it isn't a key in the dinosaur object it pushes the dinosaur's ID instead
       }
     }
   }
