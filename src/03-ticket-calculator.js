@@ -56,17 +56,26 @@ const exampleTicketData = require("../data/tickets");
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
 
-  for(let property in ticketData){
-    if(ticketInfo.ticketType !== property){
-      return "Ticket type 'incorrect-type' cannot be found."
-    }
+  let baseTicket = 0;
 
-    if(ticketInfo.entrantType !== property){
-      return "Entrant type 'incorrect-entrant' cannot be found."
-    }
-  }
+ if(!ticketData[ticketInfo.ticketType] || ticketInfo.ticketType === 'extras'){
+   return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+ }
 
+ if(!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]){
+   return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+ } else{
+   baseTicket += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+ }
 
+ for(let i = 0; i < ticketInfo.extras.length; i++){
+   if(!ticketData.extras[ticketInfo.extras[i]]){
+     return `Extra type '${ticketInfo.extras}' cannot be found.`;
+   } else{
+     baseTicket += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType];
+   }
+ }
+  return baseTicket;
 }
 
 /**
@@ -122,7 +131,38 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let formattedReceipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
+  let total = 0;
+
+  
+  for(let i = 0; i < purchases.length; i++){
+    let ticketPrice = calculateTicketPrice(ticketData, purchases[i])
+    if(typeof ticketPrice === 'string'){
+      return ticketPrice;
+    } else{
+      total += ticketPrice / 100;
+      let extraPurchases = ''
+      for(let j = 0; j < purchases[i].extras.length; j++){
+        if(j !== 0){
+          extraPurchases += ", "
+        }
+        extraPurchases += ticketData.extras[purchases[i].extras[j]].description
+      }
+      formattedReceipt += `${purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)} ${ticketData[purchases[i].ticketType].description}: $${(ticketPrice / 100).toFixed(2)}${extraPurchases ? " (" + extraPurchases + ")" : extraPurchases}\n`
+    }
+   
+  }
+  formattedReceipt += `-------------------------------------------\nTOTAL: $${total.toFixed(2)}`
+
+  return formattedReceipt;
+
+}
+
+
+
+
+
 
 // Do not change anything below this line.
 module.exports = {
