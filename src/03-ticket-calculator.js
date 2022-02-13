@@ -54,7 +54,47 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+// function errors(ticketData, ticketInfo) {
+//   let ticType = ticketInfo.ticketType; //member or gen
+//   let entType = ticketInfo.entrantType; // child adult senior
+//   let addOns = ticketInfo.extras; // extras added sum
+
+//   for (let addOn of addOns) {
+//     if (!ticketData.extras[addOn]) {
+//       return `Extra type '${addOn}' cannot be found.`;
+//     }
+//   }
+//   if (!ticketData[ticType]) {
+//     return `Ticket type '${ticType}' cannot be found.`;
+//   } else if (!ticketData[ticType].priceInCents[entType]) {
+//     return `Entrant type '${entType}' cannot be found.`;
+//   }
+// }
+
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let ticType = ticketInfo.ticketType; //member or gen
+  let entType = ticketInfo.entrantType; // child adult senior
+  let addOns = ticketInfo.extras; // extras added sum
+
+  let sum = 0;
+
+  if (!ticketData[ticType]) {
+    return `Ticket type '${ticType}' cannot be found.`;
+  } else if (!ticketData[ticType].priceInCents[entType]) {
+    return `Entrant type '${entType}' cannot be found.`;
+  } else {
+    sum += ticketData[ticType].priceInCents[entType];
+  }
+
+  for (let addOn of addOns) {
+    if (!ticketData.extras[addOn]) {
+      return `Extra type '${addOn}' cannot be found.`;
+    } else {
+      sum += ticketData.extras[addOn].priceInCents[entType];
+    }
+  }
+  return sum;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +149,70 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+function itemLine(ticketData, ticketInfo) {
+  // helper function. will return a line similar to the line below
+// "\n Adult Membership Admission: $50.00 (Terrace Access, Education Access)"
+  let ticType = ticketInfo.ticketType; //member or gen
+  let entType = ticketInfo.entrantType; // child adult senior
+  let addOns = ticketInfo.extras; // extras added []
+  let price = (calculateTicketPrice(ticketData, ticketInfo) / 100).toFixed(2);
+  let addOnsReceipt = [];
+  for (let addOn of addOns) {
+    if (ticketData.extras[addOn]) {
+      addOnsReceipt.push(ticketData.extras[addOn].description);
+    }
+  } if (addOns.length === 0){
+    return `\n${entType.charAt(0).toUpperCase() + entType.slice(1)} ${
+      ticketData[ticType].description}: $${price}`
+  } else {
+    return `\n${entType.charAt(0).toUpperCase() + entType.slice(1)} ${
+    ticketData[ticType].description}: $${price} (${addOnsReceipt.join(', ')})`;
+  }
+}
+
+function purchaseTickets(ticketData, purchases) {
+  let error = "error string from last problem";
+  let fullTotal = 0;
+  let receiptBody = ""
+  for (let purchase of purchases) {
+    if (typeof calculateTicketPrice(ticketData, purchase) === "string") {
+      error = calculateTicketPrice(ticketData, purchase);
+      return error;
+    } else {
+      fullTotal += calculateTicketPrice(ticketData, purchase);
+    }
+  }
+  for (let line of purchases){
+    receiptBody += itemLine(ticketData, line)
+  }
+  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------${receiptBody}\n-------------------------------------------\nTOTAL: $${(fullTotal /100).toFixed(2)}`
+}
+
+
+// const purchases = [
+//   {
+//     ticketType: "general",
+//     entrantType: "adult",
+//     extras: ["movie"],
+//   },
+//   {
+//     ticketType: "general",
+//     entrantType: "senior",
+//     extras: ["terrace"],
+//   },
+//   {
+//     ticketType: "general",
+//     entrantType: "child",
+//     extras: ["education", "movie", "terrace"],
+//   },
+//   {
+//     ticketType: "general",
+//     entrantType: "child",
+//     extras: ["education", "movie", "terrace"],
+//   },
+// ];
+// console.log(purchaseTickets(exampleTicketData, purchases))
 
 // Do not change anything below this line.
 module.exports = {
