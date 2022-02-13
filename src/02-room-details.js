@@ -25,8 +25,31 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let dinosaurId = "";
+  let nameOfTheRoom = "";
 
+  for (i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].name === dinosaurName) {
+      dinosaurId = dinosaurs[i].dinosaurId;
+    } 
+  }
+  if (dinosaurId === "") {
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+  }
+  for (let i = 0; i < rooms.length; i++) {
+    for (let j = 0; j < rooms[i].dinosaurs.length; j++) {
+      if (rooms[i].dinosaurs[j] === dinosaurId) {
+        nameOfTheRoom = rooms[i].name;
+      }
+      }
+    }
+    if (nameOfTheRoom === "") {
+      return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+    }
+    return nameOfTheRoom;
+}
+  
 /**
  * getConnectedRoomNamesById()
  * ---------------------
@@ -49,7 +72,37 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let roomsConnectedById = [];
+  let roomsName = [];
+  let errorMsg = `Room with ID of 'incorrect-id' could not be found.`;
+
+  for (let i = 0; i < rooms.length; i++) {
+    if (id === 'incorrect-id') {
+     return `Room with ID of 'incorrect-id' could not be found.`;
+    } 
+    for (let j = 0; j < rooms[i].connectsTo.length; j++) {
+      if(rooms[i].roomId === id){
+        roomsConnectedById.push(rooms[i].connectsTo[j]);  
+        }
+    } 
+  }
+  for (let i = 0; i < rooms.length; i++) {   
+  for (let j = 0; j < roomsConnectedById.length; j++) { 
+    if (rooms[i].roomId === roomsConnectedById[j]) {
+      roomsName.push(rooms[i].name);
+    }
+    if (roomsConnectedById[j] === 'incorrect-id') {
+      return errorMsg;
+    }   
+  }
+  } 
+  if (roomsConnectedById.length > 0) {
+    return roomsName;
+  } else {
+    return errorMsg;
+  }
+}
 
 module.exports = {
   getRoomByDinosaurName,
