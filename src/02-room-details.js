@@ -26,6 +26,7 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  //use a new variable to pull out the dinosaur object from the array if it is exists
   let dinoExists;
   
   for(let i = 0; i < dinosaurs.length; i++){
@@ -42,6 +43,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   let foundDinoRoom;
 
   for(let i = 0; i < rooms.length; i++){
+    //check the dinosaur array within rooms array for existing 'dinosaurId'
     if(rooms[i].dinosaurs.includes(dinoExists.dinosaurId)){
       foundDinoRoom = rooms[i].name;
       break;
@@ -53,7 +55,6 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   }
 
   return foundDinoRoom;
-
 }
 
 /**
@@ -80,7 +81,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
  */
 function getConnectedRoomNamesById(rooms, id) {
   let foundRoom;
-
+  //check rooms array for matching 'id', pulls matching room object out and saves it to a variable
   for(let i = 0; i < rooms.length; i++){
     if(rooms[i].roomId === id){
       foundRoom = rooms[i];
@@ -88,28 +89,31 @@ function getConnectedRoomNamesById(rooms, id) {
     }
   }
 
+  //if 'foundRoom' variable is undefined return error
   if(!foundRoom){
     return `Room with ID of '${id}' could not be found.`
   }
 
-  let roomArr = [];
+  let connectedRooms = [];
+  //create a variable to hold the connected room id not found within rooms array
   let incorrectId;
 
   for(let i = 0; i < rooms.length; i++){
     for(let j = 0; j < foundRoom.connectsTo.length; j++){
       if(foundRoom.connectsTo[j] === rooms[i].roomId){
-        roomArr.push(rooms[i].name)
+        connectedRooms.push(rooms[i].name)
       } else{
         incorrectId = foundRoom.connectsTo[j]
       }
     }
   }
 
-  if(roomArr.length !== foundRoom.connectsTo.length){
+  //checks if the length of the new array matches the length of the 'connectsTo' array; if they do not match that means one of the id's within the 'connectsTo' array of the foundRoom is incorrect
+  if(connectedRooms.length !== foundRoom.connectsTo.length){
     return `Room with ID of '${incorrectId}' could not be found.`
   }
 
-  return roomArr;
+  return connectedRooms;
 
 }
 

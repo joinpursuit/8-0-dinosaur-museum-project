@@ -24,22 +24,26 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getTallestDinosaur(dinosaurs) {
+  //return an empty object if no dinos appear in the array
   if(!dinosaurs.length){
     return {};
   }
 
-  let tallDino = {};
-  let largestDino = dinosaurs[0].lengthInMeters;
-  let name;
+  let tallestDino = {};
+  let largeDino = dinosaurs[0].lengthInMeters;
+  //create variable as placeholder key for new object
+  let dinoName;
 
   for(let i = 1; i < dinosaurs.length; i++){
-    if(dinosaurs[i].lengthInMeters > largestDino){
-      largestDino = dinosaurs[i].lengthInMeters;
-      name = dinosaurs[i].name;
+    if(dinosaurs[i].lengthInMeters > largeDino){
+      largeDino = dinosaurs[i].lengthInMeters;
+      dinoName = dinosaurs[i].name;
     } 
   }
-tallDino[name] = largestDino * 3.281;
-return tallDino;
+
+tallestDino[dinoName] = largeDino * 3.281;
+
+return tallestDino;
 }
 
 
@@ -101,7 +105,9 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
+
  function getDinosaursAliveMya(dinosaurs, mya, key) {
+  //if a key is not provided or it is incorrect, return 'dinosaurId'
   if(!key){
     key = "dinosaurId";
   } 
@@ -110,14 +116,17 @@ function getDinosaurDescription(dinosaurs, id) {
     key = "dinosaurId";
   }
 
+  //return an array
   let dinoByMya = [];
 
   for(let i = 0; i < dinosaurs.length; i++){
     if(dinosaurs[i].mya.length === 1){
+      //if `mya` array has one element, allows for the `mya` value to be equal to the given value or one less
       if(dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] - 1 === mya){
         dinoByMya.push(dinosaurs[i][key])
       }
     } else {
+      //checks if the 'mya' value given is equal to each element in the 'mya' array or within range
         if(dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya || dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] === mya - 1 || dinosaurs[i].mya[1] === mya || dinosaurs[i].mya[1] === mya - 1){
         dinoByMya.push(dinosaurs[i][key])
       } 

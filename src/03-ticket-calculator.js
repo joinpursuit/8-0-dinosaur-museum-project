@@ -55,19 +55,22 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-
+  //variable to be populated with the calculations based on ticket conditions
   let baseTicket = 0;
 
+  //checks that the ticketType matches with only the 'general' or 'membership' keys within ticketData; 'extras' is not a ticketType; if none match return an error
  if(!ticketData[ticketInfo.ticketType] || ticketInfo.ticketType === 'extras'){
    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
  }
 
+ //checks that the entrantType (which is under 'priceInCents' under the 'ticketType') matches with the keys within ticketData; if none match return an error; if they do match calculate baseTicket
  if(!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]){
    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
  } else{
    baseTicket += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
  }
 
+ //checks the extras array within ticketInfo for matching keys within extras key in ticketData; if none of the values match the keys return an error; if they do match calculate the extra charges to baseTicket
  for(let i = 0; i < ticketInfo.extras.length; i++){
    if(!ticketData.extras[ticketInfo.extras[i]]){
      return `Extra type '${ticketInfo.extras}' cannot be found.`;
@@ -132,24 +135,32 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
+  //start with basic receipt format
   let formattedReceipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
+  //create variable to hold the total cost of all purchases
   let total = 0;
-
   
   for(let i = 0; i < purchases.length; i++){
+    //use the previous function which has the error messages set up and price of one ticket already calculated
     let ticketPrice = calculateTicketPrice(ticketData, purchases[i])
+    //the error messages in the previous function are strings so you can use that to check the type of data being passed through and return the error message
     if(typeof ticketPrice === 'string'){
       return ticketPrice;
     } else{
+      //while looping through the purchases array, the price of each ticket is being summed and saved to total
       total += ticketPrice / 100;
+      //create a placeholder variable for the type of 'extras' added; if none are added it will be an empty string
       let extraPurchases = ''
+      //use a nested loop to check the extras array of each purchase in the purchases array
       for(let j = 0; j < purchases[i].extras.length; j++){
         if(j !== 0){
+          //excluding the element at index 0, add a comma and space in front of each element pulled from 'extras'
           extraPurchases += ", "
         }
         extraPurchases += ticketData.extras[purchases[i].extras[j]].description
       }
       formattedReceipt += `${purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)} ${ticketData[purchases[i].ticketType].description}: $${(ticketPrice / 100).toFixed(2)}${extraPurchases ? " (" + extraPurchases + ")" : extraPurchases}\n`
+      //the ternary condition will check if extraPurchases is truthy or falsy; if truthy it will add the description of each 'extras' in () otherwise it will return the empty string
     }
    
   }
