@@ -269,45 +269,179 @@ function purchaseTickets(ticketData, purchases) {
       if (purchases[i].extras.length === 1) {
         if(purchases[i].extras[0] === "movie") {
           total = total + ticketData.extras.movie.priceInCents.adult / 100;
-          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.movie.priceInCents.adult)/100).toFixed(2)} (Movie Access)\n`;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.movie.priceInCents.adult) / 100).toFixed(2)} (Movie Access)\n`;
         }
         if(purchases[i].extras[0] === "terrace") {
           total = total + ticketData.extras.terrace.priceInCents.adult / 100;
-          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult)/100).toFixed(2)} (Terrace Access)\n`;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult) / 100).toFixed(2)} (Terrace Access)\n`;
         }
         if(purchases[i].extras[0] === "education") {
           total = total + ticketData.extras.education.priceInCents.adult / 100;
-          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.education.priceInCents.adult)/100).toFixed(2)} (Education Access)\n`;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.education.priceInCents.adult) / 100).toFixed(2)} (Education Access)\n`;
         } 
       }
       if (purchases[i].extras.length === 2) {
          if(purchases[i].extras[0] === "movie" 
          && purchases[i].extras[1] === "terrace") {
-           total = total + ticketData.extras.movie.priceInCents.adult / 100 + ticketData.extras.terrace.priceInCents.adult / 100 ;
-           ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult)/100).toFixed(2)} (Movie Access, Terrace Access)\n` ;
+           total = total + (ticketData.extras.movie.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult) / 100 ;
+           ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult) / 100).toFixed(2)} (Movie Access, Terrace Access)\n` ;
+         }
+         if(purchases[i].extras[0] === "terrace" 
+         && purchases[i].extras[1] === "movie") {
+           total = total + (ticketData.extras.terrace.priceInCents.adult + ticketData.extras.movie.priceInCents.adult) / 100 ;
+           ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.movie.priceInCents.adult) / 100).toFixed(2)} (Terrace Access, Movie Access)\n` ;
+         }
+         if(purchases[i].extras[0] === "movie" 
+         && purchases[i].extras[1] === "education") {
+           total = total + (ticketData.extras.movie.priceInCents.adult + ticketData.extras.education.priceInCents.adult) / 100 ;
+           ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.education.priceInCents.adult) / 100).toFixed(2)} (Movie Access, Education Access)\n` ;
+         }
+         if(purchases[i].extras[0] === "education" 
+         && purchases[i].extras[1] === "movie") {
+           total = total + (ticketData.extras.education.priceInCents.adult + ticketData.extras.movie.priceInCents.adult) / 100 ;
+           ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.movie.priceInCents.adult) / 100).toFixed(2)} (Education Access, Movie Access)\n` ;
+         }
+         if(purchases[i].extras[0] === "education" 
+         && purchases[i].extras[1] === "terrace") {
+           total = total + (ticketData.extras.education.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult) / 100 ;
+           ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult) / 100).toFixed(2)} (Education Access, Terrace Access)\n` ;
+         }
+         if(purchases[i].extras[0] === "terrace" 
+         && purchases[i].extras[1] === "education") {
+           total = total + (ticketData.extras.terrace.priceInCents.adult + ticketData.extras.education.priceInCents.adult) / 100 ;
+           ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.education.priceInCents.adult) / 100).toFixed(2)} (Terrace Access, Education Access)\n` ;
          }
        }
        if (purchases[i].extras.length = 3) {
         if(purchases[i].extras[0] === "education" 
         && purchases[i].extras[1] === "movie" 
         && purchases[i].extras[2] === "terrace" ) {
-          total = total + ticketData.extras.education.priceInCents.adult / 100 + ticketData.extras.movie.priceInCents.adult / 100 + ticketData.extras.terrace.priceInCents.adult / 100 ;
-          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult)/100).toFixed(2)} (Education Access,Movie Access, Terrace Access)\n` ;
+          total = total + (ticketData.extras.education.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult) / 100).toFixed(2)} (Education Access, Movie Access, Terrace Access)\n` ;
         }
-      }
+        if(purchases[i].extras[0] === "education" 
+        && purchases[i].extras[1] === "terrace" 
+        && purchases[i].extras[2] === "movie" ) {
+          total = total + (ticketData.extras.education.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.movie.priceInCents.adult) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.movie.priceInCents.adult) / 100).toFixed(2)} (Education Access, Terrace Access, Movie Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "movie" 
+        && purchases[i].extras[1] === "education" 
+        && purchases[i].extras[2] === "terrace" ) {
+          total = total + (ticketData.extras.movie.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult) / 100).toFixed(2)} (Movie Access, Education Access, Terrace Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "movie" 
+        && purchases[i].extras[1] === "terrace" 
+        && purchases[i].extras[2] === "education" ) {
+          total = total + (ticketData.extras.movie.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.education.priceInCents.adult) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.education.priceInCents.adult) / 100).toFixed(2)} (Movie Access, Terrace Access, Education Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "terrace" 
+        && purchases[i].extras[1] === "movie" 
+        && purchases[i].extras[2] === "education" ) {
+          total = total + (ticketData.extras.terrace.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.education.priceInCents.adult) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.education.priceInCents.adult) / 100).toFixed(2)} (Terrace Access, Movie Access, Education Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "terrace" 
+        && purchases[i].extras[1] === "education" 
+        && purchases[i].extras[2] === "movie" ) {
+          total = total + (ticketData.extras.terrace.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.movie.priceInCents.adult) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.movie.priceInCents.adult )/ 100).toFixed(2)} (Terrace Access, Education Access, Movie Access)\n` ;
+        }
+       }
     }
     if (purchases[i].ticketType === "general" 
     && purchases[i].entrantType === "child") {
       total = total + ticketData.general.priceInCents.child / 100; 
       ticket = `${ticket}Child General Admission: $${(ticketData.general.priceInCents.child / 100).toFixed(2)}\n`;
 
+      if (purchases[i].extras.length === 1) {
+        if(purchases[i].extras[0] === "movie") {
+          total = total + ticketData.extras.movie.priceInCents.child / 100;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.child + ticketData.extras.movie.priceInCents.child) / 100).toFixed(2)} (Movie Access)\n`;
+        }
+        if(purchases[i].extras[0] === "terrace") {
+          total = total + ticketData.extras.terrace.priceInCents.child / 100;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.child + ticketData.extras.terrace.priceInCents.child) / 100).toFixed(2)} (Terrace Access)\n`;
+        }
+        if(purchases[i].extras[0] === "education") {
+          total = total + ticketData.extras.education.priceInCents.child / 100;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.child + ticketData.extras.education.priceInCents.child) / 100).toFixed(2)} (Education Access)\n`;
+        } 
+      }
+
+      if (purchases[i].extras.length === 2) {
+        if(purchases[i].extras[0] === "movie" 
+        && purchases[i].extras[1] === "terrace") {
+          total = total + (ticketData.extras.movie.priceInCents.child + ticketData.extras.terrace.priceInCents.child) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.child + ticketData.extras.movie.priceInCents.child + ticketData.extras.terrace.priceInCents.child) / 100).toFixed(2)} (Movie Access, Terrace Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "terrace" 
+        && purchases[i].extras[1] === "movie") {
+          total = total + (ticketData.extras.terrace.priceInCents.child + ticketData.extras.movie.priceInCents.child) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.child + ticketData.extras.terrace.priceInCents.child + ticketData.extras.movie.priceInCents.child) / 100).toFixed(2)} (Terrace Access, Movie Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "movie" 
+        && purchases[i].extras[1] === "education") {
+          total = total + (ticketData.extras.movie.priceInCents.child + ticketData.extras.education.priceInCents.child) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.child + ticketData.extras.movie.priceInCents.child + ticketData.extras.education.priceInCents.child) / 100).toFixed(2)} (Movie Access, Education Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "education" 
+        && purchases[i].extras[1] === "movie") {
+          total = total + (ticketData.extras.education.priceInCents.child + ticketData.extras.movie.priceInCents.child) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.movie.priceInCents.child) / 100).toFixed(2)} (Education Access, Movie Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "education" 
+        && purchases[i].extras[1] === "terrace") {
+          total = total + (ticketData.extras.education.priceInCents.child + ticketData.extras.terrace.priceInCents.child) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.terrace.priceInCents.child) / 100).toFixed(2)} (Education Access, Terrace Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "terrace" 
+        && purchases[i].extras[1] === "education") {
+          total = total + (ticketData.extras.terrace.priceInCents.child + ticketData.extras.education.priceInCents.child) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.child + ticketData.extras.terrace.priceInCents.child + ticketData.extras.education.priceInCents.child) / 100).toFixed(2)} (Terrace Access, Education Access)\n` ;
+        }
+      }
+
       if (purchases[i].extras.length === 3) {
         if (purchases[i].extras[0] === "education" 
         && purchases[i].extras[1] === "movie" 
         && purchases[i].extras[2] === "terrace" ) {
-          total = total + ticketData.extras.education.priceInCents.child / 100 + ticketData.extras.movie.priceInCents.child / 100 + ticketData.extras.terrace.priceInCents.child / 100 ;
-          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.movie.priceInCents.child + ticketData.extras.terrace.priceInCents.child)/100).toFixed(2)} (Education Access, Movie Access, Terrace Access)\n` ;
+          total = total + (ticketData.extras.education.priceInCents.child + ticketData.extras.movie.priceInCents.child + ticketData.extras.terrace.priceInCents.child) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.movie.priceInCents.child + ticketData.extras.terrace.priceInCents.child) / 100).toFixed(2)} (Education Access, Movie Access, Terrace Access)\n` ;
         }
+        if(purchases[i].extras[0] === "education" 
+        && purchases[i].extras[1] === "terrace" 
+        && purchases[i].extras[2] === "movie" ) {
+          total = total + (ticketData.extras.education.priceInCents.child + ticketData.extras.terrace.priceInCents.child + ticketData.extras.movie.priceInCents.child) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.terrace.priceInCents.child + ticketData.extras.movie.priceInCents.child) / 100).toFixed(2)} (Education Access, Terrace Access, Movie Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "movie" 
+        && purchases[i].extras[1] === "education" 
+        && purchases[i].extras[2] === "terrace" ) {
+          total = total + (ticketData.extras.movie.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.terrace.priceInCents.child) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.child + ticketData.extras.movie.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.terrace.priceInCents.child) / 100).toFixed(2)} (Movie Access, Education Access, Terrace Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "movie" 
+        && purchases[i].extras[1] === "terrace" 
+        && purchases[i].extras[2] === "education" ) {
+          total = total + (ticketData.extras.movie.priceInCents.child + ticketData.extras.terrace.priceInCents.child + ticketData.extras.education.priceInCents.child) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.child + ticketData.extras.movie.priceInCents.child + ticketData.extras.terrace.priceInCents.child + ticketData.extras.education.priceInCents.child) / 100).toFixed(2)} (Movie Access, Terrace Access, Education Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "terrace" 
+        && purchases[i].extras[1] === "movie" 
+        && purchases[i].extras[2] === "education" ) {
+          total = total + (ticketData.extras.terrace.priceInCents.child + ticketData.extras.movie.priceInCents.child + ticketData.extras.education.priceInCents.child) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.child + ticketData.extras.terrace.priceInCents.child + ticketData.extras.movie.priceInCents.child + ticketData.extras.education.priceInCents.child) / 100).toFixed(2)} (Terrace Access, Movie Access, Education Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "terrace" 
+        && purchases[i].extras[1] === "education" 
+        && purchases[i].extras[2] === "movie" ) {
+          total = total + (ticketData.extras.terrace.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.movie.priceInCents.child) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.child + ticketData.extras.terrace.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.movie.priceInCents.child) / 100).toFixed(2)} (Terrace Access, Education Access, Movie Access)\n` ;
+        }
+
       } 
     }
     if (purchases[i].ticketType === "general" 
@@ -317,16 +451,88 @@ function purchaseTickets(ticketData, purchases) {
       if (purchases[i].extras.length === 1) {
         if (purchases[i].extras[0] === "movie") {
           total = total + ticketData.extras.movie.priceInCents.senior / 100;
-          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.senior + ticketData.extras.movie.priceInCents.senior)/100).toFixed(2)} (Movie Access)\n` ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.senior + ticketData.extras.movie.priceInCents.senior) / 100).toFixed(2)} (Movie Access)\n` ;
         }
         if (purchases[i].extras[0] === "terrace") {
          total = total + ticketData.extras.terrace.priceInCents.senior / 100;
-         ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior)/100).toFixed(2)} (Terrace Access)\n` ;
+         ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior) / 100).toFixed(2)} (Terrace Access)\n` ;
         }
         if (purchases[i].extras[0] === "education") {
           total = total + ticketData.extras.education.priceInCents.senior / 100;
-          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.senior + ticketData.extras.education.priceInCents.senior)/100).toFixed(2)} (Education Access)\n` ;
-        } 
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.senior + ticketData.extras.education.priceInCents.senior) / 100).toFixed(2)} (Education Access)\n` ;
+        }  
+      }
+
+      if (purchases[i].extras.length === 2) {
+        if(purchases[i].extras[0] === "movie" 
+        && purchases[i].extras[1] === "terrace") {
+          total = total + (ticketData.extras.movie.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.senior + ticketData.extras.movie.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior) / 100).toFixed(2)} (Movie Access, Terrace Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "terrace" 
+        && purchases[i].extras[1] === "movie") {
+          total = total + (ticketData.extras.terrace.priceInCents.senior + ticketData.extras.movie.priceInCents.senior) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.movie.priceInCents.senior) / 100).toFixed(2)} (Terrace Access, Movie Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "movie" 
+        && purchases[i].extras[1] === "education") {
+          total = total + (ticketData.extras.movie.priceInCents.senior + ticketData.extras.education.priceInCents.senior) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.senior + ticketData.extras.movie.priceInCents.senior + ticketData.extras.education.priceInCents.senior) / 100).toFixed(2)} (Movie Access, Education Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "education" 
+        && purchases[i].extras[1] === "movie") {
+          total = total + (ticketData.extras.education.priceInCents.senior + ticketData.extras.movie.priceInCents.senior) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.movie.priceInCents.senior) / 100).toFixed(2)} (Education Access, Movie Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "education" 
+        && purchases[i].extras[1] === "terrace") {
+          total = total + (ticketData.extras.education.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior) / 100).toFixed(2)} (Education Access, Terrace Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "terrace" 
+        && purchases[i].extras[1] === "education") {
+          total = total + (ticketData.extras.terrace.priceInCents.senior + ticketData.extras.education.priceInCents.senior) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.education.priceInCents.senior) / 100).toFixed(2)} (Terrace Access, Education Access)\n` ;
+        }
+      }
+
+      if (purchases[i].extras.length === 3) {
+        if (purchases[i].extras[0] === "education" 
+        && purchases[i].extras[1] === "movie" 
+        && purchases[i].extras[2] === "terrace" ) {
+          total = total + (ticketData.extras.education.priceInCents.senior + ticketData.extras.movie.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.movie.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior) / 100).toFixed(2)} (Education Access, Movie Access, Terrace Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "education" 
+        && purchases[i].extras[1] === "terrace" 
+        && purchases[i].extras[2] === "movie" ) {
+          total = total + (ticketData.extras.education.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.movie.priceInCents.senior) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.movie.priceInCents.senior) / 100).toFixed(2)} (Education Access, Terrace Access, Movie Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "movie" 
+        && purchases[i].extras[1] === "education" 
+        && purchases[i].extras[2] === "terrace" ) {
+          total = total + (ticketData.extras.movie.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.senior + ticketData.extras.movie.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior) / 100).toFixed(2)} (Movie Access, Education Access, Terrace Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "movie" 
+        && purchases[i].extras[1] === "terrace" 
+        && purchases[i].extras[2] === "education" ) {
+          total = total + (ticketData.extras.movie.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.education.priceInCents.senior) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.senior + ticketData.extras.movie.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.education.priceInCents.senior) / 100).toFixed(2)} (Movie Access, Terrace Access, Education Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "terrace" 
+        && purchases[i].extras[1] === "movie" 
+        && purchases[i].extras[2] === "education" ) {
+          total = total + (ticketData.extras.terrace.priceInCents.senior + ticketData.extras.movie.priceInCents.senior + ticketData.extras.education.priceInCents.senior) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.movie.priceInCents.senior + ticketData.extras.education.priceInCents.senior) / 100).toFixed(2)} (Terrace Access, Movie Access, Education Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "terrace" 
+        && purchases[i].extras[1] === "education" 
+        && purchases[i].extras[2] === "movie" ) {
+          total = total + (ticketData.extras.terrace.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.movie.priceInCents.senior) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.general.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.movie.priceInCents.senior) / 100).toFixed(2)} (Terrace Access, Education Access, Movie Access)\n` ;
+        }
       }
     }
     if (purchases[i].ticketType === "membership" 
@@ -337,36 +543,87 @@ function purchaseTickets(ticketData, purchases) {
       if (purchases[i].extras.length === 1) {
         if (purchases[i].extras[0] === "movie") {
           total = total + ticketData.extras.movie.priceInCents.adult / 100;
-          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.movie.priceInCents.adult)/100).toFixed(2)} (Movie Access)\n` ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.movie.priceInCents.adult) / 100).toFixed(2)} (Movie Access)\n` ;
         }
         if (purchases[i].extras[0] === "terrace") {
          total = total + ticketData.extras.terrace.priceInCents.adult / 100;
-         ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult)/100).toFixed(2)} (Terrace Access)\n` ;
+         ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult) / 100).toFixed(2)} (Terrace Access)\n` ;
         }
         if (purchases[i].extras[0] === "education") {
           total = total + ticketData.extras.education.priceInCents.adult / 100;
-          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.education.priceInCents.adult)/100).toFixed(2)} (Education Access)\n` ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.education.priceInCents.adult) / 100).toFixed(2)} (Education Access)\n` ;
         } 
       }
     if (purchases[i].extras.length === 2) {
       if (purchases[i].extras[0] === "movie" 
       && purchases[i].extras[1] === "terrace") {
-        total = total + ticketData.extras.movie.priceInCents.adult / 100 + ticketData.extras.terrace.priceInCents.adult / 100;
-        ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult )/100).toFixed(2)} (Movie Access, Terrace Access)\n` ;
+        total = total + (ticketData.extras.movie.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult) / 100;
+        ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult) / 100).toFixed(2)} (Movie Access, Terrace Access)\n` ;
       }
+      if(purchases[i].extras[0] === "terrace" 
+        && purchases[i].extras[1] === "movie") {
+          total = total + (ticketData.extras.terrace.priceInCents.adult + ticketData.extras.movie.priceInCents.adult) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.movie.priceInCents.adult) / 100).toFixed(2)} (Terrace Access, Movie Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "movie" 
+        && purchases[i].extras[1] === "education") {
+          total = total + (ticketData.extras.movie.priceInCents.adult + ticketData.extras.education.priceInCents.adult) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.education.priceInCents.adult) / 100).toFixed(2)} (Movie Access, Education Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "education" 
+        && purchases[i].extras[1] === "movie") {
+          total = total + (ticketData.extras.education.priceInCents.adult + ticketData.extras.movie.priceInCents.adult) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.movie.priceInCents.adult) / 100).toFixed(2)} (Education Access, Movie Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "education" 
+        && purchases[i].extras[1] === "terrace") {
+          total = total + (ticketData.extras.education.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult) / 100).toFixed(2)} (Education Access, Terrace Access)\n` ;
+        }
       if (purchases[i].extras[0] === "terrace" 
       && purchases[i].extras[1] === "education") {
-        total = total + ticketData.extras.terrace.priceInCents.adult / 100 + ticketData.extras.education.priceInCents.adult / 100;
-        ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.education.priceInCents.adult )/100).toFixed(2)} (Terrace Access, Education Access)\n` ;
+        total = total + (ticketData.extras.terrace.priceInCents.adult + ticketData.extras.education.priceInCents.adult) / 100;
+        ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.education.priceInCents.adult ) / 100).toFixed(2)} (Terrace Access, Education Access)\n` ;
       }
     }
     if (purchases[i].extras.length === 3) {
       if (purchases[i].extras[0] === "education" 
       && purchases[i].extras[1] === "movie" 
       && purchases[i].extras[2] === "terrace") {
-        total = total + ticketData.extras.education.priceInCents.adult / 100 + ticketData.extras.movie.priceInCents.adult / 100 + ticketData.extras.terrace.priceInCents.adult / 100;
-        ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult )/100).toFixed(2)} (Education Access, Movie Access, Terrace Access)\n` ;
+        total = total + (ticketData.extras.education.priceInCents.adult + ticketData.extras.movie.priceInCents.adult  + ticketData.extras.terrace.priceInCents.adult) / 100;
+        ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult) / 100).toFixed(2)} (Education Access, Movie Access, Terrace Access)\n` ;
       }
+      if (purchases[i].extras[0] === "education" 
+      && purchases[i].extras[1] === "terrace" 
+      && purchases[i].extras[2] === "movie") {
+        total = total + (ticketData.extras.education.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.movie.priceInCents.adult) / 100;
+        ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.movie.priceInCents.adult) / 100).toFixed(2)} (Education Access, Terrace Access, Movie Access)\n` ;
+      }
+      if(purchases[i].extras[0] === "movie" 
+        && purchases[i].extras[1] === "education" 
+        && purchases[i].extras[2] === "terrace" ) {
+          total = total + (ticketData.extras.movie.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult) / 100).toFixed(2)} (Movie Access, Education Access, Terrace Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "movie" 
+        && purchases[i].extras[1] === "terrace" 
+        && purchases[i].extras[2] === "education" ) {
+          total = total + (ticketData.extras.movie.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.education.priceInCents.adult) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.education.priceInCents.adult) / 100).toFixed(2)} (Movie Access, Terrace Access, Education Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "terrace" 
+        && purchases[i].extras[1] === "movie" 
+        && purchases[i].extras[2] === "education" ) {
+          total = total + (ticketData.extras.terrace.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.education.priceInCents.adult) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.education.priceInCents.adult) / 100).toFixed(2)} (Terrace Access, Movie Access, Education Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "terrace" 
+        && purchases[i].extras[1] === "education" 
+        && purchases[i].extras[2] === "movie" ) {
+          total = total + (ticketData.extras.terrace.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.movie.priceInCents.adult) / 100 ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.movie.priceInCents.adult) / 100).toFixed(2)} (Terrace Access, Education Access, Movie Access)\n` ;
+        }
+
     }     
     }
     if (purchases[i].ticketType === "membership" 
@@ -377,17 +634,88 @@ function purchaseTickets(ticketData, purchases) {
       if (purchases[i].extras.length === 1) {
         if (purchases[i].extras[0] === "movie") {
           total = total + ticketData.extras.movie.priceInCents.child / 100;
-          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.child + ticketData.extras.movie.priceInCents.child)/100).toFixed(2)} (Movie Access)\n`;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.child + ticketData.extras.movie.priceInCents.child) / 100).toFixed(2)} (Movie Access)\n`;
         }
         if (purchases[i].extras[0] === "terrace") {
-         total = total + ticketData.extras.terrace.priceInCents.child / 100;
-         ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.child + ticketData.extras.terrace.priceInCents.child)/100).toFixed(2)} (Terrace Access)\n`;
+          total = total + ticketData.extras.terrace.priceInCents.child / 100;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.child + ticketData.extras.terrace.priceInCents.child) / 100).toFixed(2)} (Terrace Access)\n`;
         }
         if (purchases[i].extras[0] === "education") {
           total = total + ticketData.extras.education.priceInCents.child / 100;
-          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.child + ticketData.extras.education.priceInCents.child)/100).toFixed(2)} (Education Access)\n`;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.child + ticketData.extras.education.priceInCents.child) / 100).toFixed(2)} (Education Access)\n`;
         } 
-      }        
+      }
+      if (purchases[i].extras.length === 2) {
+        if (purchases[i].extras[0] === "movie" 
+        && purchases[i].extras[1] === "terrace") {
+          total = total + (ticketData.extras.movie.priceInCents.child + ticketData.extras.terrace.priceInCents.child) / 100;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.child + ticketData.extras.movie.priceInCents.child + ticketData.extras.terrace.priceInCents.child) / 100).toFixed(2)} (Movie Access, Terrace Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "terrace" 
+          && purchases[i].extras[1] === "movie") {
+            total = total + (ticketData.extras.terrace.priceInCents.child + ticketData.extras.movie.priceInCents.child) / 100 ;
+            ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.child + ticketData.extras.terrace.priceInCents.child + ticketData.extras.movie.priceInCents.child) / 100).toFixed(2)} (Terrace Access, Movie Access)\n` ;
+          }
+          if(purchases[i].extras[0] === "movie" 
+          && purchases[i].extras[1] === "education") {
+            total = total + (ticketData.extras.movie.priceInCents.adult + ticketData.extras.education.priceInCents.child) / 100 ;
+            ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.child + ticketData.extras.movie.priceInCents.child + ticketData.extras.education.priceInCents.child) / 100).toFixed(2)} (Movie Access, Education Access)\n` ;
+          }
+          if(purchases[i].extras[0] === "education" 
+          && purchases[i].extras[1] === "movie") {
+            total = total + (ticketData.extras.education.priceInCents.child + ticketData.extras.movie.priceInCents.child) / 100 ;
+            ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.movie.priceInCents.child) / 100).toFixed(2)} (Education Access, Movie Access)\n` ;
+          }
+          if(purchases[i].extras[0] === "education" 
+          && purchases[i].extras[1] === "terrace") {
+            total = total + (ticketData.extras.education.priceInCents.child + ticketData.extras.terrace.priceInCents.child) / 100 ;
+            ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.terrace.priceInCents.child) / 100).toFixed(2)} (Education Access, Terrace Access)\n` ;
+          }
+        if (purchases[i].extras[0] === "terrace" 
+        && purchases[i].extras[1] === "education") {
+          total = total + (ticketData.extras.terrace.priceInCents.child + ticketData.extras.education.priceInCents.child) / 100;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.child + ticketData.extras.terrace.priceInCents.child + ticketData.extras.education.priceInCents.child ) / 100).toFixed(2)} (Terrace Access, Education Access)\n` ;
+        }
+      }
+      if (purchases[i].extras.length === 3) {
+        if (purchases[i].extras[0] === "education" 
+        && purchases[i].extras[1] === "movie" 
+        && purchases[i].extras[2] === "terrace") {
+          total = total + (ticketData.extras.education.priceInCents.child + ticketData.extras.movie.priceInCents.child  + ticketData.extras.terrace.priceInCents.child) / 100;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.movie.priceInCents.child + ticketData.extras.terrace.priceInCents.child) / 100).toFixed(2)} (Education Access, Movie Access, Terrace Access)\n` ;
+        }
+        if (purchases[i].extras[0] === "education" 
+        && purchases[i].extras[1] === "terrace" 
+        && purchases[i].extras[2] === "movie") {
+          total = total + (ticketData.extras.education.priceInCents.child + ticketData.extras.terrace.priceInCents.child + ticketData.extras.movie.priceInCents.child) / 100;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.terrace.priceInCents.child + ticketData.extras.movie.priceInCents.child) / 100).toFixed(2)} (Education Access, Terrace Access, Movie Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "movie" 
+          && purchases[i].extras[1] === "education" 
+          && purchases[i].extras[2] === "terrace" ) {
+            total = total + (ticketData.extras.movie.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.terrace.priceInCents.child) / 100 ;
+            ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.child + ticketData.extras.movie.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.terrace.priceInCents.child) / 100).toFixed(2)} (Movie Access, Education Access, Terrace Access)\n` ;
+          }
+          if(purchases[i].extras[0] === "movie" 
+          && purchases[i].extras[1] === "terrace" 
+          && purchases[i].extras[2] === "education" ) {
+            total = total + (ticketData.extras.movie.priceInCents.child + ticketData.extras.terrace.priceInCents.child + ticketData.extras.education.priceInCents.child) / 100 ;
+            ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.child + ticketData.extras.movie.priceInCents.child + ticketData.extras.terrace.priceInCents.child + ticketData.extras.education.priceInCents.child) / 100).toFixed(2)} (Movie Access, Terrace Access, Education Access)\n` ;
+          }
+          if(purchases[i].extras[0] === "terrace" 
+          && purchases[i].extras[1] === "movie" 
+          && purchases[i].extras[2] === "education" ) {
+            total = total + (ticketData.extras.terrace.priceInCents.child + ticketData.extras.movie.priceInCents.child + ticketData.extras.education.priceInCents.child) / 100 ;
+            ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.child + ticketData.extras.terrace.priceInCents.child + ticketData.extras.movie.priceInCents.child + ticketData.extras.education.priceInCents.child) / 100).toFixed(2)} (Terrace Access, Movie Access, Education Access)\n` ;
+          }
+          if(purchases[i].extras[0] === "terrace" 
+          && purchases[i].extras[1] === "education" 
+          && purchases[i].extras[2] === "movie" ) {
+            total = total + (ticketData.extras.terrace.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.movie.priceInCents.child) / 100 ;
+            ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.child + ticketData.extras.terrace.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.movie.priceInCents.child) / 100).toFixed(2)} (Terrace Access, Education Access, Movie Access)\n` ;
+          }
+  
+      }         
     }
     if (purchases[i].ticketType === "membership" 
     && purchases[i].entrantType === "senior" ) {
@@ -397,29 +725,88 @@ function purchaseTickets(ticketData, purchases) {
       if (purchases[i].extras.length === 1) {
         if (purchases[i].extras[0] === "movie") {
           total = total + ticketData.extras.movie.priceInCents.senior / 100;
-          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.movie.priceInCents.senior)/100).toFixed(2)} (Movie Access)\n` ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.movie.priceInCents.senior) / 100).toFixed(2)} (Movie Access)\n` ;
         }
         if (purchases[i].extras[0] === "terrace") {
          total = total + ticketData.extras.terrace.priceInCents.senior / 100;
-         ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior)/100).toFixed(2)} (Terrace Access)\n` ;
+         ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior) / 100).toFixed(2)} (Terrace Access)\n` ;
         }
         if (purchases[i].extras[0] === "education") {
           total = total + ticketData.extras.education.priceInCents.senior / 100;
-          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.education.priceInCents.senior)/100).toFixed(2)} (Education Access)\n` ;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.education.priceInCents.senior) / 100).toFixed(2)} (Education Access)\n` ;
         } 
       }
       if (purchases[i].extras.length === 2) {
         if (purchases[i].extras[0] === "movie" 
+        && purchases[i].extras[1] === "terrace") {
+          total = total + (ticketData.extras.movie.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior) / 100;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.movie.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior) / 100).toFixed(2)} (Movie Access, Terrace Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "terrace" 
+          && purchases[i].extras[1] === "movie") {
+            total = total + (ticketData.extras.terrace.priceInCents.senior + ticketData.extras.movie.priceInCents.senior) / 100 ;
+            ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.movie.priceInCents.senior) / 100).toFixed(2)} (Terrace Access, Movie Access)\n` ;
+        }
+        if (purchases[i].extras[0] === "movie" 
         && purchases[i].extras[1] === "education" ) {
-          total = total + ticketData.extras.movie.priceInCents.senior / 100 + ticketData.extras.education.priceInCents.senior / 100;
-          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.movie.priceInCents.senior + ticketData.extras.education.priceInCents.senior)/100).toFixed(2)} (Movie Access, Education Access)\n` ;
+          total = total + (ticketData.extras.movie.priceInCents.senior + ticketData.extras.education.priceInCents.senior) / 100;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.movie.priceInCents.senior + ticketData.extras.education.priceInCents.senior) / 100).toFixed(2)} (Movie Access, Education Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "education" 
+          && purchases[i].extras[1] === "movie") {
+            total = total + (ticketData.extras.education.priceInCents.senior + ticketData.extras.movie.priceInCents.senior) / 100 ;
+            ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.movie.priceInCents.senior) / 100).toFixed(2)} (Education Access, Movie Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "education" 
+          && purchases[i].extras[1] === "terrace") {
+            total = total + (ticketData.extras.education.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior) / 100 ;
+            ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior) / 100).toFixed(2)} (Education Access, Terrace Access)\n` ;
         }
        if (purchases[i].extras[0] === "terrace" 
        && purchases[i].extras[1] === "education" ) {
-          total = total + ticketData.extras.terrace.priceInCents.senior/100 + ticketData.extras.education.priceInCents.senior/100;
-          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.education.priceInCents.senior)/100).toFixed(2)} (Terrace Access, Education Access)\n`;
+          total = total + (ticketData.extras.terrace.priceInCents.senior + ticketData.extras.education.priceInCents.senior) / 100;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.education.priceInCents.senior) / 100).toFixed(2)} (Terrace Access, Education Access)\n`;
         }
-      }     
+      }
+      if (purchases[i].extras.length === 3) {
+        if (purchases[i].extras[0] === "education" 
+        && purchases[i].extras[1] === "movie" 
+        && purchases[i].extras[2] === "terrace") {
+          total = total + (ticketData.extras.education.priceInCents.senior + ticketData.extras.movie.priceInCents.senior  + ticketData.extras.terrace.priceInCents.senior) / 100;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.movie.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior) / 100).toFixed(2)} (Education Access, Movie Access, Terrace Access)\n` ;
+        }
+        if (purchases[i].extras[0] === "education" 
+        && purchases[i].extras[1] === "terrace" 
+        && purchases[i].extras[2] === "movie") {
+          total = total + (ticketData.extras.education.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.movie.priceInCents.senior) / 100;
+          ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.movie.priceInCents.senior) / 100).toFixed(2)} (Education Access, Terrace Access, Movie Access)\n` ;
+        }
+        if(purchases[i].extras[0] === "movie" 
+          && purchases[i].extras[1] === "education" 
+          && purchases[i].extras[2] === "terrace" ) {
+            total = total + (ticketData.extras.movie.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior) / 100 ;
+            ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.movie.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior) / 100).toFixed(2)} (Movie Access, Education Access, Terrace Access)\n` ;
+          }
+          if(purchases[i].extras[0] === "movie" 
+          && purchases[i].extras[1] === "terrace" 
+          && purchases[i].extras[2] === "education" ) {
+            total = total + (ticketData.extras.movie.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.education.priceInCents.senior) / 100 ;
+            ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.movie.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.education.priceInCents.senior) / 100).toFixed(2)} (Movie Access, Terrace Access, Education Access)\n` ;
+          }
+          if(purchases[i].extras[0] === "terrace" 
+          && purchases[i].extras[1] === "movie" 
+          && purchases[i].extras[2] === "education" ) {
+            total = total + (ticketData.extras.terrace.priceInCents.senior + ticketData.extras.movie.priceInCents.senior + ticketData.extras.education.priceInCents.senior) / 100 ;
+            ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.movie.priceInCents.senior + ticketData.extras.education.priceInCents.senior) / 100).toFixed(2)} (Terrace Access, Movie Access, Education Access)\n` ;
+          }
+          if(purchases[i].extras[0] === "terrace" 
+          && purchases[i].extras[1] === "education" 
+          && purchases[i].extras[2] === "movie" ) {
+            total = total + (ticketData.extras.terrace.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.movie.priceInCents.senior) / 100 ;
+            ticket = `${ticket.slice("$",ticket.length - 6) + ((ticketData.membership.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.movie.priceInCents.senior) / 100).toFixed(2)} (Terrace Access, Education Access, Movie Access)\n` ;
+          }
+  
+      }              
     }
   }
   return `${ticket}-------------------------------------------\nTOTAL: $${total.toFixed(2)}`;
