@@ -55,41 +55,81 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  let ticketType = ["general", "membership"];
-  let entrantType = ["adult", "child", "senior"];
-  let extras = ["movie", "education", "terrace"];
-
-  //if the ticketInfo.ticketType is invalid return error
-  if (!ticketType.includes(ticketInfo.ticketType)) {
-    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
-  }
-  //if the ticketInfo.entrantType is invalid return error
-  if (!entrantType.includes(ticketInfo.entrantType)) {
-    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
-  }
-  //if the ticketInfo.extras is invalid return error
-  if (ticketInfo.extras.length > 0) {
-    for (let extra of ticketInfo.extras) {
-      if (!extras.includes(extra)) {
-        return `Extra type '${extra}' cannot be found.`;
-      }
-    }
+  //check to see if ticket is valid
+  let checkResult = ticketValidation(ticketData, ticketInfo);
+  if (checkResult !== true) {
+    return checkResult; //return the error message
   }
 
   //if the ticketInfo has correct ticketType, entrantType and extras, then we can
   //calculate the cost
+  let cost = priceOfSingleTicket(ticketData, ticketInfo);
+
+  return cost;
+}
+
+/**Calculate and return the cost of a single ticket
+ *
+ * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
+ * @param {Object} tiicketInfo - An object representing data for a single ticket.
+ * @param {string} ticketInfo.ticketType - Represents the type of ticket. Could be any string except the value "extras".
+ * @param {string} ticketInfo.entrantType - Represents the type of entrant. Prices change depending on the entrant.
+ * @param {string[]} ticketInfo.extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
+ * @returns {number} - the cost of a single ticket
+ */
+function priceOfSingleTicket(ticketData, ticketInfo) {
   let cost = 0;
-  //calculate the cost of 'general' or 'membership' tickeType
+  //calculate the cost of the given tickeType
   cost +=
     ticketData[ticketInfo.ticketType]["priceInCents"][ticketInfo.entrantType];
 
-  //if the ticket has extras, include the extras cost
+  //calculate the cost of extras
   for (let extraType of ticketInfo.extras) {
     cost +=
       ticketData["extras"][extraType]["priceInCents"][ticketInfo.entrantType];
   }
 
   return cost;
+}
+
+/**
+ *
+ * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
+ * @param {*} ticketInfo - An object representing data for a single ticket.
+ * @param {string} ticketInfo.ticketType - Represents the type of ticket. Could be any string except the value "extras".
+ * @param {string} ticketInfo.entrantType - Represents the type of entrant. Prices change depending on the entrant.
+ * @param {string[]} ticketInfo.extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
+ * @returns {boolean|String} an error message or a true value
+ */
+function ticketValidation(ticketData, ticketInfo) {
+  //if the ticketInfo.ticketType is invalid return error
+  if (!ticketData.hasOwnProperty(ticketInfo.ticketType)) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+  //if the ticketInfo.entrantType is invalid return error
+  if (
+    !ticketData[ticketInfo.ticketType].priceInCents.hasOwnProperty(
+      ticketInfo.entrantType
+    )
+  ) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+  //if the ticketInfo.extras is invalid return error
+  const extraTypes = [];
+
+  for (let key in ticketData.extras) {
+    extraTypes.push(key);
+  }
+
+  if (ticketInfo.extras.length > 0) {
+    for (let extra of ticketInfo.extras) {
+      if (!extraTypes.includes(extra)) {
+        return `Extra type '${extra}' cannot be found.`;
+      }
+    }
+  }
+
+  return true;
 }
 
 /**
@@ -146,24 +186,11 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  let ticketType = ["general", "membership"];
-  let entrantType = ["adult", "child", "senior"];
-  let extras = ["movie", "education", "terrace"];
-
   //iterate through every tickets, if found any error, then return error message
   for (let i = 0; i < purchases.length; i++) {
-    if (!ticketType.includes(purchases[i].ticketType)) {
-      return `Ticket type '${purchases[i].ticketType}' cannot be found.`;
-    }
-    if (!entrantType.includes(purchases[i].entrantType)) {
-      return `Entrant type '${purchases[i].entrantType}' cannot be found.`;
-    }
-    if (purchases[i].extras.length > 0) {
-      for (let extra of purchases[i].extras) {
-        if (!extras.includes(extra)) {
-          return `Extra type '${extra}' cannot be found.`;
-        }
-      }
+    let checkResult = ticketValidation(ticketData, purchases[i]);
+    if (checkResult !== true) {
+      return checkResult; //return the error message
     }
   }
 
@@ -184,6 +211,17 @@ function purchaseTickets(ticketData, purchases) {
   return output;
 }
 
+/**Return the formmated message of a single ticket
+ *
+ * Ex: 'Adult General Admission: $50.00 (Movie Access, Terrace Access)\n'
+ *
+ * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
+ * @param {Object} purchase - An object representing data for a single ticket.
+ * @param {string} purchases.ticketType - Represents the type of ticket. Could be any string except the value "extras".
+ * @param {string} purchases.entrantType - Represents the type of entrant. Prices change depending on the entrant.
+ * @param {string[]} purchases.extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
+ * @returns {Stirng} - the formmated message of a single ticket
+ */
 function messageOfSingleTicket(ticketData, purchase) {
   let returnStr = "";
   let extraAccess = "";
@@ -219,20 +257,6 @@ function messageOfSingleTicket(ticketData, purchase) {
     ` $${(cost / 100).toFixed(2)}${extraAccess}\n`;
 
   return returnStr;
-}
-
-function priceOfSingleTicket(ticketData, purchase) {
-  let cost = 0;
-  //calculate the cost of the 'general' or 'membership' ticket
-  cost += ticketData[purchase.ticketType]["priceInCents"][purchase.entrantType];
-
-  //calculate the cost of extras
-  for (let extraType of purchase.extras) {
-    cost +=
-      ticketData["extras"][extraType]["priceInCents"][purchase.entrantType];
-  }
-
-  return cost;
 }
 
 // Do not change anything below this line.
