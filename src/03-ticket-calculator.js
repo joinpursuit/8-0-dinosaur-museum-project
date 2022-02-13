@@ -147,76 +147,100 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  */
 function purchaseTickets(ticketData, purchases) {
   let receipt = "";
-  let itemizedPurchases = "";
-  let totalPrice = 0;
 
-  for (let purchase of purchases) {
-    if (
-      purchase.ticketType !== "general" &&
-      purchase.ticketType !== "membership"
-    ) {
-      return `Ticket type '${purchase.ticketType}' cannot be found.`;
+  function ticketValidator(ticketData, ticketInfo) {
+    if (!ticketData[ticketInfo.ticketType]) {
+      return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
     } else if (
-      purchase.entrantType !== "child" &&
-      purchase.entrantType !== "adult" &&
-      purchase.entrantType !== "senior"
+      !ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
     ) {
-      return `Entrant type '${purchase.entrantType}' cannot be found.`;
-    }
-
-    for (let extra of purchase.extras) {
-      if (
-        purchase.extras.length > 0 &&
-        extra !== "movie" &&
-        extra !== "education" &&
-        extra !== "terrace"
-      ) {
-        return `Extra type '${extra}' cannot be found.`;
+      return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+    } else if (ticketInfo.extras.length) {
+      for (let extra of ticketInfo.extras) {
+        if (!ticketData.extras[extra]) {
+          return `Extra type '${extra}' cannot be found.`;
+        }
       }
     }
+  } // Validates whether ticket has correct information on it
 
+  function purchasesValidator(ticketData, purchases) {
+    for (let purchase of purchases) {
+      if (ticketValidator(ticketData, purchase)) {
+        return ticketValidator(ticketData, purchase);
+      }
+    }
+  } // validates all purchased tickets
+  const validator = purchasesValidator(ticketData, purchases);
+
+  if (validator) {
+    return validator;
+  }
+
+  function priceCalculator(ticketData, ticketInfo) {
     let ticketPrice =
-      ticketData[purchase.ticketType].priceInCents[purchase.entrantType];
+      ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
 
-    if (purchase.extras.length > 0) {
-      for (let extra of purchase.extras) {
+    if (ticketInfo.extras.length > 0) {
+      for (let extra of ticketInfo.extras) {
         ticketPrice +=
-          ticketData.extras[extra].priceInCents[purchase.entrantType];
+          ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
       }
     }
+    return ticketPrice;
+  } // Calculates ticket price
 
-    totalPrice += ticketPrice;
+  function totalPriceCalculator(ticketData, purchases) {
+    let totalPrice = 0;
+    for (let purchase of purchases) {
+      totalPrice += priceCalculator(ticketData, purchase);
+    }
+    totalPrice = (totalPrice / 100).toFixed(2);
+    return totalPrice;
+  } // Calculatos total price of all tickets
+  const total = totalPriceCalculator(ticketData, purchases);
 
-    let itemizedPurchase = `\n${
-      purchase.entrantType.toUpperCase().slice(0, 1) +
-      purchase.entrantType.slice(1)
-    } ${ticketData[purchase.ticketType].description}: $${(
-      ticketPrice / 100
-    ).toFixed(2)}`;
+  function capitalizeFirstLetter(str) {
+    str = str.toLowerCase();
+    str = str[0].toUpperCase() + str.slice(1, str.length);
+    return str;
+  } // Capitalizes first letter of a string (used in purchase itermizer function)
 
-    if (purchase.extras.length) {
+  function purchaseItemizer(ticketData, ticketInfo) {
+    let itemizedPurchase;
+    itemizedPurchase = `\n${capitalizeFirstLetter(ticketInfo.entrantType)} ${
+      ticketData[ticketInfo.ticketType].description
+    }: $${(calculateTicketPrice(ticketData, ticketInfo) / 100).toFixed(2)}`;
+
+    if (ticketInfo.extras.length) {
       itemizedPurchase += ` (`;
-      for (let i = 0; i < purchase.extras.length; ++i) {
+      for (let i = 0; i < ticketInfo.extras.length; ++i) {
         if (i === 0) {
           itemizedPurchase += `${
-            ticketData.extras[purchase.extras[i]].description
+            ticketData.extras[ticketInfo.extras[i]].description
           }`;
         }
         if (i > 0) {
           itemizedPurchase += `, ${
-            ticketData.extras[purchase.extras[i]].description
+            ticketData.extras[ticketInfo.extras[i]].description
           }`;
         }
       }
       itemizedPurchase += `)`;
     }
-    itemizedPurchases += itemizedPurchase;
-  }
+    return itemizedPurchase;
+  } // Itemizes an individual ticket purchase
 
-  receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------${itemizedPurchases}\n-------------------------------------------\nTOTAL: $${(
-    totalPrice / 100
-  ).toFixed(2)}`;
+  function totalPurchasesItemizer(ticketData, purchases) {
+    let itemizedPurchases = "";
+    for (let purchase of purchases) {
+      itemizedPurchases += purchaseItemizer(ticketData, purchase);
+    }
+    return itemizedPurchases;
+  } // Itemizes all ticket purchases
+  const itemizedPurchases = totalPurchasesItemizer(ticketData, purchases);
 
+  receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------${itemizedPurchases}\n-------------------------------------------\nTOTAL: $${total}`;
   return receipt;
 }
 
