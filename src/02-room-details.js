@@ -84,7 +84,6 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  // function roomFinder(roooms, id) {
   let connectedRoom = [];
   for (let room of rooms) {
     if (room.roomId.includes(id)) {
