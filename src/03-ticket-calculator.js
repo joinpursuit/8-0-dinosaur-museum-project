@@ -173,7 +173,7 @@ function purchaseTickets(ticketData, purchases) {
           ticketData
         )}\n`;
       } else {
-        receipt += `${purchase.entrantType
+        finalReceipt += `${purchase.entrantType
           .charAt(0)
           .toUpperCase()}${purchase.entrantType.slice(1)} ${
           ticketData[purchase.ticketType].description
@@ -182,7 +182,7 @@ function purchaseTickets(ticketData, purchases) {
     } else {
       return ticketPrice;
     }
-    price += ticketPrice;
+    totalPrice += ticketPrice;
   }
   function newTicket(purchase, ticketData) {
     let newString = " (";
