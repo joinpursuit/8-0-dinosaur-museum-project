@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -57,7 +58,17 @@ const exampleTicketData = require("../data/tickets");
 function calculateTicketPrice(ticketData, ticketInfo) {
   // console.log(ticketData)
   // console.log(ticketInfo)
-  
+  let typeOfTicketKey = Object.keys(ticketData)
+  let extraTypeKeys = Object.keys(ticketData.extras)
+  // console.log(extraTypeKeys)
+  // console.log(typeOfTicketKey)
+  for(let i = 0; i < [ticketInfo].length; i++) {
+    if(typeOfTicketKey.includes(ticketInfo[i].ticketType === false)) {
+      return "Ticket type 'incorrect-type' cannot be found."
+    } else if(extraTypeKeys.includes(ticketInfo[i].extras) === false) {
+      return "Extra type 'incorrect-extra' cannot be found."
+    }
+  }
 };
 
 /**
