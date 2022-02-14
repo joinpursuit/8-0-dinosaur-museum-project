@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -21,8 +22,36 @@ const exampleDinosaurData = require("../data/dinosaurs");
  * EXAMPLE:
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
- */
-function getTallestDinosaur(dinosaurs) {}
+*/
+// find the tallest lengthInMeters inside of dinosaurs return 
+// an object w/ string of name and value converted to feet
+// step 1 set tallest to dinosaurs[0]
+// step 2 start up a loop 
+// step 3 compare the tallest height of dino
+// step 4 when tallest dino is found assume that new tallest dino
+// step 5 return key of name and dino height converted to feet
+
+function getTallestDinosaur(dinosaurs) {
+  if(dinosaurs.length < 1){
+    return {}
+  }
+  let dinoObject = {}; //created variable for the object 
+  let tallestDino = dinosaurs[0]; //created variable for the first dino
+  for(let i = 1; i < dinosaurs.length; i++){ //initiated a loop that look at the next dino
+    if(tallestDino.lengthInMeters < dinosaurs[i].lengthInMeters){ //if first dino's height is less than the next dino
+      tallestDino = dinosaurs[i]; // append that dino to this variable
+      
+    }
+   }
+   if (tallestDino){ //here's the tallest dino
+    dinoObject[tallestDino.name] = tallestDino.lengthInMeters * 3.281 //
+    // object name [key] = value <= assigning a key value pair to an objects
+    } 
+
+  return dinoObject
+}
+
+
 
 /**
  * getDinosaurDescription()
@@ -44,7 +73,24 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let formatDino = []
+  for(let i = 0; i < dinosaurs.length; i++){
+    if(dinosaurs[i].dinosaursId === id){
+      formatDino = dinosaurs[i].name + " " + dinosaurs[i].dinosaursId + " " + dinosaurs[i].info 
+    }
+  }
+  // my thoughs here is that I was trying to loop through the dinosaurs to pull out the ones with the same id
+  //then 
+ 
+ 
+ 
+  }
+
+
+  
+  
+
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +117,9 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  
+}
 
 module.exports = {
   getTallestDinosaur,
