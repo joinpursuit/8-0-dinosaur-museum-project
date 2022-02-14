@@ -88,18 +88,15 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 //creates a function called getConnectedRoomNamesById with the given parameters rooms which is array of room objects and id which a unique identifier in the form of a string
 function getConnectedRoomNamesById(rooms, id) {
 
-  let connectedRooms ;
-  console.log(connectedRooms);
-  for(let i =0; i < rooms.length; i++) {
-  
-   //else if (rooms[i].connectsTo !== id){
+  let idRoom = 0
+  for(let i = 0; i < rooms.length; i++){
     if(rooms[i].roomId === id){
-      connectedRooms = rooms[i].connectsTo;
-      
+      let idRoom = roomId[i];
     }
   }
-  ret
-}     
+}
+
+  
 
 
   
