@@ -104,7 +104,6 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
         if (roomMap[connectedRooms[i]]) {
           // ...assign it to the `connectedRooms` array. The value will be a `name` since this is the value associatedd with the `id` keys of the roomMap object(i.e. roomMap[rooms[i].roomId] = rooms[i].name; from line 467)
           connectedRooms[i] = roomMap[connectedRooms[i]];
-          console.log()
         } else {
           return `Room with ID of '${connectedRooms[i]}' could not be found.`;
         }
