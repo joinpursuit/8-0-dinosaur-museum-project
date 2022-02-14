@@ -22,7 +22,24 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  if (dinosaurs.length < 1) {
+    return {};
+  }
+  let newObj = {};
+  let intMax = -1;
+  let nameOfTheTallestDinosaur = "";
+  for (let i = 0; i < dinosaurs.length; i++) {
+    let lengthOfDinosaurInMeters = dinosaurs[i].lengthInMeters;
+    let lengthOfDinosaurInFeet = lengthOfDinosaurInMeters * 3.281;
+    if (lengthOfDinosaurInFeet > intMax) {
+      intMax = lengthOfDinosaurInFeet;
+      nameofTallestDinosaur = dinosaurs[i].name;
+    }
+  }
+  newObj = { [nameofTallestDinosaur]: intMax };
+  return newObj;
+}
 
 /**
  * getDinosaurDescription()
@@ -44,8 +61,33 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
-
+function getDinosaurDescription(dinosaurs, id) {
+  let identificationStringOfDinosaur;
+  let detailedDescriptionOfDinosaur;
+  let found = false;
+  let dinoDetails = null;
+  let year = (period = 0);
+  let name = (info = prounounciation = "");
+  for (let i = 0; i < dinosaurs.length; i++) {
+    identificationStringOfDinosaur = dinosaurs[i].dinosaurId;
+    if (identificationStringOfDinosaur === id) {
+      found = true;
+      dinoDetails = dinosaurs[i];
+      year = dinoDetails.mya[dinoDetails.mya.length - 1];
+      name = dinoDetails.name;
+      pronunciation = dinoDetails.pronunciation;
+      info = dinoDetails.info;
+      period = dinoDetails.period;
+      break;
+    }
+  }
+  if (found) {
+    detailedDescriptionOfDinosaur = `${name} (${pronunciation})\n${info} It lived in the ${period} period, over ${year} million years ago.`;
+  } else {
+    detailedDescriptionOfDinosaur = `A dinosaur with an ID of 'incorrect-id' cannot be found.`;
+  }
+  return detailedDescriptionOfDinosaur;
+}
 /**
  * getDinosaursAliveMya()
  * ---------------------
@@ -71,7 +113,28 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinosaurArr = [];
+  for (let dinosaur of dinosaurs) {
+    let len = dinosaur.mya.length;
+    if (len === 2 && dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya) {
+      if (key) {
+        dinosaurArr.push(dinosaur[key]);
+      } else {
+        dinosaurArr.push(dinosaur.dinosaurId);
+      }
+    } else {
+      if (dinosaur.mya[0] === mya || dinosaur.mya[0] - 1 === mya) {
+        if (key) {
+          dinosaurArr.push(dinosaur[key]);
+        } else {
+          dinosaurArr.push(dinosaur.dinosaurId);
+        }
+      }
+    }
+  }
+  return dinosaurArr;
+}
 
 module.exports = {
   getTallestDinosaur,
