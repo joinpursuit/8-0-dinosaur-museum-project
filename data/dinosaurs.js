@@ -7,7 +7,7 @@ const dinosaurs = [
     diet: "carnivorous",
     lengthInMeters: 12,
     period: "Late Jurassic",
-    mya: [156, 144],
+    mya:  [156, 144],
     info: "Allosaurus was an apex predator in the Late Jurassic in North America.",
   },
   {

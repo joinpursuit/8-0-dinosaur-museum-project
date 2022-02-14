@@ -32,7 +32,9 @@ This will run the test output once.
 
 ### Test watcher
 
-If you'd like, you can have the tests run constantly. This means that each time you save your file, your tests will re-run. To do so, you can run the following:
+If you'd like, you can have the tests run constantly. 
+This means that each time you save your file, your tests will re-run. 
+To do so, you can run the following:
 
 ```
 npm run watch
@@ -42,7 +44,9 @@ Follow the on-screen prompts to exit out of the constant runner.
 
 ### Run test files individually
 
-There are a lot of tests that are contained in this project. You can run a single test file individually by putting the name of the file after `npm test`. You can even only put part of the file name.
+There are a lot of tests that are contained in this project. 
+You can run a single test file individually by putting the name of the file after `npm test`. 
+You can even only put part of the file name.
 
 ```
 npm test facts
@@ -85,6 +89,8 @@ Each file under the `src/` directory contains two or three functions that you wi
 Each of these functions is quite challenging. You will need to apply everything you've learned to solve each one.
 
 Before you start coding, remember Polya's problem solving methodology; begin by _understanding the problem,_ then _devise a plan._ Only after accomplishing those two steps should you start writing your code.
+"Polya's problem solving methodology"
+"Understand the problem, make a plan, execute the plan, and look back and reflect"
 
 ### Tips
 
