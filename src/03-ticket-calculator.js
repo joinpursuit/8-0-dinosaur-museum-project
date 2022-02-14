@@ -165,7 +165,8 @@ function purchaseTickets(ticketData, purchases) {
     sum = ticketData[p.ticketType]["priceInCents"][p.entrantType];
     for (let extra of p.extras) {
       sum += ticketData.extras[extra]["priceInCents"][p.entrantType];
-      extraStr.push(" (" + caps(extra) + " Access)");
+      // extraStr.push(" (" + caps(extra) + " Access)");
+      extraStr.push(caps(extra) + " Access");
     }
     receiptStr += `${caps(p.entrantType)} ${caps(p.ticketType)}`;
     receiptStr +=
@@ -173,7 +174,7 @@ function purchaseTickets(ticketData, purchases) {
     //total += calculateTicketPrice(ticketData, p) / 100;
     total += sum / 100;
     if (extraStr.length > 0) {
-      receiptStr += `${extraStr.join(", ")}\n`;
+      receiptStr += " (" + `${extraStr.join(", ")}` + ")\n";
     } else {
       receiptStr += "\n";
     }
