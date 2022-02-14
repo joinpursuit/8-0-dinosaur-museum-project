@@ -56,7 +56,7 @@ const exampleTicketData = require("../data/tickets");
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
   let priceInCents = 0;
-  const extras = ticketInfo.extras.slice(0);
+  const extras = ticketInfo.extras;
   
   if (ticketInfo.ticketType in ticketData) {
     if (ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents) {
