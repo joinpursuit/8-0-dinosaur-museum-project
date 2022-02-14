@@ -22,7 +22,36 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  // 1st line-declaring a new variable set to the first index in the dinosaurs array
+  // 2nd line-declaring an object literal;
+  //if statement-if the length of the array given is less than one, then return an empty object
+  //for loop-declaring a for loop to iterate through the dinosaurs array 
+  //for loop-stating if the index at the key of lengthInMeters is greater than our (tallest) variable, then set tallest to the index it finds to be true
+  //after exiting the loop we create a key variable set to the value of the key given within our (tallest) variable
+  //we create a key for our (tallestObj) object and set the value to the result of multiplying tallest.lengthInMeters by 3.281
+  //after all this we should return our new obj
+
+  let tallest = dinosaurs[0];
+  
+  let tallestObj = {};
+
+  if(dinosaurs.length < 1){
+    return {};
+  }
+
+  for(let i = 1; i < dinosaurs.length; i++){
+    if(dinosaurs[i].lengthInMeters > tallest.lengthInMeters){
+      tallest = dinosaurs[i];
+    }
+  }
+
+  let key = tallest.name;
+
+  tallestObj[key] = tallest.lengthInMeters * 3.281;
+
+  return tallestObj;
+}
 
 /**
  * getDinosaurDescription()
@@ -39,12 +68,30 @@ function getTallestDinosaur(dinosaurs) {}
  *
  * EXAMPLE:
  *  getDinosaurDescription(dinosaurs, "U9vuZmgKwUr");
- *  //> "Xenoceratops (ZEE-no-SEH-ruh-tops)\nXenoceratops had horns and a bony frill with elaborate ornamentation of projections, knobs, and spikes. It lived in the Early Cretaceous period, over 77.5 million years ago."
+ *  //> "Xenoceratops (ZEE-no-SEH-ruh-tops)'\n'Xenoceratops had horns and a bony frill with elaborate ornamentation of projections, knobs, and spikes. It lived in the Early Cretaceous period, over 77.5 million years ago."
  *
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  //start our for loop to iterate through the array given
+  //if the key at (dinosaurs.Id) equals the id provided, and if the length of the array given within the object (at key = mya) equals one, then return our message including the first index given with the mya array.
+  //if there two indexes with the mya array, then include the second element within the mya array
+  //if all else fails, return the error message 
+
+ for (let i = 0; i < dinosaurs.length; i++) {
+   if(dinosaurs[i].dinosaurId === id) {
+     if (dinosaurs[i].mya.length === 1) {
+       return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[0]} million years ago.`;
+     } else {
+       return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[1]} million years ago.`;
+     }
+  }
+} 
+  return `A dinosaur with an ID of '${id}' cannot be found.`;
+
+ }
+
 
 /**
  * getDinosaursAliveMya()
@@ -58,6 +105,8 @@ function getDinosaurDescription(dinosaurs, id) {}
  * @param {string} key - An optional parameter. If included, for dinosaurs that lived during the `mya` value given, will return the value of the supplied key. Otherwise, returns the ID.
  * @returns {*[]} An array of values, which depend on the key given. The array should only include data of dinosaurs who lived during the given time period.
  *
+ * 
+ * 
  * EXAMPLE:
  *  getDinosaursAliveMya(dinosaurs, 150);
  *  //> ["YLtkN9R37", "GGvO1X9Zeh", "BFjjLjea-O", "V53DvdhV2A"]
@@ -71,7 +120,35 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+
+  let dinosAlive = [];
+  
+  for (let i = 0; i < dinosaurs.length; i++){
+    if(key){ 
+      if (dinosaurs[i].mya.length === 1){
+        if ((dinosaurs[i].mya[0] - mya) <= 1 && (dinosaurs[i].mya[0] - mya) >= -1){
+          dinosAlive.push(dinosaurs[i][key])
+        }
+      } else if(dinosaurs[i].mya.length === 2){
+        if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya){
+          dinosAlive.push(dinosaurs[i][key])
+        }
+      }
+    } else {
+      if (dinosaurs[i].mya.length === 1){
+        if ((dinosaurs[i].mya[0] - mya) <= 1 && (dinosaurs[i].mya[0] - mya) >= -1){
+          dinosAlive.push(dinosaurs[i].dinosaurId)
+        }
+      } else if(dinosaurs[i].mya.length === 2){
+        if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya){
+          dinosAlive.push(dinosaurs[i].dinosaurId)
+        }
+      }
+    }
+  }
+  return dinosAlive;
+}
 
 module.exports = {
   getTallestDinosaur,
