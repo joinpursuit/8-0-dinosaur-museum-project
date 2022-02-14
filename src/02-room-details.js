@@ -70,7 +70,7 @@ function getConnectedRoomNamesById(rooms, id) {
   let connectedRoomNames = [];
   for (const room of rooms) {
     if (room.roomId === id) {
-      connectedRoomIds = room.connectsTo.slice(0);
+      connectedRoomIds = room.connectsTo;
     }
   }
   for (const room of rooms) {
