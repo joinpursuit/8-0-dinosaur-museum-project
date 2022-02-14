@@ -58,17 +58,22 @@ const exampleTicketData = require("../data/tickets");
 function calculateTicketPrice(ticketData, ticketInfo) {
   // console.log(ticketData)
   // console.log(ticketInfo)
-  let typeOfTicketKey = Object.keys(ticketData)
-  let extraTypeKeys = Object.keys(ticketData.extras)
-  // console.log(extraTypeKeys)
-  // console.log(typeOfTicketKey)
+  let ticketTypeKeysArr = Object.keys(ticketData);
+  let extraTypeKeysArr = Object.keys(ticketData.extras);
+  let entrantTypeKeysArr = Object.keys(ticketData.general.priceInCents);
+  // console.log(entrantTypeKeys);
+  // console.log(extraTypeKeys);
+  // console.log(typeOfTicketKey);
   for(let i = 0; i < [ticketInfo].length; i++) {
-    if(typeOfTicketKey.includes(ticketInfo[i].ticketType === false)) {
+    if(ticketTypeKeysArr.includes([ticketInfo][i].ticketType) === false) {
       return "Ticket type 'incorrect-type' cannot be found."
-    } else if(extraTypeKeys.includes(ticketInfo[i].extras) === false) {
+    } else if(entrantTypeKeysArr.includes([ticketInfo][i].entrantType) === false) {
+      return "Entrant type 'incorrect-entrant' cannot be found."
+    } 
+    if(extraTypeKeysArr.includes([ticketInfo][i].extras) === false && [ticketInfo][i].extras.length === 1) {
       return "Extra type 'incorrect-extra' cannot be found."
-    }
-  }
+    } 
+  };
 };
 
 /**
