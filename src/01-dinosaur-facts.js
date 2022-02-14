@@ -31,7 +31,7 @@ function getTallestDinosaur(dinosaurs) {
   } else {
     for (let dino of dinosaurs) {
       if (dino.lengthInMeters > tallBoys.lengthInMeters) {
-        tallest = dino
+        tallBoys = dino
       }
     }
   }
