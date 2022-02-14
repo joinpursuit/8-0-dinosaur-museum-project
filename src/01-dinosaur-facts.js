@@ -116,6 +116,8 @@ for (let i = 0; i < dinosaurs.length; i ++){
     
   } else {
     if (dinosaurs[i].mya.includes(mya) || dinosaurs[i].mya.includes((mya + 1))){
+      // uses the 'in' operator to check if a key is present in an object
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/in
       if(key in dinosaurs[i]){
         dinosAliveMya.push(dinosaurs[i][key])
       }else{

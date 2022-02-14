@@ -54,9 +54,39 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
 
-/**
+
+
+function calculateTicketPrice(ticketData, ticketInfo) {
+  
+  let finalPrice = 0;
+  let addOns = 0;
+
+  if (ticketInfo.ticketType in ticketData){
+    if(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents){
+      finalPrice += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+    }else {
+      return "Entrant type 'incorrect-entrant' cannot be found.";
+    }
+  }else{
+    return "Ticket type 'incorrect-type' cannot be found.";
+  }
+
+  if (!!ticketInfo.extras.length){
+    for (let i = 0; i < ticketInfo.extras.length; i ++){
+      if (ticketInfo.extras[i] in ticketData.extras){
+        addOns += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType];
+      }else{
+        return "Extra type 'incorrect-extra' cannot be found.";
+      }
+    }
+  }
+
+  return finalPrice + addOns;
+}
+
+ 
+ /**
  * purchaseTickets()
  * ---------------------
  * Returns a receipt based off of a number of purchase. Each "purchase" maintains the shape from `ticketInfo` in the previous function.
@@ -109,7 +139,52 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let thankYouMssg = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  let basePrice = 0;
+  let upCharges = 0;
+
+  
+  for (let i = 0; i < purchases.length; i ++){
+    let admission = purchases[i].ticketType
+    let age = purchases[i].entrantType
+    let ticketDetails = ticketData[admission]
+
+    if ( admission in ticketData){
+      if( age in ticketDetails.priceInCents){
+
+        basePrice += ticketDetails.priceInCents[age];
+
+        thankYouMssg += `${age[0].toUpperCase() + age.slice(1)} ${ticketDetails.description}: $${(ticketDetails.priceInCents[age]/100).toFixed(2)}\n`;
+        
+      }else {return "Entrant type 'incorrect-entrant' cannot be found."};
+      
+    }else {return "Ticket type 'incorrect-type' cannot be found."};
+    
+    
+    if (purchases[i].extras.length){
+      thankYouMssg = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+      let newTotal;
+      let extras = purchases[i].extras
+      
+
+      for (let j = 0; j < extras.length; j ++){
+        if (extras[j] in ticketData.extras){
+          upCharges += ticketData.extras[extras[j]].priceInCents[age];
+        
+          newTotal = `${age[0].toUpperCase() + age.slice(1)} ${ticketDetails.description}: $${((ticketDetails.priceInCents[age] += upCharges)/100).toFixed(2)} (${extras[j][0].toUpperCase() + extras[j].slice(1)} Access)\n`;
+
+          return thankYouMssg + newTotal + "-------------------------------------------\nTOTAL: $" + ((basePrice + upCharges)/100).toFixed(2)
+          
+        }else{
+          return "Extra type 'incorrect-extra' cannot be found.";
+        }
+      }
+    }
+  }
+  
+return thankYouMssg +  "-------------------------------------------\nTOTAL: $" + ((basePrice + upCharges)/100).toFixed(2)
+}
 
 // Do not change anything below this line.
 module.exports = {
