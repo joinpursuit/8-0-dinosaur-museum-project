@@ -56,7 +56,6 @@ const exampleTicketData = require("../data/tickets");
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
   let priceInCents = 0;
-  // copy extras into new array
   const extras = ticketInfo.extras.slice(0);
   
   if (ticketInfo.ticketType in ticketData) {
@@ -138,6 +137,33 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
+  let total = 0;
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+
+  for (const purchase of purchases) {
+    const ticketPrice = calculateTicketPrice(ticketData, purchase);
+    total += ticketPrice;
+    if (typeof ticketPrice === 'string') {
+      return ticketPrice;
+    }
+
+    const extras = purchase.extras;
+    let extrasReceipt = '';
+    for (let i = 0; i < extras.length; i++) {
+      extrasReceipt += ticketData.extras[extras[i]].description;
+      if (i !== extras.length - 1) {
+        extrasReceipt += ', ';
+      }
+    }
+
+    const upperCaseEntrant = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
+    receipt += `${upperCaseEntrant} ${ticketData[purchase.ticketType].description}: $${(ticketPrice/100).toFixed(2)}`;
+
+    receipt += extras.length > 0 ? ` (${extrasReceipt})\n` : "\n";
+  }
+  
+  receipt += `-------------------------------------------\nTOTAL: $${(total/100).toFixed(2)}`;
+  return receipt;
 }
 
 // Do not change anything below this line.
