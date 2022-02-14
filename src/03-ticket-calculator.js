@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { general, extras } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,24 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let cost = 0
+  const entrantError = `Entrant type 'incorrect-entrant' cannot be found.`
+  const ttypeError = `Ticket type 'incorrect-type' cannot be found.`
+  const extraError = "Extra type 'incorrect-extra' cannot be found." 
+  const typeTicket = ticketInfo['ticketType']; //general, membership
+  const typeEntrant = [ticketInfo]['entrantType']; //child, adult, senior
+  // Error Setup.
+    if (ticketInfo['ticketType'] in ticketData){
+      if ([ticketInfo]['entrantType'] in ticketData['general']['priceInCents']){
+        cost = ticketData[typeTicket]['priceInCents'][typeEntrant];
+      }else {
+        return entrantError
+      }
+    } else {
+      return ttypeError
+    } 
+};
 
 /**
  * purchaseTickets()
@@ -109,7 +127,17 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  // For each purchase, we need :
+  // -> It's cost
+  // -> It's itemized recipt line
+
+  // Cumulative info we need:
+  // -> total cost of all purchases
+  // 
+
+
+};
 
 // Do not change anything below this line.
 module.exports = {

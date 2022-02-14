@@ -31,11 +31,11 @@ function getTallestDinosaur(dinosaurs) {
     if (!dinosaurs.length){
       return obj
     }
-  for (let index = 1; index < dinosaurs.length; index++){
-    if (save.lengthInMeters < dinosaurs[index].lengthInMeters){
-      save = dinosaurs[index]
+    for (let index = 1; index < dinosaurs.length; index++){
+      if (save.lengthInMeters < dinosaurs[index].lengthInMeters){
+        save = dinosaurs[index]
+      }
     }
-  }
   lengthInFeet = save.lengthInMeters * 3.281
   DinoName = save.name
   obj[DinoName] = lengthInFeet
