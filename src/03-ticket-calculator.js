@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { extras } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,27 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+let total = 0;
+if(!ticketData[ticketInfo.ticketType]){
+  return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+
+} else if(!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]){
+  return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+}
+total += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+if(ticketInfo.extras){
+  for(let i = 0; i < ticketInfo.extras.length; i++){
+    if(!ticketData.extras[ticketInfo.extras[i]]){
+      return `Extra type '${ticketInfo.extras[i]}' cannot be found.`
+    }
+    total += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType];
+  }
+}
+return total;
+};
+ 
+
 
 /**
  * purchaseTickets()
@@ -109,7 +130,42 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let total = 0;
+   let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+ 
+  let purchase = []; 
+  for(let i = 0; i < purchases.length; i++){
+    purchase = purchases[i];
+    let cost = calculateTicketPrice(ticketData,purchase)
+    if(typeof cost === 'string'){
+       return cost;
+    }
+   total += cost;
+   let addReceipt = '';
+   for(let i = 0; i < purchase.extras.length; i++){
+   addReceipt +=  ticketData.extras[purchase.extras[i]].description;
+   if(i !== purchase.extras.length -1){
+    addReceipt += ', ';
+   }
+   }
+  receipt += `${purchase.entrantType[0].toUpperCase()+ purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(cost/100).toFixed(2)}`;
+
+  if(purchase.extras.length > 0){
+    receipt += ` (${addReceipt})\n`;
+
+  } else {
+    receipt += `\n`;
+  }
+
+   }
+   return receipt + `-------------------------------------------\nTOTAL: $${(total/100).toFixed(2)}`
+  };
+ 
+ 
+  
+
+
 
 // Do not change anything below this line.
 module.exports = {
