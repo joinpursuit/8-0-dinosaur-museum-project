@@ -54,7 +54,48 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+// const ticketInfo = {
+//   ticketType: "general",
+//   entrantType: "adult", // Incorrect
+//   extras: ["education"],
+// };
+
+function calculateTicketPrice(ticketData, ticketInfo) {
+  //set default value of total equal to -
+  let total = 0;
+  //checking if our input object value for ticketType exists inside ticketData
+  if (!ticketData[ticketInfo.ticketType]) {
+    //return error message for invalid ticket type
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  } else if (
+    //checking if our input object value for entrantType exists inside ticketData
+    !ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+  ) {
+    //return error message for invalid entrant type
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+  //setting total equal to corressponding priceInCents value (based off ticket type)
+  total +=
+    ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+
+  // check if extras value exists in our input object (not an empty array), and run the code block
+  if (ticketInfo.extras) {
+    //iterate through each element in the extras array
+    for (let i = 0; i < ticketInfo.extras.length; i++) {
+      //at each iteration check if the element exists in ticketData
+      if (!ticketData.extras[ticketInfo.extras[i]]) {
+        //if a matching element doesn't exist, return error message
+        return `Extra type '${ticketInfo.extras[i]}' cannot be found.`;
+      }
+      //accumulate the priceInCents value for each element's corresponding entrant type in the extras array
+      total +=
+        ticketData.extras[ticketInfo.extras[i]].priceInCents[
+          ticketInfo.entrantType
+        ];
+    }
+  }
+  return total;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +150,55 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+// const purchases = [
+//   {
+//     ticketType: "general",
+//     entrantType: "adult",
+//     extras: ["movie", "terrace"],
+//   },
+//   {
+//     ticketType: "general",
+//     entrantType: "senior",
+//     extras: ["terrace"],
+//   },
+//   {
+//     ticketType: "general",
+//     entrantType: "child",
+//     extras: ["education", "movie", "terrace"],
+//   },
+//   {
+//     ticketType: "general",
+//     entrantType: "child",
+//     extras: ["education", "movie", "terrace"],
+//   },
+// ];
+
+//For each purchase, we need
+//    -> It's cost: check
+//    -> It's itemized receipt line
+
+//Cumulative info we need:
+//    -> total cost of all purchases
+//   let cost = 0;
+//   for (let purchase of purchases) {
+//     const purchasePrice = calculateTicketPrice(ticketData, purchase);
+//     if (typeof purchasePrice !== 'number') {
+//       return purchasePrice
+//     }
+//     cost += purchasePrice;
+//   }
+//   purchaseTickets(ticketData, purchasePrice);
+// }
+
+// console.log(purchaseTickets(exampleTicketData, purchases))
+
+// console.log(formatTicketDescription(examplePurchase, 5500));
+//Child General Admission: $55:00 (Education Access, Movie Access, Terrace Access)
+
+function purchaseTickets(ticketData, purchases) {
+}
+
 
 // Do not change anything below this line.
 module.exports = {

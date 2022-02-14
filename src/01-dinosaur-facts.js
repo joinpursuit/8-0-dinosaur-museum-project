@@ -23,20 +23,31 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getTallestDinosaur(dinosaurs) {
+  // deafult value of empty object
   let result = {};
+  //check if input array exists
   if (!dinosaurs[0]) {
     return result;
   }
+  //setting a variable to the first elements dinosaur name
   let name = dinosaurs[0].name;
+  //setting a variable to the first elements lengthInMeters value
   let value = dinosaurs[0].lengthInMeters;
+  //loop through the array of objects
   for (let dinosaur of dinosaurs) {
+    // Compare the values for lengthInMeters for each element to find the largest number
     if (dinosaur.lengthInMeters > value) {
+      //update name with the name of the dinosaur with the current largest length
       name = dinosaur.name;
+      //update value with the largest value for the current dinosaur lengthInMeters
       value = dinosaur.lengthInMeters;
     }
   }
+  //convert meters to feet
   value *= 3.281;
+  //creates object with {dinosaurs name: length of this dinosaur in feet}
   result[name] = value;
+  //returns the object
   return result;
 }
 
@@ -61,12 +72,18 @@ function getTallestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
+  // deafult value of an error message
   let result = `A dinosaur with an ID of '${id}' cannot be found.`;
-  //find dino we care about, then create decription
+  //loop through our array of objects
   for (let dinosaur of dinosaurs) {
+    // if the dinosaurs ID is equal to the input ID, and the length of mya array is 2
     if (dinosaur.dinosaurId === id && dinosaur.mya.length === 2) {
+      //string interpolation to update result with the string description for the condition
       result = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[1]} million years ago.`;
-    } else if (dinosaur.dinosaurId === id && dinosaur.mya.length === 1) {
+    } 
+    // if the dinosaurs ID is equal to the input ID, and the length of myra array is 1
+    else if (dinosaur.dinosaurId === id && dinosaur.mya.length === 1) {
+      //string interpolation to update result with the description for the condition
       result = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[0]} million years ago.`;
     }
   }
@@ -109,32 +126,36 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
+  //deafult value empty array
   let result = [];
-
+  // loop through array
   for (let dinosaur of dinosaurs) {
+    //check if the mya is between the numbers in the given array
     if (dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya) {
+      //if the input key doesn't equal undefined
       if (dinosaur[key] !== undefined) {
+        //push the value for that key into the result array
         result.push(dinosaur[key]);
-      } else {
+      } //else push the value for the dinosaurId
+      else {
         result.push(dinosaur.dinosaurId);
       }
     }
+    //if mya input equals the mya in the first element OR mya input + 1
     if (dinosaur.mya[0] === mya || dinosaur.mya[0] === mya + 1) {
+      //if the input key doesn't equal undefined
       if (dinosaur[key] !== undefined) {
+        //push the value for that key into the result array
         result.push(dinosaur[key]);
-      } else {
+      } // else push the value for the dinosaurId
+      else {
         result.push(dinosaur.dinosaurId);
       }
     }
   }
+  //return array
   return result;
 }
-
-// } else if ((dinosaur.mya[0] === mya) || (dinosaur.mya[0] === (mya + 1))) {
-//   result.push(dinosaur.dinosaurId);
-// }
-// else if (dinosaur.mya.length === 1) {
-//   result.push(dinosaur.dinosaurId);
 
 module.exports = {
   getTallestDinosaur,
