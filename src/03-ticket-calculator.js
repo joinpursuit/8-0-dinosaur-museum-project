@@ -61,6 +61,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   let ticketTypeKeysArr = Object.keys(ticketData);
   let extraTypeKeysArr = Object.keys(ticketData.extras);
   let entrantTypeKeysArr = Object.keys(ticketData.general.priceInCents);
+  let summaryTicket = {};
   // console.log(entrantTypeKeys);
   // console.log(extraTypeKeys);
   // console.log(typeOfTicketKey);

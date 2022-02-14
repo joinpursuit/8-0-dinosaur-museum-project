@@ -117,7 +117,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
     }
     // console.log(dinosaurs[i].mya)
   };
-  return dinoAliveMyaArr
+  // return dinoAliveMyaArr
 }
 
 module.exports = {
