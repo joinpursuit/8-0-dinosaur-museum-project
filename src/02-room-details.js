@@ -84,24 +84,26 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  function roomFinder(roooms, roomId) {
-    let foundRoom = null;
-    for (let room of rooms) {
-      if (room.roomId === rooms) {
-        foundRoom = room.name;
+  // function roomFinder(roooms, id) {
+  let connectedRoom = [];
+  for (let room of rooms) {
+    if (room.roomId.includes(id)) {
+      for (let next of room.connectsTo) {
+        let found = true;
+        for (let room of rooms) {
+          if (next.includes(room.roomId)) {
+            connectedRoom.push(room.name);
+            found = false;
+          }
+        }
+        if (found) {
+          return `Room with ID of '${next}' could not be found.`;
+        }
       }
+      return connectedRoom;
     }
-    return foundRoom;
   }
-  let mainRoom = roomFinder(rooms, id);
-  console.log("main room is ", mainRoom);
-  let connectRoom = mainRoom.connectTo;
-  for (i = 0; i < connectRoom.length; i++) {
-    return connectRoom[i];
-    let idOfConnectedRoom = connectRoom[i];
-    let sideRoom = roomFinder(rooms, idOfConnectedRoom);
-  }
-  return roomFinder;
+  return `Room with ID of '${id}' could not be found.`;
 }
 
 module.exports = {
