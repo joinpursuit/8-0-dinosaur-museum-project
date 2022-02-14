@@ -178,6 +178,7 @@ function purchaseTickets(ticketData, purchases) {
     } else {
       receiptStr += "\n";
     }
+    extraStr = [];
   }
   receiptStr += `-------------------------------------------\nTOTAL: $${total.toFixed(
     2
