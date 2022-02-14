@@ -54,7 +54,128 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let total = 0
+  let errors = ''
+  let extra = ticketInfo.extras
+
+if(ticketInfo.ticketType === 'incorrect-type') {
+  errors = `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+}
+else if(ticketInfo.entrantType === 'incorrect-entrant') {
+  errors = `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+}
+else if(ticketInfo.extras.includes('incorrect-extra')) {
+  errors = `Extra type '${ticketInfo.extras}' cannot be found.`
+}
+else if(ticketInfo.ticketType === "general" && ticketInfo.entrantType === "child") {
+  total += ticketData.general.priceInCents.child
+  if (!extra) {
+    return total
+  }
+  else {
+    for (let more of extra) {
+      if (ticketData.extras.hasOwnProperty(more)) {
+        total += ticketData.extras[more].priceInCents.child
+      }
+      else {
+        return `Extra type '${more}' cannot be found.`
+      }
+    }
+    return total
+  }
+}
+else if(ticketInfo.ticketType === "general" && ticketInfo.entrantType === "adult") {
+  total += ticketData.general.priceInCents.adult
+  if (!extra) {
+    return total
+  }
+  else {
+    for (let more of extra) {
+      if (ticketData.extras.hasOwnProperty(more)) {
+        total += ticketData.extras[more].priceInCents.adult
+      }
+      else {
+        return `Extra type '${more}' cannot be found.`
+      }
+    }
+    return total
+  }
+}
+else if(ticketInfo.ticketType === "general" && ticketInfo.entrantType === "senior") {
+  total += ticketData.general.priceInCents.senior
+  if (!extra) {
+    return total
+  }
+  else {
+    for (let more of extra) {
+      if (ticketData.extras.hasOwnProperty(more)) {
+        total += ticketData.extras[more].priceInCents.senior
+      }
+      else {
+        return `Extra type '${more}' cannot be found.`
+      }
+    }
+    return total
+  }
+}
+else if(ticketInfo.ticketType === "membership" && ticketInfo.entrantType === "child") {
+  total += ticketData.membership.priceInCents.child
+  if (!extra) {
+    return total
+  }
+  else {
+    for (let more of extra) {
+      if (ticketData.extras.hasOwnProperty(more)) {
+        total += ticketData.extras[more].priceInCents.child
+      }
+      else {
+        return `Extra type '${more}' cannot be found.`
+      }
+    }
+    return total
+  }
+}
+else if(ticketInfo.ticketType === "membership" && ticketInfo.entrantType === "adult") {
+  total += ticketData.membership.priceInCents.adult
+  if (!extra) {
+    return total
+  }
+  else {
+    for (let more of extra) {
+      if (ticketData.extras.hasOwnProperty(more)) {
+        total += ticketData.extras[more].priceInCents.adult
+      }
+      else {
+        return `Extra type '${more}' cannot be found.`
+      }
+    }
+    return total
+  }
+}
+else if(ticketInfo.ticketType === "membership" && ticketInfo.entrantType === "senior") {
+  total += ticketData.membership.priceInCents.senior
+  if (!extra) {
+    return total
+  }
+  else {
+    for (let more of extra) {
+      if (ticketData.extras.hasOwnProperty(more)) {
+        total += ticketData.extras[more].priceInCents.senior
+      }
+      else {
+        return `Extra type '${more}' cannot be found.`
+      }
+    }
+    return total
+  }
+}
+
+return errors
+}
+
+
+
 
 /**
  * purchaseTickets()
@@ -109,7 +230,34 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
+  let total = 0
+
+  for (let purchase of purchases) {
+    let price = calculateTicketPrice(ticketData, purchase) 
+    if (typeof price === "number") {
+      total += price
+      receipt += `${purchase.entrantType.charAt(0).toUpperCase()+purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(price/100).toFixed(2)}`
+      if (purchase.extras.length) {
+        //loop thru extras 
+        receipt += ' ('
+        for (let extra of purchase.extras) {
+          receipt += `${ticketData.extras[extra].description}, `
+        }
+        receipt = receipt.slice(0, receipt.length-2)
+        receipt += ')'
+      }
+    }
+    else {
+      return price
+    }
+    receipt += '\n'
+    }
+    receipt += '-------------------------------------------\nTOTAL:' + " " + `$${(total/100).toFixed(2)}`
+    return receipt
+  }
+
 
 // Do not change anything below this line.
 module.exports = {

@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -22,7 +23,22 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  let obj = {};
+  let result = dinosaurs[0];
+  
+  if (dinosaurs.length === 0) {
+    return obj
+  }
+  
+  for (let dino of dinosaurs) {
+    if (result.lengthInMeters < dino.lengthInMeters) {
+        result = dino
+    }
+  }
+obj[result.name] = result.lengthInMeters * 3.281
+return obj
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +60,16 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let string = `A dinosaur with an ID of '${id}' cannot be found.`
+
+  for (let dino of dinosaurs) {
+    if (dino.dinosaurId === id) {
+      string = `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`
+    }
+  }
+  return string
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +96,30 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let arr = [];
+
+  for (let dino of dinosaurs) {
+    if (dino.mya[0] >= mya && dino.mya[1] <= mya) { //comparing dino.mya array numbers to given mya if it is between the 2 values
+      if (dino[key])
+      {
+        arr.push(dino[key])
+      }
+      else {arr.push(dino.dinosaurId)}
+      }
+    
+    else if (dino.mya[0] - 1 === mya || dino.mya[0] === mya) {//if mya value is equal to or 1 less than dino.mya
+      if (dino[key])
+    {
+      arr.push(dino[key])
+    }
+    else {arr.push(dino.dinosaurId)}
+    }
+  }
+  return arr
+}
+
+
 
 module.exports = {
   getTallestDinosaur,
