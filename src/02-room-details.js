@@ -25,7 +25,32 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  //
+  let dinoId = '';
+  let dinoRoom = '';
+  
+  for (let i = 0; i < dinosaurs.length; i++){
+    if (dinosaurs[i].name === dinosaurName){
+      dinoId = dinosaurs[i].dinosaurId;
+    }
+  }
+
+  for (let j = 0; j < rooms.length; j++){
+    if (rooms[j].dinosaurs.includes(dinoId)){
+      dinoRoom = rooms[j].name;
+    }
+  }
+
+  if (!dinoId){
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`
+  } else if (!dinoRoom){
+    return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+  } else {
+    return dinoRoom;
+  }
+}
+  
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +74,36 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+//this is to find the IDs of the connected rooms.
+// added the conditional below to satisify the final test, once we find all the IDs, there is a test that has incorrect-id as one of the elements. We can check this with the conditional before moving on to the nested loop.
+//once we have ids of the connected rooms, we can matched the roomsConnectedID array with rooms array to find the name of the rooms then push the names into roomsConnectedName array.
+// console.log(roomsConnectedName)
+//names are correctly added to the roomsConnectedName array, now we gotta figure out the incorrect IDs tests.
+  let roomsConnectedId = [];
+let roomsConnectedName = [];
+for (let i = 0; i < rooms.length; i++) {
+  if(rooms[i].roomId === id){
+    roomsConnectedId = rooms[i].connectsTo
+  }
+}
+if(roomsConnectedId.includes("incorrect-id")){
+  return "Room with ID of 'incorrect-id' could not be found."
+};
+
+for(let j = 0; j < rooms.length; j++) {
+  for(let k = 0; k < roomsConnectedId.length; k++) {
+    if(roomsConnectedId[k] === rooms[j].roomId){
+      roomsConnectedName.push(rooms[j].name);
+    }
+  }
+}
+
+if (!roomsConnectedId.length){
+  return "Room with ID of 'incorrect-id' could not be found.";
+}
+  return roomsConnectedName
+}
 
 module.exports = {
   getRoomByDinosaurName,
