@@ -60,46 +60,70 @@ const exampleTicketData = require("../data/tickets");
 //if type == general, membership, extras, 
 //
 function calculateTicketPrice(ticketData, ticketInfo) {
-  let price = 0
-  let extraPrice = 0
-  for(ticket in ticketData){
-    if(ticket === ticketInfo.ticketType){
-      if(ticketInfo.ticketType === "general"){
-        if(ticketInfo.extras.length > 0){
-            for(let i = 0; i < ticketInfo.extras.length; i++){
-                  extraPrice = 1000
-          }
-          }
-        if(ticketInfo.entrantType === "child"){
-          price = 2000
-        }
-        if(ticketInfo.entrantType === "adult"){
-          price = 3000
-        }
-        if(ticketInfo.entrantType === "senior"){
-          price = 2500
-        }
-      }
-      if(ticketInfo.ticketType === "membership"){
-        if(ticketInfo.extras.length > 0){
-          for(let i = 0; i < ticketInfo.extras.length; i++){
-              extraPrice = 1000
-          }
-        }
-        if(ticketInfo.entrantType === "child"){
-          price = 1500
-        }
-        if(ticketInfo.entrantType === "adult"){
-          price = 2800
-        }
-        if(ticketInfo.entrantType === "senior"){
-          price = 2300
-        }
+let price = 0
+
+  if(ticketData[ticketInfo.ticketType]){
+    if(ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]){
+      price += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+    } else {
+        return `Entrant type 'incorrect-entrant' cannot be found.`
+    }
+  } 
+  else {
+    return `Ticket type 'incorrect-type' cannot be found.`
+  }
+  //don't know what I'm doing wrong with these extras
+  if(ticketInfo.extras){
+    for(let i = 0; i < ticketInfo.extras.length; i++){
+      if(ticketData.extras[i]){
+        price += ticketData.extras[i].priceInCents[ticketInfo.entrantType]
+      }else{
+        return `Extra type 'incorrect-extra' cannot be found.`
       }
     }
   }
-  return price + extraPrice
+  return price
 }
+
+  // let price = 0
+  // let extraPrice = 0
+  // for(ticket in ticketData){
+  //   if(ticket === ticketInfo.ticketType){
+  //     if(ticketInfo.ticketType === "general"){
+  //       if(ticketInfo.extras.length > 0){
+  //           for(let i = 0; i < ticketInfo.extras.length; i++){
+  //                 extraPrice = 1000
+  //         }
+  //         }
+  //       if(ticketInfo.entrantType === "child"){
+  //         price = 2000
+  //       }
+  //       if(ticketInfo.entrantType === "adult"){
+  //         price = 3000
+  //       }
+  //       if(ticketInfo.entrantType === "senior"){
+  //         price = 2500
+  //       }
+  //     }
+  //     if(ticketInfo.ticketType === "membership"){
+  //       if(ticketInfo.extras.length > 0){
+  //         for(let i = 0; i < ticketInfo.extras.length; i++){
+  //             extraPrice = 1000
+  //         }
+  //       }
+  //       if(ticketInfo.entrantType === "child"){
+  //         price = 1500
+  //       }
+  //       if(ticketInfo.entrantType === "adult"){
+  //         price = 2800
+  //       }
+  //       if(ticketInfo.entrantType === "senior"){
+  //         price = 2300
+  //       }
+  //     }
+  //   }
+  // }
+  // return price + extraPrice
 
 /**
  * purchaseTickets()
@@ -155,57 +179,32 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------"
-  let price = 0
-  let extraPrice = 0
-  let sum = 0
-  let extra = ""
-  for(i = 0; i < purchases.length; i++){
-  for(ticket in ticketData){
-    if(ticket === purchases[i].ticketType){
-      if(purchases[i].ticketType === "general"){
-        if(purchases[i].extras.length > 0){
-            for(let j = 0; j < purchases[i].extras.length; j++){
-                  extraPrice = 1000
-          }
-          }
-        if(purchases[i].entrantType === "child"){
-          price = 2000
-          receipt += "\nChild General Admission: $"
-        }
-        if(purchases[i].entrantType === "adult"){
-          price = 3000
-          receipt += "\nAdult General Admission: $"
-        }
-        if(purchases[i].entrantType === "senior"){
-          price = 2500
-          receipt += "\nSenior General Admission: $"
-        }
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
+  let receipt2 = ""
+  let price = 0 
+  for(purchase of purchases){
+    if(ticketData[purchase.ticketType]){
+      if(ticketData[purchase.ticketType].priceInCents[purchase.entrantType]){
+        price += ticketData[purchase.ticketType].priceInCents[purchase.entrantType]
+        receipt2 += purchase.entrantType.charAt(0).toUpperCase() + purchase.entrantType.slice(1) + " " + purchase.ticketType.charAt(0).toUpperCase() + purchase.ticketType.slice(1) + " Admission: $" + (ticketData[purchase.ticketType].priceInCents[purchase.entrantType]/100).toFixed(2) 
+      } else {
+          return `Entrant type 'incorrect-entrant' cannot be found.`
       }
-      if(purchases[i].ticketType === "membership"){
-        if(purchases[i].extras.length > 0){
-          for(let j = 0; j < purchases[i].extras.length; j++){
-              extraPrice = 1000
-          }
-        }
-        if(purchases[i].entrantType === "child"){
-          price = 1500
-          receipt += "\nChild Membership Admission: $"
-        }
-        if(purchases[i].entrantType === "adult"){
-          price = 2800
-          receipt += "\nAdult Membership Admission: $"
-        }
-        if(purchases[i].entrantType === "senior"){
-          price = 2300
-          receipt += "\nSenior Membership Admission: $"
+    } 
+    else {
+      return `Ticket type 'incorrect-type' cannot be found.`
+    }
+    if(purchase.extras){
+      for(let i = 0; i < purchase.extras.length; i++){
+        if(ticketData.extras[i]){
+          price += ticketData.extras[i].priceInCents[ticketInfo.entrantType]
+        }else{
+          return `Extra type 'incorrect-extra' cannot be found.`
         }
       }
     }
-  }
 }
-  sum += price
-  return receipt + price.toFixed(2) + "\n-------------------------------------------\nTOTAL: $ " + sum.toFixed(2)
+  return receipt + receipt2+ "\n-------------------------------------------\nTOTAL: $" + (price/100).toFixed(2)
 
 }
 
