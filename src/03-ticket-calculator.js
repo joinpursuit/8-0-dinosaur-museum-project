@@ -53,8 +53,56 @@ const exampleTicketData = require("../data/tickets");
     };
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
+
+    Pseudocode:
+    Errors - Guard Clauses
+    - if 'ticketType' does not equal to existing 'ticketType'
+    - if 'entrantType' does not equal to 'entrantType'
+    - if 'extraType' does not equal to existing 'extraType'
+
+    Main Function - no extras:
+    - calculate 'generalTicketCost' for 'entrantType' w/o any addons
+    - calculate 'membershipTicketCost' for 'entrantType' w/o any addons 
+
+    Edge Cases - with extras:
+    - calculate 'generalTicketCost' (w/movie extra; movie/education extra, terrace/education; all extras)
+    - Calculate 'membershipTicketCost' (w/movie extra; movie/education extra; terrace/education extra; all extras)
+
+    Return:
+    - 'ticketPrice' based on ticket information in the function
+
+  ticketTypeObj = ticketData[ticketInfo.ticketType];
+  typeOfTicket = ticketInfo.ticketType;
+  ticketAge = ticketInfo.entrantType; 
+  ticketExtra = ticketInfo.extras;
+  ticketExtraPrice = ticketData.extras[extra].princeInCents[ticketAge]
+
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+
+  //errors
+  if (!(ticketInfo.ticketType in ticketData)) {
+    return `Ticket type 'incorrect-type' cannot be found.`
+  }
+  //of the ticket we're looking at whats the ticket type and is it in ticket data 
+  if (!(ticketInfo.entrantType in ticketData[ticketInfo.ticketType]. priceInCents)) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+  }
+  //loop through each 'extra' to get to 'extraType'
+  for (let extra of ticketInfo.extras) {
+    if (!(extra in ticketData.extras)) {
+      return `Extra type 'incorrect-extra' cannot be found.`
+    }
+  }
+  let totalPrice = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+  
+  //Loop through the 'ticketInfo.extras' array to find all the 'extra'
+  //Find 'extra' price in the 'ticketInfo.extras' array by accessing it from the ticketExtraPrice
+  for (let extra of ticketInfo.extras) {
+    totalPrice = totalPrice + ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+  }
+  return totalPrice;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +157,28 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let price = 0;
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  let addtionalPrice = 0;
+  for(let purchase of purchases){
+    let purchaseTotal = calculateTicketPrice(ticketData, purchase);
+    if(typeof purchaseTotal === "string"){
+       return purchaseTotal;
+    }
+    let description = [];
+    for(let extra of purchase.extras){
+      description.push(ticketData.extras[extra].description);
+    }
+    if(purchase.extras.length){
+    description = ` (${description.join(", ")})`
+  }
+    addtionalPrice = purchaseTotal;
+    receipt = receipt + `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(addtionalPrice/100).toFixed(2)}${description}\n`;
+    price = price + addtionalPrice/100;  
+  }
+  return receipt = receipt + "-------------------------------------------\nTOTAL: $" + price.toFixed(2);
+}
 
 // Do not change anything below this line.
 module.exports = {

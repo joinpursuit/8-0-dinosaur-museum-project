@@ -22,7 +22,29 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+
+//dinosaurs is an array of objects
+//we need to return the tallest dinosaur from the list 
+//it means we have to access the dinosaur length in meters 
+//we have to write a loop and accumulator pattern for it 
+//convert the meters to feet by multiplying the meters by 3.281
+function getTallestDinosaur(dinosaurs) {
+  let tallestDino = {};//determine data type and value 
+  let tallestSoFar = dinosaurs[0]//variable for comparison as we loop through 
+
+  for (let i = 0; i < dinosaurs.length; i++){// standard for loop, can also be i = 1 but imma keep it at 0 
+    if (dinosaurs[i].lengthInMeters > tallestSoFar.lengthInMeters){
+      tallestSoFar = dinosaurs[i]
+    }
+  } 
+  if (tallestSoFar){ //if it's the tallest access the certain key and value 
+    tallestDino[tallestSoFar.name] = tallestSoFar.lengthInMeters*3.281 //key and value 
+  }
+  // console.log(tallestDino)
+  // console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+  return tallestDino;
+}
+
 
 /**
  * getDinosaurDescription()
@@ -44,7 +66,23 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+//should return last number in mya 
+//return interpolation with dino name, pronuniciation, and id
+
+function getDinosaurDescription(dinosaurs, id) {
+  //Default description message if dinosaur cannot be found
+  let description = `A dinosaur with an ID of '${id}' cannot be found.`;
+  //Iterate or go through dinosaurs array, each called "dino"
+  for (let dino of dinosaurs) {
+    //Compare current dino.dinosaurID to id
+    if (dino.dinosaurId === id) {
+      // if `id` found, re-assign value of description, with `dino.mya[dino.mya.length -1]` as last element because dino.mya[dino.mya.length -1] is a rule for accessing last element. 
+      description = `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length -1]} million years ago.`
+    }
+  }
+  return description;
+}
+
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +109,29 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let newArray = []; //Returning an ARRAY of "dinosaurId's" that lived within the "mya" range provided
+  let dinoKey = "dinosaurId";
+
+  //If the "key" paramater is provided (ie truthy), it needs to return the value of that key for each dinosaur alive at that time, in an array 
+  if(Object.keys(dinosaurs[0]).includes(key)){//objects.keys returns an array of given object's own properties
+    dinoKey = key;
+  }
+
+  for(let dino of dinosaurs){
+    //If a dino only has one mya provided, it has to allow for the given mya OR dino.mya -1 which accesses last element 
+    if(dino.mya.length === 2){
+      if(mya <= dino.mya[0] && mya >= dino.mya[1]){
+        newArray.push(dino[dinoKey])
+      }
+    } else {
+      if (mya === dino.mya[0] || mya === (dino.mya[0] - 1)) {
+        newArray.push(dino[dinoKey])
+      }
+    } 
+  }
+  return newArray
+}
 
 module.exports = {
   getTallestDinosaur,
