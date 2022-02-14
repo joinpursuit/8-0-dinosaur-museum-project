@@ -24,17 +24,17 @@ const exampleDinosaurData = require("../data/dinosaurs");
  */
 function getTallestDinosaur(dinosaurs) {
   let tallest = {};
-  let tall = dinosaurs[0]
-  if (!dinosaurs.length){
-    return {}
+  let tall = dinosaurs[0];
+  if (!dinosaurs.length) {
+    return {};
   }
-  for (let dinosaur of dinosaurs){
-    if (dinosaur.lengthInMeters > tall.lengthInMeters ){
-      tall = dinosaur
+  for (let dinosaur of dinosaurs) {
+    if (dinosaur.lengthInMeters > tall.lengthInMeters) {
+      tall = dinosaur;
     }
-      }
-tallest[tall.name] = tall.lengthInMeters * 3.281
-  return tallest
+  }
+  tallest[tall.name] = tall.lengthInMeters * 3.281;
+  return tallest;
 }
 
 /**
