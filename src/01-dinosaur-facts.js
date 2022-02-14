@@ -22,7 +22,43 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+//1.get the tallest dinosaur from the array of dinosaur objects
+//how to get the tallest dinosar from the array of dinosaur objects?
+//create a loop to get the name of the tallest dinosaur, and a loop to get the height
+//then convert the height to feet
+//return the object
+// const dinosaurs = [
+//   {
+//     dinosaurId: "YLtkN9R37",
+//     name: "Allosaurus",
+//     pronunciation: "AL-oh-sore-us",
+//     meaningOfName: "other lizard",
+//     diet: "carnivorous",
+//     lengthInMeters: 12,
+//     period: "Late Jurassic",
+//     mya: [156, 144],
+//     info: "Allosaurus was an apex predator in the Late Jurassic in North America.",
+//   },
+//2. return an object => {dinosaur name : height} in feet => key:value pair
+
+//
+function getTallestDinosaur(dinosaurs) {
+  //returns null of the array is empty
+  if (dinosaurs.length === 0) {
+    return {};
+  }
+
+  let results = {};
+  let tallestDino = dinosaurs[0];
+
+  for (let i = 1; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].lengthInMeters > tallestDino.lengthInMeters) {
+      tallestDino = dinosaurs[i];
+    }
+  }
+  results[tallestDino.name] = tallestDino.lengthInMeters * 3.281;
+  return results;
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +80,33 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+//  {
+//   dinosaurId: "U9vuZmgKwUr",
+//   name: "Xenoceratops",
+//   pronunciation: "ZEE-no-SEH-ruh-tops",
+//   meaningOfName: "alien horned face",
+//   diet: "herbivorous",
+//   lengthInMeters: 6,
+//   period: "Early Cretaceous",
+//   mya: [78.5, 77.5],
+//   info: "Xenoceratops had horns and a bony frill with elaborate ornamentation of projections, knobs, and spikes.",
+// },
+function getDinosaurDescription(dinosaurs, id) {
+  let stringInfo = "A dinosaur with an ID of 'incorrect-id' cannot be found.";
+  let yearVariable = "";
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].dinosaurId === id) {
+      if (dinosaurs[i].mya.length > 1) {
+        yearVariable = dinosaurs[i].mya[1];
+      } else {
+        yearVariable = dinosaurs[i].mya[0];
+      }
+      stringInfo = `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${yearVariable} million years ago.`;
+    }
+  }
+
+  return stringInfo;
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +133,26 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  // if (!dinosaurs.mya) return [];
+
+  let dinoId = [];
+
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].mya.length === 1) {
+      //console.log(typeof dinosaurs[i].mya[0], typeof mya);
+      //dinosaurs were alive at the given time return their dinosaurID
+      //set year = mya and also year = mya - 1. We are checking for these two conditionals
+      //checking if either each year is equal to mya given or the year given is year less
+      if (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] === mya - 1) {
+        //console.log(dinosaurs[i].mya);
+        dinoId.push(dinosaurs[i].dinosaurId);
+        //console.log(dinoId);
+      }
+    }
+  }
+  return dinoId;
+}
 
 module.exports = {
   getTallestDinosaur,

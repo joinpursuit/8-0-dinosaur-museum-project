@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { extras } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,47 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+//return the cost of the ticket based on the ticketinfo
+function calculateTicketPrice(ticketData, ticketInfo) {
+  //console.log(ticketData.general.priceInCents.child);
+  //if (ticketInfo.ticketType !== ticketInfo) {
+  //return "Ticket type 'incorrect-type' cannot be found.";
+  //} else if (ticketInfo.entrantType !== entrantType) {
+  //return "Entrant type 'incorrect-entrant' cannot be found.";
+  //} else if (ticketInfo.extras !== extras) {
+  //return "Extra type 'incorrect-extra' cannot be found.";
+  //}
+  //general admission - child without addons
+
+  //3 months - 400.00 after discount. 350.00
+  //subscription - 133 per month --->  110.00 / 13 per class
+  //refer period one month free - has to complete 16 classes
+
+  let costOfChild = 0;
+  let costOfAdult = 0;
+  let costOfSenior = 0;
+  for (let i = 0; i < ticketData; i++) {
+    if (
+      ticketData.general.priceInCents.child ===
+      ticketData.general.priceInCents.child
+    ) {
+      costOfChild = ticketData.general.priceInCents.child;
+    }
+    if (
+      ticketData.general.priceInCents.adult ===
+      ticketData.general.priceInCents.adult
+    ) {
+      costOfAdult = ticketData.general.priceInCents.adult;
+    }
+    if (
+      ticketData.general.priceInCents.senior ===
+      ticketData.general.priceInCents.senior
+    ) {
+      costOfSenior = ticketData.general.priceInCents.senior;
+    }
+  }
+  return costOfChild;
+}
 
 /**
  * purchaseTickets()
