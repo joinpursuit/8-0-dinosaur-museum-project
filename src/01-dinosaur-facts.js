@@ -92,26 +92,26 @@ function getDinosaurDescription(dinosaurs, id) {
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   let aliveDino = [];
-  for (let dinosaur of dinosaurs){
-  // if (dinosaur.mya.length > 1 
-    if (dinosaur.mya[0]>= mya && dinosaur.mya[1] <= mya){
-      if (dinosaur[key] !== undefined){
-        aliveDino.push(dinosaur[key])
-      }else {
-        aliveDino.push(dinosaur.dinosaurId)
+  for (let dinosaur of dinosaurs) {
+    // if (dinosaur.mya.length > 1
+    if (dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya) {
+      if (dinosaur[key] !== undefined) {
+        aliveDino.push(dinosaur[key]);
+      } else {
+        aliveDino.push(dinosaur.dinosaurId);
       }
     }
-  
-    if(dinosaur.mya[0]=== mya || (dinosaur.mya[0]-1) === mya){
-      if (key in dinosaur){
-       aliveDino.push(dinosaur[key])
-      }else{
-       aliveDino.push(dinosaur.dinosaurId)
+
+    if (dinosaur.mya[0] === mya || dinosaur.mya[0] - 1 === mya) {
+      if (key in dinosaur) {
+        aliveDino.push(dinosaur[key]);
+      } else {
+        aliveDino.push(dinosaur.dinosaurId);
       }
     }
   }
 
-return aliveDino
+  return aliveDino;
 }
 
 module.exports = {
