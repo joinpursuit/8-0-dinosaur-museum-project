@@ -4,6 +4,7 @@
   You may use this data to test your functions. You may assume the shape of the data remains the same but that the values may change.
 */
 const exampleDinosaurData = require("../data/dinosaurs");
+const rooms = require("../data/rooms");
 const exampleRoomData = require("../data/rooms");
 // Do not change the lines above.
 
@@ -26,10 +27,9 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  let searchForDino;
-  let SearchForRoom;
+  let searchForDino = false;
+  let SearchForRoom = false;
   let dinoObj = null;
-  let dinoId = "";
   let roomName = "";
   let roomId = "";
 
@@ -37,19 +37,21 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     if (dinosaur.name === dinosaurName) {
       searchForDino = true;
       dinoObj = dinosaur;
-      dinoId = dinosaur.dinonsaurId;
     }
   }
   if (!searchForDino) {
     return `Dinosaur with name '${dinosaurName}' cannot be found.`;
   }
+  console.log("DinoObj", dinoObj);
   for (let i = 0; i < rooms.length; i++) {
-    if (rooms[i].dinosaurs[i] === dinoId) {
-      SearchForRoom = true;
-      roomId = rooms[i].roomId;
-      roomName = rooms[i].name;
-      dinoId = rooms[i].dinosaurs[i];
-      break;
+    for (let s = 0; s < dinosaurs.length; s++) {
+      if (rooms[i].dinosaurs[s] === dinoObj.dinosaurId) {
+        SearchForRoom = true;
+        roomId = rooms[i].roomId;
+        roomName = rooms[i].name;
+        dinoId = rooms[i].dinosaurs[s];
+        break;
+      }
     }
   }
   if (SearchForRoom) {
@@ -81,7 +83,26 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  function roomFinder(roooms, roomId) {
+    let foundRoom = null;
+    for (let room of rooms) {
+      if (room.roomId === rooms) {
+        foundRoom = room.name;
+      }
+    }
+    return foundRoom;
+  }
+  let mainRoom = roomFinder(rooms, id);
+  console.log("main room is ", mainRoom);
+  let connectRoom = mainRoom.connectTo;
+  for (i = 0; i < connectRoom.length; i++) {
+    return connectRoom[i];
+    let idOfConnectedRoom = connectRoom[i];
+    let sideRoom = roomFinder(rooms, idOfConnectedRoom);
+  }
+  return roomFinder;
+}
 
 module.exports = {
   getRoomByDinosaurName,

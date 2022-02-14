@@ -55,6 +55,30 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let ticketType = ["general", "membership"];
+  let entrants = ["child", "adult", "senior"];
+  let extraArray = ["movie", "education", "terrace"];
+  let ticketInfoType = ticketInfo.ticketType;
+  let ticketInfoEntrant = ticketInfo.entrantType;
+
+  if (!ticketType.includes(ticketInfoType)) {
+    return `Ticket type 'incorrect-type' cannot be found.`;
+  }
+  if (!entrants.inclued(ticketInfoEntrant)) {
+    return `Entrant type 'incorrect-entrant' cannot be found.`;
+  }
+  for (let extra of ticketInfo.extras) {
+    if (!extraArray.includes(extra)) {
+      return `Extra type 'incorrect-extra' cannot be found.`;
+    }
+  }
+  let total = ticketData[ticketInfoType]["priceInCents"][ticketInfoEntrant];
+  for (let extra of ticketInfo.extras) {
+    total += ticketData.extras[extra]["priceInCents"][ticketInfoEntrant];
+  }
+  return total;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +133,46 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  function caps(str) {
+    return str[0].toUpperCase() + str.slice(1);
+  }
+  function purchaseTickets(ticketData, purchases) {
+    let total = (sum = 0);
+    let receiptStr =
+      "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+    let ticketDataType = ["general", "membership"];
+    let ticketDataEntrants = ["child", "adult", "senior"];
+    let ticketDataExtraArray = ["movie", "education", "terrace"];
+    for (let i = 0; i < purchases.length; i++) {
+      let extraStr = [];
+      let purchaseTicketType = purchases[i].ticketType;
+      let purchaseEntrantType = purchases[i].entrantType;
+      if (!ticketDataType.includes(purchaseTicketType)) {
+        return `Ticket type 'incorrect-type' cannot be found.`;
+      }
+      if (!ticketDataEntrants.includes(extra)) {
+        return `Extra type 'incorrect-extra' cannot be found.`;
+      }
+    }
+    sum = ticketData[purchaseTicketType]["priceInCents"][purchaseEntrantType];
+    for (let extra of purchases[i].extras) {
+      sum += ticketData.extras[extra]["priceInCents"][purchaseEntrantType];
+      extraStr.push(caps(extra) + " Access");
+    }
+    receiptStr += `${caps(purchaseEntrantType)} ${caps(purchaseTicketType)}`;
+    if (extraStr.length > 0) {
+      receiptStr += `${extraStr.join(", ")}\n`;
+    } else {
+      receiptStr += "\n";
+      total += sum / 100;
+    }
+    receiptStr += `-------------------------------------------\nTOTAL: $${total.toFixed(
+      2
+    )}`;
+    return receiptStr;
+  }
+}
 
 // Do not change anything below this line.
 module.exports = {
