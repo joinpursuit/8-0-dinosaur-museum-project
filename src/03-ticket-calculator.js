@@ -94,7 +94,6 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       costOfSenior = ticketData.general.priceInCents.senior;
     }
   }
-  return costOfChild;
 }
 
 /**
