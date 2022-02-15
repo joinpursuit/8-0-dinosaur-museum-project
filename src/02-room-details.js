@@ -26,14 +26,20 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  // Error string.
   let str = `Dinosaur with name '${dinosaurName}' cannot be found.`
+  // Loop through dinosaurs.
   for (elm of dinosaurs){
+    // if the names are the same > loop though rooms > set up a new condition.
     if (dinosaurName === elm.name){
       for (roomElm of rooms){
+        // if roomElm.dinosuars(loop through rooms elm) includes(has any of the properties from our first loop of dinosaurs.Id) 
+        // > return the str
         if (roomElm.dinosaurs.includes(elm.dinosaurId)){
           str = roomElm.name
           return str
         } 
+        // Otherwise we use a different error string.
       } str = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
     }
   } return str
@@ -75,17 +81,26 @@ function getConnectedRoomNamesById(rooms, id) {
       save.push(elm.connectsTo[i])
       }
     } 
+    // If our save Array didnt get anything Return our error.
   } if (save.length === 0){
     return error
   }
+  // New Loop out of the conditions
+  // Loop through rooms again
   for (elm2 of rooms){
+    // then loop through save
     for (foo of save){
+      // if the roomid is the same as foo(the element we have named for the save loop)
     if(elm2.roomId === foo){
+      // we'll push the name into the array.
       arr.push(elm2.name)
     }
   }
+  // New condition out of the others
+  // If the save and arr are the same size return the array
   } if (save.length === arr.length){
     return arr
+    // Otherwise return an error
   } else {
     return error
   }

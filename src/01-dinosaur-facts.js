@@ -24,20 +24,29 @@ const exampleDinosaurData = require("../data/dinosaurs");
  */
 // Sorry this looks so ugly ! if I can think of a way to fix this this probably wont be here!
 function getTallestDinosaur(dinosaurs) {
+  // Empty Obj.
   let obj = {}
+  // The first index of Dinosaurs = Save
   let save = dinosaurs[0]
+  // We set DinoName to an empty string.
   let DinoName = ''
+  // length In feet too 0 since we'll add to it later. 
   let lengthInFeet = 0
+  // if there is no length return the empty obj.
     if (!dinosaurs.length){
       return obj
-    }
+    } // Otherwise loop through dinosaurs
     for (let index = 1; index < dinosaurs.length; index++){
+      // Here we basically make save our lengthInMeter we'll use to access.
       if (save.lengthInMeters < dinosaurs[index].lengthInMeters){
         save = dinosaurs[index]
       }
     }
+    // Math to make it feet
   lengthInFeet = save.lengthInMeters * 3.281
+  // Setting DinoName to the Save.Name 
   DinoName = save.name
+  // Now we change our obj to give us the values we want and return.
   obj[DinoName] = lengthInFeet
   return obj
 };
@@ -66,10 +75,14 @@ function getDinosaurDescription(dinosaurs, id) {
   // Error Return :
   let str = `A dinosaur with an ID of 'incorrect-id' cannot be found.`
     for (elm of dinosaurs){
-      // If the id === that elm.dinosaurId = 
+      // If the id === that elm
     if (elm.dinosaurId === id){
+      // We''l simply update the string & use string interpilation to format it the way we need to.
+      // So : name, pronunciation |new line| 
+      // info, period and then the last mya or only mya there is.
       str = `${elm.name} (${elm.pronunciation})\n${elm.info} It lived in the ${elm.period} period, over ${elm.mya[elm.mya.length -1]} million years ago.`
     }
+    // In the condition it's false we just return the first verison of str we have otherwise we return our updated str.
     }return str
 };
 

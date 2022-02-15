@@ -56,29 +56,40 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
+  // var Cost 0 for future changes.
   let cost = 0
   // Errors
   const entrantError = `Entrant type 'incorrect-entrant' cannot be found.`
   const ttypeError = `Ticket type 'incorrect-type' cannot be found.`
   const extraError = "Extra type 'incorrect-extra' cannot be found."
-  //  
+  // Neat Code.
   const typeTicket = ticketInfo['ticketType']; //general, membership
   const typeEntrant = ticketInfo['entrantType']; //child, adult, senior
-  // 
+  // An array we'll use to check extras.
   const extrasArr = ['movie', 'education', 'terrace']
-  
+  // We'll use in loops since I don't know another way to loop through an object.
+  // If .ex general in ticketData.
     if (typeTicket in ticketData){
-      if (typeEntrant in ticketData[typeTicket]['priceInCents']){ 
+      // if adult   in   ticketData[adult][priceInCents] 
+      if (typeEntrant in ticketData[typeTicket]['priceInCents']){
+        // Update our cost. 
         cost += ticketData[typeTicket]['priceInCents'][typeEntrant]
+        // Error return.
       }else {
         return entrantError
       }
+      // First Condition error return else.
     } else {
       return ttypeError
+      // if there are extras.
     } if (ticketInfo['extras'].length > 0){
+      // Loop through extras.
       for (elm of ticketInfo['extras']){
+        // if any of them match our extras Array.
         if (extrasArr.includes(elm)){
+          // Update their cost.
           cost += ticketData['extras'][elm]['priceInCents'][typeEntrant]
+          // Else return extra error.
         } else {
         return extraError
       }
