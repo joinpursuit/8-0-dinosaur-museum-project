@@ -63,77 +63,36 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       entrantTypes     = [],
       extraTypes       = [],
       setTicketCost    = 0,
+      price            = 'priceInCents',
       hasAddons        = (ticketInfo.extras.length !== 0),
-      generateErrorMsg = (type) => `${type.charAt(0).toUpperCase() + type.slice(1)} type 'incorrect-${(type === 'entrant'||type ===  'extra') ? type : 'type'}' cannot be found.`;
+      formatStrings    = (str) => `${str.charAt(0).toUpperCase() + str.slice(1)}`,
+      generateErrorMsg = (type) => `${formatStrings(type)} type 'incorrect-${(type === 'entrant'||type === 'extra') ? type : 'type'}' cannot be found.`;
 
-  // Object destructuring:
-  const { general : { description : genDescription, priceInCents : genPriceInCents }, 
-          membership : { description : memDescription, priceInCents : memPriceInCents },
-          extras     : { movie     : { description : movDescription, priceInCents : movPriceInCents}, 
-                         education : { description : eduDescription, priceInCents : eduPriceInCents},
-                         terrace   : { description : terDescription, priceInCents : terPriceInCents},
-                       },
-        } = ticketData;
-
-  
-  /*
-  Object.entries(items).map(item => {
-    console.log(item)
-  })
-  
-  Object.entries(items).forEach(item => {
-    console.log(item)
-  })
-  
-  for (const item of Object.entries(items)) {
-    console.log(item)
-  }
-  */
-  for (const [key, value] of Object.entries(ticketData)) {
-    //console.log(`${property}: ${object[property]}`);
-    //console.log(ticketData[key].description)
-    
-  } 
-  Object.entries(ticketData).map(item => {
-    //console.log(item)
-  })
-  Object.entries(ticketData).forEach(item => {
-    //console.log(general)
-
-
-  })
-  
-
-  
+  // >> Looping over the objects inside the object getting the keys
   for (const [keyTicketTypes, valueTicketTypes] of Object.entries(ticketData)) {
-    // Getting the ticket Types = [general, membership, extras]
     ticketTypes.push(keyTicketTypes);
+    // >> Getting entrant types = [child, adult, senior]
     if(typeof valueTicketTypes.priceInCents === 'object'){
-      for (const [keyEntrantTypes, value] of Object.entries(valueTicketTypes.priceInCents)) {
-        // Getting the entrant Types = [child, adult, senior]
-        entrantTypes.push(keyEntrantTypes)
-      }
+      entrantTypes = Object.keys(valueTicketTypes.priceInCents)
     }
+    // >> Getting extra types = [movie, education, terrace]
     if(typeof ticketData.extras === 'object'){
-      // Getting the extra Types = [movie, education, terrace]
-      for (const [keyExtraTypes, value] of Object.entries(ticketData.extras)) {
-        extraTypes.push(keyExtraTypes)
-      }
+      extraTypes = Object.keys(ticketData.extras)
     }
   }  
 
-  // Validating T I C K E T - T Y P E S
+  // >> Validating if ticket type is valid
   if(ticketTypes.includes(ticketInfo.ticketType)) {
-    // Validating E N T R A N T - T Y P E S
+    // >> Validating if entrat type is valid
     if(entrantTypes.includes(ticketInfo.entrantType)) {
-      //
-      setTicketCost = ticketData[ticketInfo.ticketType]['priceInCents'][ticketInfo.entrantType];
-      // Validating E X T R A S
+      // >> Setting ticket cost
+      setTicketCost = ticketData[ticketInfo.ticketType][price][ticketInfo.entrantType];
+      // >> Validating if ticket contains extras
       if(hasAddons){
-        // >> Adding extra cost to the ticket 
+        // >> Adding extras to tickets 
         if(extraTypes.some(value => ticketInfo.extras.includes(value))) {
           for(let extra of ticketInfo.extras){
-            setTicketCost += ticketData.extras[extra]['priceInCents'][ticketInfo.entrantType];
+            setTicketCost += ticketData.extras[extra][price][ticketInfo.entrantType];
           }
         }else{ 
           setTicketCost = generateErrorMsg('extra'); 
@@ -219,23 +178,23 @@ function purchaseTickets(ticketData, purchases) {
     // >> Starting process to assemble Receipt
     ticketReceipt = generateHeader();
     // >> Looping over the purchases to print every item
-    for(let purchase of purchases){
+    for(let purchase of purchases) {
       getTicketData = calculateTicketPrice(ticketData, purchase)
-      if(typeof getTicketData === 'number'){
+      if(typeof getTicketData === 'number') {
         total += getTicketData;
         ticketReceipt += `${formatStrings(purchase.entrantType)} ${ticketData[purchase.ticketType].description}: $${formatNumbers(getTicketData)}`
-        if(purchase.extras.length){
-          // >> Adding opening parenthesis || Looping over the extras
+        if(purchase.extras.length) {
+          // >> Adding opening parenthesis || Looping over the extras array
           ticketReceipt += ' (';
-          for(let extra of purchase.extras){
+          for(let extra of purchase.extras) {
             ticketReceipt += `${ticketData.extras[extra].description}, `;
           } 
-          // >> Removing last [, comma] || 
+          // >> Removing last [comma-whitespace pair] || closing parenthesis 
           ticketReceipt = ticketReceipt.slice(0, -2) + ')';
         }
       }else{
         // >> Getting a wrong input
-        return getTicketData; //// ?
+        return getTicketData;
       }
       ticketReceipt += '\n';
     }
