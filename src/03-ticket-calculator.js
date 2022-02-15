@@ -61,7 +61,7 @@ const exampleTicketData = require("../data/tickets");
 // };
 
 function calculateTicketPrice(ticketData, ticketInfo) {
-  //set default value of total equal to -
+  //set default value of total equal to 0
   let total = 0;
   //checking if our input object value for ticketType exists inside ticketData
   if (!ticketData[ticketInfo.ticketType]) {
@@ -193,12 +193,49 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 
 // console.log(purchaseTickets(exampleTicketData, purchases))
 
-// console.log(formatTicketDescription(examplePurchase, 5500));
+// console.log(formatTicketreceiptDescriptionion(examplePurchase, 5500));
 //Child General Admission: $55:00 (Education Access, Movie Access, Terrace Access)
 
 function purchaseTickets(ticketData, purchases) {
+  //default value
+  let total = 0;
+  //default value
+  let receipt =
+    "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  //loop through purchases
+  for (let purchase of purchases) {
+    //invoke calculateTicketPrice function to get cost
+    let cost = calculateTicketPrice(ticketData, purchase);
+    //check if cost is a string, should be a number
+    if (typeof cost === "string") {
+      return cost;
+    }
+    //create an array
+    let receiptDescription = [];
+    //loop through extras array
+    for (let extra of purchase.extras) {
+      //pushing the decription from extras object thats being referenced from purchase object into our new receiptDescription array
+      receiptDescription.push(ticketData.extras[extra].description);
+    }
+    //check if our extras array exists inside our purchase object
+    if (purchase.extras.length) {
+      //join the desriptions together
+      receiptDescription = ` (${receiptDescription.join(", ")})`;
+    }
+    //interpolating our string to adjusting spelling and decimal places
+    receipt += `${
+      purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)
+    } ${ticketData[purchase.ticketType].description}: $${(cost / 100).toFixed(
+      2
+    )}${receiptDescription}\n`; //adding the extras descriptions, which is our new joined array
+    //accumulate the total
+    total += cost / 100;
+  }
+  receipt += `-------------------------------------------\nTOTAL: $${total.toFixed(
+    2
+  )}`;
+  return receipt;
 }
-
 
 // Do not change anything below this line.
 module.exports = {
