@@ -22,7 +22,24 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  let tallestDinoInFeet = new Object();
+  let tallestDinosaur = dinosaurs[0];
+  for (let dinosaur of dinosaurs) {
+    // Assumming .lengthInMeters is always a number
+    if (tallestDinosaur.lengthInMeters < dinosaur.lengthInMeters) {
+      tallestDinosaur = dinosaur;
+    }
+  }
+  if (!tallestDinosaur) {
+    return tallestDinoInFeet;
+  }
+  // Creates key out of the name of the tallest dinosaur,
+  // only after error handeling  
+  tallestDinoInFeet[tallestDinosaur.name] =
+    tallestDinosaur.lengthInMeters * 3.281;
+  return tallestDinoInFeet;
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +61,19 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let infoMessage = "A dinosaur with an ID of 'incorrect-id' cannot be found.";
+  for (let dinosaur of dinosaurs) {
+    if (dinosaur.dinosaurId === id) {
+      infoMessage = `${dinosaur.name} (${dinosaur.pronunciation})\n${
+        dinosaur.info
+      } It lived in the ${dinosaur.period} period, over ${
+        dinosaur.mya[dinosaur.mya.length - 1]
+      } million years ago.`;
+    }
+  }
+  return infoMessage;
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +100,33 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let livingDinosaur = new Array();
+  for (let dinosaur of dinosaurs) {
+    // Control flow if key argument DOES NOT match
+    // any properties inside the dinosaurs [ {} ]
+    if (!dinosaur.hasOwnProperty(key)) {
+      if (
+        (dinosaur.mya[0] >= mya && mya >= dinosaur.mya[1]) ||
+        mya === dinosaur.mya[0] - 1 ||
+        mya === dinosaur.mya[0]
+      ) {
+        livingDinosaur.push(dinosaur.dinosaurId);
+      }
+    // Control flow if key argument DOES match
+    // any properties inside the dinosaurs [ {} ]
+    } else if (dinosaur.hasOwnProperty(key)) {
+      if (
+        (dinosaur.mya[0] >= mya && mya >= dinosaur.mya[1]) ||
+        mya === dinosaur.mya[0] - 1 ||
+        mya === dinosaur.mya[0]
+      ) {
+        livingDinosaur.push(dinosaur[key]);
+      }
+    }
+  }
+  return livingDinosaur;
+}
 
 module.exports = {
   getTallestDinosaur,

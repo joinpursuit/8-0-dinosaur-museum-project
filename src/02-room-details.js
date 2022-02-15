@@ -25,7 +25,22 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  // Collaborated w/ fellows to come up w/ solution.
+  // Was innitially stuck due to not reallizing that dinosaurs was the original [ {} ] from first data.js file
+  let roomMessage = `Dinosaur with name '${dinosaurName}' cannot be found.`;
+  for (let dinosaur of dinosaurs) {
+    if (dinosaur.name === dinosaurName) {
+      roomMessage = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+      for (let room of rooms) {
+        if (room.dinosaurs.includes(dinosaur.dinosaurId)) {
+          roomMessage = room.name;
+        }
+      }
+    }
+  }
+  return roomMessage;
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,8 +64,30 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
-
+function getConnectedRoomNamesById(rooms, id) {
+  let errorMessage = `Room with ID of 'incorrect-id' could not be found.`;
+  let connectedRooms = new Array();
+  let validId = false;
+  // W/ Tristan's guidance, was able to write more DRY code
+  // Originally, was adding into final result []
+  // before prioritizing error handling
+  for (let room of rooms) {
+    if (room.connectsTo.includes("incorrect-id")) {
+      return errorMessage;
+    }
+    // If room has id argument in it's connectsTo,
+    // .push room name into new []
+    // validId ensures new [] is not empty
+    else if (room.connectsTo.includes(id)) {
+      validId = true;
+      connectedRooms.push(room.name);
+    }
+  }
+  if (!validId) {
+    return errorMessage;
+  }
+  return connectedRooms;
+}
 module.exports = {
   getRoomByDinosaurName,
   getConnectedRoomNamesById,
