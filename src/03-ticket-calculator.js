@@ -62,7 +62,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   let ticketTypes      = [],
       entrantTypes     = [],
       extraTypes       = [],
-      setTicketCost    = 0,
+      setTicketPrice   = 0,
       price            = 'priceInCents',
       hasAddons        = (ticketInfo.extras.length !== 0),
       formatStrings    = (str) => `${str.charAt(0).toUpperCase() + str.slice(1)}`,
@@ -86,25 +86,25 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     // >> Validating if entrat type is valid
     if(entrantTypes.includes(ticketInfo.entrantType)) {
       // >> Setting ticket cost
-      setTicketCost = ticketData[ticketInfo.ticketType][price][ticketInfo.entrantType];
+      setTicketPrice = ticketData[ticketInfo.ticketType][price][ticketInfo.entrantType];
       // >> Validating if ticket contains extras
       if(hasAddons){
         // >> Adding extras to tickets 
         if(extraTypes.some(value => ticketInfo.extras.includes(value))) {
           for(let extra of ticketInfo.extras){
-            setTicketCost += ticketData.extras[extra][price][ticketInfo.entrantType];
+            setTicketPrice += ticketData.extras[extra][price][ticketInfo.entrantType];
           }
         }else{ 
-          setTicketCost = generateErrorMsg('extra'); 
+          setTicketPrice = generateErrorMsg('extra'); 
         }
       }    
     }else{ 
-      setTicketCost = generateErrorMsg('entrant'); 
+      setTicketPrice = generateErrorMsg('entrant'); 
     }
   }else{ 
-    setTicketCost = generateErrorMsg('ticket'); 
+    setTicketPrice = generateErrorMsg('ticket'); 
   }
-  return setTicketCost;
+  return setTicketPrice;
 }
 
 /**
@@ -186,6 +186,7 @@ function purchaseTickets(ticketData, purchases) {
         // >> init calculation
         totalPrice += getTicketPrice;
         ticketReceipt += `${formatStrings(purchase.entrantType)} ${ticketData[purchase.ticketType].description}: $${formatNumbers(getTicketPrice)}`
+        // >> Validating extras
         if(purchase.extras.length) {
           // >> Adding opening parenthesis || Looping over the extras array
           ticketReceipt += ' (';
