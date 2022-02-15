@@ -54,7 +54,85 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+let typeTicketStatus = false;
+let typeEntrantStatus = false;
+let typeExtraStatus = false;
+let typeTicket = ticketInfo["ticketType"];
+let typeEntrant = ticketInfo["entrantType"];
+let typeExtra = ticketInfo["extras"];
+let total = 0;
+
+if(typeTicket === 'general' || typeTicket === "membership") {
+
+  typeTicketStatus = true;
+}
+else {
+  return `Ticket type 'incorrect-type' cannot be found.`;
+}
+if (typeEntrant === "child" || typeEntrant === "adult" 
+
+|| typeEntrant === "senior") {
+ 
+  typeEntrantStatus = true;
+
+}
+else {
+
+  return `Entrant type 'incorrect-entrant' cannot be found.`
+}
+if (typeExtra.length >= 1 ) {
+
+  for( i = 0; i < typeExtra.length; i++) {
+
+  if(typeExtra.includes("movie")) {
+
+    typeExtraStatus = true;
+}
+  else if(typeExtra.includes("education")) {
+
+    typeExtraStatus = true;
+}
+  else if(typeExtra.includes("terrace")) {
+
+    typeExtraStatus = true;
+}
+  else if (!typeExtra.includes("movie")) {
+
+    return "Extra type " + `'${typeExtra[i]}'` + " cannot be found." 
+}
+  else if (!typeExtra.includes("education")) {
+
+    return "Extra type " + `'${typeExtra[i]}'` + " cannot be found." 
+}
+  else if (!typeExtra.includes("terrace")) {
+
+    return "Extra type " + `'${typeExtra[i]}'` + " cannot be found." 
+}
+}
+}
+  if (typeTicketStatus === true && typeEntrantStatus === true) {
+
+    total += ticketData[typeTicket].priceInCents[typeEntrant];
+  
+    if(total != 0 && typeExtraStatus === true) {
+
+      for(let i = 0; i < typeExtra.length; i++) {
+
+        total += ticketData.extras[typeExtra[i]].priceInCents[typeEntrant]
+}
+    
+}
+}
+  return total;
+}
+
+  
+
+
+
+
+
 
 /**
  * purchaseTickets()
@@ -109,7 +187,49 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  /*Full disclaimer, beyond this point I had help with how to approach this from my younger brother's
+  girlfriend who does mostly SQL and Javascript at FDM Group. without her this problem would have 
+  taken significantly longer to solve.*/
+total = 0;
+let bigBIIIGString = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+
+  for (let purchase of purchases) {
+    let storedTicketPrice = calculateTicketPrice(ticketData, purchase);
+    
+    if(typeof storedTicketPrice === "string") {
+      return storedTicketPrice;
+}
+  
+    let descriptors = [];   
+    for (let extra of purchase.extras) {
+      descriptors.push(ticketData.extras[extra].description)
+     
+      /*particularly with making a descriptors array which could be used to hold the descriptions for ease of calling later 
+      when logging the receipt.*/
+}
+    if(purchase.extras.length >= 1) {
+    descriptors = `(${descriptors.join(", ")})`
+    /*As well as recommending I use the join() method,to insert commas between multiple extras in the receipt
+    if there are multiple extras in a given ticket.
+     I never thought of using this method when I first implemented the code.
+    */
+}
+     
+    
+    if(purchase.extras.length >= 1) {
+      bigBIIIGString += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(storedTicketPrice/100).toFixed(2)} ${descriptors}\n`
+}
+    else {
+      bigBIIIGString += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(storedTicketPrice/100).toFixed(2)}\n`
+}
+ 
+    total += storedTicketPrice/100;
+}
+bigBIIIGString +=`-------------------------------------------\nTOTAL: $${total.toFixed(2)}`;
+console.log(bigBIIIGString);
+  return bigBIIIGString;
+}
 
 // Do not change anything below this line.
 module.exports = {

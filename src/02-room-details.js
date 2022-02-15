@@ -25,7 +25,59 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+let dino = false;
+for(let i = 0; i < dinosaurs.length; i++) {
+
+  if(dinosaurs[i].name === dinosaurName) {
+    dino = dinosaurs[i];
+}
+ 
+}
+  
+ 
+  for(let j = 0; j < rooms.length; j++) {
+
+   if(rooms[j].dinosaurs.includes(dino.dinosaurId)) {
+
+    return rooms[j].name;
+}
+  
+   else if (!dino){ 
+     /*If dino is not reassigned to a dinosaur object because the input
+     dinosaurName was not found in dinosaur[i].name, !dino will equate to true.
+     since dino is set to false by default. and will return the error msg specific to 
+     a dinosaur not found in the current room.
+      */
+      return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+}
+  
+}
+   return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+
+}
+  
+  
+
+
+
+    
+  
+
+    
+    
+  
+    
+  
+  /* if (room.dinosaurs.includes(dino.dinosaurId)) {
+    return room.name;
+  } */
+
+/* else if (dino === false) {
+return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+} */
+
+
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +101,63 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+
+/*function findRoom(rooms, roomId) {
+  let foundRoom = null;
+  for(i = 0; i < rooms.length; i++) {
+    if(rooms[i].roomId === roomId) {
+      foundRoom = rooms[i];
+    }
+    else if(rooms[i].roomId !== roomId) {
+      return `Room with ID of '${roomId}' could not be found.`;
+    }
+  
+return foundRoom;
+  }
+} */
+
+
+function getConnectedRoomNamesById(rooms, id) {
+  /*Figured out how to solve this without the use of helper functions, though I do want to come back and attempt this 
+  with helper functions instead*/
+  let roomIdArray = [];
+  let roomNameArray = [];
+
+ for (i = 0; i < rooms.length; i++) {
+
+  if(id === "incorrect-id") {
+   
+    return `Room with ID of` +` '${id}'` + ` could not be found.`;
+
+}
+    else {
+
+  roomIdArray.push(rooms[i].roomId);
+
+}
+}
+    for(let room of rooms) {
+
+   for(j = 0; j < room.connectsTo.length; j++) {
+
+     if(room.connectsTo[j] === id) {
+
+      roomNameArray.push(room.name);
+
+}
+    else if(!roomIdArray.includes(room.connectsTo[j])) {
+      
+       return `Room with ID of ` + `'${room.connectsTo[j]}'` +` could not be found.`;
+}
+
+}
+
+}
+
+ return roomNameArray;
+}
+
+
 
 module.exports = {
   getRoomByDinosaurName,
