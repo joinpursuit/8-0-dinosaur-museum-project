@@ -173,7 +173,7 @@ function purchaseTickets(ticketData, purchases) {
           .charAt(0)
           .toUpperCase()}${purchase.entrantType.slice(1)} ${
           ticketData[purchase.ticketType].description
-        }: $${(ticketPrice / 100).toFixed(2)}${damnTicket(
+        }: $${(ticketPrice / 100).toFixed(2)}${daTicket(
           purchase,
           ticketData
         )}\n`;
@@ -189,7 +189,7 @@ function purchaseTickets(ticketData, purchases) {
     }
     price += ticketPrice;
   }
-  function damnTicket(purchase, ticketData) {
+  function daTicket(purchase, ticketData) {
     let newVar = " (";
     let newArr = purchase.extras;
     for (let i = 0; i < newArr.length; i++) {
