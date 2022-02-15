@@ -26,26 +26,24 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  let errorMessage1 = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`,
-      errorMessage2 = `Dinosaur with name '${dinosaurName}' cannot be found.`,
-      getDinosaurId = {},
-      dinosaurRoom; 
+ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let generateErrorMsg = (type) => `Dinosaur with name '${dinosaurName}' cannot be found${(type === 1) ? '.' : ' in any rooms.'}`,
+      getDinosaurId    = {},
+      dinosaurRoom;
 
   // >> Getting the dinosaur id
   getDinosaurId = dinosaurs.find(e => e.name === dinosaurName);
   if(getDinosaurId !== undefined){
     for(let room of rooms){
-      // >> Room found it
       if(room.dinosaurs.includes(getDinosaurId.dinosaurId)){
-        dinosaurRoom = room.name; 
+        dinosaurRoom = room.name;
         break;
       }else{
-        dinosaurRoom = errorMessage1;
+        dinosaurRoom = generateErrorMsg(2);
       }
     }
   }else{
-    dinosaurRoom = errorMessage2;
+    dinosaurRoom = generateErrorMsg(1);
   }
   return dinosaurRoom;
 }
@@ -74,18 +72,21 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-    let errorMessage  = `Room with ID of 'incorrect-id' could not be found.`
+    let setError      = 'incorrect-id',
+        errorMessage  = `Room with ID of '${setError}' could not be found.`,
         getRoomsById  = {},
         connectedRoom = [];
-  // >> 
+  
+  // >> Getting the dinosaur info by id 
   getRoomsById = rooms.find(e => e.roomId === id);
   if(getRoomsById !== undefined){
     for(let room of rooms){
-      if(getRoomsById.connectsTo.includes('incorrect-id')){
-        connectedRoom = errorMessage;
-      }
-      else if(getRoomsById.connectsTo.includes(room.roomId)){
+      if(getRoomsById.connectsTo.includes(room.roomId)){
         connectedRoom.push(room.name);
+      }
+      else if(getRoomsById.connectsTo.includes(setError)){
+        connectedRoom = errorMessage;
+        break;
       }
     }
   }else{

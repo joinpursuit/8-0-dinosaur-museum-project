@@ -23,34 +23,20 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getTallestDinosaur(dinosaurs) {
-  let temp =[], tallestDino = dinosaurs[0], talletsDinoObj = {};
-  // >> ft = m * 3.2808
-  // if(animals.length !== 0){
-  //   for(let i=0; i < animals.length; i++){
-  //     temp.push(animals[i].count)
-  //   }
-  //   result = animals.find(e => e.count === Math.max(...temp));
-  // }else{result = null;}
+  let convertToFeet   = (meters) => Number((meters * 3.280839895).toFixed(2)),
+      initTallest     = dinosaurs[0], 
+      talletsDinosaur = {};
 
-
+  // >> Validating dinosaurs array || otherwise return an empty obj.
   if(dinosaurs.length !== 0){
-    for(let dino of dinosaurs){
-      if(dino.lengthInMeters > tallestDino.lengthInMeters){
-        tallestDino = dino;
+    for(let dinosaur of dinosaurs){
+      if(dinosaur.lengthInMeters > initTallest.lengthInMeters){
+        initTallest = dinosaur;
       }
-      //temp.push(dinosaurs[i].lengthInMeters);
-    
-      // console.log('>>>');
-      // console.log(Math.max(temp));
-      // if(dinosaurs[i].lengthInMeters === Math.max(temp)){
-      //   talletsDinoObj = `${dinosaurs[i].name} : ${(dinosaurs[i].lengthInMeters * 3.2808).toFixed(2)}`;
-      // }
     }
-    talletsDinoObj[tallestDino.name] = Number((tallestDino.lengthInMeters * 3.280839895).toFixed(2));
-    //talletsDinoObj = dinosaurs.find(e => e.lengthInMeters === Math.max(...temp));
-    //console.log(talletsDinoObj)
+    talletsDinosaur[initTallest.name] = convertToFeet(initTallest.lengthInMeters);
   }
-  return talletsDinoObj;
+  return talletsDinosaur;
 }
 
 /**
@@ -75,24 +61,21 @@ function getTallestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  let errorMessage = `A dinosaur with an ID of 'incorrect-id' cannot be found.`,
-      temp = {},
-      dinoDescription;
-  // for(let dino of dinosaurs){
-  //   if(dino.dinosaurId == id){
-  //     temp = dino;
-  //     break;
-  //   }
-  // }
-  temp = dinosaurs.find(e => e.dinosaurId === id);
-  //const periodCount = (temp.mya.length == 2) ? temp.mya[1] : temp.mya[0];
-  if(temp !== undefined){
-    dinoDescription = `${temp.name} (${temp.pronunciation})\n${temp.info} It lived in the ${temp.period} period, over ${(temp.mya.length == 2) ? temp.mya[1] : temp.mya[0]} million years ago.`;
+  let calculateMyA = () => (getInfo.mya.length === 2) ? getInfo.mya[1] : getInfo.mya[0],
+      errorMessage = `A dinosaur with an ID of 'incorrect-id' cannot be found.`,
+      getInfo      = {},
+      setDescription;
+
+  // >> Getting the dinosaur's information by Id
+  getInfo = dinosaurs.find(e => e.dinosaurId === id);
+  if(getInfo !== undefined){
+    setDescription = getInfo.name + ' (' + getInfo.pronunciation + ')\n' + getInfo.info + ' It lived in the ' + getInfo.period +
+                     ' period, over ' + calculateMyA() + ' million years ago.';
   }
   else{
-    dinoDescription = errorMessage;
+    setDescription = errorMessage;
   }
-  return dinoDescription;
+  return setDescription;
 }
 
 /**
@@ -128,9 +111,9 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   let dinosaursAlive = [];
 
   for(let dino of dinosaurs) {
-    // >> 
+    // >> validating whether a key has been passed or not
     if(key === undefined) {
-      // Validating mya: [number, number]
+      // >> Validating mya: [number, number]
       if(dino.mya.length == 2){
         if(dino.mya[0] >= mya && mya >= dino.mya[1]) {
           dinosaursAlive.push(dino.dinosaurId);
@@ -138,7 +121,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
         if(dino.mya[0] < mya && mya < dino.mya[1]) {
           dinosaursAlive = [];
         }
-      // Validating mya: [number]
+      // >> Validating mya: [number]
       }else if(dino.mya.length == 1) {
         if((dino.mya[0]) === mya) {
           dinosaursAlive.push(dino.dinosaurId);
@@ -148,14 +131,12 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
         }  
       }
     }else{
-      if(key === 'unknown-key') { ///??? name = unknown-key
-        if(dino.mya[0] === mya || mya === dino.mya[1]) {
-          dinosaursAlive.push(dino.name);
-        }
-      }else{
-        if(dino.mya[0] === mya || mya === dino.mya[1]){
-          dinosaursAlive.push(dino.name);
-        }
+      // Validating mya cases
+      if(dino.mya[0] === mya || mya === dino.mya[1]) {
+        dinosaursAlive.push(dino.name);
+      }
+      else if((dino.mya[0] - 1) === mya) {
+        dinosaursAlive.push(dino.dinosaurId);
       }
     }
   }

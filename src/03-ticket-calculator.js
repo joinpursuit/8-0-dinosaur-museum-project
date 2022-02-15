@@ -75,7 +75,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
                        },
         } = ticketData;
 
-        //console.log(genPriceInCents)
+  
   /*
   Object.entries(items).map(item => {
     console.log(item)
@@ -142,7 +142,8 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     }else{ 
       setTicketCost = generateErrorMsg('entrant'); 
     }
-  }else{ setTicketCost = generateErrorMsg('ticket'); 
+  }else{ 
+    setTicketCost = generateErrorMsg('ticket'); 
   }
   return setTicketCost;
 }
