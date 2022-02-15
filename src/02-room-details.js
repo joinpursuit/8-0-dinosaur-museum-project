@@ -84,10 +84,11 @@ function getConnectedRoomNamesById(rooms, id) {
       if (id === room.roomId) {
         connectedRooms = room.connectsTo;
       }
-      for (let connectedRoom of connectedRooms) {
-        if (!existingRooms.includes(connectedRoom)) {
-          return `Room with ID of '${connectedRoom}' could not be found.`;
-        }
+    }
+
+    for (let connectedRoom of connectedRooms) {
+      if (!existingRooms.includes(connectedRoom)) {
+        return `Room with ID of '${connectedRoom}' could not be found.`;
       }
     }
   }
@@ -98,12 +99,7 @@ function getConnectedRoomNamesById(rooms, id) {
     return validator;
   }
 
-  function createConnectedRoomNamesArray(rooms, id) {
-    for (let room of rooms) {
-      if (id === room.roomId) {
-        connectedRooms = room.connectsTo;
-      }
-    }
+  function changeRoomIdToName(rooms, id) {
     for (let i = 0; i < connectedRooms.length; ++i) {
       for (let room of rooms) {
         if (connectedRooms[i] === room.roomId) {
@@ -113,9 +109,8 @@ function getConnectedRoomNamesById(rooms, id) {
     }
     return connectedRooms;
   }
-  // Creates an area of the connected rooms to the specified room
   // Changes the elements in the cretaed array from codes to names
-  connectedRooms = createConnectedRoomNamesArray(rooms, id);
+  connectedRooms = changeRoomIdToName(rooms, id);
 
   return connectedRooms;
 }
