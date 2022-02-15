@@ -170,8 +170,8 @@ function purchaseTickets(ticketData, purchases) {
       formatStrings    = (str) => `${str.charAt(0).toUpperCase() + str.slice(1)}`,
       formatNumbers    = (num) => `${(num/100).toFixed(2)}`,
       inputError       = false,
-      total            = 0,
-      getTicketData,
+      totalPrice       = 0,
+      getTicketPrice,
       ticketReceipt;
 
     for(let i = 0; i < 42; i++) { divider += '-'; } 
@@ -179,12 +179,13 @@ function purchaseTickets(ticketData, purchases) {
     // >> Starting process to generate receipt || adding Header
     ticketReceipt = generateHeader();
 
-    // >> Looping over the purchases to print each item
+    // >> Looping over the purchases to add each item
     for(let purchase of purchases) {
-      getTicketData = calculateTicketPrice(ticketData, purchase)
-      if(typeof getTicketData === 'number') {
-        total += getTicketData;
-        ticketReceipt += `${formatStrings(purchase.entrantType)} ${ticketData[purchase.ticketType].description}: $${formatNumbers(getTicketData)}`
+      getTicketPrice = calculateTicketPrice(ticketData, purchase)
+      if(typeof getTicketPrice === 'number') {
+        // >> init calculation
+        totalPrice += getTicketPrice;
+        ticketReceipt += `${formatStrings(purchase.entrantType)} ${ticketData[purchase.ticketType].description}: $${formatNumbers(getTicketPrice)}`
         if(purchase.extras.length) {
           // >> Adding opening parenthesis || Looping over the extras array
           ticketReceipt += ' (';
@@ -200,10 +201,10 @@ function purchaseTickets(ticketData, purchases) {
       }
       ticketReceipt += '\n';
     }
-    // >> Ending process to print out receipt || adding footer
-    ticketReceipt = ticketReceipt.slice(0, -1) + `${generateFooter()}${formatNumbers(total)}`;
+    // >> Ending process to generate receipt || adding footer
+    ticketReceipt = ticketReceipt.slice(0, -1) + `${generateFooter()}${formatNumbers(totalPrice)}`;
   
-  return (inputError) ? getTicketData : ticketReceipt;
+  return (inputError) ? getTicketPrice : ticketReceipt;
 }
 
 // Do not change anything below this line.
