@@ -72,13 +72,17 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
+
+
+
+
 function getConnectedRoomNamesById(rooms, id) {
   let arrayOfIds = [];
   let arrayOfNames = [];
 
   for (let i = 0; i < rooms.length; i++) {
     if (rooms[i].roomId === id) {
-      arrayOfIds = arrayOfIds.concat(rooms[i].connectsTo);
+      arrayOfIds = rooms[i].connectsTo;
     }
   }
   for (let j = 0; j < rooms.length; j++) {
@@ -96,6 +100,8 @@ function getConnectedRoomNamesById(rooms, id) {
     return arrayOfNames;
   }
 }
+
+console.log(getConnectedRoomNamesById(exampleRoomData, "A6QaYdyKra"))
 
 module.exports = {
   getRoomByDinosaurName,

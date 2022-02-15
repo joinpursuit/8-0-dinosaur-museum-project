@@ -95,38 +95,25 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {
+function getDinosaursAliveMya(dinosaurs, mya, key = "dinosaurId") {
   let newArr = [];
   for (let i = 0; i < dinosaurs.length; i++) {
-    if (key === undefined) {
       if (
         dinosaurs[i].mya.length > 1 &&
         mya <= dinosaurs[i].mya[0] &&
         mya >= dinosaurs[i].mya[1]
       ) {
-        newArr.push(dinosaurs[i].dinosaurId);
+        newArr.push(dinosaurs[i][key]);
       } else if (dinosaurs[i].mya.length === 1) {
         if (mya === dinosaurs[i].mya[0] || mya === dinosaurs[i].mya[0] - 1) {
-          newArr.push(dinosaurs[i].dinosaurId);
+          newArr.push(dinosaurs[i][key]);
         }
-      }
-    } else if ((key = true)) {
-      if (
-        dinosaurs[i].mya.length > 1 &&
-        mya <= dinosaurs[i].mya[0] &&
-        mya >= dinosaurs[i].mya[1]
-      ) {
-        newArr.push(dinosaurs[i].name);
-      } else if (dinosaurs[i].mya.length === 1) {
-        if (mya === dinosaurs[i].mya[0] || mya === dinosaurs[i].mya[0] - 1) {
-          newArr.push(dinosaurs[i].name);
-        }
-      }
     }
   }
   return newArr;
 }
 
+// }
 module.exports = {
   getTallestDinosaur,
   getDinosaurDescription,
