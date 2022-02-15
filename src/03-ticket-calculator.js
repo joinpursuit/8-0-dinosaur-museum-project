@@ -55,37 +55,55 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-    let validEntrance = ['adult','child', 'senior'];
-    let validTicketType = ['general', 'membership'];
-    let validExtras = ['movie', 'education', 'terrace'];
-    let totalCost = 0;
-    let costWithExtras = 0;
-  
-    if (validTicketType.includes(ticketInfo.ticketType)){
-      if (validEntrance.includes(ticketInfo.entrantType)){
-        totalCost += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
-      }
+  let price = 0;
+
+  let typeError = ``;
+  let entrantError = ``;
+  let extraError = ``;
+
+  function ticketStuff(info) {
+    if (
+      info.entrantType === "adult" ||
+      info.entrantType === "child" ||
+      info.entrantType === "senior"
+    ) {
+      price =
+        ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+    } else {
+      entrantError = `Entrant type 'incorrect-entrant' cannot be found.`;
+      return entrantError;
     }
-    for (let i = 0; i < ticketInfo.extras.length; i++){
-      if (validExtras.includes(ticketInfo.extras[i])){
-        if (validEntrance.includes(ticketInfo.entrantType)){
-          costWithExtras += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType]
-        }
-      }
-      if (!validExtras.includes(ticketInfo.extras[i])){
-        return `Extra type '${[ticketInfo.extras[i]]}' cannot be found.`;
-      }
-  
-    }
-    if (!validTicketType.includes(ticketInfo.ticketType)){
-      return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
-    }
-    if (!validEntrance.includes(ticketInfo.entrantType)){
-      return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
-    }
-  
-    return totalCost + costWithExtras;
   }
+  if (
+    ticketInfo.ticketType === "general" ||
+    ticketInfo.ticketType === "membership"
+  ) {
+    ticketStuff(ticketInfo);
+  } else {
+    typeError = `Ticket type 'incorrect-type' cannot be found.`;
+    return typeError;
+  }
+  for (let extra of ticketInfo.extras) {
+    if (extra in ticketData.extras) {
+      price += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+    } else {
+      extraError = `Extra type 'incorrect-extra' cannot be found.`;
+      return extraError;
+    }
+  }
+  if (price > 0) {
+    return price;
+  } else {
+    if (typeError !== "") {
+      return typeError;
+    } else if (entrantError !== "") {
+      return entrantError;
+    } else if (extraError !== "") {
+      return extraError;
+    }
+  }
+}
+
 
   
 
@@ -143,7 +161,52 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let price = 0;
+  let receipt =
+    "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  for (let purchase of purchases) {
+    let ticketPrice = calculateTicketPrice(ticketData, purchase);
+    if (typeof ticketPrice === "number") {
+      if (purchase.extras.length > 0) {
+        receipt += `${purchase.entrantType
+          .charAt(0)
+          .toUpperCase()}${purchase.entrantType.slice(1)} ${
+          ticketData[purchase.ticketType].description
+        }: $${(ticketPrice / 100).toFixed(2)}${damnTicket(
+          purchase,
+          ticketData
+        )}\n`;
+      } else {
+        receipt += `${purchase.entrantType
+          .charAt(0)
+          .toUpperCase()}${purchase.entrantType.slice(1)} ${
+          ticketData[purchase.ticketType].description
+        }: $${(ticketPrice / 100).toFixed(2)}\n`;
+      }
+    } else {
+      return ticketPrice;
+    }
+    price += ticketPrice;
+  }
+  function damnTicket(purchase, ticketData) {
+    let newVar = " (";
+    let newArr = purchase.extras;
+    for (let i = 0; i < newArr.length; i++) {
+      if (i === newArr.length - 1) {
+        newVar += `${ticketData.extras[newArr[i]].description})`;
+      } else {
+        newVar += `${ticketData.extras[newArr[i]].description}, `;
+      }
+    }
+    return newVar;
+  }
+  receipt += `-------------------------------------------\nTOTAL: $${(
+    price / 100
+  ).toFixed(2)}`;
+
+  return receipt;
+}
 
 // Do not change anything below this line.
 module.exports = {
