@@ -23,13 +23,13 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getTallestDinosaur(dinosaurs) {  
-  let tallest = {};
+  const tallest = {};
   let tall = dinosaurs[0];
   
   if (!dinosaurs.length) {
     return  {};
   }
-  for (let dino of dinosaurs) {
+  for (const dino of dinosaurs) {
   if (dino.lengthInMeters > tall.lengthInMeters ) {
     tall = dino
   } 
@@ -63,7 +63,7 @@ tallest[tall.name] = tall.lengthInMeters * 3.281;
  */
 function getDinosaurDescription(dinosaurs, id) {
 let data = null;
-for (let dino of dinosaurs) {
+for (const dino of dinosaurs) {
     if (dino.dinosaurId === id) {
        data = dino;
     } 
@@ -71,7 +71,7 @@ for (let dino of dinosaurs) {
     if (!data) {
        return `A dinosaur with an ID of 'incorrect-id' cannot be found.`;
       }
-    let longtime = data.mya[data.mya.length -1];
+    const longtime = data.mya[data.mya.length -1];
 return `${data.name} (${data.pronunciation})\n${data.info} It lived in the ${data.period} period, over ${longtime} million years ago.`
 };
 
@@ -102,8 +102,8 @@ return `${data.name} (${data.pronunciation})\n${data.info} It lived in the ${dat
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-let alive = [];
-for (let dino of dinosaurs){
+const alive = [];
+for (const dino of dinosaurs){
 if (dino.mya[0] >= mya && dino.mya[1] <= mya){
 if (dino[key] !== undefined) {
   alive.push(dino[key])

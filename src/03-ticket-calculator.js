@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { membership } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,47 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let personalTicketPrice = 0
+  let regularPrice = 0
+  let extraPrice = 0
+  let overallTicketData = ticketInfo.ticketType
+  let entrants = ticketInfo.entrantType
+  let extraType = ticketInfo.extras
+  let hasCorrectType = false
+  let hasCorrectEntrant =false
+  let hasCorrectExtra = false
+  
+  
+if (overallTicketData === 'general' || overallTicketData === 'membership') {
+    hasCorrectType = true
+  } else {
+    return `Ticket type 'incorrect-type' cannot be found.` 
+  }
+if (entrants === 'child' || entrants === 'adult' || entrants === 'senior') {
+  hasCorrectEntrant = true
+} else {
+  return `Entrant type 'incorrect-entrant' cannot be found.`
+}
+if (extraType.length > 0 ) {
+  if (extraType.includes('movie') || extraType.includes('education') || extraType.includes('terrace')){
+    hasCorrectExtra = true
+  } else {
+    return `Extra type 'incorrect-extra' cannot be found.`
+  }
+}
+
+if (hasCorrectType && hasCorrectEntrant) {
+  regularPrice = ticketData[overallTicketData].priceInCents[entrants] 
+} 
+if (hasCorrectType && hasCorrectEntrant && hasCorrectExtra) {
+  regularPrice = ticketData[overallTicketData].priceInCents[entrants] 
+  for (let i = 0; i < extraType.length ; i ++){
+    extraPrice += ticketData.extras[extraType[i]].priceInCents[entrants]
+  }
+}
+return regularPrice + extraPrice
+} 
 
 /**
  * purchaseTickets()
@@ -109,7 +150,30 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+let total = 0 
+  let hiya =  "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
+ for (let purchase of purchases){
+   let result =calculateTicketPrice(ticketData, purchase);
+   if (typeof(result)=== 'string') {
+     return result
+   }
+ 
+let receipt = []
+for (let extra of purchase.extras){
+  receipt.push(ticketData.extras[extra].description)
+} 
+if (purchase.extras.length) {
+  receipt = ` (${receipt.join(`, `)})`
+  }
+  hiya += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(result/100).toFixed(2)}${receipt}\n`
+  
+  total += result/100
+  
+ }
+  hiya  += `-------------------------------------------\nTOTAL: $${total.toFixed(2)}`
+  return hiya
+}
 
 // Do not change anything below this line.
 module.exports = {
