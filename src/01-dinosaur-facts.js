@@ -7,7 +7,6 @@
 */
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
-
 /**
  * getTallestDinosaur()
  * ---------------------
@@ -22,7 +21,63 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  if (dinosaurs.length === 0) {
+    return {};
+  }
+
+  // understand the problem
+  // what are the function inputs?
+  // one input: dinosaurs an array of objects dinosaurs
+  //             each element of the array is an object
+  //             relevent properties: .lengthInMeters . name
+
+  // What are the functions output?
+  // an object with a single key value pair
+  // the key should be the name of the tallest dinosaur
+  // the value should be the length in feet of that dinosaur
+
+  // devise plan
+  // two pieces of info to remember:
+  // name of the tallest dino
+  // height of the tallest dino
+
+  let tallestDino = {};
+  let tallestName = "";
+  let tallestHeight = 0;
+
+  // scan/iterate through our array of dinosaurs
+  for (let dino of dinosaurs) {
+    // console.log('logging one dino:", dino"
+    if (dino.lengthInMeters > tallestHeight) {
+      // console.log('found a taller dino', dino.lengthInMeters, 'is the taller than', tallestHeight);
+
+      //    if our current dino is taller than the tallest we've seen
+      //      update tallest dino name and height
+      tallestHeight = dino.lengthInMeters;
+      tallestName = dino.name;
+
+     
+    }
+  }
+
+  // console.log(tallestName, 'is', tallestHeight, 'meters tall');
+
+  // once we scan the full array of dinos we know we have the tallest dino's name and height written down
+
+  // convert the dino heigth into feet
+  tallestHeight = tallestHeight * 3.281;
+  // create an object with a dino name as a key and length in feet as value
+
+  tallestDino[tallestName] = tallestHeight;
+  // return that object
+  return tallestDino;
+}
+
+
+// console.log(dinosaurs[1].lengthInMeters) use it inside the function to test
+// getTallestDinosaur(exampleDinosaurData);
+// console.log(getTallestDinosaur(exampleDinosaurData));
 
 /**
  * getDinosaurDescription()
@@ -44,7 +99,25 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let message = '';
+  
+
+  for (let i = 0; i < dinosaurs.length; i++) {
+
+    if (dinosaurs[i].dinosaurId === id) {
+
+      
+      message = `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.`;
+     
+    return message;
+    }
+    
+  } 
+  message = `A dinosaur with an ID of 'incorrect-id' cannot be found.`;
+  
+  return message;
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +144,100 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinoId = [];
+  for (let i = 0; i < dinosaurs.length; i++) {
+ 
+    
+    if (dinosaurs[i].mya.length === 2) {
+      if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya) {
+        if (key === undefined) {
+          dinoId.push(dinosaurs[i].dinosaurId);
+        }
+        else {
+          switch (key) {
+            case 'dinosaurId':
+              dinoId.push(dinosaurs[i].dinosaurId);
+              break;
+            case 'name':
+              dinoId.push(dinosaurs[i].name);
+              break;
+            case 'pronunciation':
+              dinoId.push(dinosaurs[i].pronunciation);
+              break;
+            case 'meaningOfName':
+              dinoId.push(dinosaurs[i].meaningOfName);
+              break;
+            case 'diet':
+              dinoId.push(dinosaurs[i].diet);
+              break;
+            case 'lengthInMeters':
+              dinoId.push(dinosaurs[i].lengthInMeters);
+              break;
+            case 'period':
+              dinoId.push(dinosaurs[i].period);
+              break;
+            case 'mya':
+              dinoId.push(dinosaurs[i].mya);
+              break;
+            case 'info':
+              dinoId.push(dinosaurs[i].info);
+              break;
+            default:
+              dinoId.push(dinosaurs[i].dinosaurId);
+          }
+        }
+        
+        
+      }
+    }
+    if (dinosaurs[i].mya.length === 1) {
+      if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[0] - 1 <= mya) {
+        if (key === undefined) {
+          dinoId.push(dinosaurs[i].dinosaurId);
+        }
+        else {
+          switch (key) {
+            case 'dinosaurId':
+              dinoId.push(dinosaurs[i].dinosaurId);
+              break;
+            case 'name':
+              dinoId.push(dinosaurs[i].name);
+              break;
+            case 'pronunciation':
+              dinoId.push(dinosaurs[i].pronunciation);
+              break;
+            case 'meaningOfName':
+              dinoId.push(dinosaurs[i].meaningOfName);
+              break;
+            case 'diet':
+              dinoId.push(dinosaurs[i].diet);
+              break;
+            case 'lengthInMeters':
+              dinoId.push(dinosaurs[i].lengthInMeters);
+              break;
+            case 'period':
+              dinoId.push(dinosaurs[i].period);
+              break;
+            case 'mya':
+              dinoId.push(dinosaurs[i].mya);
+              break;
+            case 'info':
+              dinoId.push(dinosaurs[i].info);
+              break;
+            default:
+              dinoId.push(dinosaurs[i].dinosaurId);
+          }
+        }
+      }
+    }
+  }
+  return dinoId;
+
+}
+
+
+
 
 module.exports = {
   getTallestDinosaur,
