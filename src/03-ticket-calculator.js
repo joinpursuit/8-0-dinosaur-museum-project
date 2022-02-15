@@ -76,7 +76,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //add extras in the entire list. return once finished.
     for(let extra of ticketInfo.extras){
       //check if extra is valid 
-      if(ticketData.extras.hasOwnProperty(extra)){ //thanks, https://stackoverflow.com/questions/455338/how-do-i-check-if-an-object-has-a-key-in-javascript
+      if(ticketData.extras.hasOwnProperty(extra)){ 
         total+= ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
       } else {
         //extra is not valid. return error

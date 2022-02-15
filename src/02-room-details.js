@@ -69,7 +69,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) { //FIXME needs refactoring lols. use .INCLUDES!!!
+function getConnectedRoomNamesById(rooms, id) { 
   let connectedRooms=[];
   let found= false;
   for(let room of rooms){
@@ -86,19 +86,18 @@ function getConnectedRoomNamesById(rooms, id) { //FIXME needs refactoring lols. 
       //search entire museum for the room name.
         if(connectedRooms[x] === i.roomId){
           connectedRooms[x]= i.name;
-          continue;
         }
       } 
     }
      for(let x of connectedRooms){
       //check connected rooms for existence.
-      let boo= false;
+      let exists= false;
       for(let i of rooms){ // 
         if(x === i.name){
-          boo= true;
+          exists= true;
         }
       }
-      if(!boo){
+      if(!exists){
         return `Room with ID of '${x}' could not be found.`;
       }
     }
