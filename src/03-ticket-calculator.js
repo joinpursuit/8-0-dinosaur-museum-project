@@ -203,48 +203,46 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  // helper to buid this
-  let receiptHeader = 'Thank you for visiting the Dinosaur Museum!' +
-                      '\n-------------------------------------------\n',
-      receiptFooter = '\n-------------------------------------------\n' + 
-                      'TOTAL: $',
-      noAddons, 
+  let strReceiptHeader = 'Thank you for visiting the Dinosaur Museum!',
+      strReceiptFooter = 'TOTAL: $',
+      divider          = '-',
+      generateHeader   = () => `${strReceiptHeader}\n${divider}\n`,
+      generateFooter   = () => `\n${divider}\n${strReceiptFooter}`,
+      formatStrings    = (str) => `${str.charAt(0).toUpperCase() + str.slice(1)}`,
+      formatNumbers    = (num) => `${(num/100).toFixed(2)}`,
       total = 0,
       getTicketData,
       ticketReceipt;
 
-    ticketReceipt = receiptHeader;
+    for(let i = 0; i < 42; i++) { divider += '-'; } 
+    
+    // >> Starting process to assemble Receipt
+    ticketReceipt = generateHeader();
+    // >> Looping over the purchases to print every item
     for(let purchase of purchases){
-      // >>
       getTicketData = calculateTicketPrice(ticketData, purchase)
       if(typeof getTicketData === 'number'){
         total += getTicketData;
-        // >> create helper for this task
-        ticketReceipt += `${purchase.entrantType.charAt(0).toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(getTicketData/100).toFixed(2)}`
+        ticketReceipt += `${formatStrings(purchase.entrantType)} ${ticketData[purchase.ticketType].description}: $${formatNumbers(getTicketData)}`
         if(purchase.extras.length){
-          //helper to build this
+          // >> Adding opening parenthesis || Looping over the extras
           ticketReceipt += ' (';
           for(let extra of purchase.extras){
             ticketReceipt += `${ticketData.extras[extra].description}, `;
           } 
+          // >> Removing last [, comma] || 
           ticketReceipt = ticketReceipt.slice(0, -2) + ')';
         }
-
       }else{
+        // >> Getting a wrong input
         return getTicketData; //// ?
       }
       ticketReceipt += '\n';
     }
-    ticketReceipt = ticketReceipt.slice(0, -1) + `${receiptFooter}${(total/100).toFixed(2)}`; // >> helperr for formatting amounts of money!
-
+    ticketReceipt = ticketReceipt.slice(0, -1) + `${generateFooter()}${formatNumbers(total)}`;
+    // >> Ending process to assemble Receipt
   return ticketReceipt;
 }
-
-// function validateTicketError(ticketData, ticketInfo) {
-//   console.log(ticketInfo)
-//   return result;
-// }
-// validateTicketError(ticketData, ticketInfo)
 
 // Do not change anything below this line.
 module.exports = {
