@@ -169,15 +169,17 @@ function purchaseTickets(ticketData, purchases) {
       generateFooter   = () => `\n${divider}\n${strReceiptFooter}`,
       formatStrings    = (str) => `${str.charAt(0).toUpperCase() + str.slice(1)}`,
       formatNumbers    = (num) => `${(num/100).toFixed(2)}`,
-      total = 0,
+      inputError       = false,
+      total            = 0,
       getTicketData,
       ticketReceipt;
 
     for(let i = 0; i < 42; i++) { divider += '-'; } 
     
-    // >> Starting process to assemble Receipt
+    // >> Starting process to generate receipt || adding Header
     ticketReceipt = generateHeader();
-    // >> Looping over the purchases to print every item
+
+    // >> Looping over the purchases to print each item
     for(let purchase of purchases) {
       getTicketData = calculateTicketPrice(ticketData, purchase)
       if(typeof getTicketData === 'number') {
@@ -189,18 +191,19 @@ function purchaseTickets(ticketData, purchases) {
           for(let extra of purchase.extras) {
             ticketReceipt += `${ticketData.extras[extra].description}, `;
           } 
-          // >> Removing last [comma-whitespace pair] || closing parenthesis 
+          // >> Removing last [comma-whitespace pair] || adding the closing parenthesis 
           ticketReceipt = ticketReceipt.slice(0, -2) + ')';
         }
       }else{
-        // >> Getting a wrong input
-        return getTicketData;
+        // >> Validating a wrong input || ticketType: "discount", // Incorrect
+        inputError = true;
       }
       ticketReceipt += '\n';
     }
+    // >> Ending process to print out receipt || adding footer
     ticketReceipt = ticketReceipt.slice(0, -1) + `${generateFooter()}${formatNumbers(total)}`;
-    // >> Ending process to assemble Receipt
-  return ticketReceipt;
+  
+  return (inputError) ? getTicketData : ticketReceipt;
 }
 
 // Do not change anything below this line.
