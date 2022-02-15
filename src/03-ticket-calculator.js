@@ -83,13 +83,13 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 
   // >> Validating if ticket type is valid
   if(ticketTypes.includes(ticketInfo.ticketType)) {
-    // >> Validating if entrat type is valid
+    // >> Validating if entrant type is valid
     if(entrantTypes.includes(ticketInfo.entrantType)) {
-      // >> Setting ticket cost
+      // >> Setting ticket price
       setTicketPrice = ticketData[ticketInfo.ticketType][price][ticketInfo.entrantType];
       // >> Validating if ticket contains extras
       if(hasAddons){
-        // >> Adding extras to tickets 
+        // >> Validating if extra inputs are valid 
         if(extraTypes.some(value => ticketInfo.extras.includes(value))) {
           for(let extra of ticketInfo.extras){
             setTicketPrice += ticketData.extras[extra][price][ticketInfo.entrantType];
