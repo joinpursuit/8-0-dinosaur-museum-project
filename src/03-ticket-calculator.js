@@ -59,14 +59,12 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  let noAddons     = (ticketInfo.extras.length === 0),
-      prefixTicketType,
-      prefixEstrasType,
-      ticketTypes     = [],
-      admissionInfo   = [],
-      entrantTypes    = [],
-      extraTypes      = [],
-      ticketPrice  = 0;
+  let ticketTypes      = [],
+      entrantTypes     = [],
+      extraTypes       = [],
+      setTicketCost    = 0,
+      hasAddons        = (ticketInfo.extras.length !== 0),
+      generateErrorMsg = (type) => `${type.charAt(0).toUpperCase() + type.slice(1)} type 'incorrect-${(type === 'entrant'||type ===  'extra') ? type : 'type'}' cannot be found.`;
 
   // Object destructuring:
   const { general : { description : genDescription, priceInCents : genPriceInCents }, 
@@ -77,6 +75,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
                        },
         } = ticketData;
 
+        //console.log(genPriceInCents)
   /*
   Object.entries(items).map(item => {
     console.log(item)
@@ -102,234 +101,51 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //console.log(general)
 
 
-    if(ticketData[item] === 'general'){
-      console.log('yes')
-    }
   })
   
 
-
-  for (const [key, value] of Object.entries(ticketData)) {
-    // ticketTypes array = [general, membership, extras]
-    ticketTypes.push(key);
-    if(value.description !== undefined){
-      admissionInfo.push(value.description)
-    }
-    
-
-    //console.log(ticketData.general)
-    //console.log(ticketData.membership)
-    //console.log(ticketData.extras)
-    //console.log(value.priceInCents)
-    if(typeof value.priceInCents === 'object'){
-      for (const [key2, value2] of Object.entries(value.priceInCents)) {
-        entrantTypes.push(key2)
+  
+  for (const [keyTicketTypes, valueTicketTypes] of Object.entries(ticketData)) {
+    // Getting the ticket Types = [general, membership, extras]
+    ticketTypes.push(keyTicketTypes);
+    if(typeof valueTicketTypes.priceInCents === 'object'){
+      for (const [keyEntrantTypes, value] of Object.entries(valueTicketTypes.priceInCents)) {
+        // Getting the entrant Types = [child, adult, senior]
+        entrantTypes.push(keyEntrantTypes)
       }
     }
     if(typeof ticketData.extras === 'object'){
-      for (const [key3, value3] of Object.entries(ticketData.extras)) {
-        extraTypes.push(key3)
+      // Getting the extra Types = [movie, education, terrace]
+      for (const [keyExtraTypes, value] of Object.entries(ticketData.extras)) {
+        extraTypes.push(keyExtraTypes)
       }
     }
-    
   }  
 
-  //console.log(ticketInfo.entrantType)
-  //console.log(extraTypes)
-  //////////////////////////////////////////////////////////////////////////////////////
-    // Validating T I C K E T - T Y P E S
-    if(ticketTypes.includes(ticketInfo.ticketType)) {
-
-      if(entrantTypes.includes(ticketInfo.entrantType)) {
-        
-        //if(ticketInfo.entrantType === 'child' || ticketInfo.entrantType === 'adult' || ticketInfo.entrantType === 'senior') {
-          
-          ticketPrice = ticketData[ticketInfo.ticketType]['priceInCents'][ticketInfo.entrantType];
-            
-        }else{
-          ticketPrice = `Entrant type 'incorrect-entrant' cannot be found.`;  
-        }
-
-        if(ticketInfo.extras.length !== 0){
-          if(extraTypes.some(value => ticketInfo.extras.includes(value))) {
-            // >> Calculate EXTRAS
-            for(let extra of ticketInfo.extras){
-              ticketPrice += ticketData.extras[extra]['priceInCents'][ticketInfo.entrantType];
-            }
-          }else{
-            ticketPrice = `Extra type 'incorrect-extra' cannot be found.`;  
+  // Validating T I C K E T - T Y P E S
+  if(ticketTypes.includes(ticketInfo.ticketType)) {
+    // Validating E N T R A N T - T Y P E S
+    if(entrantTypes.includes(ticketInfo.entrantType)) {
+      //
+      setTicketCost = ticketData[ticketInfo.ticketType]['priceInCents'][ticketInfo.entrantType];
+      // Validating E X T R A S
+      if(hasAddons){
+        // >> Adding extra cost to the ticket 
+        if(extraTypes.some(value => ticketInfo.extras.includes(value))) {
+          for(let extra of ticketInfo.extras){
+            setTicketCost += ticketData.extras[extra]['priceInCents'][ticketInfo.entrantType];
           }
+        }else{ 
+          setTicketCost = generateErrorMsg('extra'); 
         }
-    }else{
-      ticketPrice = `Ticket type 'incorrect-type' cannot be found.`;  
+      }    
+    }else{ 
+      setTicketCost = generateErrorMsg('entrant'); 
     }
-    return ticketPrice;
+  }else{ setTicketCost = generateErrorMsg('ticket'); 
   }
-
-
-
-
-
-
-
-
-    //////////////////////////////////////////////////////////////////////////////////////
-
-//     // Validating T I C K E T - T Y P E S
-//     if(ticketTypes.includes(ticketInfo.ticketType)) {
-//       // >> Validations: G E N E R A L - A D M I S S I O N S
-//       // console.log(ticketInfo.ticketType)
-//       // console.log(ticketInfo.entrantType)
-//       // console.log(ticketInfo.extras)
-
-//       if(ticketInfo.ticketType === 'general') { 
-//         prefixTicketType = 'gen';  
-//       }
-//       if(ticketInfo.ticketType === 'membership') { 
-//         prefixTicketType = 'mem';  
-//       }
-//       if(ticketInfo.extras === 'movie') { 
-//         prefixEstrasType = 'mov';  
-//       }
-
-//       ////////////
-//       let getTicketType  = ticketInfo.ticketType
-//           getEntrantType = ticketInfo.entrantType
-//           getExtras      = ticketInfo.extras;
-//       function validateTicket(getTicketType, getEntrantType, getExtras){
-//         return getTicketType;
-//       }
-//       //console.log(validateTicket(getTicketType, getEntrantType, getExtras))
-
-//       /////////
-//       if(ticketInfo.ticketType === 'general') { 
-//         // >> Calculations: C H I L D
-//         if(ticketInfo.entrantType === 'child') {
-//           if(noAddons){
-//             ticketPrice = genPriceInCents.child;
-//           }
-//           if(ticketInfo.extras[0] === 'movie'){
-//             ticketPrice = genPriceInCents.child + movPriceInCents.child;  
-//           }
-//           if(ticketInfo.extras[0] === 'movie' && ticketInfo.extras[1] === 'education'){
-//             ticketPrice = genPriceInCents.child + movPriceInCents.child + eduPriceInCents.child;  
-//           }
-//           if(ticketInfo.extras[0] === 'terrace' && ticketInfo.extras[1] === 'education'){
-//             ticketPrice = genPriceInCents.child + terPriceInCents.child + eduPriceInCents.child;  
-//           }
-//           if(ticketInfo.extras[0] === 'terrace' && ticketInfo.extras[1] === 'movie' && ticketInfo.extras[2] === 'education'){
-//             ticketPrice = genPriceInCents.child + terPriceInCents.child + movPriceInCents.child + eduPriceInCents.child;  
-//           }
-//         }
-//         // >> Calculations: A D U L T
-//         if(ticketInfo.entrantType === 'adult') {
-//           if(noAddons){
-//             ticketPrice = genPriceInCents.adult;
-//           }
-//           if(ticketInfo.extras[0] === 'movie'){
-//             ticketPrice = genPriceInCents.adult + movPriceInCents.adult;  
-//           }
-//           if(ticketInfo.extras[0] === 'movie' && ticketInfo.extras[1] === 'terrace'){
-//             ticketPrice = genPriceInCents.adult + movPriceInCents.adult + terPriceInCents.adult;  
-//           }
-//           if(ticketInfo.extras[0] === 'movie' && ticketInfo.extras[1] === 'education'){
-//             ticketPrice = genPriceInCents.adult + movPriceInCents.adult + eduPriceInCents.adult;  
-//           }
-//           if(ticketInfo.extras[0] === 'terrace' && ticketInfo.extras[1] === 'education'){
-//             ticketPrice = genPriceInCents.adult + terPriceInCents.adult + eduPriceInCents.adult;  
-//           }
-//           if(ticketInfo.extras[0] === 'terrace' && ticketInfo.extras[1] === 'movie' && ticketInfo.extras[2] === 'education'){
-//             ticketPrice = genPriceInCents.adult + terPriceInCents.adult + movPriceInCents.adult + eduPriceInCents.adult;  
-//           } 
-//         }
-//         // >> Calculations: S E N I O R
-//         if(ticketInfo.entrantType === 'senior'){
-//           if(noAddons){
-//             ticketPrice = genPriceInCents.senior;
-//           }
-//           if(ticketInfo.extras[0] === 'movie'){
-//             ticketPrice = genPriceInCents.senior + movPriceInCents.senior;  
-//           }
-//           if(ticketInfo.extras[0] === 'movie' && ticketInfo.extras[1] === 'education'){
-//             ticketPrice = genPriceInCents.senior + movPriceInCents.senior + eduPriceInCents.senior;  
-//           }
-//           if(ticketInfo.extras[0] === 'terrace' && ticketInfo.extras[1] === 'education'){
-//             ticketPrice = genPriceInCents.senior + terPriceInCents.senior + eduPriceInCents.senior;  
-//           }
-//           if(ticketInfo.extras[0] === 'terrace' && ticketInfo.extras[1] === 'movie' && ticketInfo.extras[2] === 'education'){
-//             ticketPrice = genPriceInCents.senior + terPriceInCents.senior + movPriceInCents.senior + eduPriceInCents.senior;  
-//           }
-//         } 
-//       }
-//       // >> Validations: M E M B E R S H I P
-//       if(ticketInfo.ticketType === 'membership'){
-//         // >> Calculations: C H I L D
-//         if(ticketInfo.entrantType === 'child') {
-//           if(noAddons){
-//             ticketPrice = memPriceInCents.child;
-//           }
-//           if(ticketInfo.extras[0] === 'movie'){
-//             ticketPrice = memPriceInCents.child + movPriceInCents.child;  
-//           }
-//           if(ticketInfo.extras[0] === 'movie' && ticketInfo.extras[1] === 'education'){
-//             ticketPrice = memPriceInCents.child + movPriceInCents.child + eduPriceInCents.child;  
-//           }
-//           if(ticketInfo.extras[0] === 'terrace' && ticketInfo.extras[1] === 'education'){
-//             ticketPrice = memPriceInCents.child + terPriceInCents.child + eduPriceInCents.child;  
-//           }
-//           if(ticketInfo.extras[0] === 'terrace' && ticketInfo.extras[1] === 'movie' && ticketInfo.extras[2] === 'education'){
-//             ticketPrice = memPriceInCents.child + terPriceInCents.child + movPriceInCents.child + eduPriceInCents.child;  
-//           }
-//         }
-//         // >> Calculations: A D U L T
-//         if(ticketInfo.entrantType === 'adult'){
-//           if(noAddons){
-//             ticketPrice = memPriceInCents.adult;
-//           }
-//           if(ticketInfo.extras[0] === 'movie'){
-//             ticketPrice = memPriceInCents.adult + movPriceInCents.adult;  
-//           }
-//           if(ticketInfo.extras[0] === 'movie' && ticketInfo.extras[1] === 'education'){
-//             ticketPrice = memPriceInCents.adult + movPriceInCents.adult + eduPriceInCents.adult;  
-//           }
-//           if(ticketInfo.extras[0] === 'terrace' && ticketInfo.extras[1] === 'education'){
-//             ticketPrice = memPriceInCents.adult + terPriceInCents.adult + eduPriceInCents.adult;  
-//           }
-//           if(ticketInfo.extras[0] === 'terrace' && ticketInfo.extras[1] === 'movie' && ticketInfo.extras[2] === 'education'){
-//             ticketPrice = memPriceInCents.adult + terPriceInCents.adult + movPriceInCents.adult + eduPriceInCents.adult;  
-//           }
-//         }
-//         // >> Calculations: S E N I O R
-//         if(ticketInfo.entrantType === 'senior'){
-//           if(noAddons){
-//             ticketPrice = memPriceInCents.senior;
-//           }
-//           if(ticketInfo.extras[0] === 'movie'){
-//             ticketPrice = memPriceInCents.senior + movPriceInCents.senior;  
-//           }
-//           if(ticketInfo.extras[0] === 'movie' && ticketInfo.extras[1] === 'education'){
-//             ticketPrice = memPriceInCents.senior + movPriceInCents.senior + eduPriceInCents.senior;  
-//           }
-//           if(ticketInfo.extras[0] === 'terrace' && ticketInfo.extras[1] === 'education'){
-//             ticketPrice = memPriceInCents.senior + terPriceInCents.senior + eduPriceInCents.senior;  
-//           }
-//           if(ticketInfo.extras[0] === 'terrace' && ticketInfo.extras[1] === 'movie' && ticketInfo.extras[2] === 'education'){
-//             ticketPrice = memPriceInCents.senior + terPriceInCents.senior + movPriceInCents.senior + eduPriceInCents.senior;  
-//           } 
-//         }
-//       }
-//       // >> Error V A L I D A T I O N S
-//       if(ticketInfo.entrantType === 'incorrect-entrant'){
-//         ticketPrice = `Entrant type 'incorrect-entrant' cannot be found.`; 
-//       }
-//       if(ticketInfo.extras[0] === 'incorrect-extra'){
-//         ticketPrice = `Extra type 'incorrect-extra' cannot be found.`; 
-//       }
-//     }else{
-//       ticketPrice = `Ticket type 'incorrect-type' cannot be found.`;  
-//     }
-//   return ticketPrice;
-// }
+  return setTicketCost;
+}
 
 /**
  * purchaseTickets()
@@ -386,6 +202,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
+  // helper to buid this
   let receiptHeader = 'Thank you for visiting the Dinosaur Museum!' +
                       '\n-------------------------------------------\n',
       receiptFooter = '\n-------------------------------------------\n' + 
@@ -397,16 +214,18 @@ function purchaseTickets(ticketData, purchases) {
 
     ticketReceipt = receiptHeader;
     for(let purchase of purchases){
+      // >>
       getTicketData = calculateTicketPrice(ticketData, purchase)
-      
       if(typeof getTicketData === 'number'){
         total += getTicketData;
+        // >> create helper for this task
         ticketReceipt += `${purchase.entrantType.charAt(0).toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(getTicketData/100).toFixed(2)}`
         if(purchase.extras.length){
+          //helper to build this
           ticketReceipt += ' (';
           for(let extra of purchase.extras){
             ticketReceipt += `${ticketData.extras[extra].description}, `;
-          }
+          } 
           ticketReceipt = ticketReceipt.slice(0, -2) + ')';
         }
 
@@ -415,7 +234,7 @@ function purchaseTickets(ticketData, purchases) {
       }
       ticketReceipt += '\n';
     }
-    ticketReceipt = ticketReceipt.slice(0, -1) + `${receiptFooter}${(total/100).toFixed(2)}`;
+    ticketReceipt = ticketReceipt.slice(0, -1) + `${receiptFooter}${(total/100).toFixed(2)}`; // >> helperr for formatting amounts of money!
 
   return ticketReceipt;
 }
