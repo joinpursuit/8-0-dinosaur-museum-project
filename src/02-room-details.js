@@ -50,6 +50,39 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   }
 }
 
+/**
+ * TIM'S CODE / CLASS NOTES
+ * 
+ * Pseudo Code:
+ * Step 1. Set a var to hold our returns;
+ * Step 1.5. loop through the dinosaur array to find the dinosaurID that matches our dinosaurName parameter; save this in var;
+ * 
+ * Step 2. We need to loop through the rooms array and check each .dinsaur for our dinosaurID var;
+ * Step 3. Return the room name if we have a match
+
+
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let dinoId;
+  let result;
+  for(let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].name = dinosaurName) { 
+      dinoId = dinosaurs[i].dinosaurId;
+      break;
+    }; 
+  }
+  if (!dinoId){
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`
+  }
+
+  for (let room of rooms){
+    if (rooms.dinosaurs.includes(dinoId)){
+      result = room.name;
+      return result;
+    }
+  }
+  return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+}
+*/
 
 /**
  * getConnectedRoomNamesById()
@@ -73,6 +106,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
+
 function getConnectedRoomNamesById(rooms, id) {
   let roomsConnected = [];
   let roomNames = [];
@@ -102,6 +136,49 @@ function getConnectedRoomNamesById(rooms, id) {
     return roomNames;
   }
 }
+
+
+/**
+ * TIM'S CODE / CLASS NOTES
+ * 
+ * Pseudo Code:
+ * 1. Set our var;
+ * 2. Loop through rooms - find matching room by ID;
+ * 3. Save rooms connectsTo in a var;
+ * 4. Loop through connects to var;
+ * 5. For each item in the connects to variable - we need to get its name loop through the rooms array and match the roomId to the item in connectsTo - then push that item name into the return variables;
+
+
+function getConnectedRoomNamesById(rooms, id) {
+  let results = [];
+  let connectsTo;
+
+  for (let i = 0; i < rooms.length; i++){
+    if (rooms[i].roomId === id){
+      connectsTo = Array.from(rooms[i].connectsTo);//makes our own array, without changing the original array being referenced inside the parentheses
+      break;
+    } 
+    if (i === rooms.length - 1){
+      return `Room with ID of '${id}' could not be found.` //does not run unless we reach the last item in the array.
+    }
+  }
+  //outer loop - looping over our connectTo array
+  for (let i = 0; i < connectsTo.length; i++){
+    //inner loop, looping over the rooms array to find match
+    for (let j = 0; j < rooms.length; j++){
+      if(rooms[j].roomId === connectsTo[i]){
+        results.push(rooms[j].name);
+        break; //breaks inner loop
+      }
+      if (j === rooms.length - 1){
+        return "Room with ID of 'incorrect-id' could not be found." //does not run unless we reach the last item in the array.
+        // return `Room with ID of '${connectsTo[i]}' could not be found.` - works too!
+      }
+    }
+  }
+  return results;
+}
+*/
 
 module.exports = {
   getRoomByDinosaurName,
