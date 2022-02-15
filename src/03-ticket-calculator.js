@@ -31,7 +31,7 @@ const exampleTicketData = require("../data/tickets");
  *  const ticketInfo = {
       ticketType: "general",
       entrantType: "adult",
-      extras: [],
+      extras: [], 
     };
     calculateTicketPrice(tickets, ticketInfo);
     //> 3000
@@ -54,7 +54,31 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  // if ticketinfo.type with no extra-> general, membership, senior -> return price from ticketData.general.membership.priceInCent
+  // if tickcetinfo.extra -> movie, education, terrance -> return priceInCent + ticketData.general.membership.priceInCent
+  let price = 0
+
+  if (ticketInfo.ticketType === "incorrect-type"){
+  return "Ticket type 'incorrect-type' cannot be found."
+}
+  if (ticketInfo.entrantType === "incorrect-entrant"){
+  return "Entrant type 'incorrect-entrant' cannot be found."
+ }
+  if (ticketInfo.extras.includes('incorrect-extra')) { //use includes because its a array
+  return "Extra type 'incorrect-extra' cannot be found."
+} 
+  if (ticketInfo.ticketType === "general" || "membership") { // if the ticket.type is general or membership 
+    price += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+  } // ticketData[general,membership]priceincent[adult,child,senior] use brackets to grab from ticketInfo information 
+ 
+  for (let ex of ticketInfo.extras) { // loop extras b/c array 
+  if (ticketData.extras.hasOwnProperty(ex)){//if ticketData.extra exist in ticketInfo.extra use property(similar as includes) b/c its an object.
+      price += ticketData.extras[ex].priceInCents[ticketInfo.entrantType]
+    }// ticketData.extra[movie, terrence, education].priceInCent[adult,child, senior] use bracket to grab from ticketInfo 
+   }return price
+   
+}
 
 /**
  * purchaseTickets()
@@ -109,10 +133,40 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+
+  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+   
+  let total = 0
+  
+   for (let purchase of purchases) { 
+    let calculate = calculateTicketPrice(ticketData, purchase) //use to calculate the receipt price need to grab fucntion above
+      if (Number.isInteger(calculate)) { // to check if it have number can use typeof calculate === "number" or use Number.isInteger()
+        total += calculate
+        receipt += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(calculate/100).toFixed(2)}`
+        if (purchase.extras.length) { // if purchase.extra = movie, education, terrence then loop 
+          receipt += ` (`
+        for (let extra of purchase.extras) {
+          
+          receipt += `${ticketData.extras[extra].description}, ` 
+          
+        } receipt = receipt.slice(0,-2) //b/c need to remove the comma at the end of the second
+        receipt += `)`
+      }
+      } else {
+        return calculate 
+      }
+      receipt += `\n`
+   }
+   receipt += `-------------------------------------------\nTOTAL: $${(total/100).toFixed(2)}`
+    return receipt 
+}
 
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
   purchaseTickets,
 };
+
+ 
+   
