@@ -185,7 +185,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     ]
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
- */
+
 
 // ----------- MY RIDICULOUS CODE ----------------
 function purchaseTickets(ticketData, purchases) {
@@ -261,7 +261,7 @@ function purchaseTickets(ticketData, purchases) {
 
   return topOfReceipt + bottomOfReceipt + ' $' + receiptTotal.toFixed(2)
 }
-
+ */
 
 /**
  * GIGI'S CODE / CLASS NOTES !!!!!!!
@@ -273,7 +273,7 @@ function purchaseTickets(ticketData, purchases) {
  * 4. We are going to call our previous fuction and decide what we want to do with the data/how we want to manipulate it.
  *  - if error returned, we want to return that error;
  *  - price - put in our string and add to our total;
-
+*/
 
 function purchaseTickets(ticketData, purchases) {
   let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------`
@@ -307,7 +307,7 @@ function purchaseTickets(ticketData, purchases) {
   receipt += `\n-------------------------------------------\nTOTAL: $${(totalReceiptPrice / 100).toFixed(2)}`
   return receipt
 }
-*/
+
 
 /* 
 // CORRECT CODE OBTAINED FROM CLASSMATE JOHN : 
