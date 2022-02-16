@@ -3,7 +3,9 @@
 
   You may use this data to test your functions. You may assume the shape of the data remains the same but that the values may change.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
+const rooms = require("../data/rooms");
 const exampleRoomData = require("../data/rooms");
 // Do not change the lines above.
 
@@ -56,6 +58,38 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 
   return foundDinoRoom;
 }
+
+//1. set a variable to hold our return
+//1.5. loop through the dinosaur array to find the dinosaurID that matches our dinosaurName parameter; save this in a variable
+  //if there is no match return an error message
+//2. loop through the rooms array and check eac .dinosaur for our dinosaur for our dinosaurID variable
+//3. return room name if we have a match
+
+// let dinoId;
+// let result;
+
+// for(let i = 0; i < dinosaurs.length; i++){
+//   if(dinosaurs[i].name === dinosaurName){
+//     dinoId = dinosaurs[i].dinosaurId;
+//     break;
+//   }
+// }
+
+// if(!dinoId){
+//   return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+// }
+
+// for(let room of rooms){
+//   if(room.dinosaurs.includes(dinoId)){
+//     result = room.name;
+//     return result;
+//   }
+// }
+
+// if(!result){
+//   return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+// }
+
 
 /**
  * getConnectedRoomNamesById()
@@ -114,8 +148,39 @@ function getConnectedRoomNamesById(rooms, id) {
   }
 
   return connectedRooms;
-
 }
+
+//1. set our variable
+//2. loop through rooms - find matching room by ID
+//3. save rooms connectsTo in a variable
+//4. loop through connectsTo varibale
+//5. for each item in the connects to variable - we need to get its name
+  //loop through the rooms array and match the roomId to the item in connectsTo - then pursh that items name into the return variable
+  // let result = [];
+  // let connectsTo;
+  // for(let i = 0; i < rooms.length; i++){
+  //   if(rooms[i].roomId === id){
+  //     connectsTo = Array.from(rooms[i].connectsTo);
+  //     break;
+  //   }
+  //   if( i === rooms.length - 1){
+  //     return `Room with ID of '${id}' could not be found.`
+  //   }
+  // }
+  // //outer loop - looping over our connectsTo array
+  // for(let i = 0; i < connectsTo.length; i++){
+  // //inner loop - loop over the rooms array to find match
+  //   for(let j = 0; j < rooms.length; j++){
+  //     if(rooms[j].roomId === connectsTo[i]){
+  //       result.push(rooms[j].name);
+  //       break;
+  //     }
+  //     if(j === rooms.length - 1){
+  //       return `Room with ID of '${connectsTo[i]} could not be found.`
+  //     }
+  //   }
+  //   return result;
+  // }
 
 module.exports = {
   getRoomByDinosaurName,

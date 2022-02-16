@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -46,6 +47,21 @@ tallestDino[dinoName] = largeDino * 3.281;
 return tallestDino;
 }
 
+//Tim's example
+// let result = {};
+// if(!dinosaurs || dinosaurs.length < 1){
+//   return result;
+// }
+// let tallestSoFar = dinosaurs[0];
+// for(let i = 1; i < dinosaurs.length; i++){
+//   let current = dinosaurs[i];
+//   if(current.lengthInMeters > tallestSoFar.lengthInMeters){
+//     tallestSoFar = current;
+//   }
+//   result[tallestSoFar.name] = tallestSoFar.lengthInMeters * 3.281;
+//   return result; 
+// }
+
 
 /**
  * getDinosaurDescription()
@@ -78,6 +94,20 @@ function getDinosaurDescription(dinosaurs, id) {
   return `A dinosaur with an ID of '${id}' cannot be found.`;
 } 
 
+//step 0: declare default variable
+//step 1: loop through dinosaurs - find where id === dinosaurId
+//if we find a match set default var as dinosaur[i]
+//step 2. build string - we need to return a string with a lot of interpolated data
+// return string
+
+// let dino = `A dinosaur with an ID of '${id} cannot be found.`
+// for(let i = 0; i < dinosaurs.length; i++){
+//   if(id === dinosaurs[i].dinosaurId){
+//     dino = dinosaurs[i];
+//     return `${dino.name} (${dino.pronunciation})\n ${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`
+//   }
+// }
+// return dino;
 
 
 /**
@@ -134,6 +164,28 @@ function getDinosaurDescription(dinosaurs, id) {
    }
   return dinoByMya;
   }
+
+  //1. set my return var = []
+  //2. loop through the array and check our .mya values
+  //3. determine if mya is between our dinosaur .mya values
+  //4. if an extra key was passed we need to push the dinosaur value at that key into return var
+    // if no key was passed we will push the dinosaur id
+
+  // let str = key || "dinosaurId";
+  // let aliveMya = [];
+  // for(let dino of dinosaurs){
+  //   let low = dino.mya[dino.mya.length-1];
+  //   let high = dino.mya[0];
+  //   if(dino.mya.length > 1){
+  //     if(mya <= high && mya >= low){
+  //       aliveMya.push(dino[str])
+  //     }
+  //   } else if(mya === high || mya === high - 1){
+  //     aliveMya.push(dino[str])
+  //   }
+  //   }
+  // return aliveMya;
+
 
 
 module.exports = {

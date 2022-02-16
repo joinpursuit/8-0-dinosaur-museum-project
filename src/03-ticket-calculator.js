@@ -81,6 +81,32 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   return baseTicket;
 }
 
+//Gigi's example
+//1. return errors if ticket types, entrant types, extras not included
+//2. start with a base price - 0
+//3. accumulate each portion of the ticket fees
+
+// if(!ticketData[ticketInfo.ticketType] || ticketInfo.ticketType === 'extras'){
+//   return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+// } else if(!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]){
+//   return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+// } else{
+//   for(let extra of ticketInfo.extras){
+//     if(!ticketData.extras[extra]){
+//       return `Extra type '${extra}' cannot be found.`;
+//     }
+//   }
+// }
+// let baseTicket = 0;
+// baseTicket += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+
+// for(let addOn of ticketInfo.extras){
+//   baseTicket += ticketData.extras[addOn].priceInCents[ticketInfo.entrantType];
+// }
+
+// return baseTicket;
+
+
 /**
  * purchaseTickets()
  * ---------------------
@@ -165,14 +191,41 @@ function purchaseTickets(ticketData, purchases) {
    
   }
   formattedReceipt += `-------------------------------------------\nTOTAL: $${total.toFixed(2)}`
-
   return formattedReceipt;
-
 }
 
+//////
+// let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------`;
+// let totalReceiptPrice = 0;
 
+// for(let purchase of purchases){
+//   let purchasePrice = calculateTicketPrice(ticketData, purchase);
 
-
+//   if(typeof purchasePrice === 'string'){
+//     return purchasePrice;
+//   } else{
+//     totalReceiptPrice += purchasePrice;
+//     let entrant = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1).toLowerCase();
+//     let ticketType = ticketData[purchase.ticketType].description;
+//     let priceInDollars = (purchasePrice / 100).toFixed(2);
+//     let ticketExtras = '';
+//     for(let i = 0; i < purchase.extras.length; i++){
+//       if(i === 0){
+//         ticketExtras += ' ('
+//       }
+//       ticketExtras += ticketData.extras[purchase.extras[i]].description
+//       if(i === purchase.extras.length -1){
+//           ticketExtras += ')';
+//         }else{
+//           ticketExtras += ", ";
+//         }
+//       }
+//       receipt += `\n${entrant} ${ticketType}: $${priceInDollars}${ticketExtras}`
+//     }
+//   }
+//   totalReceiptPrice = (totalReceiptPrice / 100).toFixed(2);
+//   receipt += `\n-------------------------------------------\nTOTAL: $${totalReceiptPrice}`;
+//   return receipt;
 
 
 // Do not change anything below this line.
