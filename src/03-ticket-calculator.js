@@ -55,6 +55,7 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
+/*
 function calculateTicketPrice(ticketData, ticketInfo) {
   let validEntrants = ['adult', 'child', 'senior'];
   let validTicketType = ['general', 'membership'];
@@ -85,6 +86,52 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   }
   return totalCost + costWithExtras;
 }
+*/
+
+/**
+ * GIGI'S CODE / CLASS NOTES
+ * 
+ * Pseudo Code:
+ * 1. Return errors if ticket types, entrants or extras not included
+ * 2. Start with a base price - 0
+ * 3. Accumulate each portion of the tickets fees
+ * 
+*/
+
+function calculateTicketPrice(ticketData, ticketInfo) {
+  if (!ticketData[ticketInfo.ticketType] || ticketInfo.ticketType === 'extras'){ //'extras' is included because it's a valid key in the object 'ticketData', but would not give us valid ticket type info we need
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  } else if(!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]){
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  } else {
+    for (let extra of ticketInfo.extras){
+      if(!ticketData.extras[extra]){
+        return `Extra type '${ticketInfo.extras}' cannot be found.`;
+      }
+    }
+  }
+
+  // const ticketInfo = {
+  //   ticketType: "membership",
+  //   entrantType: "child",
+  //   extras: ["movie", "terrace"],
+  // };
+
+  let baseTicket = 0; // starting off price
+  // ticketInfo.ticketType - (in the ex.) would be -> "membership"
+  // next, we narrowed down to the 'membership object' -> now we look at the objects 'priceInCents'
+  // now we need the 'ticketInfo.entrant' type (aka: 'child'/ 'adult' / 'senior') -> "child"
+  baseTicket += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+
+  // Here we loop through the 'ticketInfo.extras' -> ["movie", "terrace"]
+  for(let addOn of ticketInfo.extras){ // first loops through the 'addOn' -> "movie"
+    baseTicket += ticketData.extras[addOn].priceInCents[ticketInfo.entrantType]; 
+    // Here we add the cost of the extra, using the 'entrantType'  (aka: 'child'/ 'adult' / 'senior')
+    // After adding the cost, it loops again to add the cost to include the 2nd 'addOn' -> "terrace"
+  }
+  return baseTicket;
+}
+
 
 /**
  * purchaseTickets()
@@ -139,6 +186,8 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
+
+// ----------- MY RIDICULOUS CODE ----------------
 function purchaseTickets(ticketData, purchases) {
   //console.log(ticketData);
   //console.log(purchases);
@@ -214,8 +263,54 @@ function purchaseTickets(ticketData, purchases) {
 }
 
 
+/**
+ * GIGI'S CODE / CLASS NOTES !!!!!!!
+ * 
+ * Pseudo Code:
+ * 1. Start our receipt template;
+ * 2. Create a total variable
+ * 3. We are going to iterate through our purchases;
+ * 4. We are going to call our previous fuction and decide what we want to do with the data/how we want to manipulate it.
+ *  - if error returned, we want to return that error;
+ *  - price - put in our string and add to our total;
 
-/* CORRECT CODE: 
+
+function purchaseTickets(ticketData, purchases) {
+  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------`
+  let totalReceiptPrice = 0;
+
+  for (let purchase of purchases){
+    let purchasePrice = calculateTicketPrice(ticketData, purchase)
+    if(typeof purchasePrice === 'string'){ // Reference to getting an error message back
+      return purchasePrice; // we are allowing the error to be returned
+    } else {
+      totalReceiptPrice +=  purchasePrice // If its a number, we are adding that value to our "totalReceiptPrice" variable
+      let entrant = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1).toLowerCase();
+      let ticketType = ticketData[purchase.ticketType].description;
+      let priceInDollars = (purchasePrice/100).toFixed(2);
+      let ticketExtras = '';
+
+      for(let i = 0; i < purchase.extras.length; i++){
+        if (i === 0){ //If we are at the first ticket 'extra' value
+          ticketExtras += " (" ; // Enter the opening parentheses
+        } 
+
+        if (i === purchase.extras.length - 1) {// if we are at the last ticket 'extra' value in the array, and it's also the same value as above (i===0)
+          ticketExtras += ticketData.extras[purchase.extras[i]].description + ")"; //We add the 'extra' value AND add closing parentheses to the one 'extra' item 
+        } else { //If i === 0 is not the only extra value...
+          ticketExtras += ticketData.extras[purchase.extras[i]].description + ", "; //We add the 'extra' value AND add a comma.
+        }
+      }
+      receipt += `\n${entrant} ${ticketType}: $${priceInDollars}${ticketExtras}`;
+    }
+  }
+  receipt += `\n-------------------------------------------\nTOTAL: $${(totalReceiptPrice / 100).toFixed(2)}`
+  return receipt
+}
+*/
+
+/* 
+// CORRECT CODE OBTAINED FROM CLASSMATE JOHN : 
 let total = 0;
   let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
  
