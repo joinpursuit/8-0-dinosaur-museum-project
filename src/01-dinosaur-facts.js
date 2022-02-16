@@ -22,6 +22,14 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
+
+//input : dinosaur array
+//output = object with the key 'name' abd pointing to height in feet
+//creatge a variable for first dino
+//loop through the array - compar dino.length in meter to the tallestSo fat =if it is larger dinio[i] = tallest so far
+// return an object {tallestSoFar.name  : takkestSoFar.lengthInMeters} converted to feet
+
+
 //creates a function called getTallestDinosaur with the parameter dinosaurs which is an array of dinosaur objects
 function getTallestDinosaur(dinosaurs) {
   //conditional statement if the length of the dinosaurs array is 0(no dinosaurs); return an empty object
@@ -75,7 +83,7 @@ let dino = tallestDino.name    // var obj={this.name= height}
  */
 //creates a fundtion called getDinosaurDescription with the parameters dinosaurs which is an array of dinosaur objects and if a d unique identifier
 function getDinosaurDescription(dinosaurs, id) {
-  //creates a for loop through the dinosaurs array
+  //creates a for loop through the dinosaurs array to find unique iid)
   for(let i = 0; i < dinosaurs.length; i++){
     //conditional statement as i iterates through the dinosaurs array and reaches the key dinosaurId if it is equal to id (unique identifier)
 if(dinosaurs[i].dinosaurId === id){

@@ -54,38 +54,47 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
+//return errors if ticket types, entrants, extras not included
+//start with a base price of 0
+//accumulate each portion of the ticket fees
+
+
+
+
+
+
+
+
 function calculateTicketPrice(ticketData, tickeInfo) {
-  for(let key in tickeInfo){
-    if(tickeInfo[key].ticketType !== 'membership' ){
-       return  "Ticket type 'incorrect-type' cannot be found.";
-    }
-    
-    if(tickeInfo[key].entrantType !== 'child'){
-       return "Entrant type 'incorrect-entrant cannot be found.";
-    }
-    
-    if(tickeInfo[key].extra !== 'child'){
-      return  "Extra type 'incorrect-extra cannot be found.";
-    }
-    console.log(key)
-    console.log(ticketInfo)
-    console.log('RRRRRRRRRRRR')
-    console.log(ticketInfo.ticketType)
-    
-    let admissions = 0;
-    if(ticketInfo[i].entrantType === 'child'){
-      admissions += 2000;
-    }
-      return adm
+  //if ticketInfo at ticketType doesn't match the key in ticketDta or ticketInfo at ticketType equals extra return error message
+      if(!ticketData[tickeInfo.ticketType] || tickeInfo.ticketType === 'extras'){
+        return `Ticket type '${tickeInfo.ticketType}' cannot be found.`
 
+      } else if (!ticketData[tickeInfo.ticketType].priceInCents[tickeInfo.entrantType]) {
+        return `Entrant type '${tickeInfo.entrantType}' cannot be found.`
+      } else {
+        for(let extra of tickeInfo.extras){
+          if(!ticketData.extras[extra]){
+            return `Extra type '${extra}' cannot be found.`;
+          }
+        }
+      }
+      let baseTicket = 0;
+   
+      //ticketInfo.ticketType  - 'membership'
+      //ticketInfo.entrantType - 'child'
+      baseTicket += ticketData[tickeInfo.ticketType].priceInCents[tickeInfo.entrantType]
+   
+   
+      //looping through ticket.Info.extras array - {'movies', 'terrace'}
+      for(let addOn of tickeInfo.extras){
+        baseTicket += ticketData.extras[addOn].priceInCents[tickeInfo.entrantType]
+   }
+   return baseTicket;
+   
+   }
 
-
-
-
-  }
-
-}
-
+      
 /**
  * purchaseTickets()
  * ---------------------
@@ -139,7 +148,108 @@ function calculateTicketPrice(ticketData, tickeInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+
+//start our receipt template
+//create a variable for the total
+//iterate through out purchaces
+//call our function from above 
+//based on it's return value decide how we want to handle the data 
+//return the error message from above function 
+//price (for a ticket)from above function could be added to a string and return a total
+
+
+
+
+
+
+function purchaseTickets(ticketData, purchases) {
+  //creates a receipt variable(template) to add purchased information to
+  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------`
+  
+  //creates a variable for total receipt price before the purchaces are added
+  let totalReceiptPrice = 0;
+
+  //creates a loop throught the array of purchases
+  for(let purchase of purchases){
+
+    //creates a variable called purchase price to hold the function calculateTicketPrice(the process of figuring out how much a ticket cost)using the ticketData(ticket.js) and purchase array in the beginning of the problem will calculate new ticket price
+    let purchasePrice = calculateTicketPrice(ticketData, purchase)
+
+    //if the purchacePrice is a string ""
+    if(typeof purchasePrice === 'string'){
+    //return the original ticket price
+      return purchasePrice;
+    } else {
+      //else receipt will read the original ticket price
+      totalReceiptPrice += purchasePrice;
+
+
+      //creates a variable called entrant to equal the purchases array at entrantType fist letter capital and the rest lower case (Senior, Child, Adult)
+      let entrant = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1).toLowerCase();
+
+      //creates a variable called ticketType to equal the purchase tickeType from the ticketData - tickets.js description section (General Admisiion, Membership Admission)
+      let ticketType = ticketData[purchase.ticketType].description; 
+
+      //creates a variable price in dollars to equal the puchace price divided by 100 .to Fixed(2) - for decimal points
+      let priceInnDollars = (purchasePrice /100).toFixed(2)
+
+      //creates a variable called ticket extras to equal a string ('movie' 'terrace' 'education')
+      let ticketExtras = "";
+      
+      //loops through the the purchase array, extras array 
+      for(let i = 0; i < purchase.extras.length; i++){
+
+        //conditional if i is 0 close the () - no string
+        if(i === 0){
+          ticketExtras += " ("
+        } 
+        //iterating through purchases array at the extras array of the TicketData(ticket.js) extras match the descrition add it to the ticketExtras variable
+        ticketExtras += ticketData.extras[purchase.extras[i]].description
+
+        //if iterating throught pruchases array at extras array has one element 
+        if( i === purchase.extras.length -1){
+
+          //close the () of the ticketExtras variable 
+          ticketExtras += ")"
+        } else {
+          //else add a , to include the next extra listed
+          ticketExtras += ", "
+        }
+      }
+
+      //receipt will read entrant (adult, child, senior) ticket type (general, membership), $price in dollars, ticket extras (terrace, movie, educational)
+      receipt += `\n${entrant} ${ticketType}: $${priceInnDollars}${ticketExtras}`
+
+        }
+
+    }
+    //total receipt price is the caluculated price divided by 100 to fixed for decimal points
+    totalReceiptPrice = (totalReceiptPrice / 100).toFixed(2)
+
+    //add the closing total template to the receipt with the newly calculated totalReceiptPrice interpolated
+    receipt += `\n-------------------------------------------\nTOTAL: $${totalReceiptPrice}`;
+
+    //then return receipt
+    return receipt;
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Do not change anything below this line.
 module.exports = {
