@@ -22,6 +22,12 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
+// input : dino array
+// output: an object with the key of "name" pointing to height of dino in feet. 
+// 1. set variable and make the firstdino the default value (tallestDino)
+// 2. loop thru array , compare dino.lengthinmeters to the set variable
+// 3. and if it is taller, set it = to tallestDino. 
+// 4. return the object of tallest dino.
 function getTallestDinosaur(dinosaurs) {
   
   let tallestDino = dinosaurs[0];
@@ -29,7 +35,7 @@ function getTallestDinosaur(dinosaurs) {
   if(dinosaurs.length < 1){
     return {};
   }
-  for(let i = 0; i < dinosaurs.length; i++){
+  for(let i = 1; i < dinosaurs.length; i++){
     if(dinosaurs[i].lengthInMeters > tallestDino.lengthInMeters){
       tallestDino = dinosaurs[i];
     }
