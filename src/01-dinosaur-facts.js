@@ -24,25 +24,54 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 
-function getTallestDinosaur(dinosaurs) {
-  let tallestDino = {};
-  let tallest = dinosaurs[0];
+// My solution -
+// function getTallestDinosaur(dinosaurs) {
+//   let tallestDino = {};
+//   let tallest = dinosaurs[0];
 
-  // Guard clause to see if the array is empty or not
-  if (dinosaurs.length < 1) {
-    return tallestDino;
-  }
+//   // Guard clause to see if the array is empty or not
+//   if (dinosaurs.length < 1) {
+//     return tallestDino;
+//   }
   
+//   for (let i = 1; i < dinosaurs.length; i++) {
+//     if (dinosaurs[i].lengthInMeters > tallest.lengthInMeters) {
+//       tallest = dinosaurs[i];
+//     }
+//   }
+
+//   const lengthInFeet = tallest.lengthInMeters * 3.281;
+//   tallestDino[tallest.name] = lengthInFeet;
+  
+//   return tallestDino;
+// }
+
+// Tim McKiernan - 8.4nw instructor
+
+// input: dinosaurs array
+// output: object with the key of 'name' pointing to height of dino in feet.
+// 1. set a variable for first dino - tallestSoFar
+// 2. loop through the array - compare dino, lengthInMeters to tallestSoFar - if it is larger dino[i] = tallestSoFar;
+// 3. return an object { tallestSoFar.name : tallestSoFar.lengthInMeters converted to feet}
+
+function getTallestDinosaur(dinosaurs) {
+  let result = {};
+  // If null or empty array tests
+  if (!dinosaurs || dinosaurs.length < 1) {
+    return result;
+  }
+  let tallestSoFar = dinosaurs[0];
   for (let i = 1; i < dinosaurs.length; i++) {
-    if (dinosaurs[i].lengthInMeters > tallest.lengthInMeters) {
-      tallest = dinosaurs[i];
+    let current = dinosaurs[i];
+    if (current.lengthInMeters > tallestSoFar.lengthInMeters) {
+      //console.log('old tallest ', tallestSoFar)
+      tallestSoFar = current;
+      //console.log('new tallest', tallestSoFar)
     }
   }
-
-  const lengthInFeet = tallest.lengthInMeters * 3.281;
-  tallestDino[tallest.name] = lengthInFeet;
-  
-  return tallestDino;
+  result[tallestSoFar.name] = tallestSoFar.lengthInMeters * 3.281;
+  // console.log(result);
+  return result;
 }
 
 /**
@@ -66,17 +95,40 @@ function getTallestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 
-function getDinosaurDescription(dinosaurs, id) {
-  let descriptionDino = `A dinosaur with an ID of '${id}' cannot be found.`;
+// My solution -
+// function getDinosaurDescription(dinosaurs, id) {
+//   let descriptionDino = `A dinosaur with an ID of '${id}' cannot be found.`;
 
+//   for (let i = 0; i < dinosaurs.length; i++) {
+//     if (dinosaurs[i].dinosaurId === id) {
+//       descriptionDino = `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.`;
+//     } 
+  
+//   }
+  
+//   return descriptionDino;
+// }
+
+// Tim McKiernan - 8.4nw instructor
+
+// .5. declare a variable - for default
+// 1. loop through dinosaurs - find where id === dinosaurId
+// if we find a match, set default var as dinosaur[i]
+// 2. build string. We need to return a string with a lot of interpolated data;
+// return string;
+
+function getDinosaurDescription(dinosaurs, id) {
+  let dino = `A dinosaur with an ID of '${id}' cannot be found.`;
   for (let i = 0; i < dinosaurs.length; i++) {
-    if (dinosaurs[i].dinosaurId === id) {
-      descriptionDino = `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.`;
-    } 
-  
+    if (id === dinosaurs[i].dinosaurId) {
+      dino = dinosaurs[i];
+
+      return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`;// build out our string
+    }
   }
-  
-  return descriptionDino;
+  // console.log(dino, " <-------dino"); 
+  // console.log(id, "<-------passed ID");
+  return dino;
 }
 
 /**
@@ -105,31 +157,65 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 
+// My solution -
+// function getDinosaursAliveMya(dinosaurs, mya, key) {
+//   // Check if the key has any value or is undefined.
+//   if (key === undefined) {
+//     key = 'dinosaurId';
+//   }
+//   // Check if the key is contained within any dinosaurs object's keys in the array. Is it a valid key?
+//   // The third option is that the key is defined and is in the dinosaurs object(s).
+//   if (dinosaurs[0][key] === undefined) {
+//     key = 'dinosaurId';
+//   }
+
+//   // Declare and define an empty array.
+//   let dataOfDinosAlive = [];
+
+//   // For loop for iterating over the dinosaurs array in order to retrieve the needed values.
+//   for (let i = 0; i < dinosaurs.length; i++) {
+//     if (dinosaurs[i].mya.length === 1 && (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] - 1 === mya)) {
+//       dataOfDinosAlive.push(dinosaurs[i][key]);
+//     } else if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya) {
+//       dataOfDinosAlive.push(dinosaurs[i][key]);
+//     }
+//   }
+
+//   // Return the new array.
+//   return dataOfDinosAlive;
+// }
+
+// Tim McKiernan - 8.4nw instructor
+
+// 1. set my return var = [];
+// 2. loop through the array and check our .mya values;
+// 3. determine if my is between our dinosaur .mya values (i.e. one big num and one small num);
+// 4. if an extra key was passed we need to push the dinosaur value at that key into return var;
+    // if no key was passed we will push the dinosaur id;
+
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  // Check if the key has any value or is undefined.
-  if (key === undefined) {
-    key = 'dinosaurId';
-  }
-  // Check if the key is contained within any dinosaurs object's keys in the array. Is it a valid key?
-  // The third option is that the key is defined and is in the dinosaurs object(s).
-  if (dinosaurs[0][key] === undefined) {
-    key = 'dinosaurId';
-  }
+  // takes care of default
+  let str = key || 'dinosaurId';
+  
+  let aliveMya = [];
 
-  // Declare and define an empty array.
-  let dataOfDinosAlive = [];
-
-  // For loop for iterating over the dinosaurs array in order to retrieve the needed values.
-  for (let i = 0; i < dinosaurs.length; i++) {
-    if (dinosaurs[i].mya.length === 1 && (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] - 1 === mya)) {
-      dataOfDinosAlive.push(dinosaurs[i][key]);
-    } else if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya) {
-      dataOfDinosAlive.push(dinosaurs[i][key]);
+  for (let dino of dinosaurs) {
+    let low = dino.mya[dino.mya.length-1];
+    let high =  dino.mya[0];
+    //console.log(low, high);
+    // we are setting a range.
+    if (dino.mya.length > 1) {
+      if (mya <= high && mya >= low) {
+        //console.log('this dino was alive during this time period!')
+        aliveMya.push(dino[str]);
+      }
+    } else if (mya === high || mya === high - 1) {
+        aliveMya.push(dino[str]);
     }
+      
   }
-
-  // Return the new array.
-  return dataOfDinosAlive;
+  //console.log(aliveMya);
+  return aliveMya;
 }
 
 module.exports = {
