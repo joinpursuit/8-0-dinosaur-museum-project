@@ -22,8 +22,21 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+let tallestDino = {}
+  let comparedDino = dinosaurs[0]
 
+  if (!dinosaurs.length) { 
+    return {}
+  }
+  for (let dinosaur of dinosaurs) {
+    if (dinosaur.lengthInMeters > comparedDino.lengthInMeters) {
+      comparedDino = dinosaur
+    }
+  }
+   tallestDino[comparedDino.name] = comparedDino.lengthInMeters * 3.281
+   return tallestDino
+}
 /**
  * getDinosaurDescription()
  * ---------------------
@@ -44,7 +57,21 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let foundDino = null
+
+  for (let dinos of dinosaurs) {
+    if (dinos.dinosaurId === id) {
+      foundDino = dinos
+    }
+  }
+  if (!foundDino) {
+    return `A dinosaur with an ID of '${id}' cannot be found.`
+  }  
+  let yearsAgo = foundDino.mya[foundDino.mya.length - 1]
+  return `${foundDino.name} (${foundDino.pronunciation})\n${foundDino.info} It lived in the ${foundDino.period} period, over ${yearsAgo} million years ago.`
+}
+
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +98,29 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let livingDinos = []
+  
+  for (const dino of dinosaurs) {
+    if (dino.mya.length === 2 && dino.mya[0] >= mya && dino.mya[1] <= mya) {
+      if (key) {
+        livingDinos.push(dino[key]) 
+      } else {
+          livingDinos.push(dino.dinosaurId) 
+        }
+
+    } 
+    else if (dino.mya[0] === mya || (dino.mya[0]) - 1 === mya) {
+      if (key) { 
+         livingDinos.push(dino[key])
+      } else {
+             livingDinos.push(dino.dinosaurId)
+        }
+    }
+  }
+  return livingDinos
+
+}
 
 module.exports = {
   getTallestDinosaur,
