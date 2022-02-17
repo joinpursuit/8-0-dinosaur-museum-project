@@ -58,12 +58,12 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   let validEntrance = ['adult','child', 'senior'];
   let validTicketType = ['general', 'membership'];
   let validExtras = ['movie', 'education', 'terrace'];
-  let totalCost = 0;
+  let costWithoutExtras = 0;
   let costWithExtras = 0;
 
   if (validTicketType.includes(ticketInfo.ticketType)){
     if (validEntrance.includes(ticketInfo.entrantType)){
-      totalCost += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+      costWithoutExtras += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
     }
   }
   for (let i = 0; i < ticketInfo.extras.length; i++){
@@ -84,7 +84,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
   }
 
-  return totalCost + costWithExtras;
+  return costWithoutExtras + costWithExtras;
    
 }
 
@@ -120,12 +120,8 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   
   // if you input any value aside from ticketInfo.ticketType ( general , membership) cannot be found. 
   
-
-
-  
   // I have to add the costWithoutExtras plus extraCost;
 
-// }
 
 
 /**
