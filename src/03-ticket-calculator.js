@@ -55,61 +55,77 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
+  let validEntrance = ['adult','child', 'senior'];
+  let validTicketType = ['general', 'membership'];
+  let validExtras = ['movie', 'education', 'terrace'];
+  let totalCost = 0;
+  let costWithExtras = 0;
+
+  if (validTicketType.includes(ticketInfo.ticketType)){
+    if (validEntrance.includes(ticketInfo.entrantType)){
+      totalCost += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+    }
+  }
+  for (let i = 0; i < ticketInfo.extras.length; i++){
+    if (validExtras.includes(ticketInfo.extras[i])){
+      if (validEntrance.includes(ticketInfo.entrantType)){
+        costWithExtras += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType]
+      }
+    }
+    if (!validExtras.includes(ticketInfo.extras[i])){
+      return `Extra type '${ticketInfo.extras[i]}' cannot be found.`;
+    }
+
+  }
+  if (!validTicketType.includes(ticketInfo.ticketType)){
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+  if (!validEntrance.includes(ticketInfo.entrantType)){
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+
+  return totalCost + costWithExtras;
+   
+}
 
   //extracting all possible outcomes of entrancetypes and including them within an array
   //''          '' tickettypes and including them within an array
   //''          '' extras and including them within an array
 
-  let validEntrance = ['adult','child', 'senior'];
-  let validTicketType = ['general', 'membership'];
-  let validExtras = ['movie', 'education', 'terrace'];
+  // let validEntrance = ['adult','child', 'senior'];
+  // let validTicketType = ['general', 'membership'];
+  // let validExtras = ['movie', 'education', 'terrace'];
 
   //create a totalCost variable to get the price extracted from the ticketData given
   //create a second variable to get the extra price extracted from the ticketData given
-  let costWithoutExtras = 0;
-  let extraCost= 0;
+  // 
 
   //testing if our array includes the data given, and if our second array includes the data given
   //return the ticketData at the [ticketType given] at the key of priceInCents[of the entrantType]
   //after retrieved add that to the totalCost
 
 
-  if (validTicketType.includes(ticketInfo.ticketType)){
-    if (validEntrance.includes(ticketInfo.entrantType)){
-      costWithoutExtras += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
-    }
-  }
+  
 
   //creating a loop to iterate through the key of extras which is an array within ticketInfo
   //if the array we created includes the given element in the extras key at ticketInfo, and if our other array includes the key at ticketInfo(do this below)
-  //
-  for (let i = 0; i < ticketInfo.extras.length; i++){
-    if (validExtras.includes(ticketInfo.extras[i])){
-      if (validEntrance.includes(ticketInfo.entrantType)){
-        extraCost += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType]
-      }
+  
       // We are going to use the ticketData.extras to to access the Extras values (Movie, education and terrace). if the customer is a (child, adult or senior) it should access and add the priceInCents. else return Extra type (movie, education and terrace) cannot be found.
-    }
-    if (!validExtras.includes(ticketInfo.extras[i])){
-      return `Extra type '${ticketInfo.extras[i]}' cannot be found.`;
-    }
+    // }
+    
     // if this line is falsy it should return Extra type : (movie, education and terrace)
     // ticketInfo.extra is like a placeholder 9 if the customer input a value other than the valid Extra it should return (movie , education , terrace) cannot be found.
 
-  }
-  if (!validTicketType.includes(ticketInfo.ticketType)){
-    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
-  }
+  // }
+  
   // if you input any value aside from ticketInfo.ticketType ( general , membership) cannot be found. 
-  if (!validEntrance.includes(ticketInfo.entrantType)){
-    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
-  }
+  
 
 
-  return costWithoutExtras + extraCost;
+  
   // I have to add the costWithoutExtras plus extraCost;
 
-}
+// }
 
 
 /**
@@ -167,7 +183,32 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  */
 function purchaseTickets(ticketData, purchases) {
 
-  
+  let total = 0;
+  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+ 
+  for(let i = 0; i < purchases.length; i++){
+    let ticketPrice = calculateTicketPrice(ticketData, purchases[i]); 
+    if(typeof ticketPrice === "string"){
+      return ticketPrice;
+    }else{
+      total += ticketPrice;
+      let ticketExtras = '';
+      for(let j = 0; j < purchases[i].extras.length; j++){
+        if(j === 0){
+          ticketExtras += " (" + ticketData.extras[purchases[i].extras[j]].description;
+        }else{
+          ticketExtras += ", " + ticketData.extras[purchases[i].extras[j]].description;
+        }
+        if((j === purchases[i].extras.length-1)){
+          ticketExtras += ")"
+        }
+      }
+      receipt += `${purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)} ${ticketData[purchases[i].ticketType].description}: $${(ticketPrice / 100).toFixed(2)}${ticketExtras}\n`
+    }
+  }
+  receipt += `-------------------------------------------\nTOTAL: $${(total / 100).toFixed(2)}`
+
+  return receipt;
 
 }
 
