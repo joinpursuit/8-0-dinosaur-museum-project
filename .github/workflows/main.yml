@@ -1,19 +1,14 @@
-name: Waka Readme
+name: Pull request labeler
+on: [ pull_request_target ]
 
-on:
-  workflow_dispatch:
-  schedule:
-    # Runs at 12am UTC
-    - cron: "0 0 * * *"
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
-  update-readme:
-    name: Update Readme with Metrics
+  triage:
     runs-on: ubuntu-latest
     steps:
-      - uses: athul/waka-readme@master
+      - uses: actions/labeler@v2
         with:
-          WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
-          SHOW_TITLE: true
-          COMMIT_MESSAGE: Updated the Readme
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
