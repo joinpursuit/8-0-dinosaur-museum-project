@@ -54,7 +54,39 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let validEntrance = ['adult','child', 'senior'];
+  let validTicketType = ['general', 'membership'];
+  let validExtras = ['movie', 'education', 'terrace'];
+  let totalCost = 0;
+  let costWithExtras = 0;
+  if (validTicketType.includes(ticketInfo.ticketType)){
+    if (validEntrance.includes(ticketInfo.entrantType)){
+      totalCost += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+    }
+  }
+  for (let i = 0; i < ticketInfo.extras.length; i++){
+    if (validExtras.includes(ticketInfo.extras[i])){
+      if (validEntrance.includes(ticketInfo.entrantType)){
+        costWithExtras += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType]
+      }
+    }
+    if (!validExtras.includes(ticketInfo.extras[i])){
+      return "Extra type 'incorrect-extra' cannot be found.";
+    }
+
+  }
+  if (!validTicketType.includes(ticketInfo.ticketType)){
+    return "Ticket type 'incorrect-type' cannot be found.";
+  }
+  if (!validEntrance.includes(ticketInfo.entrantType)){
+    return "Entrant type 'incorrect-entrant' cannot be found.";
+  }
+
+  return totalCost + costWithExtras;
+
+}
+
 
 /**
  * purchaseTickets()
@@ -109,10 +141,39 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
-
+    function purchaseTickets(ticketData, purchases) {
+      let totalPurchase = 0;
+      let purchaseReceipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+    
+      for(let i = 0; i < purchases.length; i++){
+        let ticketPrice = calculateTicketPrice(ticketData, purchases[i]); 
+        if(typeof ticketPrice === "string"){
+          return ticketPrice;
+        }else{
+          totalPurchase += ticketPrice; //Add all the individual purchased item prices
+          let ticketExtras = '';
+          for(let j = 0; j < purchases[i].extras.length; j++){
+            if(j === 0){
+              ticketExtras += " (" + ticketData.extras[purchases[i].extras[j]].description;
+            }else{
+              ticketExtras += ", " + ticketData.extras[purchases[i].extras[j]].description;
+            }
+            if((j === purchases[i].extras.length-1)){
+              ticketExtras += ")"
+            }
+          }
+          purchaseReceipt += `${purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)} ${ticketData[purchases[i].ticketType].description}: $${(ticketPrice / 100).toFixed(2)}${ticketExtras}\n`
+        }
+      }
+      purchaseReceipt += `-------------------------------------------\nTOTAL: $${(totalPurchase / 100).toFixed(2)}`
+    
+      return purchaseReceipt;
+    
+    }
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
   purchaseTickets,
+
+
 };

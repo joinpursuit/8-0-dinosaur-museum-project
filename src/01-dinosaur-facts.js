@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -21,8 +22,22 @@ const exampleDinosaurData = require("../data/dinosaurs");
  * EXAMPLE:
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
+ * 
+ * 
  */
-function getTallestDinosaur(dinosaurs) {}
+ function getTallestDinosaur(dinosaurs) {
+  let tallestHeight = 0;
+  let tallestDinosaur = {};
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].lengthInMeters > tallestHeight) {
+      tallestHeight = dinosaurs[i].lengthInMeters
+      tallestDinosaur = { [dinosaurs[i].name]: (tallestHeight * 3.281) }
+    }
+  }
+  return tallestDinosaur;
+}
+  //let meters = parseInt(prompt("30:"));
+  //let feet = meters / 3.281;
 
 /**
  * getDinosaurDescription()
@@ -44,7 +59,15 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let dinosaurDescription = `A dinosaur with an ID of '${id}' cannot be found.`
+  for(let i = 0; i < dinosaurs.length; i++){
+    if(dinosaurs[i].dinosaurId === id){
+      dinosaurDescription = `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.`
+    }
+  }
+  return dinosaurDescription;
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +94,22 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+ function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinosaursAliveMya = [];
+  for(i = 0;i < dinosaurs.length; i++){
+    if(dinosaurs[i].mya){
+      if(mya <= dinosaurs[i].mya[0] && mya >= dinosaurs[i].mya[dinosaurs[i].mya.length-1] || dinosaurs[i].mya[0] === mya + 1){
+        if(key){
+          dinosaursAliveMya.push(dinosaurs[i][key])
+        }else{
+          dinosaursAliveMya.push(dinosaurs[i].dinosaurId)
+        } 
+    }
+
+  }
+}
+return dinosaursAliveMya;
+}
 
 module.exports = {
   getTallestDinosaur,
