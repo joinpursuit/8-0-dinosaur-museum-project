@@ -22,7 +22,15 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+  let tallest = dinosaurs[0].lengthInMeters;
+  for (let i = 1; i < dinosaurs.length; i ++){
+    if (dinosaurs[i].lengthInMeters > dinosaurs[0].lengthInMeters){
+      tallest = dinosaurs[i].lengthInMeters
+    } 
+  }
+  return tallest
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +52,14 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let dinoDes = []
+  for (let i = 0; i < dinosaurs.length; i ++) {
+    if (dinosaurs[i].dinosaurId = id){
+         dinoDes.push(dinosaurs[i].info)
+    } 
+} return `A dinosaur with an ID of '${id}' cannot be found.`
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +86,13 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinoArray = []
+  for (let i = 0; i < dinosaurs.length; i ++) {
+    if (dinosaurs.mya === mya){
+      dinoArray.push(dinosaurs.dinosaurId)}
+    }return dinoArray
+  }
 
 module.exports = {
   getTallestDinosaur,
