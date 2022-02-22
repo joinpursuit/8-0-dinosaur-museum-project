@@ -54,8 +54,25 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
-
+function calculateTicketPrice(ticketData, ticketInfo) {
+  
+  if(!(ticketInfo.ticketType in ticketData)){
+    return `Ticket type 'incorrect-type' cannot be found.`
+  }
+  if(!(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents)){
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+  }
+for(let extra of ticketInfo.extras){
+  if(!(extra in ticketData.extras)){
+    return `Extra type 'incorrect-extra' cannot be found.`
+}
+}
+let totalPrice = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+for(let extra of ticketInfo.extras){
+  totalPrice = totalPrice + ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+}
+  return totalPrice;
+}
 /**
  * purchaseTickets()
  * ---------------------
@@ -109,7 +126,28 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let price = 0;
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-----------------------\n"
+  let addtionalPrice = 0;
+  for(let purchase of purchases){
+    let purchaseTotal = calculateTicketPrice(ticketData,purchase);
+    if(typeof purchaseTotal === "string") {
+      return purchaseTotal;
+    }
+  let description = [];
+  for(let extra of purchase.extras){
+    description.push(ticketData.extras[extra].description);
+  }
+if(purchase.extras.length){
+  description = `(${description.join(",")})`
+}  
+addtionalPrice = purchaseTotal;
+receipt = receipt + `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(addtionalPrice/100).toFixed(2)}${description}\n`;
+price =  price + addtionalPrice/100;
+}
+return receipt = receipt + "------------------------\nTOTAL: $" + price.toFixed(2);
+}
 
 // Do not change anything below this line.
 module.exports = {
