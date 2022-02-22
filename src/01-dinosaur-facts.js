@@ -22,7 +22,16 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getTallestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getTallestDinosaur(dinosaurs) {}
+function getTallestDinosaur(dinosaurs) {
+let tallestDino = {};
+let dinosaur = dinosaurs.lengthInMeters
+for(let dino of dinosaurs){
+    if(dino.lengthInMeters > dinosaur){
+      tallestDino[dino.name] =  dino.lengthInMeters * 3.281;
+    }
+  }
+  return tallestDino;
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +53,15 @@ function getTallestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let result  = "A dinosaur with an ID of 'incorrect-id' cannot be found."
+for (let i = 0; i < dinosaurs.length; i++){
+  if (dinosaurs[i].dinosaurId === id){
+    result = `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.`
+  }
+}
+return result;
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +88,15 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let newArr = [];
+  for (let i = 0; i < dinosaurs.length; i++){
+    if (dinosaurs[i].mya === mya){
+      newArr.push(dinosaurs[i].dinosaurId)
+    }
+  }
+  return newArr;
+}
 
 module.exports = {
   getTallestDinosaur,
