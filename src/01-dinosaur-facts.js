@@ -73,19 +73,21 @@ function getTallestDinosaur(dinosaurs) {
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
+// 1. default error message if no dino found.
+// 2. loop through the dino array of {} - search for id.
+// 3. when id match set variable to dino[i].
+// 4. return stings build w/ interpulation.
 function getDinosaurDescription(dinosaurs, id) {
-  let formatDino = []
+  let formatDino = `A dinosaur with an ID of '${id}' cannot be found.`
   for(let i = 0; i < dinosaurs.length; i++){
-    if(dinosaurs[i].dinosaursId === id){
-      formatDino = dinosaurs[i].name + " " + dinosaurs[i].dinosaursId + " " + dinosaurs[i].info 
+    if(id === dinosaurs[i].dinosaursId){
+      formatDino = dinosaurs[i];
+
+      return `${formatDino.name} (${formatDino.pronunciation})\n${formatDino.info} It lived in the ${formatDino.period} period, over ${formatDino.mya[formatDino.mya.length-1]} million years ago.`  
     }
   }
-  // my thoughs here is that I was trying to loop through the dinosaurs to pull out the ones with the same id
-  //then 
- 
- 
- 
-  }
+  return formatDino;
+}
 
 
   
@@ -117,8 +119,24 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
+// 1. 
+// 2.
+// 3.
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  
+  let dinoString = key || "dinosaurId";
+  let liveMya = [];
+  for (let dino of dinosaurs){
+    let high = dino.mya[0];
+    let low = dino.mya[dino.mya.length -1];
+    if (dino.mya.length > 1){
+      if (mya <= high && mya >= low){
+        liveMya.push(dino[dinoString]);
+      }
+    }else if (mya === high || mya === high -1){
+      liveMya.push(dino[dinoString]);
+    }
+  }
+  return liveMya;
 }
 
 module.exports = {
