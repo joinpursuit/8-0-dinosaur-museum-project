@@ -57,131 +57,23 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
+  if (!ticketData[ticketInfo.ticketType] || ticketInfo.ticketType === 'extras') {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  } else if (!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  } else  {
+    for (let extra of ticketInfo.extras) {
+      if (!ticketData.extras[extra]) {
+        return `Extra type '${extra}' cannot be found.`;
+      }
+    }
+  }
   let pricePerTicket = 0;
+  pricePerTicket += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
   
-  if (ticketInfo.ticketType !== "general" 
-  && ticketInfo.ticketType !== "membership") {
-    return `Ticket type 'incorrect-type' cannot be found.`;
+  for (let addOn of ticketInfo.extras){
+    pricePerTicket += ticketData.extras[addOn].priceInCents[ticketInfo.entrantType];
   }
-  else if (ticketInfo.entrantType !== "child" 
-  && ticketInfo.entrantType !== "adult" 
-  && ticketInfo.entrantType !== "senior") {
-    return `Entrant type 'incorrect-entrant' cannot be found.`;
-  }
-  else if (ticketInfo.extras.length > 0) {
-    for (let i = 0; i < ticketInfo.extras.length; i++) {
-      if (ticketInfo.extras[i] !== "movie" 
-      && ticketInfo.extras[i] !== "terrace" 
-      && ticketInfo.extras[i] !== "education") {
-        return `Extra type 'incorrect-extra' cannot be found.`;
-      }
-    }
-  } 
-  if (ticketInfo.ticketType === "general" 
-  && ticketInfo.entrantType === "child"){
-     pricePerTicket = ticketData.general.priceInCents.child;
-     if (ticketInfo.extras.length > 0){
-       for (let i = 0; i < ticketInfo.extras.length; i++) {
-         if (ticketInfo.extras[i] === "movie") {
-           pricePerTicket = pricePerTicket + ticketData.extras.movie.priceInCents.child;
-         }
-         if (ticketInfo.extras[i] === "education") {
-          pricePerTicket = pricePerTicket + ticketData.extras.education.priceInCents.child;
-        }
-        if (ticketInfo.extras[i] === "terrace") {
-          pricePerTicket = pricePerTicket + ticketData.extras.terrace.priceInCents.child;
-        }
-       }
-     }
-  }
-  if (ticketInfo.ticketType === "general" 
-  && ticketInfo.entrantType === "adult") {
-    pricePerTicket = ticketData.general.priceInCents.adult;
-    if (ticketInfo.extras.length > 0) {
-      for (let i = 0; i < ticketInfo.extras.length; i++) {
-        if (ticketInfo.extras[i] === "movie") {
-          pricePerTicket = pricePerTicket + ticketData.extras.movie.priceInCents.adult;
-        }
-        if (ticketInfo.extras[i] === "education") {
-          pricePerTicket = pricePerTicket + ticketData.extras.education.priceInCents.adult;
-        }
-        if (ticketInfo.extras[i] === "terrace") {
-          pricePerTicket = pricePerTicket + ticketData.extras.terrace.priceInCents.adult;
-        }
-
-      }
-    }
- }
- if (ticketInfo.ticketType === "general" 
- && ticketInfo.entrantType === "senior") {
-  pricePerTicket = ticketData.general.priceInCents.senior;
-  if (ticketInfo.extras.length > 0) {
-    for (let i = 0; i < ticketInfo.extras.length; i++) { 
-      if(ticketInfo.extras[i] === "movie"){
-        pricePerTicket = pricePerTicket + ticketData.extras.movie.priceInCents.senior;
-      }
-      if(ticketInfo.extras[i] === "education"){
-        pricePerTicket = pricePerTicket + ticketData.extras.education.priceInCents.senior;
-      }
-      if(ticketInfo.extras[i] === "terrace"){
-        pricePerTicket = pricePerTicket + ticketData.extras.terrace.priceInCents.senior;
-      }
-    }
-  }
-}
-if (ticketInfo.ticketType === "membership" 
-&& ticketInfo.entrantType === "child") {
-  pricePerTicket = ticketData.membership.priceInCents.child;
-  if (ticketInfo.extras.length > 0){
-    for (let i = 0; i < ticketInfo.extras.length; i++) {
-      if(ticketInfo.extras[i] === "movie") {
-        pricePerTicket = pricePerTicket + ticketData.extras.movie.priceInCents.child;
-      }
-      if(ticketInfo.extras[i] === "education") {
-       pricePerTicket = pricePerTicket + ticketData.extras.education.priceInCents.child;
-     }
-     if(ticketInfo.extras[i] === "terrace") {
-       pricePerTicket = pricePerTicket + ticketData.extras.terrace.priceInCents.child;
-     }
-
-    }
-  }
-}
-if (ticketInfo.ticketType === "membership" 
-&& ticketInfo.entrantType === "adult") { 
- pricePerTicket = ticketData.membership.priceInCents.adult;
-  if (ticketInfo.extras.length > 0) {
-    for (let i = 0; i < ticketInfo.extras.length; i++) {
-      if (ticketInfo.extras[i] === "movie") {
-        pricePerTicket = pricePerTicket + ticketData.extras.movie.priceInCents.adult;
-      }
-      if (ticketInfo.extras[i] === "education") {
-        pricePerTicket = pricePerTicket + ticketData.extras.education.priceInCents.adult;
-      }
-      if (ticketInfo.extras[i] === "terrace") {
-        pricePerTicket = pricePerTicket + ticketData.extras.terrace.priceInCents.adult;
-      }
-
-    }
-  }
-}
-if (ticketInfo.ticketType === "membership" 
-&& ticketInfo.entrantType === "senior") {
-pricePerTicket = ticketData.membership.priceInCents.senior;
-  if (ticketInfo.extras.length > 0) {
-    for (let i = 0; i < ticketInfo.extras.length; i++) {
-      if (ticketInfo.extras[i] === "movie") {
-        pricePerTicket = pricePerTicket + ticketData.extras.movie.priceInCents.senior;
-      }
-      if (ticketInfo.extras[i] === "education") {
-        pricePerTicket = pricePerTicket + ticketData.extras.education.priceInCents.senior;
-      }
-      if (ticketInfo.extras[i] === "terrace") {
-        pricePerTicket = pricePerTicket + ticketData.extras.terrace.priceInCents.senior;
-      }
-    }
-  }
-}
  return pricePerTicket;
 }
 
@@ -241,48 +133,35 @@ pricePerTicket = ticketData.membership.priceInCents.senior;
 function purchaseTickets(ticketData, purchases) {
   let subtotal;
   let total = 0;
-  let ticket = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  let ticket = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------";
 
-  for (let purchase of purchases){
+  for (let purchase of purchases) {
     subtotal = calculateTicketPrice(ticketData,purchase);
-
-    if (purchase.ticketType !== "general" 
-  && purchase.ticketType !== "membership") {
-    return subtotal;
-  }
-  else if (purchase.entrantType !== "child" 
-  && purchase.entrantType !== "adult" 
-  && purchase.entrantType !== "senior") {
-    return subtotal;
-  }
-  else if (purchase.extras.length > 0) {
-    for (let i = 0; i < purchase.extras.length; i++) {
-      if (purchase.extras[i] !== "movie" 
-      && purchase.extras[i] !== "terrace" 
-      && purchase.extras[i] !== "education") {
-        return subtotal;
-      }
-    }
-  } 
-
-  if (purchase.ticketType === 'general' || purchase.ticketType === 'membership') {
-      
-      ticket += `${purchase.entrantType.charAt(0).toUpperCase() + purchase.entrantType.slice(1,purchase.entrantType.length)} ${purchase.ticketType.charAt(0).toUpperCase() + purchase.ticketType.slice(1,purchase.ticketType.length)} Admission: $${(subtotal / 100).toFixed(2)}\n`;
+    if (typeof subtotal === "string") {
+      return subtotal;
+    } else {
       total += subtotal;
-  } 
-
-  if ( purchase.extras.length === 1 ) { 
-    ticket = `${ticket.slice("0",ticket.length-1)} (${purchase.extras[0].charAt(0).toUpperCase() + purchase.extras[0].slice(1,purchase.extras[0].length)} Access)\n`; 
+      let entrant = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1).toLowerCase();
+      let ticketType = ticketData[purchase.ticketType].description;
+      let priceInDollars = (subtotal / 100).toFixed(2);
+      let ticketExtras = "";
+      for (let i = 0; i < purchase.extras.length; i++) {
+        if (i === 0) {
+          ticketExtras += " (";
+        }
+        ticketExtras += ticketData.extras[purchase.extras[i]].description;
+        if (i === purchase.extras.length - 1) {
+          ticketExtras += ")";
+        } else {
+          ticketExtras += ", "
+        }
+      }
+      ticket += `\n${entrant} ${ticketType}: $${priceInDollars}${ticketExtras}`;
+    }
   }
-  if (purchase.extras.length === 2){
-    ticket = `${ticket.slice("0",ticket.length-1)} (${purchase.extras[0].charAt(0).toUpperCase() + purchase.extras[0].slice(1,purchase.extras[0].length)} Access, ${purchase.extras[1].charAt(0).toUpperCase() + purchase.extras[1].slice(1,purchase.extras[1].length)} Access)\n`;
-  }
-
-  if (purchase.extras.length === 3){
-    ticket = `${ticket.slice("0",ticket.length-1)} (${purchase.extras[0].charAt(0).toUpperCase() + purchase.extras[0].slice(1,purchase.extras[0].length)} Access, ${purchase.extras[1].charAt(0).toUpperCase() + purchase.extras[1].slice(1,purchase.extras[1].length)} Access, ${purchase.extras[2].charAt(0).toUpperCase() + purchase.extras[2].slice(1,purchase.extras[2].length)} Access)\n`;
-  }  
-  }
-  return `${ticket}-------------------------------------------\nTOTAL: $${(total / 100).toFixed(2)}`;
+  total = (total / 100).toFixed(2);
+  ticket += `\n-------------------------------------------\nTOTAL: $${total}`;
+  return ticket;
 }
 
 // Do not change anything below this line.
