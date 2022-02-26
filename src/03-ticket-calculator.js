@@ -182,7 +182,8 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  *
  * Any errors that would occur as a result of incorrect ticket information should be surfaced in the same way it is in the previous function.
  * 
- * NOTE: Pay close attention to the format in the examples below and tests. You will need to have the same format to get the tests to pass.
+ * NOTE: Pay close attention to the format in the examples below and tests. You will need to have the same format to
+ *  get the tests to pass.
  *
  * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
  * @param {Object[]} purchases - An array of objects. Each object represents a single ticket being purchased.
@@ -215,7 +216,11 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       },
     ];
     purchaseTickets(tickets, purchases);
-    //> "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
+    //> "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General 
+    Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild 
+    General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 
+    (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
+
 
  * EXAMPLE:
     const purchases = [
