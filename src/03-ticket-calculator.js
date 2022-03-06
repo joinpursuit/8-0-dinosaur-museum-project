@@ -66,10 +66,11 @@ const exampleTicketData = require("../data/tickets");
 
 
 function calculateTicketPrice(ticketData, tickeInfo) {
-  //if ticketInfo at ticketType doesn't match the key in ticketDta or ticketInfo at ticketType equals extra return error message
+  //if ticketInfo at ticketType doesn't match the given ticketType return error message with interpolatation ${ticketInfo.ticketType} 
       if(!ticketData[tickeInfo.ticketType] || tickeInfo.ticketType === 'extras'){
         return `Ticket type '${tickeInfo.ticketType}' cannot be found.`
 
+        //else if the entant type in ticketInfo at is not in the ticketData price in centes object  
       } else if (!ticketData[tickeInfo.ticketType].priceInCents[tickeInfo.entrantType]) {
         return `Entrant type '${tickeInfo.entrantType}' cannot be found.`
       } else {
