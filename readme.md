@@ -4,6 +4,12 @@ The _Dinosaur Museum_ is opening! You've been tasked with building some challeng
 
 To complete this project, you will need to write a number of difficult functions that will support attendees in finding out information about dinosaurs, finding the dinosaur's location, and calculating their entry fees.
 
+There are 51 unit tests that need to pass. Each passing test will be worth 1 point.
+
+A minium of 36 points must be attained in order to pass this assessment.
+
+There is no partial credit for the tests.
+
 ## Project setup
 
 ### Getting started
