@@ -26,23 +26,23 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
- let result = `Dinosaur with name '${dinosaurName}' cannot be found.`
- let answer = ""
+  let result = `Dinosaur with name '${dinosaurName}' cannot be found.`;
+  let answer = "";
   for (let dinosaur of dinosaurs) {
     if (dinosaurName === dinosaur.name) {
-      result = dinosaur.dinosaurId
+      result = dinosaur.dinosaurId;
       for (let room of rooms) {
-      if (room.dinosaurs.includes(result) ){
-        result = room.name;
-    
-      return result
-      }
-    }
-    result = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
-    }
-}
+        if (room.dinosaurs.includes(result)) {
+          result = room.name;
 
-    return result
+          return result;
+        }
+      }
+      result = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+    }
+  }
+
+  return result;
 }
 
 /**
@@ -69,22 +69,28 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
  */
 function getConnectedRoomNamesById(rooms, id) {
   // array for returning
-  let arrConnectedRooms = [];
-  // let result = arrConnectedRooms
-  for (let i = [0]; i < rooms.length; i++) {
-  if (id === rooms.roomId) {
-    arrConnectedRooms.push(rooms[i].connectsTo);
+  let newArr = [];
+    for (let room of rooms) {
+  if(room.roomId === id) {
+    newArr = room.connectsTo.slice(0);
   }
-
-// error message for wrong room id 
-  if (id !== rooms.roomId) {
-    return `Room with ID of 'incorrect-id' could not be found.`
-  }else {
-    return `Room with ID of '${id}' could not be found.`
-  }
-  }
-  return arrConnectedRooms
 }
+  if(newArr.includes("incorrect-id")) {
+  return `Room with ID of 'incorrect-id' could not be found.`
+}
+  if(!newArr.length) {
+  return `Room with ID of 'incorrect-id' could not be found.`
+}
+  let arr2 = [];
+    for (let room of rooms) {
+  if (newArr.includes(room.roomId)) {
+    arr2.push(room.name);
+  }
+}
+
+return arr2;
+}
+
 
 module.exports = {
   getRoomByDinosaurName,

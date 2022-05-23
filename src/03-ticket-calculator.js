@@ -56,35 +56,24 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  let general = tickets.general
-  let ticketPrice = 0
-  let age = ticketInfo.entrantType
-  let extraS = ticketInfo.extras
-
-// general admissioon if else for : adults, child, senior
-
-// if (ticketInfo.ticketType === general){
-//   if (ticketInfo.entrantType === child ){
-//     priceInCents = 2000
-//   }else if (ticketInfo.entrantType === adult){
-//     priceInCents = 3000
-//   }else if (ticketInfo.entrantType === senior){
-//     priceInCents = 2500
-// }
-// if (ticketInfo.extras === movie ){
-//   if (ticketInfo.entrantType === child){
-//     priceInCents = 1000
-//   }else if (ticketInfo.entrantType === adult){
-//     priceInCents = 1000
-// }else if (ticketInfo.entrantType === senior){
-//   priceInCents = 1000
-// } else if (!extras)
-
-// membership admissioon if else for : adults, child, senior
-
-  // return ticket priced based on info provided
-  return ticketPrice
+  let totalPrice = 0;
+  if (ticketInfo.ticketType in ticketData) {
+  if (ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents) {
+  totalPrice += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
 }
+  else return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+}
+  else return "Ticket type 'incorrect-type' cannot be found.";
+  if (ticketInfo.extras.length) {
+  let extrasArr = ticketInfo.extras.slice(0); // copy of array.
+  for (let extra of extrasArr) {
+  if (extra in ticketData.extras) {
+  totalPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+}
+else return `Extra type '${extra}' cannot be found.`;
+}
+}
+return totalPrice; }
 
 
 /**
@@ -140,7 +129,47 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+    function formatter(type){
+      return type.charAt(0).toUpperCase()+ type.slice(1);
+    }
+
+function purchaseTickets(ticketData, purchases) {
+
+  let receipt1 = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
+  let sum = 0;
+
+  for(let purchase of purchases){
+    let purchaseTotal = calculateTicketPrice(ticketData, purchase);
+    if(typeof purchaseTotal === "string"){
+      return purchaseTotal;
+    } 
+
+      sum+=purchaseTotal;
+    // let priceInDollars = sum.toFixed(2);
+
+      let ticket1 = formatter(purchase.entrantType)
+      let ticket2 = formatter(purchase.ticketType) + " Admission: "
+      let receipt2 = ticket1+ " " +ticket2+ "$" + (purchaseTotal/100).toFixed(2); 
+
+      if(purchase.extras.length === 0 ){
+        receipt1+=receipt2+"\n";
+      }else{
+        let accessArr = [];
+
+        for(let element of purchase.extras){
+        accessArr.push(ticketData.extras[element].description);  
+
+      }
+        receipt1+=`${receipt2} (${accessArr.join(", ")})\n`;
+      }
+    }
+    receipt1+="-------------------------------------------\n" + "TOTAL: $" + (sum/100).toFixed(2);
+    return receipt1;  
+  
+} 
+
+
 
 // Do not change anything below this line.
 module.exports = {
