@@ -11,7 +11,7 @@ const exampleDinosaurData = require("../data/dinosaurs");
 /**
  * getLongestDinosaur()
  * ---------------------
- * Returns an object with the tallest dinosaur from the list. Converts from meters to feet.
+ * Returns an object with the longest dinosaur from the list. Converts from meters to feet.
  *
  * NOTE: To convert from meters to feet, multiply the meters by `3.281`.
  *
