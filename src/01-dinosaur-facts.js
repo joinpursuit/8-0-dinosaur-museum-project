@@ -104,7 +104,7 @@ function getDinosaurDescription(dinosaurs, id) {
 function getDinosaursAliveMya(dinosaurs, mya, key = `dinosaurId`) {
   let aliveDinos = [];
   for(const dino of dinosaurs) {
-    if(dino.mya.length === 1){
+    if(dino.mya.length === 1) {
       if(dino.mya[0] === mya || dino.mya[0] === mya + 1) {
         aliveDinos.push(dino[key]);
         continue;
@@ -117,7 +117,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key = `dinosaurId`) {
   return aliveDinos;
 }
 
-console.log(getDinosaursAliveMya(exampleDinosaurData, 65, `name`))
+// console.log(getDinosaursAliveMya(exampleDinosaurData, 65, `name`))
 
 module.exports = {
   getLongestDinosaur,
