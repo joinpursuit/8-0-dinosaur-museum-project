@@ -3,9 +3,9 @@
 
   You may use this data to test your functions. You may assume the shape of the data remains the same but that the values may change.
 */
-const exampleDinosaurData = require("../data/dinosaurs");
-const rooms = require("../data/rooms");
-const exampleRoomData = require("../data/rooms");
+const exampleDinosaurData = require('../data/dinosaurs');
+const rooms = require('../data/rooms');
+const exampleRoomData = require('../data/rooms');
 // Do not change the lines above.
 
 /**
@@ -26,40 +26,7 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  let searchForDino = false;
-  let SearchForRoom = false;
-  let dinoObj = null;
-  let roomName = "";
-  let roomId = "";
-
-  for (let dinosaur of dinosaurs) {
-    if (dinosaur.name === dinosaurName) {
-      searchForDino = true;
-      dinoObj = dinosaur;
-    }
-  }
-  if (!searchForDino) {
-    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
-  }
-  console.log("DinoObj", dinoObj);
-  for (let i = 0; i < rooms.length; i++) {
-    for (let s = 0; s < dinosaurs.length; s++) {
-      if (rooms[i].dinosaurs[s] === dinoObj.dinosaurId) {
-        SearchForRoom = true;
-        roomId = rooms[i].roomId;
-        roomName = rooms[i].name;
-        dinoId = rooms[i].dinosaurs[s];
-        break;
-      }
-    }
-  }
-  if (SearchForRoom) {
-    return roomName;
-  } else {
-    return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
-  }
-}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
 
 /**
  * getConnectedRoomNamesById()
@@ -83,27 +50,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {
-  let connectedRoom = [];
-  for (let room of rooms) {
-    if (room.roomId.includes(id)) {
-      for (let next of room.connectsTo) {
-        let found = true;
-        for (let room of rooms) {
-          if (next.includes(room.roomId)) {
-            connectedRoom.push(room.name);
-            found = false;
-          }
-        }
-        if (found) {
-          return `Room with ID of '${next}' could not be found.`;
-        }
-      }
-      return connectedRoom;
-    }
-  }
-  return `Room with ID of '${id}' could not be found.`;
-}
+function getConnectedRoomNamesById(rooms, id) {}
 
 module.exports = {
   getRoomByDinosaurName,
