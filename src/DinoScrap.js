@@ -210,26 +210,37 @@ const dinosaurs = [
     },
   ];
 
-  function getLongestDinosaur(dinosaurs) {
-    let obj = {}
-    let orderedArr = []
-    let dinoArr = []
-    
-    for(i = 0; i < dinosaurs.length; i++){
-        orderedArr.push(dinosaurs[i].lengthInMeters)
-        dinoArr.push(dinosaurs[i].name)
-      }
-      let unOrderedArr = [...orderedArr]
-      
-      orderedArr.sort(function(a,b){
-        return b-a
-      })
-      for(j = 0; j < unOrderedArr.length; j++){
-        if(orderedArr[0] === unOrderedArr[j]){
-            obj[dinoArr[j]] = unOrderedArr[j] * 3.281
+
+  //getDinosaurDescription(dinosaurs, "U9vuZmgKwUr");
+   //> "Xenoceratops (ZEE-no-SEH-ruh-tops)\nXenoceratops had horns and a bony frill with elaborate ornamentation of projections, knobs, and spikes. It lived in the Early Cretaceous period, over 77.5 million years ago."
+  
+   //getDinosaurDescription(dinosaurs, "incorrect-id");
+   //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
+ 
+   function getDinosaurDescription(dinosaurs, id) {
+    let name = ``
+    let sayIt = ``
+    let info = ``
+    let period = ``
+    let yearsAgo = null
+    let match = false
+  
+    for ( obj in dinosaurs){
+        if(id === dinosaurs[obj].dinosaurId){
+            match = true
+            name = dinosaurs[obj].name
+            sayIt = dinosaurs[obj].pronunciation
+            info = dinosaurs[obj].info
+            period = dinosaurs[obj].period
+            yearsAgo = [...dinosaurs[obj].mya]
+            yearsAgo = yearsAgo.sort(function(a,b){
+                return a-b
+            })
+            yearsAgo = yearsAgo[0]
+  
+            
         }
-      }
-    
-    return obj
+    }
+    return match = false ? `A dinosaur with an ID of ${id} cannot be found.` : `${name} (${sayIt})\n${info} It lived in the ${period} period, over ${yearsAgo[0]} million years ago.`
   }
-  console.log( getLongestDinosaur(dinosaurs))
+  console.log(getDinosaurDescription(dinosaurs, "U9vuZmgKwUr"))

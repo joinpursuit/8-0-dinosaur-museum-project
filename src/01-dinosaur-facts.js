@@ -66,7 +66,30 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+ function getDinosaurDescription(dinosaurs, id) {
+  let name = ``
+  let sayIt = ``
+  let info = ``
+  let period = ``
+  let yearsAgo = null
+  let match = false
+
+  for ( obj in dinosaurs){
+      if(id === dinosaurs[obj].dinosaurId){
+          match = true
+          name = dinosaurs[obj].name
+          sayIt = dinosaurs[obj].pronunciation
+          info = dinosaurs[obj].info
+          period = dinosaurs[obj].period
+          yearsAgo = [...dinosaurs[obj].mya]
+          yearsAgo = yearsAgo.sort(function(a,b){
+              return a-b
+          })
+          yearsAgo = yearsAgo[0]
+        }
+  }
+  return match === false ? `A dinosaur with an ID of '${id}' cannot be found.` : `${name} (${sayIt})\n${info} It lived in the ${period} period, over ${yearsAgo} million years ago.`
+}
 
 /**
  * getDinosaursAliveMya()
