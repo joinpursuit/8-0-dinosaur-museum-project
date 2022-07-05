@@ -116,7 +116,28 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+ function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let object = {}
+  let finalArr = []
+
+  for (obj in dinosaurs){
+      if(dinosaurs[obj].mya.length === 1){
+          dinosaurs[obj].mya.push(dinosaurs[obj].mya[0] - 1)
+      }
+      else if(key){
+          object[dinosaurs[obj][key]] = dinosaurs[obj].mya
+      }
+      else{
+          object[dinosaurs[obj].dinosaurId] = dinosaurs[obj].mya
+      }
+  }
+  for(const val in object){
+      if(object[val][0] >= mya && object[val][1] <= mya){
+          finalArr.push(val)
+      }
+  }
+ return finalArr
+}
 
 module.exports = {
   getLongestDinosaur,

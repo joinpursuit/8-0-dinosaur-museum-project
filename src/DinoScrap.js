@@ -211,36 +211,39 @@ const dinosaurs = [
   ];
 
 
-  //getDinosaurDescription(dinosaurs, "U9vuZmgKwUr");
-   //> "Xenoceratops (ZEE-no-SEH-ruh-tops)\nXenoceratops had horns and a bony frill with elaborate ornamentation of projections, knobs, and spikes. It lived in the Early Cretaceous period, over 77.5 million years ago."
-  
-   //getDinosaurDescription(dinosaurs, "incorrect-id");
-   //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
+  EXAMPLE:
+ //getDinosaursAliveMya(dinosaurs, 150);
+ //> ["YLtkN9R37", "GGvO1X9Zeh", "BFjjLjea-O", "V53DvdhV2A"]
  
-   function getDinosaurDescription(dinosaurs, id) {
-    let name = ``
-    let sayIt = ``
-    let info = ``
-    let period = ``
-    let yearsAgo = null
-    let match = false
-  
-    for ( obj in dinosaurs){
-        if(id === dinosaurs[obj].dinosaurId){
-            match = true
-            name = dinosaurs[obj].name
-            sayIt = dinosaurs[obj].pronunciation
-            info = dinosaurs[obj].info
-            period = dinosaurs[obj].period
-            yearsAgo = [...dinosaurs[obj].mya]
-            yearsAgo = yearsAgo.sort(function(a,b){
-                return a-b
-            })
-            yearsAgo = yearsAgo[0]
-  
-            
+ //getDinosaursAliveMya(dinosaurs, 65);
+ //> ["WHQcpcOj0G"]
+ 
+ //getDinosaursAliveMya(dinosaurs, 65, "name");
+ //> ["Dracorex"]
+ 
+ //getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
+ //> ["WHQcpcOj0G"]
+ 
+ function getDinosaursAliveMya(dinosaurs, mya, key) {
+    let object = {}
+    let finalArr = []
+
+    for (obj in dinosaurs){
+        if(dinosaurs[obj].mya.length === 1){
+            dinosaurs[obj].mya.push(dinosaurs[obj].mya[0] - 1)
+        }
+        else if(key){
+            object[dinosaurs[obj][key]] = dinosaurs[obj].mya
+        }
+        else{
+            object[dinosaurs[obj].dinosaurId] = dinosaurs[obj].mya
         }
     }
-    return match = false ? `A dinosaur with an ID of ${id} cannot be found.` : `${name} (${sayIt})\n${info} It lived in the ${period} period, over ${yearsAgo[0]} million years ago.`
-  }
-  console.log(getDinosaurDescription(dinosaurs, "U9vuZmgKwUr"))
+    for(const val in object){
+        if(object[val][0] >= mya && object[val][1] <= mya){
+            finalArr.push(val)
+        }
+    }
+   return finalArr
+}
+  console.log(getDinosaursAliveMya(dinosaurs, 150))
