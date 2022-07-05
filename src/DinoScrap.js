@@ -389,28 +389,38 @@ const rooms = [
 
 
   EXAMPLE:
- //  getRoomByDinosaurName(dinosaurs, rooms, "Tyrannosaurus");
- //  //> "Roberts Room"
- //
- // EXAMPLE:
- //  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
- //  //> "Dinosaur with name 'Pterodactyl' cannot be found."
- 
- function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-    let dinoId = ``
-    let location = ``
-    let match = false
-    for(obj in dinosaurs){
-        if(dinosaurs[obj].name === dinosaurName){
-            dinoId = dinosaurs[obj].dinosaurId
+  //  getConnectedRoomNamesById(rooms, "aIA6tevTne");
+  //  //> ["Ticket Center"]
+  //
+  // EXAMPLE:
+  //  getConnectedRoomNamesById(rooms, "A6QaYdyKra");
+  //  //> [
+  //     "Entrance Room",
+    //   "Coat Check Room",
+      // "Ellis Family Hall",
+       //"Kit Hopkins Education Wing"
+     //]
+  
+  function getConnectedRoomNamesById(rooms, id) {
+    let nameRoom = []
+    for(let obj in rooms){
+        if(rooms[obj].roomId === id){
+            for(const val of rooms[obj].connectsTo)
+            nameRoom.push(val) 
         }
     }
-    for(val in rooms){
-        if(rooms[val].dinosaurs.includes(dinoId)){
-            match = true
-            location = rooms[val].name
+    let codeRoom = [...nameRoom]
+    
+    for(let i = 0; i < rooms.length; i++){
+        if(nameRoom.includes(rooms[i].roomId)){
+            nameRoom[nameRoom.indexOf(rooms[i].roomId)] = rooms[i].name
         }
     }
-    return match  ? `${location}` : `Dinosaur with name ${dinosaurName} cannot be found.`
- }
-  console.log(getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl"))
+    for(let val of codeRoom){
+        if(nameRoom.includes(val)){
+            `Room with ID of '${val}' could not be found.`
+        }
+    }
+    return nameRoom.length === 0 ? `Room with ID of '${id}' could not be found.` : nameRoom
+}
+  console.log(getConnectedRoomNamesById(rooms, "A6QaYdyKra"))

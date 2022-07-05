@@ -69,7 +69,28 @@ const exampleRoomData = require("../data/rooms");
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+    function getConnectedRoomNamesById(rooms, id) {
+      let nameRoom = []
+      for(let obj in rooms){
+          if(rooms[obj].roomId === id){
+              for(const val of rooms[obj].connectsTo)
+              nameRoom.push(val) 
+          }
+      }
+      let codeRoom = [...nameRoom]
+      
+      for(let i = 0; i < rooms.length; i++){
+          if(nameRoom.includes(rooms[i].roomId)){
+              nameRoom[nameRoom.indexOf(rooms[i].roomId)] = rooms[i].name
+          }
+      }
+      for(let val of codeRoom){
+          if(nameRoom.includes(val)){
+             return  `Room with ID of '${val}' could not be found.`
+          }
+      }
+      return nameRoom.length === 0 ? `Room with ID of '${id}' could not be found.` : nameRoom
+  }
 
 module.exports = {
   getRoomByDinosaurName,
