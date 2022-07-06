@@ -74,6 +74,7 @@ function getDinosaurDescription(dinosaurs, id) {}
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   // Loop through the array of dinosaurs, check if mya is below or equal to the dino.mya[0] AND above or equal to the 1 element (btw the time frame)
   // if dino.mya length === 1 check if mya is equal to dino.mya[0] or dino.mya[0] - 1
+  // come back to fix repetition
   let dinosaursAlive = [];
   for (let dino of dinosaurs) {
     if (dino.mya.length === 1 && (dino.mya[0] === mya || dino.mya[0] - 1 === mya)) {
