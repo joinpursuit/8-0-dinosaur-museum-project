@@ -27,7 +27,7 @@ function getLongestDinosaur(dinosaurs) {
   if(!dinosaurs.length) {
     return {}
    }
-  const sorted = dinosaurs.sort((a,b) => b.lengthInMeters -  a.lengthInMeters)
+  const sorted = [...dinosaurs].sort((a,b) => b.lengthInMeters -  a.lengthInMeters)
   const longest = sorted[0]
   return { [longest.name]: longest.lengthInMeters * 3.28084 }
 }
