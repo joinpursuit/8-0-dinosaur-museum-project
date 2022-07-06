@@ -26,26 +26,28 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */ 
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  if(dinosaurs.dinosaurId !== dinosaurName){
-   return `Dinosaur with name '${dinosaurName}' cannot be found.`
+ 
+let dino = "";
+for(let i = 0; i < dinosaurs.length; i++){
+  if(dinosaurs[i].name === dinosaurName){
+    dino = dinosaurs[i].dinosaurId;
   }
-  let roomName = "";
-  let dinoId = "";
+}
+      if(!dino){
+        return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+      }
+      //lopped thru each room
+      for(let i = 0; i < rooms.length; i++){
+        //looping thru dino array in rooms
+        for(let k =0; k < rooms[i].dinosaurs.length; k++){
+            if(rooms[i].dinosaurs[k] === dino){
+              return rooms[i].name
+            }
+        }
 
- for(let dino of dinosaurs){
-  if(dino.name === dinosaurName){
-   dinoId = dino.dinosaurId;
-  }
- }
- for (let room of rooms){
-   if(room.dinosaurs.include(dinoId)){
-     roomName = room.name
-    }
-  }
-  if(!roomName){
-   return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
-   return roomName;
-  } 
+      }
+      return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+ 
 }
 
 /**
@@ -71,14 +73,22 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  // let newArr = []
-
-  // for(room of rooms){
-  //   if(room.includes(Id) )
-  // }
-
-  // return newArr;
-  // console.log(rooms.roomID)
+  //create an empty arr .. let arr=[]
+  let arr=[]
+  // loop thru both 
+  for(let r = 0; r <rooms.length; r++){
+    for(let c=0; c <rooms[r].connectsTo.length; c++){
+      if(rooms[r].connectsTo[c] === id){
+        arr.push(rooms[r].name)
+      }
+    }
+  }
+  //check if the array is empty for initial id 
+  if(arr.length === 0){
+    return `Room with ID of '${id}' could not be found.`
+  }
+  
+return arr;
 }
 
 module.exports = {

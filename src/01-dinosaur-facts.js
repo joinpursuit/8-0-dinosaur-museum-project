@@ -107,7 +107,7 @@ for (let i = 0; i < dinosaurs.length; i++){
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
- function getDinosaursAliveMya(dinosaurs, mya, key) {
+ function getDinosaursAliveMya(dinosaurs, mya, key = "dinosaurId") {
  
 let newArr = []
 
