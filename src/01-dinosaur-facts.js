@@ -24,9 +24,11 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getLongestDinosaur(dinosaurs) {
+  // check if input array is empty, return {} if it is 
   if(!dinosaurs.length) {
     return {}
    }
+  // copy array using spread to avoid mutation, sort from longest to shortest 
   const sorted = [...dinosaurs].sort((a,b) => b.lengthInMeters -  a.lengthInMeters)
   const longest = sorted[0]
   return { [longest.name]: longest.lengthInMeters * 3.28084 }
@@ -52,12 +54,12 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  console.log('id is',id)
-  const dino = dinosaurs.filter(dino => dino.dinosaurId == id)[0]
-  console.log(dino)
+  // find dino by id, return error if not found 
+  const dino = dinosaurs.find(dino => dino.dinosaurId == id)
   if(!dino) { 
     return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
   }
+  // if found, create a string, return it 
   const str = `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[1] || dino.mya[0]} million years ago.`
   
   return str; 
@@ -89,16 +91,21 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  const aliveDinos = dinosaurs.filter(dino => dino.mya[0] > mya && dino.mya[1] <= mya)
-  const singleMya = dinosaurs.filter(dino => dino.mya == mya || dino.mya == mya + 1)[0]
-  if(singleMya) { 
-    aliveDinos.unshift(singleMya)
+  // filter out alive dino with mya[0,1] two values .... born 160 > mya 150 <= dead 140
+  let aliveDinos = dinosaurs.filter(dino => dino.mya[0] > mya && dino.mya[1] <= mya)
+
+  // filter out alive dino with single mya [0] value
+  const singleMyaDinos = dinosaurs.filter(dino => { 
+   return  dino.mya.length == 1 && ( dino.mya[0] == mya || dino.mya[0] == mya + 1)
+  })
+  // add them to aliveDinos array
+  if(singleMyaDinos) { 
+    aliveDinos = [...singleMyaDinos,...aliveDinos]
   }
-  
-  // console.log('alive',aliveDinos)
-  const dinoIds = aliveDinos.map(dino => key ? dino[key] : dino.dinosaurId)
-  // console.log(dinoIds)
-  return dinoIds
+
+  // map through aliveDinos, if key is provided return dino[key], if not return id 
+  const aliveDinoIds = aliveDinos.map(dino => key ? dino[key] : dino.dinosaurId)
+  return aliveDinoIds
 }
 
 module.exports = {
