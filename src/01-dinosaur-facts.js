@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -22,7 +23,27 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+let longest = 0
+let name = 0
+let newObj = {}
+
+if (dinosaurs.length === 0 ){
+  return {}
+}
+
+  for (let i = 0; i < dinosaurs.length; i++){
+
+    if (dinosaurs[i].lengthInMeters > longest){
+       longest = dinosaurs[i].lengthInMeters
+       name = dinosaurs[i].name
+    } 
+}
+longest *= 3.281
+newObj[name] = longest
+return newObj;
+}
+console.log(getLongestDinosaur(exampleDinosaurData));
 
 /**
  * getDinosaurDescription()
@@ -44,7 +65,39 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let dinoID = 0
+  let name = 0
+  let pronunciation = 0
+  let information = 0
+  let period = 0
+  let years = 0 
+  let exist = true 
+  
+  for (let j = 0; j < dinosaurs.length; j++){
+  if (dinosaurs[j].dinosaurId === id){
+    exist = true;
+} else if (dinosaurs[j].dinosaurId !== id){
+  exist = false
+   return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+}
+  }
+  
+  for (let i = 0; i < dinosaurs.length; i++){
+  
+    if (dinosaurs[i].dinosaurId === id){
+      dinoID = dinosaurs[i].id
+      name = dinosaurs[i].name
+      pronunciation = dinosaurs[i].pronunciation
+      information = dinosaurs[i].info
+      period = dinosaurs[i].period
+      years = [...dinosaurs[i].mya]
+      years = years[years.length-1]
+    } 
+   
+  }
+  return `${name} (${pronunciation})\n${information} It lived in the ${period} period, over ${years} million years ago.`
+}
 
 /**
  * getDinosaursAliveMya()
