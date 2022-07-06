@@ -22,7 +22,33 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+
+  let biggestDino = {}   
+    if(dinosaurs.length === 0)
+    return biggestDino
+  let big = dinosaurs[0].lengthInMeters 
+  let bigName = dinosaurs[0].name 
+    
+    for (let i = 0; i < dinosaurs.length; i++) { 
+           //console.log(name)
+          if(dinosaurs[i].lengthInMeters > big){
+             //console.log("index i values " + dinosaurs[i].name, dinosaurs[i].lengthInMeters)
+             big = dinosaurs[i].lengthInMeters
+             bigName = dinosaurs[i].name 
+           }
+    }
+   //console.log("Final name value =  " + bigName + " and final length value = " +  big ) 
+    big = big * 3.281
+    biggestDino[bigName] = big
+    //console.log(biggestDino)
+  
+    return biggestDino
+    
+  }  
+
+ 
+
 
 /**
  * getDinosaurDescription()
@@ -44,7 +70,34 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+
+//get dinosaur description by id, the description is dinosaur[i].info
+    //for (let i = 0; i < dinosaurs.length; i++) { 
+          //console.log(name)
+          // if(dinosaurs[i].id === "incorrect-id"){
+          //   return("A dinosaur with an ID of 'incorrect-id' cannot be found.")
+          // } else {
+          //   return dinosaurs[i].info
+          // }
+
+    //}
+}
+
+
+
+
+
+
+
+//return dinosaur info even if mya has one value
+
+ // or return error message "A dinosaur with an ID of 'incorrect-id' cannot be found."
+
+
+
+
+
 
 /**
  * getDinosaursAliveMya()
