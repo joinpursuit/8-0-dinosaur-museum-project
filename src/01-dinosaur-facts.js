@@ -94,8 +94,26 @@ return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {
-
+function getDinosaursAliveMya(dinosaurs, mya, key = "dinosaurId") {
+  let value = []
+  for(let i = 0; i < dinosaurs.length; i++){
+    //If a `key` is provided, returns the value of that key for each dinosaur alive at that time.   
+  if(dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya){
+    value.push(dinosaurs[i][key])
+  } else if(dinosaurs[i].mya.length === 1 && (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] === mya + 1)){
+    value.push(dinosaurs[i][key])
+  }
+    //If the dinosaur only has a single value for `mya`, allows for the `mya` value to be equal to the given value or one less. 
+  //   if(dinosaurs[i].mya){
+  //    value = dinosaurs[i].mya <= 1 
+  //  //Otherwise, returns the ID.
+  //   } else{
+  //     return dinosaurs.dinosaurId
+  //   }
+    }
+    // Returns an array of dinosaurs who were alive at the given `mya` (i.e. "millions of years ago") value.
+    return value
+  
 }
 module.exports = {
   getLongestDinosaur,
