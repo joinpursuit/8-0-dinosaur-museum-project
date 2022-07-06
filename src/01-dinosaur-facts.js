@@ -26,14 +26,16 @@ function getLongestDinosaur(dinosaurs) {
   const tallest = {}
 
   if(!dinosaurs.length){
-    return tallest 
+    return tallest
   } 
+  let dino = dinosaurs[0]
+  //why do I need this 
   for(i = 0; i < dinosaurs.length; i++){
-    if(dinosaurs[i].lengthInMeters > dinosaurs[0].lengthInMeters){
-      dinosaurs[0] = dinosaurs[i];
+    if(dinosaurs[i].lengthInMeters > dino.lengthInMeters){
+      dino = dinosaurs[i];
     }
   }
-  tallest[dinosaurs[0].name] = dinosaurs[0].lengthInMeters * 3.281
+  tallest[dino.name] = dino.lengthInMeters * 3.281
   return tallest 
 }
 
@@ -57,7 +59,18 @@ function getLongestDinosaur(dinosaurs) {
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  for(let i = 0; i < dinosaurs.length; i++){
+    // Im looping through a dino array 
+   if(dinosaurs[i].dinosaurId === id){
+     // I'm checking if the id matches 
+     return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.`
+     // if it matches return:  
+   }
+  }
+  // If it doesn't match return description: "A dinosaur with an ID of 'incorrect-id' cannot be found."
+  return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+}
 
 /**
  * getDinosaursAliveMya()
