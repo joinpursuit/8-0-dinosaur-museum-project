@@ -54,7 +54,45 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+
+
+  //check ticket type
+  if(ticketData[ticketInfo['ticketType']]===undefined)
+  {
+    return `Ticket type 'incorrect-type' cannot be found.`;
+  }
+
+  //check price
+  let basePrice = ticketData[ticketInfo['ticketType']].priceInCents[ticketInfo.entrantType];
+  if(basePrice===undefined)
+  {
+    return "Entrant type 'incorrect-entrant' cannot be found.";
+  }
+
+  //check extras
+  let extras=[];
+  let extrasPrice=0;
+  if(ticketInfo['extras'].length>0)
+  {
+
+    for(let x of ticketInfo['extras'])
+    {
+
+      if(ticketData['extras'][x]===undefined)
+      {
+        return "Extra type 'incorrect-extra' cannot be found.";
+      }
+      extras.push(ticketData['extras'][x]);
+      
+      extrasPrice+=ticketData['extras'][x].priceInCents[ticketInfo.entrantType];
+    }
+  }
+  // console.log(ticketData,ticketInfo,extras,extrasPrice);
+
+  return basePrice + extrasPrice;
+
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +147,41 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function rcw(text)//return captial work
+{
+  if(typeof text==="string")
+  {
+    return text[0].toUpperCase()+text.slice(1);
+  }
+  return text;
+}
+function purchaseTickets(ticketData, purchases) {
+  let result="";
+  let total=0;
+  for(let x of purchases)
+  {
+    let tmp = calculateTicketPrice(ticketData,x);
+    if(typeof tmp!=="number")
+    {
+      return tmp;
+    }
+    total+=tmp;
+    
+    let subExtras = x['extras'].map((key)=>rcw(key)+ " Access").join(", ")
+    if(subExtras!=="")
+    {
+      subExtras=` (${subExtras})`;
+    }
+    else
+    {
+      subExtras="";
+    }
+
+    result+=`${rcw(x.entrantType)} ${rcw(x.ticketType)} Admission: $${(tmp/100).toFixed(2)}${subExtras}\n`;
+
+  }
+  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${result}-------------------------------------------\nTOTAL: $${(total/100).toFixed(2)}`;
+}
 
 // Do not change anything below this line.
 module.exports = {
