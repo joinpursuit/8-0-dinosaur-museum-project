@@ -43,7 +43,7 @@ longest *= 3.281
 newObj[name] = longest
 return newObj;
 }
-console.log(getLongestDinosaur(exampleDinosaurData));
+// console.log(getLongestDinosaur(exampleDinosaurData));
 
 /**
  * getDinosaurDescription()
@@ -72,19 +72,9 @@ function getDinosaurDescription(dinosaurs, id) {
   let information = 0
   let period = 0
   let years = 0 
-  let exist = true 
-  
-  for (let j = 0; j < dinosaurs.length; j++){
-  if (dinosaurs[j].dinosaurId === id){
-    exist = true;
-} else if (dinosaurs[j].dinosaurId !== id){
-  exist = false
-   return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
-}
-  }
+  let doesItExist = false 
   
   for (let i = 0; i < dinosaurs.length; i++){
-  
     if (dinosaurs[i].dinosaurId === id){
       dinoID = dinosaurs[i].id
       name = dinosaurs[i].name
@@ -93,8 +83,11 @@ function getDinosaurDescription(dinosaurs, id) {
       period = dinosaurs[i].period
       years = [...dinosaurs[i].mya]
       years = years[years.length-1]
+      doesItExist = true
     } 
-   
+  }
+  if (doesItExist === false){
+    return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
   }
   return `${name} (${pronunciation})\n${information} It lived in the ${period} period, over ${years} million years ago.`
 }
@@ -124,8 +117,28 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key = "dinosaurId") {
+let arr= [];
 
+for (let i = 0; i < dinosaurs.length; i++){
+  if (dinosaurs[i].mya[0]-1 <= mya && dinosaurs[i].mya[0] >= mya){
+    arr.push(dinosaurs[i].dinosaurId)
+    console.log(arr)
+  } else if (dinosaurs[i].mya[1]<= mya && dinosaurs[i].mya[0]>= mya){
+  arr.push(dinosaurs[i].dinosaurId)
+  console.log(arr)
+} else if (dinosaurs[i].mya[0]-1 <= mya && dinosaurs[i].mya[0] >= mya){
+  arr.push(dinosaurs[i][key])
+  console.log(arr)
+} else if (dinosaurs[i].mya[1]<= mya && dinosaurs[i].mya[0]>= mya){
+arr.push(dinosaurs[i][key])
+console.log(arr)
+}
+}
+return arr
+}
+
+console.log(getDinosaursAliveMya((dinosaurs, 150)));
 module.exports = {
   getLongestDinosaur,
   getDinosaurDescription,
