@@ -24,18 +24,20 @@ const exampleDinosaurData = require("../data/dinosaurs");
  */
 function getLongestDinosaur(dinosaurs) {
   let max = 0
+  let name = 0
+  let newDino = {}
   if(dinosaurs.length === 0){
     return {}
   }
-   let newDino = {...dinosaurs}
-  for(let i = 0; i < newDino.length; i++){
-    if(newDino[i].lengthInMeter > max){
-      max = (newDino[i].lengthInMeter * 3.281)
-      newDino[i].lengthInMeter = max
-    }
-    return newDino
+  for(let i = 0; i < dinosaurs.length; i++){
+    if(dinosaurs[i].lengthInMeters > max){
+    max = dinosaurs[i].lengthInMeters 
+    name = dinosaurs[i].name
   }
-  
+}
+  max *= 3.281
+ newDino[name] = max 
+ return newDino
 }
 /**
  * getDinosaurDescription()
@@ -58,16 +60,37 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  let text = ""
- if(dinosaurs.dinosaurId === undefined){
-  return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
- }
+let newId;
+let newName;
+let newPronunciation;
+let newMeaning;
+let newDiet;
+let newLength;
+let newPeriod;
+let newMya;
+let newInfo;
+let exist = false
+
  for(let i = 0; i < dinosaurs.length; i++){
-  if(dinosaurs[i].mya.length === 1) {break;}{
-   text +=`${dinosaurs[i]}\n${id[i]}`
+  if(dinosaurs[i].dinosaurId === id){
+    newId = dinosaurs[i].dinosaurId
+    newName = dinosaurs[i].name
+    newPronunciation = dinosaurs[i].pronunciation
+    newMeaning = dinosaurs[i].meaningOfName
+    newDiet = dinosaurs[i].diet
+    newLength = dinosaurs[i].lengthInMeters
+    newPeriod = dinosaurs[i].period 
+    newMya = dinosaurs[i].mya[dinosaurs[i].mya.length - 1]
+    newInfo = dinosaurs[i].info
+    exist = true
   }
-  return text
+ 
+  
  }
+ if(exist === false){
+  return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+}
+ return `${newName} (${newPronunciation})\n${newInfo} It lived in the ${newPeriod} period, over ${newMya} million years ago.` 
 
 }
 
@@ -97,12 +120,9 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let accumlative = []
-  if(dinosaurs.mya === undefined){
-    return []
-  }
+  let newArray = []
   for(let i = 0; i < dinosaurs.length; i++){
-
+    
   }
 }
 
