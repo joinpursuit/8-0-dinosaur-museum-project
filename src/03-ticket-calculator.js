@@ -54,7 +54,71 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+
+  
+  //ERRORS
+  // if (ticketInfo.ticketType !== ticketData.ticketType) {
+  //   if (ticketInfo.entrantType !== ticketData.entrantType) {
+  //     if (ticketInfo.extras !== ticketData.extras) {
+  //       return`Extra type 'incorrect-extra' cannot be found.`
+  //         } else {
+  //       return `Entrant type 'incorrect-entrant' cannot be found.`
+  //       }
+  //     } else {
+  //     return `Ticket type 'incorrect-type' cannot be found.`
+  //   }
+  // }
+//PRICE VARIABLES (EXTRAS)
+  
+
+  
+ 
+  // GENERAL ADMISSION WITHOUT EXTRAS
+  if (ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'child') {
+    return ticketData.general.priceInCents.child;
+  } else if (ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'adult') {
+    return ticketData.general.priceInCents.adult;
+  } else if (ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'senior') {
+    return ticketData.general.priceInCents.senior;
+  }
+  // MEMBERSHIP WITHOUT ADDONS
+  if (ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'child') {
+    return ticketData.membership.priceInCents.child;
+  } else if (ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'adult') {
+    return ticketData.membership.priceInCents.adult;
+  } else if (ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'senior') {
+    return ticketData.membership.priceInCents.senior;
+  }
+  //GENERAL ADMISSION WITH EXTRAS
+
+  // //  applicable to 'terrace' (child)
+  // let extraPrice1 = 500
+
+  // // applicable to 'movie' (child, adult, senior), 
+  // // applicable to 'education'(child),
+  // //applicable to 'terrace'(adult, senior)
+
+  // let extraPrice2 = 1000
+
+  // //   applicable to 'education' (adult, senior)
+
+  // let extraPrice3 = 1200
+  if (ticketInfo.ticketType === 'general' && ticketInfo.extras === "movie" && ticketInfo.entrantType === 'child') {
+    return ticketData.general.priceInCents.child + ticketData.extras.movie.priceInCents.child;
+  }
+   else if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'adult') {
+    return ticketData.general.priceInCents.adult + ticketData.extras.movie.priceInCents.adult;
+  } else if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'senior') {
+    return ticketData.general.priceInCents.senior + ticketData.extras.movie.priceInCents.senior;
+  }
+
+ 
+
+}
+
+
+
 
 /**
  * purchaseTickets()
@@ -109,8 +173,19 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
-
+function purchaseTickets(ticketData, purchases) {
+  if (ticketInfo.ticketType !== ticketData.ticketType) {
+    if (ticketInfo.entrantType !== ticketData.entrantType) {
+      if (ticketInfo.extras !== ticketData.extras) {
+        return `Extra type 'incorrect-extra' cannot be found.`
+      } else {
+        return `Entrant type 'incorrect-entrant' cannot be found.`
+      }
+    } else {
+      return `Ticket type 'incorrect-type' cannot be found.`
+    }
+  }
+}
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,

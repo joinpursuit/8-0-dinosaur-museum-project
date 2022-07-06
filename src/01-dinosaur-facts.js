@@ -16,13 +16,26 @@ const exampleDinosaurData = require("../data/dinosaurs");
  * NOTE: To convert from meters to feet, multiply the meters by `3.281`.
  *
  * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file for an example of the input.
- * @returns {Object} An object where the key is the name of the dinosaur and the value is the height of the dinosaur in feet.
+ * @returns {Object} An object where the key is the name of the dinosaur and the value is the length of the dinosaur in feet.
  *
  * EXAMPLE:
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  let longestDino = {}
+
+  // const results = dinosaurs.filter(dinosaurs => {
+  //   return dinosaurs.lengthInMeters === Math.max
+  // })
+  longestDino = {}
+
+  for (dino of dinosaurs) {
+   
+    console.log(longestDino)
+  }
+return longestDino
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +57,15 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+
+  for (let dino of dinosaurs) {
+    if (id === dino.dinosaurId) {
+      return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`
+    }
+  }
+  return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +92,16 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinoArr = []
+  for (let dino of dinosaurs) {
+    if (dino.mya !== undefined && dino.mya === mya) {
+      dinoArr.push(dino.dinosaurId)
+      console.log (dinoArr)
+    } else return dinoArr
+  }
+  
+}
 
 module.exports = {
   getLongestDinosaur,
