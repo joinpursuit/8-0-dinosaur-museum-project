@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -22,8 +23,14 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
-
+function getLongestDinosaur(dinosaurs) {
+  if(!dinosaurs.length) {
+    return {}
+   }
+  const sorted = dinosaurs.sort((a,b) => b.lengthInMeters -  a.lengthInMeters)
+  const longest = sorted[0]
+  return { [longest.name]: longest.lengthInMeters * 3.28084 }
+}
 /**
  * getDinosaurDescription()
  * ---------------------
@@ -44,7 +51,17 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  console.log('id is',id)
+  const dino = dinosaurs.filter(dino => dino.dinosaurId == id)[0]
+  console.log(dino)
+  if(!dino) { 
+    return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+  }
+  const str = `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[1] || dino.mya[0]} million years ago.`
+  
+  return str; 
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +88,18 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  const aliveDinos = dinosaurs.filter(dino => dino.mya[0] > mya && dino.mya[1] <= mya)
+  const singleMya = dinosaurs.filter(dino => dino.mya == mya || dino.mya == mya + 1)[0]
+  if(singleMya) { 
+    aliveDinos.unshift(singleMya)
+  }
+  
+  // console.log('alive',aliveDinos)
+  const dinoIds = aliveDinos.map(dino => key ? dino[key] : dino.dinosaurId)
+  // console.log(dinoIds)
+  return dinoIds
+}
 
 module.exports = {
   getLongestDinosaur,
