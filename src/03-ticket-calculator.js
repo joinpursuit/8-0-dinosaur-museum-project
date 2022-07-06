@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { extras } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,8 +55,52 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let priceTot;
+  let ticket;
+  let entrant;
+  let extraCount = -1;
+  for(const type in ticketData) {
+    if(type === ticketInfo.ticketType) {
+      ticket = `y`
+      for(const price in ticketData[type][`priceInCents`]) {
+        if(price === ticketInfo.entrantType) {
+          entrant = `y`
+          priceTot = ticketData[type][`priceInCents`][price];
+          for(let v = 0; v < ticketInfo.extras.length && ticketInfo.extras.length !== 0; v++) {
+            for(const k in ticketData.extras) {
+              if(ticketInfo[`extras`][v] === k) {
+                for(const i in ticketData[`extras`][k][`priceInCents`]) {
+                  if(price === i) {
+                    priceTot += ticketData[`extras`][k][`priceInCents`][i];
+                    extraCount ++;
+                  }
+                }
+              }
+            }
+            if(extraCount !== v) {
+              return `Extra type '${ticketInfo[`extras`][v]}' cannot be found.`
+            }
+          }
+        }
+      }
+    }
+  }
+  if(!ticket) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+  if(!entrant) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+  return priceTot;
+}
 
+const ticketInfo = {
+  ticketType: "general",
+  entrantType: "adult",
+  extras: [`movie`, `terr`]
+};
+console.log(calculateTicketPrice(exampleTicketData,ticketInfo))
 /**
  * purchaseTickets()
  * ---------------------
