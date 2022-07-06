@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -106,14 +107,29 @@ for (let i = 0; i < dinosaurs.length; i++){
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {
+ function getDinosaursAliveMya(dinosaurs, mya, key) {
+ 
+let newArr = []
 
-  for(){
-    
-    if(dinosaurs.mya.length === 1 )
+  for (let dinosaur of dinosaurs){
+
+      if (dinosaur.mya[0] >= mya && dinosaur.mya[0]-1 <= mya){
+
+       newArr.push(dinosaur[key])
+      }
+      else{
+      if(dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya){
+        newArr.push(dinosaur[key])
+      }
+    }
   }
-
+  return newArr;
 }
+ 
+ 
+
+
+
 
 module.exports = {
   getLongestDinosaur,
