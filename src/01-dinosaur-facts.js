@@ -24,26 +24,19 @@ const exampleDinosaurData = require("../data/dinosaurs");
  */
  function getLongestDinosaur(dinosaurs) {
   let obj = {}
-  let orderedArr = []
-  let dinoArr = []
-  
-  for(i = 0; i < dinosaurs.length; i++){
-      orderedArr.push(dinosaurs[i].lengthInMeters)
-      dinoArr.push(dinosaurs[i].name)
+  let length = null
+  let dinoName = null
+  let arrlength = false
+
+for(i = 0; i < dinosaurs.length; i++){
+    if(dinosaurs[i].lengthInMeters > length){
+        length = dinosaurs[i].lengthInMeters
+        dinoName = dinosaurs[i].name
+        arrlength = true
     }
-    let unOrderedArr = [...orderedArr]
-    
-    orderedArr.sort(function(a,b){
-      return b-a
-    })
-    for(j = 0; j < unOrderedArr.length; j++){
-      if(orderedArr[0] === unOrderedArr[j]){
-          obj[dinoArr[j]] = unOrderedArr[j] * 3.281
-          break;
-      }
-    }
-  
-  return obj
+  }
+  obj[dinoName] = length * 3.281
+  return !arrlength ? {} : obj
 }
 
 /**
