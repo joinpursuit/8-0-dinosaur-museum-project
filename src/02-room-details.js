@@ -44,7 +44,7 @@ const exampleRoomData = require("../data/rooms");
           location = rooms[val].name
       }
   }
-  return match  ? `${location}` : `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+  return match ? `${location}` : `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
 }
 
 /**
