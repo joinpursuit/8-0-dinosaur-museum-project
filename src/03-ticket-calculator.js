@@ -54,10 +54,48 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo, ) {
-
+function calculateTicketPrice(ticketData, ticketInfo,) {
+let total = 0
   
   //ERRORS
+  // 
+  
+ 
+  // GENERAL ADMISSION WITHOUT EXTRAS
+  if (ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'child') {
+    total += ticketData.general.priceInCents.child;
+  } else if (ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'adult') {
+    total += ticketData.general.priceInCents.adult;
+  } else if (ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'senior') {
+    total += ticketData.general.priceInCents.senior;
+  }
+  // MEMBERSHIP WITHOUT ADDONS
+  if (ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'child') {
+    total += ticketData.membership.priceInCents.child;
+  } else if (ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'adult') {
+    total += ticketData.membership.priceInCents.adult;
+  } else if (ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'senior') {
+    total += ticketData.membership.priceInCents.senior;
+  }
+
+  ////GENERAL ADMISSION WITH EXTRAS
+  if (ticketInfo.extras.length > 0) {
+    for (extra of ticketInfo.extras)
+    {
+      // console.log('###', ticketData.extras[extra].priceInCents[ticketInfo.entrantType])
+      total += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+
+      
+
+
+
+
+
+
+
+
+    }
+  }
   // if (ticketInfo.ticketType !== ticketData.ticketType) {
   //   if (ticketInfo.entrantType !== ticketData.entrantType) {
   //     if (ticketInfo.extras !== ticketData.extras) {
@@ -69,45 +107,29 @@ function calculateTicketPrice(ticketData, ticketInfo, ) {
   //     return `Ticket type 'incorrect-type' cannot be found.`
   //   }
   // }
- 
-  
- 
-  // GENERAL ADMISSION WITHOUT EXTRAS
-  if (ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'child') {
-    return ticketData.general.priceInCents.child;
-  } else if (ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'adult') {
-    return ticketData.general.priceInCents.adult;
-  } else if (ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'senior') {
-    return ticketData.general.priceInCents.senior;
-  }
-  // MEMBERSHIP WITHOUT ADDONS
-  if (ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'child') {
-    return ticketData.membership.priceInCents.child;
-  } else if (ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'adult') {
-    return ticketData.membership.priceInCents.adult;
-  } else if (ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'senior') {
-    return ticketData.membership.priceInCents.senior;
-  }
 
-  ////GENERAL ADMISSION WITH EXTRAS
+// loop through extras for price
+
+
   // console.log('test###', ticketData.general.priceInCents.child + ticketData.extras.priceInCents.child)
 
-  if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'child') {
-    return ticketData.general.priceInCents.child + ticketData.extras.priceInCents.child;
-  }
-  else if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'adult') {
-    return ticketData.general.priceInCents.adult + ticketData.extras.priceInCents.adult;
-  } else if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'senior') {
-    return ticketData.general.priceInCents.senior + ticketData.extras.priceInCents.senior;
-  }
-  
- 
-   
 
- 
+  // 
+  //   if (ticketInfo.ticketType === 'general' && extra.extras === 'movie' && ticketInfo.entrantType === 'child') {
+  //     return ticketData.general.priceInCents.child + ticketData.extras.priceInCents.child;
+  //   }
+  //   else if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'adult') {
+  //     return ticketData.general.priceInCents.adult + ticketData.extras.priceInCents.adult;
+  //   } else if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'senior') {
+  //     return ticketData.general.priceInCents.senior + ticketData.extras.priceInCents.senior;
+  //   }
+  // }
 
-  }
 
+
+
+return total
+}
 
 
 

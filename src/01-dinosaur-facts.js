@@ -105,18 +105,31 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  // let dinoAgeArr = []
   let dinoMyaArr = []
+  let rangeArr = []
+  let keyArr = []
   for (let dino of dinosaurs) {
-    //dinoAgeArr.push(dino.mya)
-    if (dinoAgeArr.includes(mya)) {
-      dinoMyaArr.push(dino)
-      
+    if (dino.mya.includes(mya)) {
+      dinoMyaArr.push(dino.dinosaurId)
+    } else if (dino.mya.length > 1) {
+      if (mya >= dino.mya[dino.mya.length - 1] && mya <= dino.mya[0]) {
+        dinoMyaArr.push(dino.dinosaurId)
+      }
     } 
-    // console.log('dinoAgeArr### ', dinoAgeArr)
-    // console.log('dinoMyaArr*** ', dinoMyaArr)
   }
-  return []
+  if (key === 'name') {
+    for (let dino of dinosaurs) {
+      if (dino.mya.length > 1) {
+        if (dino.mya.includes(mya)) {
+          keyArr.push(dino.name)
+        }
+      } else if  (mya >= dino.mya[dino.mya.length - 1] && mya <= dino.mya[0]) {
+        keyArr.push(dino.name)
+      }
+  }
+    return keyArr
+  }
+ return dinoMyaArr
 }
 
 module.exports = {
