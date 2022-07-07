@@ -38,20 +38,13 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     return `Dinosaur with name '${dinosaurName}' cannot be found.`
   }
   
-  for (let room of rooms) {
-    for (let x of room.dinosaurs){
-      if (x === dinoId){
-        return room.name
-      }
-    }
+  for (let j = 0; j < rooms.length; j++) {
+    for (let o = 0; o < rooms[j].dinosaurs.length; o++) {
+      if(rooms[j].dinosaurs[o] === dinoId){
+        return rooms[j].name
+      }     
+    }  
   }
-  // for (let j = 0; j < rooms.length; j++) {
-  //   for (let k = 0; k < rooms.length; k++) {
-  //     if(rooms[k].dinosaurs === dinoId){
-  //       return rooms.name
-  //     }     
-  //   }  
-  // }
   return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
 }
 
@@ -80,22 +73,32 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 function getConnectedRoomNamesById(rooms, id) {
   let array = [];
 
-  for(let room of rooms){
-    for (let x of room.connectsTo){
-      if (x === `incorrect-id` && room.roomId === id){
-        return `Room with ID of 'incorrect-id' could not be found.`
-      }
-      if(x === id){
-        array.push(room.name)
-      }
+  for (let i = 0; i < rooms.length; i++) {
+    for (let j = 0; j < rooms[i].connectsTo.length; j++) {
+      if(rooms[i].connectsTo[j] === id){
+        array.push(rooms[i].name)
     }
+    else if (rooms[i].connectsTo[j] === `incorrect-id`){
+      return `Room with ID of 'incorrect-id' could not be found.`
+      }
+    } 
   }
-  if(array.length > 0){
-    return array
-  } else {
+  if(array.length === 0){
     return `Room with ID of '${id}' could not be found.`
+  }  
+  return array
   }
-}
+
+  // for(let room of rooms){
+  //   for (let x of room.connectsTo){
+  //     if (x === `incorrect-id` && room.roomId === id){
+  //       return `Room with ID of 'incorrect-id' could not be found.`
+  //     }
+  //     if(x === id){
+  //       array.push(room.name)
+  //     }
+  //   }
+  // }
 // let array = [];
 
 // for (let room of rooms) {

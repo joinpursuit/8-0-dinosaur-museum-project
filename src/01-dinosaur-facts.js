@@ -121,12 +121,10 @@ function getDinosaursAliveMya(dinosaurs, mya, key = `dinosaurId`) {
   let array = [];
 
   for (let i = 0; i < dinosaurs.length; i++) {
-    if (dinosaurs[i].mya[0] - 1 <= mya && dinosaurs[i].mya[0] >= mya){
+    if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[0] - 1 <= mya){
       array.push(dinosaurs[i][key])
-      console.log(array)
-    } else if (dinosaurs[i].mya[1] <= mya && dinosaurs[i].mya[0] >= mya){
+    } else if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[dinosaurs[i].mya.length - 1] <= mya){
       array.push(dinosaurs[i][key])
-      console.log(array)
     }    
   }
   return array
