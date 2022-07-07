@@ -22,7 +22,32 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  // we need to return a key dinosaur 
+  // value of height of dinosaur in feet convert from meters
+ let height = 0
+let name = ""
+
+if (dinosaurs.length === 0){
+  return {}
+}
+ for (let i = 0; i < dinosaurs.length; i++) {
+  if (dinosaurs[i].lengthInMeters > height ){
+    height = dinosaurs[i].lengthInMeters
+    name = dinosaurs[i].name
+    console.log(name)
+  }
+}
+// at this point we have a winner, we have to convert then create into an object
+// we will first convert our height
+height = height * 3.281
+// now to convert our two datas into a single object
+let output = {}
+output[name]= height 
+// let example = {Brachiosaurus:42}
+// return example
+return output
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +69,30 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  // takes given id and compares it to our dinosaur object id 
+  //needs a string of the id
+  // returns a detailed description in template literal 
+
+  // declare
+  let incorrectId = "incorrect-id"
+  // let output = dinosaurs[]
+  // guard clause
+  if (dinosaurs.id === false){
+    return `A dinosaur with an ID of ${incorrectId} cannot be found.`
+  }
+  // initalize
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].dinosaurId === id){
+       output = dinosaurs[i]
+        name = dinosaurs[i].name 
+    } console.log(id)
+  }
+  return `${dinosaurs[i].name} ${dinosaurs[i].pronunciation} \n${dinosaurs.[i].info}`
+  
+  // return ` dino.id /n dino.info
+
+}
 
 /**
  * getDinosaursAliveMya()
