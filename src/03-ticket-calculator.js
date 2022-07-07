@@ -143,66 +143,51 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 function purchaseTickets(ticketData, purchases) {
 
   let str = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
-  let ticketPriceTotal = 0;
+  let totalPrice = 0; 
+  let ticketPrice = 0;
 
   // for each ticket of the purchased tickets
   for (let i = 0; i < purchases.length; i++) {
     // extract keys from each ticket
     let { ticketType, entrantType, extras } = purchases[i];
-  
-    // validate type
-    if (!ticketData[ticketType]) {
-      return `Ticket type '${ticketType}' cannot be found.`;
-    }
 
-    // validate entrant
-    if (!ticketData[ticketType].priceInCents[entrantType]) {
-      return `Entrant type '${entrantType}' cannot be found.`;
+    // call calculateTicketPrice funtion, it returns error or ticket price
+    ticketPrice = calculateTicketPrice(ticketData,purchases[i]) 
+    if (typeof ticketPrice != 'number') { 
+      return ticketPrice
     }
-
-    let extraTotalPrice = 0;
+    totalPrice += ticketPrice / 100
+    ticketPrice = (ticketPrice / 100).toFixed(2)
+    
     let extraString = " (";
 
     // for each extra in extra list 
     for (let i = 0; i < extras.length; i++) {
-      //validate extra
-      if (!ticketData.extras[extras[i]]) {
-        return `Extra type '${extras[i]}' cannot be found.`;
-      }
-
-      // add each extra price and string to extraTotalPrice and extraString
-      extraTotalPrice +=
-        ticketData.extras[extras[i]].priceInCents[entrantType] / 100;
-      let string =
-        extras[i][0].toUpperCase() + extras[i].slice(1) + " Access, ";
+      let string = extras[i][0].toUpperCase() + extras[i].slice(1) + " Access, ";
       extraString += string;
     }
     
-    // remove space and comma, add ) 
-    extraString = extraString.slice(0, -2) + ")";
-
-    // get admission ticket price + all extra tickets price
-    let ticketPrice =
-      ticketData[ticketType].priceInCents[entrantType] / 100 + extraTotalPrice;
-    // add to total
-    ticketPriceTotal += ticketPrice;
-
     // uppercase 1st letters of type and entrant
     ticketType = ticketType[0].toUpperCase() + ticketType.slice(1);
     entrantType = entrantType[0].toUpperCase() + entrantType.slice(1);
 
     // add entrant, type and ticket price to string
-    str += `${entrantType} ${ticketType} Admission: $${ticketPrice.toFixed(2)}`;
-    if (extraTotalPrice) {
-      str += extraString;
+    str += `${entrantType} ${ticketType} Admission: $${ticketPrice}`;
+
+    // if extraString is not as initialized
+    if (extraString != " (" ) {
+        // remove space and comma, add closing ')' 
+      extraString = extraString.slice(0, -2) + ")";
+      str += extraString; 
     }
     str += "\n";
   } // <= end of for loop
 
   str += "-------------------------------------------\n";
-  str += `TOTAL: $${ticketPriceTotal.toFixed(2)}`;
+  str += `TOTAL: $${totalPrice.toFixed(2)}`;
   return str;
 }
+
 
 // Do not change anything below this line.
 module.exports = {

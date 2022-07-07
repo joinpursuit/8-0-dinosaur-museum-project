@@ -101,9 +101,9 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  // filter out alive dino with mya[0,1] two values .... born 160 > mya 150 <= dead 140
+  // filter out alive dino with mya[0,1] two values .... born 160 >= mya 150 <= dead 140
   let aliveDinos = dinosaurs.filter(
-    (dino) => dino.mya[0] > mya && dino.mya[1] <= mya
+    (dino) => dino.mya[0] >= mya && dino.mya[1] <= mya
   );
 
   // filter out alive dino with single mya [0] value
