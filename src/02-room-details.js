@@ -73,21 +73,28 @@ for(let i = 0; i < dinosaurs.length; i++){
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
+  
   //create an empty arr .. let arr=[]
   let arr=[]
   // loop thru both 
-  for(let r = 0; r <rooms.length; r++){
-    for(let c=0; c <rooms[r].connectsTo.length; c++){
+  for(let r = 0; r < rooms.length; r++){
+    for(let c=0; c < rooms[r].connectsTo.length; c++){
+
       if(rooms[r].connectsTo[c] === id){
         arr.push(rooms[r].name)
-      }
+       }
+      else {
+       if(rooms[r].connectsTo[c] === "incorrect-id"){
+        //arr.push(rooms[r].name)
+        return `Room with ID of 'incorrect-id' could not be found.`
+       }
+      } 
     }
   }
   //check if the array is empty for initial id 
   if(arr.length === 0){
     return `Room with ID of '${id}' could not be found.`
   }
-  
 return arr;
 }
 
