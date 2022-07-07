@@ -63,20 +63,45 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 function getConnectedRoomNamesById(rooms, id) {
   // loop through rooms array, if room.connectsTo includes id add room.name to newArray
   let connectedRooms = [];
-  let incorrectConnectedRooms = 0;
-  for (let room of rooms) {
-    if(room.connectsTo.includes(id)) {
-      connectedRooms.push(room.name);
-    }
+  // let numberOfMatches = 0;
+
+  // Loop through room.connectsTo array and add name by Id 
+  // if no room by that id return error message (also if there are no )
+  
+  // get the room with the id 
+  let room = rooms.find(room => room.roomId === id);
+
+  if (room === undefined) {
+    return `Room with ID of '${id}' could not be found.`;
   }
-  // Loop to check that connectedRooms's room's names match a name in rooms' array
-  // go through each room in connectedRooms if find === undefined return error message as well
-  for (let connectedRoom of connectedRooms) {
-    if (rooms.find(room => room.name === connectedRoom) === undefined) {
-      incorrectConnectedRooms++;
+
+  for (let connectedRoomId of room.connectsTo) {
+    let connectedRoom = rooms.find(roomObject => roomObject.roomId === connectedRoomId);
+    if (connectedRoom === undefined) {
+      return `Room with ID of '${connectedRoomId}' could not be found.`; // change Id to connectedRoomId
     }
+    connectedRooms.push(connectedRoom.name);
   }
-  return connectedRooms.length === 0  || incorrectConnectedRooms > 0 ? `Room with ID of '${id}' could not be found.` : connectedRooms;
+  return connectedRooms;
+
+  // for (let room of rooms) {
+  //   if(room.connectsTo.includes(id)) {
+  //     connectedRooms.push(room.name);
+  //   }
+  // }
+  // // Loop to check that connectedRooms's room's names match a name in rooms' array
+  // // go through each room in connectedRooms if find === undefined return error message as well
+  // for (let connectedRoom of connectedRooms) {
+  //   // if (rooms.find(room => room.name === connectedRoom) === undefined) {
+  //   //   incorrectConnectedRooms++;
+  //   // }
+  //   for (let room of rooms) {
+  //     if (room.name === connectedRoom) {
+  //       numberOfMatches++;
+  //     }
+  //   }
+  // }
+  // return connectedRooms.length === 0  || numberOfMatches !== connectedRooms.length ? `Room with ID of '${id}' could not be found.` : connectedRooms;
 }
 
 module.exports = {
