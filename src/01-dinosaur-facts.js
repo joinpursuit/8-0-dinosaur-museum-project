@@ -117,8 +117,8 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
         }
       }
     }
-
   }
+  return value 
 
 }
 
