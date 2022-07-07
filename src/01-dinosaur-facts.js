@@ -76,7 +76,7 @@ for (let i = 0; i < dinosaurs.length; i++){
     return`${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.`
   }
 }
- return "A dinosaur with an ID of 'incorrect-id' cannot be found."
+ return "A dinosaur with an ID of "incorrect-id" cannot be found."
  
 }
 
