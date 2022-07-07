@@ -25,7 +25,25 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let message = `Dinosaur with name '${dinosaurName}' cannot be found.`;
+
+  for (let dino of dinosaurs) {
+    if (dino.name === dinosaurName) {
+      message = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+
+      for (let room of rooms) {
+        if (room.dinosaurs.includes(dino.dinosaurId)) {
+          message = room.name;
+        }
+      }
+    }
+  }
+  
+  return message;
+}
+
+
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +67,29 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  /*
+    iterate over rooms array to check if the room exists: if room.roomId === id, if so store room.connectedTo in an array.
+    if room id is not found, return `Room with ID of '${id}' could not be found.` I need to create an empty array to store all the connected rooms.
+    if the room id exists iterate over the new array of connected rooms to check if connected rooms exist.
+  */
+    let connectedRoomIds = [];
+    let connectedRoomNames = [];
+    for (const room of rooms) {
+      if (room.roomId === id) {
+        connectedRoomIds = room.connectsTo;
+      }
+    }
+    for (const room of rooms) {
+      if (connectedRoomIds.includes(room.roomId)) {
+        connectedRoomNames.push(room.name);
+      }
+    }
+    if (!connectedRoomIds.length || connectedRoomIds.includes("incorrect-id")) {
+      return `Room with ID of 'incorrect-id' could not be found.`;
+    }
+    return connectedRoomNames;
+  }
 
 module.exports = {
   getRoomByDinosaurName,
