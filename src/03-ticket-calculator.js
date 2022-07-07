@@ -71,24 +71,19 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   }
 
   //check extras
-  let extras=[];
   let extrasPrice=0;
   if(ticketInfo['extras'].length>0)
   {
-
     for(let x of ticketInfo['extras'])
     {
-
       if(ticketData['extras'][x]===undefined)
       {
         return "Extra type 'incorrect-extra' cannot be found.";
       }
-      extras.push(ticketData['extras'][x]);
       
       extrasPrice+=ticketData['extras'][x].priceInCents[ticketInfo.entrantType];
     }
   }
-  // console.log(ticketData,ticketInfo,extras,extrasPrice);
 
   return basePrice + extrasPrice;
 
@@ -147,15 +142,17 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function rcw(text)//return captial work
-{
-  if(typeof text==="string")
-  {
-    return text[0].toUpperCase()+text.slice(1);
-  }
-  return text;
-}
+
 function purchaseTickets(ticketData, purchases) {
+  function rcw(text)//return captial word
+  {
+    if(typeof text==="string")
+    {
+      return text[0].toUpperCase()+text.slice(1);
+    }
+    return text;
+  }
+
   let result="";
   let total=0;
   for(let x of purchases)
@@ -167,15 +164,8 @@ function purchaseTickets(ticketData, purchases) {
     }
     total+=tmp;
     
-    let subExtras = x['extras'].map((key)=>rcw(key)+ " Access").join(", ")
-    if(subExtras!=="")
-    {
-      subExtras=` (${subExtras})`;
-    }
-    else
-    {
-      subExtras="";
-    }
+    let subExtras = x['extras'].map((key)=>rcw(key)+ " Access").join(", ");
+    subExtras = subExtras!=="" ? ` (${subExtras})` : "";
 
     result+=`${rcw(x.entrantType)} ${rcw(x.ticketType)} Admission: $${(tmp/100).toFixed(2)}${subExtras}\n`;
 

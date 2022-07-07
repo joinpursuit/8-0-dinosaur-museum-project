@@ -120,7 +120,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   let resultIndex =key?key:"dinosaurId";
   for(let x of dinosaurs)
   {
-    if((Math.min(...x.mya)<=mya&&Math.max(...x.mya)>=mya))
+    if((Math.min(...x.mya)<=mya && Math.max(...x.mya)>=mya))
     {
       
       arrResult.push(x[resultIndex])
