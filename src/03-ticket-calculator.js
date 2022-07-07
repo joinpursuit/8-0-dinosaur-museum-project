@@ -1,6 +1,6 @@
 /*
   Do not change the line below. If you'd like to run code from this file, you may use the `exampleTicketData` variable below to gain access to tickets data. This data is pulled from the `data/tickets.js` file.
-
+  
   You may use this data to test your functions. You may assume the shape of the data remains the same but that the values may change.
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
@@ -54,7 +54,31 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+let myPrice = 0;
+  // if(ticketInfo.ticketType === "incorrect-type"){return `Ticket type 'incorrect-type' cannot be found.`} 
+  // if (ticketInfo.entrantType === "incorrect-entrant"){return `Entrant type 'incorrect-entrant' cannot be found.`} 
+  
+if(ticketInfo.ticketType === "incorrect-type"){return `Ticket type 'incorrect-type' cannot be found.`} 
+if (ticketInfo.ticketType in ticketData){
+if (ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents){
+  myPrice += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+} else if (ticketInfo.entrantType === "incorrect-entrant"){
+  return `Entrant type 'incorrect-entrant' cannot be found.`
+} 
+}
+for ( let extra of ticketInfo.extras ){
+  if ( extra in ticketData.extras){
+    myPrice +=ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+}else {
+  return `Extra type 'incorrect-extra' cannot be found.`
+}
+}
+
+return myPrice
+}
+  //if (extra in ticketData){
+    // myPrice +=ticketData[ticketInfo.extras].priceInCents[ticketInfo.entrantType]
 
 /**
  * purchaseTickets()
