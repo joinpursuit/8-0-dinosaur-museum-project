@@ -119,12 +119,20 @@ let exist = false
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {
+function getDinosaursAliveMya(dinosaurs, mya, key = "dinosaurId") {
   let newArray = []
   for(let i = 0; i < dinosaurs.length; i++){
-    
+    if(dinosaurs[i].mya[0]-1 <= mya && dinosaurs[i].mya >= mya){
+      newArray.push(dinosaurs[i][key])
+    }
+   else if (dinosaurs[i].mya[dinosaurs[i].mya.length - 1] <= mya && dinosaurs[i].mya[0] >= mya){
+    newArray.push(dinosaurs[i][key])
+   }
   }
-}
+  return newArray
+  }
+  
+
 
 module.exports = {
   getLongestDinosaur,
