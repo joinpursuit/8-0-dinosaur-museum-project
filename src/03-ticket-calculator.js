@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { general } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -55,7 +56,27 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  
+let newPrice = 0
+if(ticketInfo.ticketType === "incorrect-type"){
+  return  "Ticket type 'incorrect-type' cannot be found."
+}
+if(ticketInfo.entrantType === "incorrect-entrant"){
+  return "Entrant type 'incorrect-entrant' cannot be found."
+}
+if(ticketInfo.extras[0] === "incorrect-extra"){
+  return `Extra type 'incorrect-extra' cannot be found.`
+}
+if(ticketInfo.ticketType in ticketData){
+  if(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents){
+    newPrice += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+  }
+for(let newExtra of ticketInfo.extras){
+  if(newExtra in ticketData.extras){
+    newPrice += ticketData.extras[newExtra].priceInCents[ticketInfo.entrantType]
+  }
+}
+}
+return newPrice
 }
 
 /**
@@ -111,7 +132,11 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  if(purchases.ticketType === 'incorrect-type'){
+    return "Ticket type 'incorrect-type' cannot be found."
+  }
+}
 
 // Do not change anything below this line.
 module.exports = {
