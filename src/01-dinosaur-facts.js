@@ -62,15 +62,13 @@ function getDinosaurDescription(dinosaurs, id) {
   // find dino by id, return error if not found
   const dino = dinosaurs.find((dino) => dino.dinosaurId == id);
   if (!dino) {
-    return `A dinosaur with an ID of 'incorrect-id' cannot be found.`;
+    return `A dinosaur with an ID of '${id}' cannot be found.`;
   }
 
   // if found, create a string, return it
-  const str = `${dino.name} (${dino.pronunciation})\n${
-    dino.info
-  } It lived in the ${dino.period} period, over ${
-    dino.mya[1] || dino.mya[0]
-  } million years ago.`;
+  const str = `${dino.name} (${dino.pronunciation})\n${dino.info
+    } It lived in the ${dino.period} period, over ${dino.mya[1] || dino.mya[0]
+    } million years ago.`;
 
   return str;
 }
@@ -108,9 +106,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
 
   // filter out alive dino with single mya [0] value
   const singleMyaDinos = dinosaurs.filter((dino) => {
-    return (
-      dino.mya.length == 1 && (dino.mya[0] == mya || dino.mya[0] == mya + 1)
-    );
+    return dino.mya.length == 1 && (dino.mya[0] == mya || dino.mya[0] == mya + 1)
   });
   // add them to aliveDinos array
   if (singleMyaDinos) {
