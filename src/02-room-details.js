@@ -82,10 +82,10 @@ function getConnectedRoomNamesById(rooms, id) {
         if(room.connectsTo[i] === id){
           arr.push(room.name)
         } 
-        else {if(room.connectsTo[i] === 'incorrect-id'){
+      if(room.connectsTo[i] === 'incorrect-id'){
       return `Room with ID of 'incorrect-id' could not be found.`
     }
-        } 
+        
       } 
     }
 
@@ -94,11 +94,7 @@ function getConnectedRoomNamesById(rooms, id) {
     }
     return arr
 }
-  // return `Room with ID of '${id}' could not be found.`
- 
-    // if(rooms.roomId !== id){
-    //     return `Room with ID of 'incorrect-id' could not be found.`
-    //   }
+  // edgy assisted 
     
 module.exports = {
   getRoomByDinosaurName,
