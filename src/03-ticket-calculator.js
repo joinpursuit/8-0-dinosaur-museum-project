@@ -69,16 +69,7 @@ function calculateTicketPrice(ticketData, ticketInfo, ) {
   //     return `Ticket type 'incorrect-type' cannot be found.`
   //   }
   // }
-  ////GENERAL ADMISSION WITH EXTRAS
-  
-  if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'child') {
-    return ticket.general.priceInCents.child + ticketData.extras.priceInCents.child;
-  }
-  else if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'adult') {
-    return ticket.general.priceInCents.adult + ticketData.extras.priceInCents.adult;
-  } else if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'senior') {
-    return ticketData.general.priceInCents.senior + ticketData.extras.priceInCents.senior;
-  }
+ 
   
  
   // GENERAL ADMISSION WITHOUT EXTRAS
@@ -96,6 +87,18 @@ function calculateTicketPrice(ticketData, ticketInfo, ) {
     return ticketData.membership.priceInCents.adult;
   } else if (ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'senior') {
     return ticketData.membership.priceInCents.senior;
+  }
+
+  ////GENERAL ADMISSION WITH EXTRAS
+  // console.log('test###', ticketData.general.priceInCents.child + ticketData.extras.priceInCents.child)
+
+  if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'child') {
+    return ticketData.general.priceInCents.child + ticketData.extras.priceInCents.child;
+  }
+  else if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'adult') {
+    return ticketData.general.priceInCents.adult + ticketData.extras.priceInCents.adult;
+  } else if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'senior') {
+    return ticketData.general.priceInCents.senior + ticketData.extras.priceInCents.senior;
   }
   
  
@@ -162,17 +165,17 @@ function calculateTicketPrice(ticketData, ticketInfo, ) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  if (ticketInfo.ticketType !== ticketData.ticketType) {
-    if (ticketInfo.entrantType !== ticketData.entrantType) {
-      if (ticketInfo.extras !== ticketData.extras) {
-        return `Extra type 'incorrect-extra' cannot be found.`
-      } else {
-        return `Entrant type 'incorrect-entrant' cannot be found.`
-      }
-    } else {
-      return `Ticket type 'incorrect-type' cannot be found.`
-    }
-  }
+  // if (ticketInfo.ticketType !== ticketData.ticketType) {
+  //   if (ticketInfo.entrantType !== ticketData.entrantType) {
+  //     if (ticketInfo.extras !== ticketData.extras) {
+  //       return `Extra type 'incorrect-extra' cannot be found.`
+  //     } else {
+  //       return `Entrant type 'incorrect-entrant' cannot be found.`
+  //     }
+  //   } else {
+  //     return `Ticket type 'incorrect-type' cannot be found.`
+  //   }
+  // }
 }
 // Do not change anything below this line.
 module.exports = {
