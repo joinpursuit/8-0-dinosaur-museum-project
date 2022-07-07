@@ -68,7 +68,7 @@ function getConnectedRoomNamesById(rooms, id) {
   // Loop through room.connectsTo array and add name by Id 
   // if no room by that id return error message (also if there are no )
   
-  // get the room with the id 
+  // get the room object with the id 
   let room = rooms.find(room => room.roomId === id);
 
   if (room === undefined) {
