@@ -159,41 +159,51 @@ if (!ticketInfo.extras){
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {
+function purchaseTickets(ticketData, purchases) {}
 
- let fullTotal = 0;
+ 
+  
+    
 
-let receipt= 'Thank  you for visiting the Dinosaur Museum!\n----------------------------------------------------------';
 
-for(let ticket of purchases){
 
+
+
+
+
+// let fullTotal = 0;
+
+//let receipt= 'Thank  you for visiting the Dinosaur Museum!\n----------------------------------------------------------';
+
+//for(let ticket of purchases){
+
+
+
+ //   if(typeof price === 'number'){
+
+   //   fullTotal += price;
+   // receipt += `\n${capitalizeFirstLetter(ticket.entrantType)} ${ticketData[ticketType].description}: $${(price/100).toFixed(2)}`;
+   //  if(ticket.extras.length){
+
+     //  receipt+= '(';
+     // for(let extra of ticket.extras){
+     //  receipt+=`${ticketData.extras[extra].description}`;
+
+      // }
+      // receipt = receipt.split('');
+       //receipt.pop();
+       //receipt=receipt.join('');
+      // receipt += ')';
+    // }
+
+// }else {
+//return price;
+ // }
+ //}
+ //receipt+= `---------------------------------------------------\nTotal: $`;
+// receipt+= String((fullTotal/100).toFixed(2));
+ //return receipt;
 //}
-
-    if(typeof price === 'number'){
-
-      fullTotal += price;
-    receipt += `\n${capitalizeFirstLetter(ticket.entrantType)} ${ticketData[ticketType].description}: $${(price/100).toFixed(2)}`;
-     if(ticket.extras.length){
-
-       receipt+= '(';
-      for(let extra of ticket.extras){
-       receipt+=`${ticketData.extras[extra].description}`;
-
-       }
-       receipt = receipt.split('');
-       receipt.pop();
-       receipt=receipt.join('');
-       receipt += ')';
-     }
-
- }else {
-return price;
-  }
- }
- receipt+= `---------------------------------------------------\nTotal: $`;
- receipt+= String((fullTotal/100).toFixed(2));
- return receipt;
-}
 
 // Do not change anything below this line.
 module.exports = {
