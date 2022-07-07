@@ -1,4 +1,6 @@
+
 /*
+
   Do not change the lines below. If you'd like to run code from this file, you may use the `exampleDinosaurData` and `exampleRoomData` variables below to gain access to each data set. This data is pulled from the relevant files in the `data/` directory.
 
   You may use this data to test your functions. You may assume the shape of the data remains the same but that the values may change.
@@ -25,6 +27,7 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
+
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   let dinoId, roomName;
   
@@ -45,11 +48,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     if (room.dinosaurs.includes(dinoId)) {
       roomName = room.name
       return roomName
-    }//--------------BUGGY IF
-    // else if (!room.dinosaurs.includes(dinoId)) {
-    //     return `Dinosaur with name ${dinosaurName} cannot be found in any rooms.`
-    // }
-    //--------------
+    }
   }
   if (dinoId === undefined) {
     return `Dinosaur with name '${dinosaurName}' cannot be found.`
@@ -85,34 +84,40 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  // declare accumulator
+console.log(id)
   let accumulator1 = []
   let accumulator2 = []
-  //loop over array
-  //check to see if room.roomId === id
+  
   for (let room of rooms) {
-    if (room.roomId !== undefined && id === room.roomId) {
-      accumulator1.push(room.connectsTo)
+    // if (room.roomId !== id) {
+    //   return `Room with ID of '${id}' could not be found.`
+    // } 
+
+    if (id === room.roomId) {
+      accumulator1 = [...room.connectsTo]
+      console.log('accumulator1*** ', accumulator1)
+    }
+    for (let i = 0; i < accumulator1.length; i++) {
+      if (room.roomId == accumulator1[i]) {
+        accumulator2.push(room.name)
+      }
+      // if (!room.roomId.includes(accumulator1[i])) {
+      //   return`Room with ID of 'incorrect-id' could not be found.`
+      // }
+      
+      // console.log('accumulator1[i]*** ', accumulator1[i])
+      console.log('accumulator2### ', accumulator2)
       
     }
-    console.log(accumulator1)
-    }
-    for (r in rooms) {
-      if (accumulator1.includes(rooms[r].name)) {
-        accumulator2.push(rooms[r].name)
-       // console.log(accumulator2)
-      }
-  }
+    
+  } 
+  return accumulator2
   
-  
+}
 
+  // console.log(getConnectedRoomNamesById(exampleRoomData, "A6QaYdyKra"))
+  // console.log('typeof&&& '+ typeof accumulator2)
   
-    // if (accumulator1 === undefined) {
-    //   return `Room with ID of '${id}' could not be found.`
-    // } else if (accumulator2 === undefined) {
-    //   return `Dinosaur with name cannot be found in any rooms.`
-    // }
-  }
 
 module.exports = {
   getRoomByDinosaurName,

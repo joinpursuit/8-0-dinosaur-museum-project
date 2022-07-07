@@ -54,7 +54,7 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {
+function calculateTicketPrice(ticketData, ticketInfo, ) {
 
   
   //ERRORS
@@ -69,9 +69,16 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   //     return `Ticket type 'incorrect-type' cannot be found.`
   //   }
   // }
-//PRICE VARIABLES (EXTRAS)
+  ////GENERAL ADMISSION WITH EXTRAS
   
-
+  if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'child') {
+    return ticket.general.priceInCents.child + ticketData.extras.priceInCents.child;
+  }
+  else if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'adult') {
+    return ticket.general.priceInCents.adult + ticketData.extras.priceInCents.adult;
+  } else if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'senior') {
+    return ticketData.general.priceInCents.senior + ticketData.extras.priceInCents.senior;
+  }
   
  
   // GENERAL ADMISSION WITHOUT EXTRAS
@@ -90,32 +97,13 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   } else if (ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'senior') {
     return ticketData.membership.priceInCents.senior;
   }
-  //GENERAL ADMISSION WITH EXTRAS
-
-  // //  applicable to 'terrace' (child)
-  // let extraPrice1 = 500
-
-  // // applicable to 'movie' (child, adult, senior), 
-  // // applicable to 'education'(child),
-  // //applicable to 'terrace'(adult, senior)
-
-  // let extraPrice2 = 1000
-
-  // //   applicable to 'education' (adult, senior)
-
-  // let extraPrice3 = 1200
-  if (ticketInfo.ticketType === 'general' && ticketInfo.extras === "movie" && ticketInfo.entrantType === 'child') {
-    return ticketData.general.priceInCents.child + ticketData.extras.movie.priceInCents.child;
-  }
-   else if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'adult') {
-    return ticketData.general.priceInCents.adult + ticketData.extras.movie.priceInCents.adult;
-  } else if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'senior') {
-    return ticketData.general.priceInCents.senior + ticketData.extras.movie.priceInCents.senior;
-  }
+  
+ 
+   
 
  
 
-}
+  }
 
 
 

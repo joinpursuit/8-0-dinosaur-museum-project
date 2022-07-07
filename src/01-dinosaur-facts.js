@@ -32,7 +32,7 @@ function getLongestDinosaur(dinosaurs) {
 
   for (dino of dinosaurs) {
    
-    console.log(longestDino)
+    // console.log(longestDino)
   }
 return longestDino
 }
@@ -93,14 +93,18 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let dinoArr = []
+  let dinoAgeArr = []
+  let dinoMyaArr = []
   for (let dino of dinosaurs) {
-    if (dino.mya !== undefined && dino.mya === mya) {
-      dinoArr.push(dino.dinosaurId)
-      console.log (dinoArr)
-    } else return dinoArr
+    dinoAgeArr.push(dino.mya)
+    if (dinoAgeArr.includes(mya)) {
+      dinoMyaArr.push(dino)
+      
+    } 
+    console.log('dinoAgeArr### ', dinoAgeArr)
+    console.log('dinoMyaArr*** ', dinoMyaArr)
   }
-  
+  return []
 }
 
 module.exports = {
