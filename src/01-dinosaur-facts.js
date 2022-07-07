@@ -22,7 +22,33 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+    // we need to return a key dinosaur 
+    // value of height of dinosaur in feet convert from meters
+  let height = 0
+  let name = ""
+  
+  if (dinosaurs.length === 0){
+    return {}
+  }
+   for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].lengthInMeters > height ){
+      height = dinosaurs[i].lengthInMeters
+      name = dinosaurs[i].name
+      console.log(name)
+    }
+  }
+  // at this point we have a winner, we have to convert then create into an object
+  // we will first convert our height
+  height = height * 3.281
+  // now to convert our two datas into a single object
+  let output = {}
+  output[name]= height 
+  // let example = {Brachiosaurus:42}
+  // return example
+  return output
+  }
+
 
 /**
  * getDinosaurDescription()
@@ -44,7 +70,22 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  // check our dinoursaurs objeect for matching ID
+  // if (dinosaurs.filter(e => e.dinosaurId === id).length > 0) {
+  //   /* vendors contains the element we're looking for */
+  //   dinsou
+  let ourId = 0
+  let desc = ''
+  for(let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].dinosaurId === id) {
+      return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.`
+  }
+  }
+  return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+}
+
+
 
 /**
  * getDinosaursAliveMya()
@@ -71,10 +112,45 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let newArr = []
+  let condArr = []
+  // let rangeArr = []
+  // iterate through our object (dinosaurs), look for correpsonding dinosaurs that living during the given mya date range
+  for(let dino of dinosaurs){
+    if(dino.mya.length > 1){ // for non singular mya 
+      // for (let i = mya[1]; i < mya[0]; i++) {
+      //   rangeArr.push()
+      // }
+      // // rangeArr.push(dino.mya[0])
+      // rangeArr.push(dino.mya[dino.mya.length-1])
+      if (mya >= dino.mya[dino.mya.length - 1] && mya <= dino.mya[0]){
+        newArr.push(dino.dinosaurId)
+      }} else if(dino.mya.includes(mya)){ // this is for the single mya, we need to now solve for the multiple mya, thinking of getting a range array and checking if its included
+        newArr.push(dino.dinosaurId)
+      }
+      }
+      if (key === 'name'){
+        for(let dino of dinosaurs){
+          if(dino.mya.length > 1){ // for non singular mya 
+            if (mya >= dino.mya[dino.mya.length - 1] && mya <= dino.mya[0]){
+              condArr.push(dino.name)
+            }} else if(dino.mya.includes(mya)){ // this is for the single mya, we need to now solve for the multiple mya, thinking of getting a range array and checking if its included
+              condArr.push(dino.name)
+            }
+            }
+            return condArr
+      }
+    
+  
+
+  console.log(newArr)
+  return newArr
+}
 
 module.exports = {
   getLongestDinosaur,
   getDinosaurDescription,
   getDinosaursAliveMya,
 };
+ // scan our current array to which is a bunch of IDs, match our ids with the dinosaur inside our dinosaur object
