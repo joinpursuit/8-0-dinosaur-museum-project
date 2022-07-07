@@ -63,11 +63,22 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   if (ticketTypeObj === undefined) {
     return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
   }
-  let entrantType = ticketTypeObj.priceInCents[ticketInfo.entrantType];
-  if (entrantType === undefined) { // orNan since entrantType is a number
+  let entrantTypePrice = ticketTypeObj.priceInCents[ticketInfo.entrantType];
+  if (entrantTypePrice === undefined) { // orNan since entrantType is a number
     return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
   }
-  price += entrantType;
+  price += entrantTypePrice;
+
+  // Add price for extras
+  // Loop through ticketInfo.extras and add to variable, check variable is valid (add to an array and check if undefined)
+  // Then get the priceInCents for that variable by entrantType and add to price
+  for (let extra of ticketInfo.extras) {
+    let extraObject = ticketData.extras[extra];
+    if (extraObject === undefined) {
+      return `Extra type '${extra}' cannot be found.`;
+    }
+    price += extraObject.priceInCents[ticketInfo.entrantType];
+  }
 
   return price;
 }
@@ -125,7 +136,51 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  // Can use calc function above;
+  // purchases = array of ticketInfo objects
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
+  let totalPrice = 0;
+  for (let purchase of purchases) {
+    // let ticketTypeObject = ticketData[purchase.ticketType];
+    // if (ticketTypeObject === undefined) {
+    //   return `Ticket type '${purchase.ticketType}' cannot be found.`;
+    // }
+    // let entrantTypePrice = ticketTypeObject.priceInCents[purchase.entrantType];
+    // if (entrantTypePrice === undefined) {
+    //   return `Entrant type '${purchase.entrantType}' cannot be found.`;
+    // }
+    let entrantStr = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
+    let ticketTypeStr = purchase.ticketType[0].toUpperCase() + purchase.ticketType.slice(1);
+    let ticketPrice = calculateTicketPrice(ticketData, purchase);
+    if (typeof ticketPrice !== "number") {
+      return calculateTicketPrice(ticketData, purchase);
+    }
+    ticketPrice /= 100;
+    // Loop through extras in purchase
+    // let extraType = ""; // ticketData.extras[]
+    // for (let extra of purchase.extras) {
+      
+    // }
+    // Add sting after receipt if 
+    // get ticketData.extras[extra].description
+    let extraDescriptionArr = [];
+    let extraStr = ""
+    if (purchase.extras.length >= 1) {
+      for (let extra of purchase.extras) {
+        extraDescriptionArr.push(ticketData.extras[extra].description)
+      }
+      extraStr += " (" + extraDescriptionArr.join(", ") + ")";
+    }
+
+
+    totalPrice += ticketPrice;
+    receipt += `${entrantStr} ${ticketTypeStr} Admission: $${ticketPrice.toFixed(2)}` + extraStr + "\n";
+    
+  }
+  receipt += `-------------------------------------------\nTOTAL: $${totalPrice.toFixed(2)}`;
+  return receipt;
+}
 
 // Do not change anything below this line.
 module.exports = {
