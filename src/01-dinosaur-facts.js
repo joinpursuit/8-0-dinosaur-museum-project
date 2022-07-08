@@ -117,7 +117,36 @@ let mya
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let wasAlive = []
+  for (let oneDino of dinosaurs) {
+
+    if(mya <= oneDino.mya[0]  && mya >= oneDino.mya[1] && !key){
+      wasAlive.push(oneDino.dinosaurId)
+     } 
+
+    // if(mya <= oneDino.mya[0]  && mya >= oneDino.mya[1]){
+    //    if(!key){
+    //    wasAlive.push(oneDino.dinosaurId)
+    //    } else if(oneDino[key])
+    //    wasAlive.push(oneDino[key])
+
+    //push dinosourId if only one value exists in oneDino.mya and  mya === to oneDino.mya and no key argument is given
+    if(oneDino.mya.length === 1 && oneDino.mya[0] === mya && !key){
+      wasAlive.push(oneDino.dinosaurId)
+     }
+    //push dinosourId if only one value exists in oneDino.mya and  mya ===  oneDino.mya -1, and no key argument is given
+    if(oneDino.mya.length === 1 && oneDino.mya[0]-1 === mya && !key){
+      wasAlive.push(oneDino.dinosaurId)
+     }
+
+    //  if(oneDino[key] && mya <= oneDino.mya[0]  && mya >= oneDino.mya[1])
+    //     wasAlive.push(oneDino[key])
+
+  }
+ return wasAlive
+}
+
 
 module.exports = {
   getLongestDinosaur,
