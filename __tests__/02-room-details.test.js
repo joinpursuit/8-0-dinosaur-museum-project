@@ -7,7 +7,7 @@ const {
 const dinosaurs = require("../data/dinosaurs");
 const rooms = require("../data/rooms");
 
-describe.only("getRoomByDinosaurName()", () => {
+describe("getRoomByDinosaurName()", () => {
   test("should return the name of the room where the given dinosaur can be found", () => {
     const name = "Tyrannosaurus";
     const actual = getRoomByDinosaurName(dinosaurs, rooms, name);

@@ -70,28 +70,33 @@ for(let dinosaur of dinosaurs){
       "Ellis Family Hall",
       "Kit Hopkins Education Wing"
     ]
- *//*
- RETURNS AN ARRAY OF STRING WHERE EACH STRING IS A NAME OF A ROOM CONNCECTED TO 
- GIVEN ROOMS
- ROOM OF ROOMS 
- CONNECTS TO:[]
+ 
  */ 
 function getConnectedRoomNamesById(rooms, id) {
-  
-  let connected;
 
-  for(let i =0; i<rooms.length; i++){
+let arrOfRooms = []
 
-    if(rooms[i].connectsTo === id ){
-      connected = rooms[i].name
+for(let room of rooms){
+  if(room.roomId.includes(id)){
+
+for(let connection of room.connectsTo){
+  let present = true;
+  for(let room of rooms){
+
+    if(connection.includes(room.roomId)){
+      arrOfRooms.push(room.name);
+      present = false;
     }
-    return connected
-  }
-    
-  return  "Room with ID of 'incorrect-id' could not be found."
-  
 }
-
+  if(present){
+    return `Room with ID of '${connection}' could not be found.`
+  }
+}
+return arrOfRooms
+  }
+}
+return `Room with ID of '${id}' could not be found.`
+}
 module.exports = {
   getRoomByDinosaurName,
   getConnectedRoomNamesById,
