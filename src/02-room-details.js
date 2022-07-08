@@ -88,7 +88,15 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let arr = []
+  for (const room of rooms) { // starts looping through the rooms object
+    if(room.connectsTo.includes(id)){ // looks for a match to the ID
+      arr.push(room.name)
+    }
+  }
+  return arr
+}
 
 module.exports = {
   getRoomByDinosaurName,
