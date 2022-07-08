@@ -133,18 +133,48 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  // let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
-  // let ticket;
-  // let totalPrice;
-  // let priceInDollars;
+  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+  let totalPrice = 0
+  
+  for (let purchase of purchases) {
+  let ticket = calculateTicketPrice(ticketData, purchase)
+    if (typeof ticket === `string`){
+      return ticket
+    }
+  let receipt2 = []
+  for (xtra of purchase.extras){
+    receipt2.push(ticketData.extras[xtra].description)
+  }
+  if (purchase.extras.length){
+    receipt2 = ` (${receipt2.join(`, `)})`
+  }
+    receipt += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(ticket/100).toFixed(2)}${receipt2}\n`
+    totalPrice += ticket/100
+  }
+  receipt += `-------------------------------------------\nTOTAL: $${totalPrice.toFixed(2)}`
+  return receipt
+}  
 
-  // for (let i = 0; i < purchases.length; i++) {
-  //   let ticket = calculateTicketPrice(ticketData, purchases){
+// let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+// let totalPrice = 0
 
-  //   }
-    
-  // }
-}
+// for (let i = 0; i < purchases.length; i++){
+//   let ticket = calculateTicketPrice(ticketData, purchases[i])
+//   if (typeof ticket === `string`){
+//     return ticket
+//   }
+//   let receipt2 = []
+//   for (let j = 0; j < purchases[i].extras[j]; j++){
+//     receipt2.push(ticketData.extras[purchases[i].extras[j]].description)
+//   }
+//   if (purchases[i].extras.length){
+//     receipt2 = ` (${receipt2.join(`, `)})`
+//   }
+//   receipt += `${purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)} ${ticketData[purchases[i].ticketType].description}: $${(ticket/100).toFixed(2)}${receipt2}\n`
+//    totalPrice += ticket/100
+// }
+// receipt += `-------------------------------------------\nTOTAL: $${totalPrice.toFixed(2)}`
+// return receipt
 
 // Do not change anything below this line.
 module.exports = {
