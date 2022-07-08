@@ -28,19 +28,41 @@ const exampleRoomData = require("../data/rooms");
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   let retrievedDinoId = ''
   let retrievedRoom = ''
-  for (let dino of dinosaurs) {
+  let output
+
+  // for (let dino of dinosaurs) { // error loop / guard clause 01 for the dino list...
+    // if (dino.name !== dinosaurName){
+    //   output = `Dinosaur with name '${dinosaurName}' cannot be found.`
+  //   } else if (dinosaurName)
+  // }
+//   for (let room of rooms){ // DOES NOT WORK BECAUSE OF THE INCLUDES; BREAKS WHOLE CODE
+//     if (!(rooms.dinosaurs.includes(retrievedDinoId))){
+//       output = `Dinosaur with name '${dinosaurName}' cannot be found.`
+//   }
+// }
+
+  for (let dino of dinosaurs) { // scan through dino list retrieve dino id
     if (dino.name === dinosaurName){
       retrievedDinoId = dino.dinosaurId
     }
-  }
-  for (const room of rooms) {
+    }
+  
+  
+  for (const room of rooms) { // scan through rooms look for retriebed dino id, stores the iteration of that room into a variable then returns
     // if (retrievedDinoId === room.dinosaurs){ // wont work, condintion isnt being met
     if (room.dinosaurs.includes(retrievedDinoId)){
-      console.log('test')
       retrievedRoom = room.name
+      output = retrievedRoom
     }
   }
-  return retrievedRoom
+  if (!retrievedDinoId){
+    output = `Dinosaur with name '${dinosaurName}' cannot be found.`
+  } else if (!retrievedRoom){
+    console.log('test')
+    output = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+  }
+
+  return output
   }
 
 
