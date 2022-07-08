@@ -69,11 +69,11 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     }
   }
 
-  for (let x of ticketInfo.extras){
-    if(x in ticketData.extras){
-      totalCost += ticketData.extras[x].priceInCents[ticketInfo.entrantType]
+  for (let xtra of ticketInfo.extras){
+    if(xtra in ticketData.extras){
+      totalCost += ticketData.extras[xtra].priceInCents[ticketInfo.entrantType]
     } else {
-      return `Extra type '${x}' cannot be found.`
+      return `Extra type '${xtra}' cannot be found.`
     }
   }
   return totalCost
@@ -133,10 +133,17 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  let totalCost = 0;
-  let receipt = ``
+  // let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+  // let ticket;
+  // let totalPrice;
+  // let priceInDollars;
 
+  // for (let i = 0; i < purchases.length; i++) {
+  //   let ticket = calculateTicketPrice(ticketData, purchases){
 
+  //   }
+    
+  // }
 }
 
 // Do not change anything below this line.
