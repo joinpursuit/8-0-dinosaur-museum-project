@@ -95,7 +95,12 @@ function getConnectedRoomNamesById(rooms, id) {
       arr.push(room.name)
     }
   }
+  for (const room of rooms) {
+  if (!(room.connectsTo.includes(id))){
+    return `Room with ID of 'incorrect-id' could not be found.`
+  }
   return arr
+}
 }
 
 module.exports = {
