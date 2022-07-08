@@ -34,7 +34,8 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     }
   }
   for (const room of rooms) {
-    if (retrievedDinoId === room.dinosaurs){ // wont work, condintion isnt being met
+    // if (retrievedDinoId === room.dinosaurs){ // wont work, condintion isnt being met
+    if (room.dinosaurs.includes(retrievedDinoId)){
       console.log('test')
       retrievedRoom = room.name
     }
