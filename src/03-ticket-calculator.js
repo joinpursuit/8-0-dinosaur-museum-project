@@ -69,9 +69,9 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     }
   };
 
-  for (let extra of ticketInfo.extras){
-    if(extra in ticketData.extras){
-      totalCost += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+  for (let x of ticketInfo.extras){
+    if(x in ticketData.extras){
+      totalCost += ticketData.extras[x].priceInCents[ticketInfo.entrantType]
     } else {
       return `Extra type 'incorrect-extra' cannot be found.`
     }
