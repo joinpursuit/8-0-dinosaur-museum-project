@@ -39,8 +39,8 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   }
   
   for (let j = 0; j < rooms.length; j++) {
-    for (let o = 0; o < rooms[j].dinosaurs.length; o++) {
-      if(rooms[j].dinosaurs[o] === dinoId){
+    for (let l = 0; l < rooms[j].dinosaurs.length; l++) {
+      if(rooms[j].dinosaurs[l] === dinoId){
         return rooms[j].name
       }     
     }  

@@ -59,15 +59,15 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 
   if(ticketInfo.ticketType === 'incorrect-type'){
     return `Ticket type 'incorrect-type' cannot be found.`
-  };
+  }
 
   if(ticketInfo.ticketType in ticketData){
     if(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents){
       totalCost += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
-    } else if (ticketData.info.entrantType === 'incorrect-entrant') {
+    } else if (ticketInfo.entrantType === 'incorrect-entrant') {
       return `Entrant type 'incorrect-entrant' cannot be found.` 
     }
-  };
+  }
 
   for (let x of ticketInfo.extras){
     if(x in ticketData.extras){
@@ -75,7 +75,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     } else {
       return `Extra type 'incorrect-extra' cannot be found.`
     }
-  };
+  }
   return totalCost
 }
 
