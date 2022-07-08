@@ -57,14 +57,14 @@ const exampleTicketData = require("../data/tickets");
 function calculateTicketPrice(ticketData, ticketInfo) {
   let totalCost = 0;
 
-  if(ticketInfo.ticketType === 'incorrect-type'){
+  if(!ticketData[ticketInfo.ticketType]){
     return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
   }
 
   if(ticketInfo.ticketType in ticketData){
     if(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents){
       totalCost += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
-    } else if (ticketInfo.entrantType === 'incorrect-entrant') {
+    } else if (!ticketData[ticketInfo.entrantType]) {
       return `Entrant type '${ticketInfo.entrantType}' cannot be found.` 
     }
   }
@@ -133,6 +133,10 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
+  let totalCost = 0;
+  let receipt = ``
+
+
 }
 
 // Do not change anything below this line.
