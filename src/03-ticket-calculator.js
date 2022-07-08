@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { general, extras } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -55,6 +56,7 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
+
 let myPrice = 0;
   // if(ticketInfo.ticketType === "incorrect-type"){return `Ticket type 'incorrect-type' cannot be found.`} 
   // if (ticketInfo.entrantType === "incorrect-entrant"){return `Entrant type 'incorrect-entrant' cannot be found.`} 
@@ -81,13 +83,13 @@ return myPrice
     // myPrice +=ticketData[ticketInfo.extras].priceInCents[ticketInfo.entrantType]
 
 /**
- * purchaseTickets()
- * ---------------------
- * Returns a receipt based off of a number of purchase. Each "purchase" maintains the shape from `ticketInfo` in the previous function.
- *
- * Any errors that would occur as a result of incorrect ticket information should be surfaced in the same way it is in the previous function.
- * 
- * NOTE: Pay close attention to the format in the examples below and tests. You will need to have the same format to get the tests to pass.
+//  * purchaseTickets()
+//  * ---------------------
+//  * Returns a receipt based off of a number of purchase. Each "purchase" maintains the shape from `ticketInfo` in the previous function.
+//  *
+//  * Any errors that would occur as a result of incorrect ticket information should be surfaced in the same way it is in the previous function.
+//  * 
+//  * NOTE: Pay close attention to the format in the examples below and tests. You will need to have the same format to get the tests to pass.
  *
  * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
  * @param {Object[]} purchases - An array of objects. Each object represents a single ticket being purchased.
@@ -133,8 +135,39 @@ return myPrice
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
-
+function purchaseTickets(ticketData, purchases) {
+  let price = 0
+  let finalPrice = 0
+  let receipt = ""
+for ( let data in ticketData){
+  for( let p = 0; p <purchases.length; p++){
+    if (!ticketData[purchases[p].ticketType]){
+      return `Ticket type '${purchases[p].ticketType}' cannot be found.`
+    }  for (let entrant in data.priceInCents){
+      if (!ticketData[data][priceInCents].purchases[p].entrantType){
+        return `Entrant type ${purchases[p].entrantType}' cannot be found.`
+      } if (purchases[p].entrantType.priceInCents === true){
+        price += purchases[p].entrantType.priceInCents
+      }  let admissionType =ticketData[data].description 
+    } if (data === "extras" && [purchases[p].extras.length] > 0){
+      for (let e = 0; e < purchases[p].extras.length; e++){
+        for (let key in data){
+         if (purchases[p].extras[e] === key){
+          admissionType += `${admissionType}: ${price}`
+          let arr = [] 
+          arr.push(ticketData[data][key].description)
+          console.log(arr)
+          price += purchases[p].extras[e].priceInCents[entrantType]
+          console.log(price)
+          receipt += `${purchases[p].entrantType} ${admissionType}: $${(price/100).toFixed(2)} ${arr.join()}`
+         } 
+        }
+      }
+    }
+  }
+}
+return receipt;
+}
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
