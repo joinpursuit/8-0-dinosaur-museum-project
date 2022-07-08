@@ -68,7 +68,7 @@ if(ticketInfo.extras[0] === "incorrect-extra"){
 }
 if(ticketInfo.ticketType in ticketData){
   if(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents){
-    newPrice += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+    newPrice = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
   }
 for(let newExtra of ticketInfo.extras){
   if(newExtra in ticketData.extras){
@@ -133,13 +133,28 @@ return newPrice
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  if(purchases.ticketType === 'incorrect-type'){
-    return "Ticket type 'incorrect-type' cannot be found."
+  let newStr = ""
+  let newPrice = 0 
+  
+  for(let i = 0; i < purchases.length; i++){
+    if(purchases[i].ticketType in ticketData){
+      if(purchases[i].entrantType in ticketData[purchases[i].ticketType].priceInCents){
+      newPrice = ((ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType])/100).toFixed(2)  
+      newStr = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchases[i].entrantType.charAt(0).toUpperCase() + purchases[i].entrantType.slice(1) } ${purchases[i].ticketType.charAt(0).toUpperCase() + purchases[i].ticketType.slice(1)} Admission: $${newPrice}\n-------------------------------------------\nTOTAL: $${newPrice}`
+    }
+  
   }
+  
+  }
+  
+  return newStr
 }
+
 
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
   purchaseTickets,
 };
+
+// Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchases[i].entrantType.charAt(0).toUpperCase() + purchases[i].entrantType.slice(1) } ${purchases[i].ticketType.charAt(0).toUpperCase() + purchases[i].ticketType.slice(1)} Admission: $${newPrice}\n-------------------------------------------\nTOTAL: $${newPrice}`
