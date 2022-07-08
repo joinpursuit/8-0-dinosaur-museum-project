@@ -84,36 +84,49 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-console.log(id)
-  let accumulator1 = []
-  let accumulator2 = []
-  
+  let accumulator = []
+
   for (let room of rooms) {
     // if (room.roomId !== id) {
     //   return `Room with ID of '${id}' could not be found.`
     // } 
-
-    if (id === room.roomId) {
-      accumulator1 = [...room.connectsTo]
-      console.log('accumulator1*** ', accumulator1)
-    }
-    for (let i = 0; i < accumulator1.length; i++) {
-      if (room.roomId == accumulator1[i]) {
-        accumulator2.push(room.name)
+    
+      if (room.connectsTo.includes(id)) {
+        accumulator.push(room.name)
       }
+    
+  }
+  return accumulator
+}
+
+
+
+
+
+
+
+
+
+    //   accumulator1.push(room.connectsTo)
+    //   console.log('accumulator1*** ', accumulator1)
+    // }
+    // for (let i = 0; i < accumulator1.length; i++) {
+    //   if (room.roomId == accumulator1[i]) {
+    //     accumulator2.push(room.name)
+      
       // if (!room.roomId.includes(accumulator1[i])) {
       //   return`Room with ID of 'incorrect-id' could not be found.`
       // }
       
       // console.log('accumulator1[i]*** ', accumulator1[i])
-      console.log('accumulator2### ', accumulator2)
+      // console.log('accumulator2### ', accumulator2)
       
-    }
     
-  } 
-  return accumulator2
   
-}
+  
+  
+  
+
 
   // console.log(getConnectedRoomNamesById(exampleRoomData, "A6QaYdyKra"))
   // console.log('typeof&&& '+ typeof accumulator2)

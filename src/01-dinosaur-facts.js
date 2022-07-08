@@ -105,32 +105,35 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let dinoMyaArr = []
-  let rangeArr = []
-  let keyArr = []
+// I Worked with Jahaad on this, I had code that was written before I worked with him and it "looked slightly different" unfourtunately, after trying to implement some code to implement th MYA -1 functionality I broke my own code and couldn't rescue it easily (don't yet know how to revert from github) I used Jahaads code as an ad-hoc backup. Var names are renamed to names I had in my own code. The logic and syntax between Jahaads and the code I lost are almost the same-- it was collaborative code after all. But thats why the code I have 
+
+
+  let myaArray = []
+  let keyArray = []
   for (let dino of dinosaurs) {
-    if (dino.mya.includes(mya)) {
-      dinoMyaArr.push(dino.dinosaurId)
-    } else if (dino.mya.length > 1) {
+    if (dino.mya.length > 1) {
       if (mya >= dino.mya[dino.mya.length - 1] && mya <= dino.mya[0]) {
-        dinoMyaArr.push(dino.dinosaurId)
+        myaArray.push(dino.dinosaurId)
       }
-    } 
+    } else if (dino.mya[0] === mya || (dino.mya[0] - 1) === mya) {
+      myaArray.push(dino.dinosaurId)
+    }
   }
   if (key === 'name') {
     for (let dino of dinosaurs) {
       if (dino.mya.length > 1) {
-        if (dino.mya.includes(mya)) {
-          keyArr.push(dino.name)
+        if (mya >= dino.mya[dino.mya.length - 1] && mya <= dino.mya[0]) {
+          keyArray.push(dino.name)
         }
-      } else if  (mya >= dino.mya[dino.mya.length - 1] && mya <= dino.mya[0]) {
-        keyArr.push(dino.name)
+      } else if (dino.mya.includes(mya)) { 
+        keyArray.push(dino.name)
       }
+    }
+    return keyArray
   }
-    return keyArr
-  }
- return dinoMyaArr
+  return myaArray
 }
+
 
 module.exports = {
   getLongestDinosaur,

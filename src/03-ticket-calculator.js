@@ -111,20 +111,6 @@ let total = 0
 // loop through extras for price
 
 
-  // console.log('test###', ticketData.general.priceInCents.child + ticketData.extras.priceInCents.child)
-
-
-  // 
-  //   if (ticketInfo.ticketType === 'general' && extra.extras === 'movie' && ticketInfo.entrantType === 'child') {
-  //     return ticketData.general.priceInCents.child + ticketData.extras.priceInCents.child;
-  //   }
-  //   else if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'adult') {
-  //     return ticketData.general.priceInCents.adult + ticketData.extras.priceInCents.adult;
-  //   } else if (ticketInfo.ticketType === 'general' && ticketInfo.extras === 'movie' && ticketInfo.entrantType === 'senior') {
-  //     return ticketData.general.priceInCents.senior + ticketData.extras.priceInCents.senior;
-  //   }
-  // }
-
 
 
 
