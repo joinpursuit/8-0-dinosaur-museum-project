@@ -116,7 +116,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
           value.push(dinosaurs[i].dinosaurId);
         }
       }
-    }
+    }//
   }
   return value 
 
