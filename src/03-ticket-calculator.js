@@ -58,14 +58,14 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   let totalCost = 0;
 
   if(ticketInfo.ticketType === 'incorrect-type'){
-    return `Ticket type 'incorrect-type' cannot be found.`
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
   }
 
   if(ticketInfo.ticketType in ticketData){
     if(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents){
       totalCost += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
     } else if (ticketInfo.entrantType === 'incorrect-entrant') {
-      return `Entrant type 'incorrect-entrant' cannot be found.` 
+      return `Entrant type '${ticketInfo.entrantType}' cannot be found.` 
     }
   }
 
@@ -73,7 +73,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     if(x in ticketData.extras){
       totalCost += ticketData.extras[x].priceInCents[ticketInfo.entrantType]
     } else {
-      return `Extra type 'incorrect-extra' cannot be found.`
+      return `Extra type '${x}' cannot be found.`
     }
   }
   return totalCost
@@ -132,7 +132,8 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+}
 
 // Do not change anything below this line.
 module.exports = {
