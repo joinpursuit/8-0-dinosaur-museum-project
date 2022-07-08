@@ -72,27 +72,22 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       }
     }
   }
-  
-  if(!(entrantType.includes(ticketInfo.entrantType))){
+  if(!entrantType.includes(ticketInfo.entrantType)){
     return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
   }
-  if((ticketType.includes(ticketInfo.ticketType))){
-    price += ticketData[ticketInfo.ticketType][`priceInCents`][ticketInfo.entrantType]
-  }
-  else if (ticketInfo.extras.length === 0){
+  if (!ticketType.includes(ticketInfo.ticketType)){
     return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
   }
-  if(ticketInfo.extras.length > 0){
-    for(const extras of ticketInfo.extras){
-      if((extrasName.includes(extras))){
-        price += ticketData[`extras`][extras][`priceInCents`][ticketInfo.entrantType]
-      }
-      else{
-        return `Extra type '${extras}' cannot be found.`
+  for(const extras of ticketInfo.extras){
+    if((extrasName.includes(extras))){
+      price += ticketData[`extras`][extras][`priceInCents`][ticketInfo.entrantType]
+    }
+    else{
+      return `Extra type '${extras}' cannot be found.`
       }
     }
-  }
-  return price
+    price += ticketData[ticketInfo.ticketType][`priceInCents`][ticketInfo.entrantType]
+    return price
 }
     
     
@@ -154,59 +149,60 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {
-  let finalPrice = 0
-  let extrasPrice = []
-  let extrasTotal = 0
-  let extrasArr = []
-  let extrasString = ``
-  let ticketType = [] 
-  let extrasName = [] 
-  let entrantType = [] 
+    function purchaseTickets(ticketData, purchases) {
+      let finalPrice = 0
+      let realEntrant = false
+      let receipt = `` 
+      
+      
+      for(let i = 0; i < purchases.length; i++){
+        let extrasPrice = 0
+        let description = []
+      
+        for(const key in ticketData){
+          if(!ticketData[purchases[i].ticketType]){
+            return `Ticket type '${purchases[i].ticketType}' cannot be found.`
+          }
+          for(const entrant in ticketData[key][`priceInCents`]){
+            if(purchases[i].entrantType === entrant){
+              realEntrant = true
+            }
+            if(!ticketData[key][`priceInCents`][purchases[i].entrantType]){
+              return `Entrant type '${purchases[i].entrantType}' cannot be found.`
+            }
+          }
+          if(realEntrant === true){
+            if(purchases[i].extras.length > 0){
+              for(const extra of purchases[i].extras){
+                for(const key2 in ticketData[`extras`]){
+                  if(key2 === extra){
+                    if(description.length !== purchases[i].extras.length){
+                      description.push(ticketData[`extras`][extra][`description`])
+                      extrasPrice += ticketData[`extras`][extra][`priceInCents`][purchases[i].entrantType]
+                    }
+                  }
+                  if(!ticketData[`extras`][extra]){
+                    return `Extra type '${extra}' cannot be found.`
+                  }
+                }
+              }
+            }
+            if(key === purchases[i].ticketType){
+              extrasPrice += ticketData[key][`priceInCents`][purchases[i].entrantType]
+              finalPrice += extrasPrice
+              receipt += `${purchases[i].entrantType.charAt(0).toUpperCase()}${purchases[i].entrantType.slice(1)} ${ticketData[key][`description`]}: $${(extrasPrice/100).toFixed(2)}`
+              if(purchases[i].extras.length > 0){
+                receipt += ` (${description.join(`, `)})\n`
+              }else{
+                receipt += `\n`
+              }
+            }
+          }
+        }
+      }
+      return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${receipt}-------------------------------------------\nTOTAL: $${(finalPrice /100).toFixed(2)}`
+    } 
   
-  for(const key in ticketData){
-    ticketType.push(key)
-  }
-  for(const extra in ticketData[`extras`]){
-    extrasName.push(extra)
-    for(const entrant in ticketData[`extras`][extra][`priceInCents`]){
-      if(!entrantType.includes(entrant)){
-        entrantType.push(entrant)
-      }
-    }
-  }
-  for(const ticket of purchases){
-    if(!ticketType.includes(ticket.ticketType)){
-      return `Ticket type '${ticket.ticketType}' cannot be found.`
-    }
-    if(!entrantType.includes(ticket.entrantType)){
-      return `Entrant type '${ticket.entrantType}' cannot be found.`
-    }
-    for(const extras of ticket.extras){
-      if(!extrasName.includes(extras)){
-        return `Extra type '${extras}' cannot be found.`
-      }
-      else{
-        finalPrice += ticketData[`extras`][extras][`priceInCents`][ticket.entrantType]
-        extrasTotal += ticketData[`extras`][extras][`priceInCents`][ticket.entrantType]
-        extrasString += `${ticketData[`extras`][extras][`description`]}, ` 
-      }
-    }
-    finalPrice += ticketData[ticket.ticketType][`priceInCents`][ticket.entrantType]
-    extrasPrice.push(`$${((extrasTotal + ticketData[ticket.ticketType][`priceInCents`][ticket.entrantType]) / 100).toFixed(2)}`)
-    extrasArr.push(`${extrasString.slice(0, -2) +``.trim()}`)
-    extrasTotal = 0
-    extrasString = ``
-  }
-  let receipt = ``
-  
-  for(let i = 0; i < purchases.length; i++){
-    purchases[i].entrantType = `${purchases[i].entrantType.charAt(0).toUpperCase()}${purchases[i].entrantType.slice(1)}`;
-    
-    purchases[i].extras.length === 0 ? receipt += `${purchases[i].entrantType} ${ticketData[purchases[i].ticketType][`description`]}: ${extrasPrice[i]}\n` : receipt += `${purchases[i].entrantType} ${ticketData[purchases[i].ticketType][`description`]}: ${extrasPrice[i]} (${extrasArr[i]})\n`
-  }
-  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${receipt}-------------------------------------------\nTOTAL: $${(finalPrice /100).toFixed(2)}`
-}
 
 // Do not change anything below this line.
 module.exports = {
