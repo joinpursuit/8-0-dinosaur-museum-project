@@ -56,7 +56,7 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-
+// initialize a variable to reassign as we loop through
 let myPrice = 0;
   // if(ticketInfo.ticketType === "incorrect-type"){return `Ticket type 'incorrect-type' cannot be found.`} 
   // if (ticketInfo.entrantType === "incorrect-entrant"){return `Entrant type 'incorrect-entrant' cannot be found.`} 
@@ -136,9 +136,11 @@ return myPrice
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
+  // initialize variables to access and reassign as we loop through
   let price = 0
   let finalPrice = 0
   let receipt = ""
+  
 for ( let data in ticketData){
   for( let p = 0; p <purchases.length; p++){
     if (!ticketData[purchases[p].ticketType]){

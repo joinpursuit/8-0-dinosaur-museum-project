@@ -27,17 +27,21 @@ const exampleRoomData = require("../data/rooms");
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   let nameOfAnimal = "";
- //check if dinosaur name matches 
+ //check if dinosaur name matches at each index.
  for (let i =0; i < dinosaurs.length; i++){
   if(dinosaurs[i].name === dinosaurName){
+    // reassign to variable nameOfAnimal as it loops through
     nameOfAnimal = dinosaurs[i].dinosaurId;
   }
  }
+ // if name of animal is falsey then return error message.
  if (!nameOfAnimal){
   return `Dinosaur with name '${dinosaurName}' cannot be found.`
  }
+ // initialize for loop to check against dinosaurs array {}
   for (let r =0; r < rooms.length; r++){
     for (let j =0; j < rooms[r].dinosaurs.length; j++){
+      // if rooms indexed at r matches name of animal return room name
       if(rooms[r].dinosaurs[j] === nameOfAnimal){
         return rooms[r].name
       }
@@ -69,20 +73,25 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
+  // initialize empty array
   let newArr = []
-
+// initialize for loop and nest another for loop to check if rooms are connected 
   for (let i = 0; i < rooms.length; i++){
     for (let j =0;j< rooms[i].connectsTo.length; j++){
       if (rooms[i].connectsTo[j] === id){
+        // if connected push to array
         newArr.push(rooms[i].name)
+        // if not connected return erorr message
       } else if (rooms[i].connectsTo[j] === `incorrect-id`){
           return `Room with ID of 'incorrect-id' could not be found.`
       }  
       }
     }
+    // after running the loop if the array is still empty return an erro message for id not found
     if (newArr.length === 0){
       return `Room with ID of '${id}' could not be found.`
     }
+    // return newArr after checking conditions 
     return newArr;
   }
   
