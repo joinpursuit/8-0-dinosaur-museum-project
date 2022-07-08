@@ -191,16 +191,13 @@ function calculateTicketPrice(ticketData, ticketInfo) {
               extrasPrice += ticketData[key][`priceInCents`][purchases[i].entrantType]
               finalPrice += extrasPrice
               receipt += `${purchases[i].entrantType.charAt(0).toUpperCase()}${purchases[i].entrantType.slice(1)} ${ticketData[key][`description`]}: $${(extrasPrice/100).toFixed(2)}`
-              if(purchases[i].extras.length > 0){
-                receipt += ` (${description.join(`, `)})\n`
-              }else{
+              purchases[i].extras.length > 0 ? receipt += ` (${description.join(`, `)})\n` :
                 receipt += `\n`
               }
             }
           }
         }
-      }
-      return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${receipt}-------------------------------------------\nTOTAL: $${(finalPrice /100).toFixed(2)}`
+        return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${receipt}-------------------------------------------\nTOTAL: $${(finalPrice /100).toFixed(2)}`
     } 
   
 
