@@ -126,7 +126,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
       // rangeArr.push(dino.mya[dino.mya.length-1])
       if (mya >= dino.mya[dino.mya.length - 1] && mya <= dino.mya[0]){
         newArr.push(dino.dinosaurId)
-      }} else if(dino.mya.includes(mya)){ // this is for the single mya, we need to now solve for the multiple mya, thinking of getting a range array and checking if its included
+      }} else if(dino.mya[0] === mya || (dino.mya[0]-1) === mya){// this is for the single mya, we need to now solve for the multiple mya, thinking of getting a range array and checking if its included
         newArr.push(dino.dinosaurId)
       }
       }
@@ -142,8 +142,6 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
             return condArr
       }
     
-  
-
   console.log(newArr)
   return newArr
 }
@@ -154,3 +152,4 @@ module.exports = {
   getDinosaursAliveMya,
 };
  // scan our current array to which is a bunch of IDs, match our ids with the dinosaur inside our dinosaur object
+ //(dino.mya.includes(mya))||(-1(dino.mya)))
