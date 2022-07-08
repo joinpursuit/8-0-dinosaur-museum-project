@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -22,8 +23,21 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  // check if input array is empty, return {} if it is
+  if (!dinosaurs.length) {
+    return {};
+  }
 
+  // copy array using spread to avoid mutation, sort from longest to shortest
+  const sorted = [...dinosaurs].sort(
+    (a, b) => b.lengthInMeters - a.lengthInMeters
+  );
+  const longest = sorted[0];
+  return {
+    [longest.name]: longest.lengthInMeters * 3.28084,
+  };
+}
 /**
  * getDinosaurDescription()
  * ---------------------
@@ -44,7 +58,20 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  // find dino by id, return error if not found
+  const dino = dinosaurs.find((dino) => dino.dinosaurId == id);
+  if (!dino) {
+    return `A dinosaur with an ID of '${id}' cannot be found.`;
+  }
+
+  // if found, create a string, return it
+  const str = `${dino.name} (${dino.pronunciation})\n${dino.info
+    } It lived in the ${dino.period} period, over ${dino.mya[1] || dino.mya[0]
+    } million years ago.`;
+
+  return str;
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +98,27 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  // filter out alive dino with mya[0,1] two values .... born 160 >= mya 150 <= dead 140
+  let aliveDinos = dinosaurs.filter(
+    (dino) => dino.mya[0] >= mya && dino.mya[1] <= mya
+  );
+
+  // filter out alive dino with single mya [0] value
+  const singleMyaDinos = dinosaurs.filter((dino) => {
+    return dino.mya.length == 1 && (dino.mya[0] == mya || dino.mya[0] == mya + 1)
+  });
+  // add them to aliveDinos array
+  if (singleMyaDinos.length) {
+    aliveDinos = [...singleMyaDinos, ...aliveDinos];
+  }
+
+  // map through aliveDinos, if key is provided return dino[key], if not return id
+  const aliveDinoIds = aliveDinos.map((dino) =>
+    key ? dino[key] : dino.dinosaurId
+  );
+  return aliveDinoIds;
+}
 
 module.exports = {
   getLongestDinosaur,
