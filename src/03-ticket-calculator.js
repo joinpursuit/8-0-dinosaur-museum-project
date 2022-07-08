@@ -163,7 +163,7 @@ function purchaseTickets(ticketData, purchases) {
 
     // for each extra in extra list 
     for (let i = 0; i < extras.length; i++) {
-      let string = extras[i][0].toUpperCase() + extras[i].slice(1) + " Access, ";
+      let string = ticketData.extras[extras[i]].description + ', '
       extraString += string;
     }
     

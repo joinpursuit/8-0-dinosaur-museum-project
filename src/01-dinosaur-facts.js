@@ -109,7 +109,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
     return dino.mya.length == 1 && (dino.mya[0] == mya || dino.mya[0] == mya + 1)
   });
   // add them to aliveDinos array
-  if (singleMyaDinos) {
+  if (singleMyaDinos.length) {
     aliveDinos = [...singleMyaDinos, ...aliveDinos];
   }
 
