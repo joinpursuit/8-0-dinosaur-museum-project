@@ -70,7 +70,7 @@ if(ticketInfo.ticketType === 'general'){
 }else if (ticketInfo.ticketType === 'membership'){
   tickType= 'membership';
 
-  if(ticketInfo.ticketType === 'adult') {
+  if(ticketInfo.entrantType === 'adult') {
     total += ticketData.membership.priceInCents.adult;
   }else if(ticketInfo.entrantType === 'child'){
     total += ticketData.membership.priceInCents.child;
@@ -160,7 +160,7 @@ if (!ticketInfo.extras){
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {}
-
+  
  
   
     
