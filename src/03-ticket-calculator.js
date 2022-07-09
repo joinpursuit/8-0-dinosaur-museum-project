@@ -55,6 +55,28 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
+
+  let priceInCents = 0;
+
+  if (!(ticketInfo.ticketType in ticketData)) {
+    return `Ticket type 'incorrect-type' cannot be found.`;
+  }
+  if ( !(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents)) {
+    return `Entrant type 'incorrect-entrant' cannot be found.`;
+  }
+  priceInCents += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+
+  if (ticketInfo.extras.length) {
+    for (const extra of ticketInfo.extras) {
+      if (extra in ticketData.extras) { 
+        priceInCents += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+      }
+      else {
+        return `Extra type 'incorrect-extra' cannot be found.`;
+      }
+    }
+  }
+  return priceInCents;
   
 }
 
@@ -111,7 +133,37 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let total = 0;
+  let purchaseReceipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  
+  for (const purchase of purchases) {
+    const ticketPrice = calculateTicketPrice(ticketData, purchase);
+    total += ticketPrice;
+    if (typeof ticketPrice === 'string') {
+      return ticketPrice;
+    }
+    const extras = purchase.extras;
+    let receiptForExtras = '';
+    for (let i = 0; i < extras.length; i++) {
+      receiptForExtras += ticketData.extras[extras[i]].description;
+      if (i !== extras.length - 1) {
+        receiptForExtras += ', ';
+      }
+    }
+
+    let entrantTypeUppercased = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
+    purchaseReceipt += `${entrantTypeUppercased} ${ticketData[purchase.ticketType].description}: $${(ticketPrice / 100).toFixed(2)}`;
+
+    purchaseReceipt += extras.length > 0 ? ` (${receiptForExtras})\n` : "\n";
+  }
+
+  purchaseReceipt += `-------------------------------------------\nTOTAL: $${(total / 100).toFixed(2)}`;
+
+  return purchaseReceipt;
+  
+}
+
 
 // Do not change anything below this line.
 module.exports = {

@@ -68,11 +68,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  /*
-    iterate over rooms array to check if the room exists: if room.roomId === id, if so store room.connectedTo in an array.
-    if room id is not found, return `Room with ID of '${id}' could not be found.` I need to create an empty array to store all the connected rooms.
-    if the room id exists iterate over the new array of connected rooms to check if connected rooms exist.
-  */
+  
     let connectedRoomIds = [];
     let connectedRoomNames = [];
     for (const room of rooms) {

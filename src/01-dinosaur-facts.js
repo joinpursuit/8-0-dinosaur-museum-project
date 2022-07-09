@@ -94,7 +94,7 @@ return dinosaurDescription;
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let dinoAliveMya = new Array();
+  let dinoAliveMya = [];
   dinosaurs.forEach(dinosaur => {  
       if (dinosaur.mya[0] === mya || dinosaur.mya[0] - 1 === mya) {
         dinosaur[key] ? dinoAliveMya.push(dinosaur[key]) : dinoAliveMya.push(dinosaur.dinosaurId);
