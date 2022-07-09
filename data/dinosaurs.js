@@ -208,17 +208,7 @@ const dinosaurs = [
     mya: [120, 110],
     info: "An ornithopod dinosaur known only by a partial skull and postcranial fragments, not much about Zephyrosaurus has been discovered.",
   },
-  {
-    dinosaurId: "7ZJlPQZRL",
-    name: "Tallosaurus",
-    pronunciation: "TALL-o-SORE-us",
-    meaningOfName: "Very tall dinosaur",
-    diet: "herbivorous",
-    lengthInMeters: 30,
-    period: "Early Cretaceous",
-    mya: [120, 110],
-    info: "Not much is known about this dinosaur because it didn't exist.",
-  },
+
 ];
 
 module.exports = dinosaurs;
