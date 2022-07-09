@@ -22,8 +22,37 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
 
+if(dinosaurs.length < 1) return {}
+
+let largestDino = {}
+
+let tempArr = []
+
+let maxValue =  Math.max(...dinosaurs.map(dinosaur => dinosaur.lengthInMeters))
+
+dinosaurs.reduce((_, dinosaur, index) => {
+
+
+  if(maxValue === dinosaur.lengthInMeters){
+
+    console.log('these are our dinos inside of if statement', dinosaur, index)
+
+    tempArr.push(dinosaur)
+
+    largestDino[tempArr[0].name] = tempArr[0].lengthInMeters * 3.281
+
+  }
+
+})
+
+console.log('largest Dino object', largestDino)
+
+  return largestDino
+}
+
+getLongestDinosaur(exampleDinosaurData)
 /**
  * getDinosaurDescription()
  * ---------------------
