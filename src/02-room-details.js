@@ -58,9 +58,28 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   }
 
 // console.log(getRoomByDinosaurName(exampleDinosaurData, exampleRoomData, 'Tyrannosaurus' ))
-
-
-
+/**
+ * getConnectedRoomNamesById()
+ * ---------------------
+ * Returns an array of strings, where each string is the name of a room connected to the given room. If a room ID cannot be found, an error message is returned.
+ *
+ * @param {Object[]} rooms - An array of room objects. See the `data/rooms.js` file for an example of the input.
+ * @param {string} id - A unique room identifier.
+ * @returns {string|string[]} An array of room names, or an error message.
+ *
+ * EXAMPLE:
+ *  getConnectedRoomNamesById(rooms, "aIA6tevTne");
+ *  //> ["Ticket Center"]
+ *
+ * EXAMPLE:
+ *  getConnectedRoomNamesById(rooms, "A6QaYdyKra");
+ *  //> [
+      "Entrance Room",
+      "Coat Check Room",
+      "Ellis Family Hall",
+      "Kit Hopkins Education Wing"
+    ]
+ */
 /**
  * getConnectedRoomNamesById()
  * ---------------------
@@ -85,41 +104,56 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
  */
 function getConnectedRoomNamesById(rooms, id) {
   let accumulator = []
+  let testvar = 0
 
-  for (let room of rooms) {
-    // if (room.roomId !== id) {
-    //   return `Room with ID of '${id}' could not be found.`
-    // } 
-    
-      if (room.connectsTo.includes(id)) {
-        accumulator.push(room.name)
-      }
-    
+  // testvar += 1
+  // console.log(testvar)
+
+  for (let room of rooms) { 
+    if (room.connectsTo.includes(id)) {
+      accumulator.push(room.name)
+    }
   }
+  // for (let room of rooms) {
+  //   if (!room.connectsTo.includes(id)) {
+  //     accumulator.push(`Room with ID of 'incorrect-id' could not be found.`)
+  //   }
+  // } 
+ 
+  
   return accumulator
 }
 
+// for (let room of rooms) {
+  //   if (!id) {
+  //     accumulator.push(`Room with ID of 'incorrect-id' could not be found.`)
+  //   }
+  // }
+  // for (let room of rooms) {
+  //   if (!room.connectsTo.includes(id)) {
+  //     accumulator.push(`Room with ID of 'incorrect-id' could not be found.`)
+  //   }
+    
+  // }
 
 
 
 
 
-
-
-
-    //   accumulator1.push(room.connectsTo)
-    //   console.log('accumulator1*** ', accumulator1)
-    // }
-    // for (let i = 0; i < accumulator1.length; i++) {
-    //   if (room.roomId == accumulator1[i]) {
-    //     accumulator2.push(room.name)
-      
-      // if (!room.roomId.includes(accumulator1[i])) {
-      //   return`Room with ID of 'incorrect-id' could not be found.`
+// else if (!room.connectsTo.includes(id)) {
+      //   return `Room with ID of 'incorrect-id' could not be found.`
       // }
-      
-      // console.log('accumulator1[i]*** ', accumulator1[i])
-      // console.log('accumulator2### ', accumulator2)
+
+
+
+ // if (room.roomId !== id) {
+    //   return `Room with ID of '${id}' could not be found.`
+    // }
+
+
+
+
+   
       
     
   

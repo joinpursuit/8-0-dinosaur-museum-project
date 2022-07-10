@@ -55,20 +55,30 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo,) {
-let total = 0
+  let total = 0
   
   //ERRORS
-  // 
-  
- 
+
+
   // GENERAL ADMISSION WITHOUT EXTRAS
+
+  
+    for (let ticket of ticketInfo.ticketType) {
+     
+      total += ticketData.ticketType[ticket].priceInCents[ticketInfo.entrantType]
+     
+      console.log('***', ticketData.ticketType[ticket].priceInCents[ticketInfo.entrantType])
+    }
+  
+
+
   if (ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'child') {
     total += ticketData.general.priceInCents.child;
   } else if (ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'adult') {
     total += ticketData.general.priceInCents.adult;
   } else if (ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'senior') {
     total += ticketData.general.priceInCents.senior;
-  }
+  } 
   // MEMBERSHIP WITHOUT ADDONS
   if (ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'child') {
     total += ticketData.membership.priceInCents.child;
@@ -80,22 +90,16 @@ let total = 0
 
   ////GENERAL ADMISSION WITH EXTRAS
   if (ticketInfo.extras.length > 0) {
-    for (extra of ticketInfo.extras)
+    for (let extra of ticketInfo.extras)
     {
-      // console.log('###', ticketData.extras[extra].priceInCents[ticketInfo.entrantType])
+      console.log('###', ticketData.extras[extra].priceInCents[ticketInfo.entrantType])
+
+
       total += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
 
-      
-
-
-
-
-
-
-
-
     }
-  }
+  } 
+
   // if (ticketInfo.ticketType !== ticketData.ticketType) {
   //   if (ticketInfo.entrantType !== ticketData.entrantType) {
   //     if (ticketInfo.extras !== ticketData.extras) {
@@ -110,15 +114,8 @@ let total = 0
 
 // loop through extras for price
 
-
-
-
-
 return total
 }
-
-
-
 /**
  * purchaseTickets()
  * ---------------------
@@ -173,6 +170,7 @@ return total
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
+let total = 0
   // if (ticketInfo.ticketType !== ticketData.ticketType) {
   //   if (ticketInfo.entrantType !== ticketData.entrantType) {
   //     if (ticketInfo.extras !== ticketData.extras) {
@@ -184,6 +182,17 @@ function purchaseTickets(ticketData, purchases) {
   //     return `Ticket type 'incorrect-type' cannot be found.`
   //   }
   // }
+
+
+
+
+
+
+
+
+
+
+
 }
 // Do not change anything below this line.
 module.exports = {
