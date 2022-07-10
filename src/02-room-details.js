@@ -25,7 +25,26 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) { 
+    // - iterate through the dinosaurs array to check if the name given exists
+    for (let dino of dinosaurs) {
+      if (dino.name === dinosaurName) {
+        // if dinosaur name exists, then iterate over rooms and check if the room has the dinosaur identifier.
+        for (let room of rooms) {
+          if (room.dinosaurs.includes(dino.dinosaurId)) {
+            // the room has the dinosaur id => return the name of the room.
+            return room.name; 
+          }
+        }
+        // if id does not exist in any room then an appropriate message is returned.
+        return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+      }
+    }
+    // - dinosaur name doesn't exist in the dinosaurs array.
+  return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+}
+
+
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +68,31 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+    // an empty array to hold connected rooms by ids
+    let validRoomId = [];
+    // an empty array to hold rooms by names
+    let connectedRoomNames = [];
+    // if the value of the given room id matches roomId, if true, then push connectsTo array into validRoomId array.
+    for (const room of rooms) {
+        if (room.roomId === id) {
+        validRoomId = room.connectsTo;
+        }
+    }
+    // iterate through the rooms array to check if given room id exists in validRoomId array, then push the room name into connectedRoomNames array array.
+    for (const room of rooms) {
+        if (validRoomId.indexOf(room.roomId) > -1) {
+        connectedRoomNames.push(room.name);
+        }
+    }
+      // if no value matching id is found or validRoomId array has "incorrect-id" value. return error.
+    if (!validRoomId.length || validRoomId.includes("incorrect-id")) {
+        return `Room with ID of 'incorrect-id' could not be found.`;
+    
+    }
+  // return all rooms connected to the given room id.
+  return connectedRoomNames;
+}
 
 module.exports = {
   getRoomByDinosaurName,
