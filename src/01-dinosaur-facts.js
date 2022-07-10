@@ -134,14 +134,24 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
     //push dinosourId if only one value exists in oneDino.mya and  mya === to oneDino.mya and no key argument is given
     if(oneDino.mya.length === 1 && oneDino.mya[0] === mya && !key){
       wasAlive.push(oneDino.dinosaurId)
-     }
+     } 
+     
     //push dinosourId if only one value exists in oneDino.mya and  mya ===  oneDino.mya -1, and no key argument is given
-    if(oneDino.mya.length === 1 && oneDino.mya[0]-1 === mya && !key){
+    else if(oneDino.mya.length === 1 && oneDino.mya[0]-1 === mya && !key){
       wasAlive.push(oneDino.dinosaurId)
      }
+    // else if(oneDino[key] && mya <= oneDino.mya[0]  && mya >= oneDino.mya[1]) {
+    //   wasAlive.push(oneDino[key])
+     //}
+     else if (oneDino[key] ) {
+       wasAlive.push(oneDino[key])
+     }
 
-    //  if(oneDino[key] && mya <= oneDino.mya[0]  && mya >= oneDino.mya[1])
-    //     wasAlive.push(oneDino[key])
+    //else if(!oneDino[key]){
+     // else {wasAlive.push(oneDino.dinosaurId)
+    //  }
+  
+    
 
   }
  return wasAlive
