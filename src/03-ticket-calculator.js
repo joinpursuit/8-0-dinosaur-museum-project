@@ -55,29 +55,30 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-
-  let priceInCents = 0;
-
-  if (!(ticketInfo.ticketType in ticketData)) {
-    return `Ticket type 'incorrect-type' cannot be found.`;
-  }
-  if ( !(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents)) {
-    return `Entrant type 'incorrect-entrant' cannot be found.`;
-  }
-  priceInCents += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
-
-  if (ticketInfo.extras.length) {
-    for (const extra of ticketInfo.extras) {
-      if (extra in ticketData.extras) { 
-        priceInCents += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
-      }
-      else {
-        return `Extra type 'incorrect-extra' cannot be found.`;
-      }
+    // declare the accumulator.
+    let priceInCents = 0;
+    // check if the type of the ticket does't exist as a key in the ticketData object. 
+    if (!(ticketInfo.ticketType in ticketData)) {
+        return `Ticket type 'incorrect-type' cannot be found.`;
     }
-  }
-  return priceInCents;
-  
+    // check if the type of the entrant does't exist as a key in the ticketData object.
+    if ( !(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents)) {
+        return `Entrant type 'incorrect-entrant' cannot be found.`;
+    }
+    // otherwise accumulate.
+    priceInCents += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+    // check if extras array in ticketInfo object is not empty, then loop. check if the extra exists in the ticketData object.
+    if (ticketInfo.extras.length) {
+        for (const extra of ticketInfo.extras) {
+          if (extra in ticketData.extras) { 
+            priceInCents += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]; // accumulate
+          } else {
+              return `Extra type 'incorrect-extra' cannot be found.`; // extra doesn't exist.
+          }
+        }
+    }
+    // return the accumulator.
+    return priceInCents;
 }
 
 /**
@@ -134,33 +135,38 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  let total = 0;
-  let purchaseReceipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
-  
-  for (const purchase of purchases) {
-    const ticketPrice = calculateTicketPrice(ticketData, purchase);
-    total += ticketPrice;
-    if (typeof ticketPrice === 'string') {
-      return ticketPrice;
+    // declare the accumulator.
+    let total = 0;
+    // set the purchaseReceipt string value as default then update it accordingly.
+    let purchaseReceipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+    // loop through the purchases array.
+    for (const purchase of purchases) {
+      // use calculateTicketPrice() as a helper function to return the error message and calculate total for single ticket based on ticket type and entrant type.
+        const ticketPrice = calculateTicketPrice(ticketData, purchase);
+            total += ticketPrice;
+        if (typeof ticketPrice === 'string') {
+          return ticketPrice;
+        }
+        // dealing with the receipt string with one or more extras.
+        const extras = purchase.extras;
+        let receiptForExtras = '';
+        for (let i = 0; i < extras.length; i++) {
+            receiptForExtras += ticketData.extras[extras[i]].description;
+            if (i !== extras.length - 1) {
+                receiptForExtras += ', ';
+            }
+        }
+        // uppercase the the first character of the entrant type.
+        let entrantTypeUpperCased = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
+        // update the purchaseReceipt and the ticketPrice.
+        purchaseReceipt += `${entrantTypeUpperCased} ${ticketData[purchase.ticketType].description}: $${(ticketPrice / 100).toFixed(2)}`;
+        // if more than one extras or one.
+        purchaseReceipt += extras.length > 0 ? ` (${receiptForExtras})\n` : "\n";
     }
-    const extras = purchase.extras;
-    let receiptForExtras = '';
-    for (let i = 0; i < extras.length; i++) {
-      receiptForExtras += ticketData.extras[extras[i]].description;
-      if (i !== extras.length - 1) {
-        receiptForExtras += ', ';
-      }
-    }
 
-    let entrantTypeUppercased = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
-    purchaseReceipt += `${entrantTypeUppercased} ${ticketData[purchase.ticketType].description}: $${(ticketPrice / 100).toFixed(2)}`;
+    purchaseReceipt += `-------------------------------------------\nTOTAL: $${(total / 100).toFixed(2)}`;
 
-    purchaseReceipt += extras.length > 0 ? ` (${receiptForExtras})\n` : "\n";
-  }
-
-  purchaseReceipt += `-------------------------------------------\nTOTAL: $${(total / 100).toFixed(2)}`;
-
-  return purchaseReceipt;
+    return purchaseReceipt;
   
 }
 
