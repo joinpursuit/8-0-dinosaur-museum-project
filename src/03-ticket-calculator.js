@@ -54,7 +54,50 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let total = 0
+  // happy case; general admission and membership admission with no extras.
+  if(ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'adult'){
+    total += ticketData.general.priceInCents.adult
+  }
+  if(ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'child'){
+    total += ticketData.general.priceInCents.child
+  }
+  if(ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'senior'){
+    total += ticketData.general.priceInCents.senior
+  }
+  if(ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'adult'){
+    total += ticketData.membership.priceInCents.adult
+  }
+  if(ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'child'){
+    total += ticketData.membership.priceInCents.child
+  }
+  if(ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'senior'){
+    total += ticketData.membership.priceInCents.senior
+  }
+
+  if(ticketInfo.extras.length > 0){
+    for (let i = 0; i < ticketInfo.extras.length; i++){
+      if(ticketInfo.extras[i] === 'movie'){ // if extra movie
+      total += 1000
+      // total += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+      }
+      if(ticketInfo.extras[i] === 'education' && ticketInfo.entrantType === 'child'){
+        total += 1000
+    } else if (ticketInfo.extras[i] === 'education' && (ticketInfo.entrantType === 'adult' || ticketInfo.entrantType === 'senior')){
+      total += 1200
+    }
+    if(ticketInfo.extras[i] === 'terrace' && ticketInfo.entrantType === 'child'){
+      total += 500
+  } else if (ticketInfo.extras[i] === 'terrace' && (ticketInfo.entrantType === 'adult' || ticketInfo.entrantType === 'senior')){
+    total += 1000
+  }
+
+  }
+}
+
+  return total
+}
 
 /**
  * purchaseTickets()
