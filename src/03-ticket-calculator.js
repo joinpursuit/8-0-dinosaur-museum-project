@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,28 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let price = 0
+//look inside ticketData to find out if ticketInfo.ticketType is the same then we need the error
+for (let i = 0; i < ticketInfo.extras.length; i++) {
+  if(ticketData !== ticketData[ticketInfo.extras[i]]){
+    return "Extra type 'incorrect-extra' cannot be found."  
+}
+}
+if([ticketInfo.ticketType] !== "general" && ticketInfo.ticketType !== "membership"){
+  return "Ticket type 'incorrect-type' cannot be found." 
+} 
+if(ticketData !== ticketInfo[0][priceInCents]){
+  return "Entrant type 'incorrect-entrant' cannot be found."
+} 
+
+//Returns the ticket price (based on the ticket information supplied)
+return price
+}
+
+
+
+
 
 /**
  * purchaseTickets()
