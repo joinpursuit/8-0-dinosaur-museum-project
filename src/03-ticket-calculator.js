@@ -160,14 +160,14 @@ if (!ticketInfo.extras){
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
- let fullTotal = 0;
+ let total = 0;
 
- let receipt= "Thank you for visiting the Dinosaur Museum!\n---------------------------------------\n"
+ let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
  
  for(let purchase of purchases) {
-  let product = calculateTicketPrice(ticketData, purchase);
-  if(typeof (product) === 'string'){
-    return product
+  let output = calculateTicketPrice(ticketData, purchase);
+  if(typeof (output) === 'string'){
+    return output
   }
   let descript = []
   for(let extra of purchase.extras) {
@@ -175,12 +175,21 @@ function purchaseTickets(ticketData, purchases) {
   }
   if(purchase.extras.length){
     descript = `(${descript.join(", ")})`
-  }
-  receipt += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: ${(product/100).toFixed(2)}${descript}\n`
+  
+  }else{
 
-  fullTotal+= product/100
+    descript = ``
+  
+
+ 
+
+  }
+  receipt += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(output/100).toFixed(2)} ${descript}\n`
+
+
+  total+= output/100
  }
-receipt += `-----------------------------------\nTOTAL: ${fullTotal.toFixed(2)}`
+receipt += `-------------------------------------------\nTOTAL: $${total.toFixed(2)}`
 
 return receipt
 }
