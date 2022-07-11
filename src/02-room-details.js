@@ -26,23 +26,23 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
  function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  let dinoId = ``
-  let location = ``
-  let match = false
+  let dinoId = null // initialized accum. variable to null, this will represent the matching dinoId
+  let location = null // initialized to null, this will represent the room in which the dino can be found
+  let match = false // boolean accum. variable initialized to false, will only change to true if there is a room match
   for(obj in dinosaurs){
       if(dinosaurs[obj].name === dinosaurName){
           dinoId = dinosaurs[obj].dinosaurId
-      }
+      }//looping though dinosaurs [] to match param dinosaurName with existing .name keys in each {} dinosaurs object. If there is a match, assign the dinoId accum. variable to the .dinosaurId key value of that object
   }
   if(!dinoId){
     return `Dinosaur with name '${dinosaurName}' cannot be found.`
-  }
+  } // if after my initial loop, dinoId accum. variable is still null (falsy), return error message about dinosaurName
   
   for(val in rooms){
       if(rooms[val].dinosaurs.includes(dinoId)){
           match = true
           location = rooms[val].name
-      }
+      }// looping through the rooms [], at each object checks if the .dinosaurs key (which is an []), inlcudes a value matching that of dinoId. If true match turns to true and a match was found. Then sets the location accum. variable to the .name key value of the room match.
   }
   return match ? `${location}` : `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
 }
@@ -70,25 +70,29 @@ const exampleRoomData = require("../data/rooms");
     ]
  */
     function getConnectedRoomNamesById(rooms, id) {
-      let nameRoom = []
+      let nameRoom = [] //empty array accum. variable to store connecting room names 
+      
       for(let obj in rooms){
           if(rooms[obj].roomId === id){
               for(const val of rooms[obj].connectsTo)
               nameRoom.push(val) 
           }
-      }
-      let codeRoom = [...nameRoom]
+      }// looping through room array (obj reprsents each index -> {}'s), checking for a match of the param id with the obj identifying .roomId key. If a match is found, I loop through the .connectsTo key ->[] of that obj, and push all values to the nameRoom [].
+
+      let codeRoom = [...nameRoom] // make a shallow copy of the nameRooms [] 
       
       for(let i = 0; i < rooms.length; i++){
           if(nameRoom.includes(rooms[i].roomId)){
               nameRoom[nameRoom.indexOf(rooms[i].roomId)] = rooms[i].name
           }
-      }
+      }// looping through rooms [] again this time checking if the values of my nameRoom [], include values the .roomId keys [], if true, the index of the nameRoom will be updated to its corresponding .name key value. (leaving me with an [] of room names, no longer id #'s)
+
       for(let val of codeRoom){
           if(nameRoom.includes(val)){
              return  `Room with ID of '${val}' could not be found.`
           }
-      }
+      }// this loop checks to see if any values(id #'s) of the nameRoom were left behind (didn't match) by comparing its values to the shallow copy of its previous self codeRooms. If any value inside the nameRoom (should now be room names not id #'s) still matches that of the codeRoom values (all room id's), then that value (id) was left behind an couldn't find a match, thus returning an error message. 
+
       return nameRoom.length === 0 ? `Room with ID of '${id}' could not be found.` : nameRoom
   }
 

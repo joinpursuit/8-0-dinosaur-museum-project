@@ -56,28 +56,30 @@ const exampleTicketData = require("../data/tickets");
  */
 
 function calculateTicketPrice(ticketData, ticketInfo) {
-  let price = 0
-  let extrasName = [] 
-  let ticketType = [] 
-  let entrantType = [] 
+  let price = 0 //accum. variable to accumulate the total price of tickets during loop
+  let extrasName = [] // empty [], to store true values for comparing with ticketInfo.extras values
+  let ticketType = [] // empty [], to store true values for comparing with ticketInfo.ticketType values
+  let entrantType = [] // empty array to store true values for comparing with ticketInfo.entrantType values
   
   for(const key in ticketData){
-    ticketType.push(key)
-  }
-  for(const extra in ticketData[`extras`]){
-    extrasName.push(extra)
-    for(const entrant in ticketData[`extras`][extra][`priceInCents`]){
+    ticketType.push(key) // looping through ticketData object to push existing(true) value keys to ticketType array
+    for(const entrant in ticketData[key][`priceInCents`]){
       if(!entrantType.includes(entrant)){
-        entrantType.push(entrant)
-      }
-    }
+      entrantType.push(entrant)
+    }// looping through the key object containing [`priceInCents`] to gather true values for entrantType, and pushing them to entrantType []
   }
+}
+  for(const extra in ticketData[`extras`]){
+    extrasName.push(extra) //looping through the ticketData.extras objects to push existing(true) value keys to extrasName []
+  }
+
   if(!entrantType.includes(ticketInfo.entrantType)){
     return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
   }
   if (!ticketType.includes(ticketInfo.ticketType)){
     return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
   }
+  // ^^ comparing values with the corresponding []'s that hold only true values, to filter out any values that do not exist, or are false. If so, returns an error message accordingly.
   for(const extras of ticketInfo.extras){
     if((extrasName.includes(extras))){
       price += ticketData[`extras`][extras][`priceInCents`][ticketInfo.entrantType]
@@ -86,7 +88,10 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       return `Extra type '${extras}' cannot be found.`
       }
     }
+    //^^ compares values inside of ticketType.extras array with extrasName array, if there is a match the price is updated to the price of that extras ticket type and entrantType, if a value is false, an error message is returned.
+    
     price += ticketData[ticketInfo.ticketType][`priceInCents`][ticketInfo.entrantType]
+    // if no errors are found within the ticketInfo {}, the price for the intial ticketType is added to the price and the total accum. price is returned.
     return price
 }
     
@@ -178,6 +183,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
                   if(key2 === extra){
                     if(description.length !== purchases[i].extras.length){
                       description.push(ticketData[`extras`][extra][`description`])
+                      
                       extrasPrice += ticketData[`extras`][extra][`priceInCents`][purchases[i].entrantType]
                     }
                   }
@@ -189,8 +195,11 @@ function calculateTicketPrice(ticketData, ticketInfo) {
             }
             if(key === purchases[i].ticketType){
               extrasPrice += ticketData[key][`priceInCents`][purchases[i].entrantType]
+              
               finalPrice += extrasPrice
+              
               receipt += `${purchases[i].entrantType.charAt(0).toUpperCase()}${purchases[i].entrantType.slice(1)} ${ticketData[key][`description`]}: $${(extrasPrice/100).toFixed(2)}`
+              
               purchases[i].extras.length > 0 ? receipt += ` (${description.join(`, `)})\n` :
                 receipt += `\n`
               }
@@ -199,6 +208,37 @@ function calculateTicketPrice(ticketData, ticketInfo) {
         }
         return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${receipt}-------------------------------------------\nTOTAL: $${(finalPrice /100).toFixed(2)}`
     } 
+    // For this function all comments will be here for readabilty (organized by line):
+    /*
+    
+    -ln 158 - finalPrice  accum. variable to accumulate total price for entire purchases []
+    
+    -ln 159 entrantType boolean accum. variable set to false, later helping to distinguish whether a loop should progress into the ['extras'] key of the ticketData {} 
+    
+    -ln 160 receipt string accum. variable to store the summarized info from each individual 'ticket' ({} in purchases []) needed for final return 
+   
+    -ln 163 initialize umbrella loop for the purchases []
+    
+    -ln 164, 165 -> initializing extrasPrice accum. variable (numbers) and desription [], that will accumulate for each loop({} in purchases aka 'tickets'), gathering information needed for the receipt variable at each iteration, then resets itself once the next iteration begins. 
+    
+    -ln 167-168 loops into the ticketData object, now using the purchases.ticketData value to determine if it is an existing key (general, membership) in the ticketData {}, if not, an error message is returned.
+    
+    -ln 171 -172 loops into the [`priceInCents] object of each [key] now using the purchases.entrantType value to determine if it is an existing key (child, adult, senior) in the [`priceInCents`] {}, if true, realEntrant (accum. variable) is set to true, if not, an error message is returned.
+    
+    -ln 179 - 182, if the realEntrant is switched to true, I check for the length of the current iteration's (purchases[i]) .extras key (which is an []). If it has a length ( > 0), I use a For...Of loop to loop into the purchases[i].extras [], while simultaneously using a For...In loop, looping through the ticketData['extras'] object to compare values. 
+    
+    -ln 183 if there is a match btw the values, I grab the .description key value of that matching obj (movies, terrace, education), and push that to my decription array. (these values `Movie Access`, `Terrace Access`, `Education Access`) are needed for printing the individual summary for each purchases[i] object.
+    
+    -ln 189 if a given value in the purchases.extras array doesn't exist as an existing true key inside of the ticketData[`extras`] object, an error message is returned.
+    
+    -ln 195- 197 reading top to bottom in my code, by this point I would have already established truthy values to all of my values in purchases[i] {}, so I now accumulate the price for all the `extras` in the purchases.extras[], as well as updating the finalPrice with that total as well.
+    
+    -ln 198 receipt -> adding a string interpolation value to existing receipt, which includes the entrant name(capitalized frist letter), the ticketType.description(`General Admission` or `Member Admission`), followed by the accum price variable (not finalPrice) (by now should have totaled the initial ticketType price plus any `extras` price) converted to dollars and 2 decimal places.
+    
+    -ln 199 if the purchases.extras.length was > 0 ( had extras ticket values), then I add a string of the values of the description [] -> `Movie Access`, `Terrace Access`, or `Education Access`) joined(.join(`, `) in (), to the receipt, and if not, I just add a \n to the end of the receipt allowing for the new info to be stored again in a new line after the next loop.
+    
+    -ln 209 return the final format of th receipt, with all of the summarized `receipts` and the finalPrice accum. converted to dollars and to 2 decimal places.
+    */
   
 
 // Do not change anything below this line.
