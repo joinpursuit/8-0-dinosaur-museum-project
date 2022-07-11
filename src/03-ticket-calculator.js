@@ -54,8 +54,44 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo,) {
-  let total = 0
+// const ticketInfo = {
+//   ticketType: "general",
+//   entrantType: "senior",
+//   extras:[`movie`, `terrace`],
+// };
+
+
+function calculateTicketPrice(ticketData, ticketInfo) {
+
+// WORKED WITH DAN, I KINDA UNDERSTAND THIS AT THIS POINT BUT I CANNOT WRITE THIS! DON'T WANT YOU TO THINK IM LEARNING MORE THAN I AM!!!
+
+  let total = 0;
+  let type = ticketInfo.ticketType;
+  let age = ticketInfo.entrantType;
+  let addOns = [...ticketInfo.extras];
+  
+
+  if (!ticketData[type]) {
+    return `Ticket type '${type}' cannot be found.`
+  } 
+  if (!ticketData[type][`priceInCents`][age]) {
+    return `Entrant type '${age}' cannot be found.`
+  } 
+  total += ticketData[type][`priceInCents`][age];
+  
+        for (const addOn of addOns) {
+          if (ticketData[`extras`][addOn]) {
+            total += ticketData[`extras`][addOn][`priceInCents`][age];
+          }
+          if (addOns.length > 0 && !ticketData[`extras`][addOn]) {
+            return `Extra type '${addOn}' cannot be found.`
+          }
+        }
+  return total
+}
+
+// calculateTicketPrice(exampleTicketData, ticketInfo)
+
   
   //ERRORS
 
@@ -63,42 +99,42 @@ function calculateTicketPrice(ticketData, ticketInfo,) {
   // GENERAL ADMISSION WITHOUT EXTRAS
 
   
-    for (let ticket of ticketInfo.ticketType) {
+    // for (let ticket of ticketInfo.ticketType) {
      
-      total += ticketData.ticketType[ticket].priceInCents[ticketInfo.entrantType]
+    //   total += ticketData[ticket].priceInCents[ticketInfo.entrantType]
      
-      console.log('***', ticketData.ticketType[ticket].priceInCents[ticketInfo.entrantType])
-    }
+    //   console.log('***', ticketData[ticket].priceInCents[ticketInfo.entrantType])
+    // }
   
 
 
-  if (ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'child') {
-    total += ticketData.general.priceInCents.child;
-  } else if (ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'adult') {
-    total += ticketData.general.priceInCents.adult;
-  } else if (ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'senior') {
-    total += ticketData.general.priceInCents.senior;
-  } 
-  // MEMBERSHIP WITHOUT ADDONS
-  if (ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'child') {
-    total += ticketData.membership.priceInCents.child;
-  } else if (ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'adult') {
-    total += ticketData.membership.priceInCents.adult;
-  } else if (ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'senior') {
-    total += ticketData.membership.priceInCents.senior;
-  }
+  // if (ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'child') {
+  //   total += ticketData.general.priceInCents.child;
+  // } else if (ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'adult') {
+  //   total += ticketData.general.priceInCents.adult;
+  // } else if (ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'senior') {
+  //   total += ticketData.general.priceInCents.senior;
+  // } 
+  // // MEMBERSHIP WITHOUT ADDONS
+  // if (ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'child') {
+  //   total += ticketData.membership.priceInCents.child;
+  // } else if (ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'adult') {
+  //   total += ticketData.membership.priceInCents.adult;
+  // } else if (ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'senior') {
+  //   total += ticketData.membership.priceInCents.senior;
+  // }
 
   ////GENERAL ADMISSION WITH EXTRAS
-  if (ticketInfo.extras.length > 0) {
-    for (let extra of ticketInfo.extras)
-    {
-      console.log('###', ticketData.extras[extra].priceInCents[ticketInfo.entrantType])
+  // if (ticketInfo.extras.length > 0) {
+  //   for (let extra of ticketInfo.extras)
+  //   {
+  //     console.log('###', ticketData.extras[extra].priceInCents[ticketInfo.entrantType])
 
 
-      total += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+  //     total += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
 
-    }
-  } 
+  //   }
+  // } 
 
   // if (ticketInfo.ticketType !== ticketData.ticketType) {
   //   if (ticketInfo.entrantType !== ticketData.entrantType) {
@@ -114,8 +150,8 @@ function calculateTicketPrice(ticketData, ticketInfo,) {
 
 // loop through extras for price
 
-return total
-}
+
+// }
 /**
  * purchaseTickets()
  * ---------------------
@@ -171,17 +207,7 @@ return total
  */
 function purchaseTickets(ticketData, purchases) {
 let total = 0
-  // if (ticketInfo.ticketType !== ticketData.ticketType) {
-  //   if (ticketInfo.entrantType !== ticketData.entrantType) {
-  //     if (ticketInfo.extras !== ticketData.extras) {
-  //       return `Extra type 'incorrect-extra' cannot be found.`
-  //     } else {
-  //       return `Entrant type 'incorrect-entrant' cannot be found.`
-  //     }
-  //   } else {
-  //     return `Ticket type 'incorrect-type' cannot be found.`
-  //   }
-  // }
+  
 
 
 
