@@ -163,7 +163,20 @@ function purchaseTickets(ticketData, purchases) {
  let total = 0;
 
  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
+ for(let purchase of purchases){
+
+  let output = calculateTicketPrice(ticketData, purchase);
+  if(typeof (output) === 'string'){
+    return output
+ }
  
+ }
+
+
+
+
+
+
  for(let purchase of purchases) {
   let output = calculateTicketPrice(ticketData, purchase);
   if(typeof (output) === 'string'){
@@ -180,9 +193,6 @@ function purchaseTickets(ticketData, purchases) {
 
     descript = ``
   
-
- 
-
   }
   receipt += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(output/100).toFixed(2)} ${descript}\n`
 
