@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { general } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -75,7 +76,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   if(ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'senior'){
     total += ticketData.membership.priceInCents.senior
   }
-
+// for the extras
   if(ticketInfo.extras.length > 0){
     for (let i = 0; i < ticketInfo.extras.length; i++){
       if(ticketInfo.extras[i] === 'movie'){ // if extra movie
@@ -152,7 +153,68 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  total = []
+  // we need to iterate through our array of objects
+  for (const purchase of purchases) {
+    if(purchase.ticketType === 'general' && purchase.entrantType === 'adult'){
+     total.push(ticketData.general.priceInCents.adult) 
+    }
+    if(purchase.ticketType === 'general' && purchase.entrantType === 'child'){
+      total.push(ticketData.general.priceInCents.child) 
+     }
+     if(purchase.ticketType === 'general' && purchase.entrantType === 'senior'){
+      total.push(ticketData.general.priceInCents.senior) 
+     }
+     if(purchase.ticketType === 'membership' && purchase.entrantType === 'adult'){
+      total.push(ticketData.membership.priceInCents.adult) 
+     }
+     if(purchase.ticketType === 'membership' && purchase.entrantType === 'child'){
+      total.push(ticketData.membership.priceInCents.child) 
+     }
+     if(purchase.ticketType === 'membership' && purchase.entrantType === 'senior'){
+      total.push(ticketData.membership.priceInCents.senior) 
+     }
+     if(purchase.extras.length > 0){
+      for (let i = 0; i < purchase.extras.length; i++){
+        if(purchase.extras[i] === 'movie'){ // if extra movie
+        total.push(1000)
+        // total += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+        }
+        if(purchase.extras[i] === 'education' && purchase.entrantType === 'child'){
+          total.push(1000)
+      } else if (purchase.extras[i] === 'education' && (purchase.entrantType === 'adult' || purchase.entrantType === 'senior')){
+        total.push(1200)
+      }
+      if(purchase.extras[i] === 'terrace' && purchase.entrantType === 'child'){
+        total.push(500)
+    } else if (purchase.extras[i] === 'terrace' && (purchase.entrantType === 'adult' || ticketInfo.entrantType === 'senior')){
+      total.push(1000)
+    }
+  }
+ }
+}
+if(total === 0){ // for the error clause
+
+return total
+}
+
+
+  
+    // for (const pur of purchase) {
+    //   if(pur.ticketType === 'general'){
+    //     return true
+    //   } 
+    // }
+  
+    // for (const i = 0;i < purchases.length; i++){
+    //   if(purchase[i].ticketType === 'general'){
+  //       return true
+  //     }
+  //   }
+  // }
+
+
 
 // Do not change anything below this line.
 module.exports = {
