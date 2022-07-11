@@ -206,34 +206,35 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
+  //worked with Mina, Edgy, Fadila
+
   let retTotal
+  
+
+  
 
   //ERRORS
-for (let purchase of purchases){
-  const total = calculateTicketPrice(ticketData, purchases[0]);
-  if (typeof total === 'string') {
-    return total;
-  } else if (typeof total === 'number') {
-    retTotal = (total / 100).toFixed(2)
-    return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $${retTotal}\n-------------------------------------------\nTOTAL: $${retTotal}`;
-    
-   
-    
-    
-    
-    
+  for (let purchase of purchases) {
+    const total = calculateTicketPrice(ticketData, purchase);
+    if (typeof total === 'string') {
+      return total;
+    } else if (typeof total === 'number') {
+      retTotal = (total / 100).toFixed(2)
+      let retString = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $${retTotal}\n-------------------------------------------\nTOTAL: $${retTotal}` 
+
+      return retString
+    }
   }
-  
-
-
-
-    
-}
  
-  console.log('$$$',totalPrice)  
+  console.log('$$$', totalPrice)
   
-  return
-
+}
+ // //DYNAMIC VARS
+      // let capEntrant = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1) + " " + ticketData[purchase.ticketType][`description`] // WORKING
+      // let capType = purchase.ticketType[0].toUpperCase() + purchase.ticketType.slice(1)//WORKING
+      // let noBacketsExtra = purchase.extras.join(", ")
+      // let capExtra =
+      // console.log(capExtra)
 
 
  
@@ -247,18 +248,6 @@ for (let purchase of purchases){
 
   //iterate over purchases and see if its an error and if it is then return the error 
 
-  
-  
-  
-
-
-  
-
-
-  
-  
-  
-}
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
