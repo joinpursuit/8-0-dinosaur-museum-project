@@ -26,6 +26,7 @@ const exampleDinosaurData = require("../data/dinosaurs");
 function getLongestDinosaur(dinosaurs) {
   // find the name of the tall --> dinosaurs[].name
   // the tallest dino --> dinosaurs[].lengthInMeters
+  // created 
   if(dinosaurs.length === 0){
     return {};
   }
@@ -33,10 +34,11 @@ function getLongestDinosaur(dinosaurs) {
   let tall = {}
   //declared a varaible to start my count at the first dino
   let tallDino = dinosaurs[0];
+  // declared a variable with an empty string. this will beused to store all the dino names.
 let newName = ""
 //compare first dino using a for loop
-for (let i=0; i<dinosaurs.length; i++){
-
+for (let i=0; i < dinosaurs.length; i++){
+//if there is a dino who's length is greastest, it will store the tallest dino in the dino object of arrays
   if(dinosaurs[i].lengthInMeters > tallDino.lengthInMeters){
     tallDino = dinosaurs[i];
     newName = dinosaurs[i].name;
@@ -44,7 +46,7 @@ for (let i=0; i<dinosaurs.length; i++){
   }
 }
 let lengthInFeet = tallDino.lengthInMeters * 3.281
-
+//OR tallDino *= 3.281
 tall[newName] = lengthInFeet;
 
 return tall;
@@ -71,7 +73,7 @@ return tall;
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-
+//created a loop to go through the entire array of dino objects.
 for (let i = 0; i < dinosaurs.length; i++){
   if(dinosaurs[i].dinosaurId === id){
 
