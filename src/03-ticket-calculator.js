@@ -58,9 +58,9 @@ const exampleTicketData = require("../data/tickets");
 
 function calculateTicketPrice(ticketData, ticketInfo) {
   let total = 0;
-  let type = ticketInfo.ticketType;
-  let age = ticketInfo.entrantType;
-  let addOns = [...ticketInfo.extras];
+  const type = ticketInfo.ticketType;
+  const age = ticketInfo.entrantType;
+  const addOns = [...ticketInfo.extras];
   if (!ticketData[type]) {
     return `Ticket type '${type}' cannot be found.`
   }
@@ -144,14 +144,14 @@ function purchaseTickets(ticketData, purchases) {
   let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------`;
   let total = 0;
   for (const item of purchases) {
-    let price = calculateTicketPrice(ticketData, item);
+    const price = calculateTicketPrice(ticketData, item);
     if (typeof price !== `number`) {
       return price;
     }
     total += price / 100;
-    let type = item[`ticketType`];
-    let age = item[`entrantType`];
-    let addOn = [];
+    const type = item[`ticketType`];
+    const age = item[`entrantType`];
+    const addOn = [];
     receipt += `\n${age.charAt(0).toUpperCase() + age.slice(1)} ${ticketData[type][`description`]}: $${(price / 100).toFixed(2)}`;
     for (const i of item[`extras`]) {
       addOn.push(ticketData[`extras`][i][`description`]);
