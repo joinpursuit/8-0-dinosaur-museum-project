@@ -59,22 +59,24 @@ const exampleTicketData = require("../data/tickets");
 function calculateTicketPrice(ticketData, ticketInfo) {
 
   let costOfTicket = 0;
-//
+//if ticketInfo's ticketType keypair is false
 if(!ticketData[ticketInfo.ticketType]){
   return  "Ticket type 'incorrect-type' cannot be found."
 }
-// if (!(ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType])){
-//   return "Entrant type 'incorrect-entrant' cannot be found."
-// }
+//if the entrant's tpye cost in cents is false
 if(!(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents)){
   return "Entrant type 'incorrect-entrant' cannot be found."
 }
-
+//the cost of the ticket to be assigned to the price in cents based on entrant type
 costOfTicket += tickets[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType] 
 
+//iterate through extra's array in ticket info
 for(let i=0; i < ticketInfo.extras.length ;i++){
 
+  //condition for the elements in extra's array
   if(ticketInfo.extras[i] in ticketData.extras){
+
+    //for each iteration the costOfTicket will be added based on type of extras
     costOfTicket += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType]
   }else{
       return "Extra type 'incorrect-extra' cannot be found."
@@ -141,8 +143,8 @@ return costOfTicket
  */
 function purchaseTickets(ticketData, purchases) {
 
-let total = 0 
-let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
+let total = 0 ;
+let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
 
 //outer loop to  iterate through purchases 
 for(let purchase of purchases){
@@ -152,29 +154,29 @@ for(let purchase of purchases){
 
 //if the cost of the ticket isnt a number (return for errors)
   if(typeof costOfTicket === 'string'){
-    return costOfTicket
-  }
+    return costOfTicket;
+  };
 
 //declaring a array for description (access) in extras
-let extraInfo = []
+let extraInfo = [];
 //inner loop to iterate through extras in purchases array for the description key (strings) 
 for(let extra of purchase.extras){
   //descriptions should be pushed to the array extraInfo (access)
-  extraInfo.push(ticketData.extras[extra].description)
+  extraInfo.push(ticketData.extras[extra].description);
 }
 //if the length is true. For every element will be seperated by commas
 if(purchase.extras.length){
-  extraInfo = ` (${extraInfo.join(', ')})`
-}
+  extraInfo = ` (${extraInfo.join(', ')})`;
+};
 //formatting entrant type,access, and cost of ticket for receipt 
-receipt += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(costOfTicket/100).toFixed(2)}${extraInfo}\n`
+receipt += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(costOfTicket/100).toFixed(2)}${extraInfo}\n`;
 
 total += costOfTicket/100
-}
+};
 //formatting the receipt for total (price)
 receipt += `-------------------------------------------\nTOTAL: $${total.toFixed(2)}`
 
-return receipt
+return receipt;
 
 }
 // Do not change anything below this line.

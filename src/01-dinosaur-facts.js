@@ -24,20 +24,24 @@ const exampleDinosaurData = require("../data/dinosaurs");
  */
 function getLongestDinosaur(dinosaurs) {
 
+  //condition if the dinosaurs objects contains falsy values
   if(!dinosaurs.length){
     return {}
   }
-
+//default values for the tallest dinosaur
   let tallestDinosaur = {}
   let dino = ''
   let num = 0
   
+  //for loop to iterate through the dinosaurs objects
  for(let i =0; i< dinosaurs.length; i++){
+  //for every iteration a dinosaur that is greater than num  
     if(dinosaurs[i].lengthInMeters > num){
+      //num is assigned the value of the tallest dinosaur's length in M
       num = dinosaurs[i].lengthInMeters
         dino = dinosaurs[i].name
     }
-  }
+  } //the defualt value is assigned the key of dinosaur's name and the value of length in meters *
  tallestDinosaur[dino] = num *= 3.281
 return tallestDinosaur
 }
@@ -64,16 +68,20 @@ return tallestDinosaur
  */
 function getDinosaurDescription(dinosaurs, id) {
 
+  //undefined default value
 let dinoDescription ;
 
+//loop to iterate through dinosaurs
   for(let dino of dinosaurs){
 
+    //if the value of a dinosaurs name is eqaul to the given value of id
     if(dino.dinosaurId === id){
 
+      //the dino description is assigned a string for a dinosaur fact
      dinoDescription = `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`
      return dinoDescription
     }
-  }
+  }//the default string should be assigned a error message if id is incorrect
   dinoDescription = "A dinosaur with an ID of 'incorrect-id' cannot be found."
 return dinoDescription
 }
@@ -105,16 +113,22 @@ return dinoDescription
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
 
+  //default value is assigned an array
   let duringMya = []
 
+  //for of .. to iterate through dinosaurs object
  for(let dino of dinosaurs){
+  
+  //condition. if the first element in the array is greater than given value mya and if mya is greater than the second element in the array
 if(dino.mya[0] >= mya && mya >= dino.mya[1]){
+
+  //if the given value of dino key is not falsy the default will contain the key 
   if(dino[key] !== undefined){
     duringMya.push(dino[key]);
     
   }else{
     duringMya.push(dino.dinosaurId);
-  }
+  } //if either of the keys in the dinosaur mya's array is equal to the given value mya
 }else if(dino.mya[0] === mya || dino.mya[0] -1 === mya){
   if(dino[key] !== undefined){
     duringMya.push(dino[key]);
