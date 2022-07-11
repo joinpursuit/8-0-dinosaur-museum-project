@@ -188,16 +188,20 @@ function purchaseTickets(ticketData, purchases) {
       }
       if(purchase.extras[i] === 'terrace' && purchase.entrantType === 'child'){
         total.push(500)
-    } else if (purchase.extras[i] === 'terrace' && (purchase.entrantType === 'adult' || ticketInfo.entrantType === 'senior')){
+    } else if (purchase.extras[i] === 'terrace' && (purchase.entrantType === 'adult' || purchase.entrantType === 'senior')){
       total.push(1000)
     }
   }
  }
 }
-if(total === 0){ // for the error clause
+// if(total === 0){ // for the error clause
+
+// return total
+// }
+
 
 return total
-}
+} // end of our function
 
 
   
