@@ -139,40 +139,6 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-// function purchaseTickets(ticketData, purchases) {
-//   let price;
-//   let totalPrice = 0;
-//   let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
-//   for (const purchase of purchases) {
-//     price = calculateTicketPrice(ticketData, purchase);
-//     if (typeof price === `string`) {
-//       return price;
-//     }
-//     totalPrice += price;
-//     let entrant = purchase.entrantType.charAt(0).toUpperCase() + purchase.entrantType.slice(1);
-//     let admission = purchase.ticketType.charAt(0).toUpperCase() + purchase.ticketType.slice(1);
-//     let extraDesc = [];
-//     let extraRec;
-//     if (purchase.extras.length > 0) {
-//       for (const i of purchase.extras) {
-//         for (const k in ticketData.extras) {
-//           if (i === k) {
-//             extraDesc.push(ticketData[`extras`][k][`description`]);
-//           }
-//         }
-//       }
-//       extraRec = ` (` + extraDesc.join(`, `) + `)\n`;
-//     }
-//     receipt += `${entrant} ${admission} Admission: $${(price / 100).toFixed(2)}`;
-//     if (extraRec) {
-//       receipt += extraRec;
-//     } else {
-//       receipt += `\n`;
-//     }
-//   }
-//   receipt += `-------------------------------------------\nTOTAL: $${(totalPrice / 100).toFixed(2)}`;
-//   return receipt;
-// }
 
 function purchaseTickets(ticketData, purchases) {
   let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------`;
