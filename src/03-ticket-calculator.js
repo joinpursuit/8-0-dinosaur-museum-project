@@ -139,39 +139,62 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
+// function purchaseTickets(ticketData, purchases) {
+//   let price;
+//   let totalPrice = 0;
+//   let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+//   for (const purchase of purchases) {
+//     price = calculateTicketPrice(ticketData, purchase);
+//     if (typeof price === `string`) {
+//       return price;
+//     }
+//     totalPrice += price;
+//     let entrant = purchase.entrantType.charAt(0).toUpperCase() + purchase.entrantType.slice(1);
+//     let admission = purchase.ticketType.charAt(0).toUpperCase() + purchase.ticketType.slice(1);
+//     let extraDesc = [];
+//     let extraRec;
+//     if (purchase.extras.length > 0) {
+//       for (const i of purchase.extras) {
+//         for (const k in ticketData.extras) {
+//           if (i === k) {
+//             extraDesc.push(ticketData[`extras`][k][`description`]);
+//           }
+//         }
+//       }
+//       extraRec = ` (` + extraDesc.join(`, `) + `)\n`;
+//     }
+//     receipt += `${entrant} ${admission} Admission: $${(price / 100).toFixed(2)}`;
+//     if (extraRec) {
+//       receipt += extraRec;
+//     } else {
+//       receipt += `\n`;
+//     }
+//   }
+//   receipt += `-------------------------------------------\nTOTAL: $${(totalPrice / 100).toFixed(2)}`;
+//   return receipt;
+// }
+
 function purchaseTickets(ticketData, purchases) {
-  let price;
-  let totalPrice = 0;
-  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
-  for (const purchase of purchases) {
-    price = calculateTicketPrice(ticketData, purchase);
-    if (typeof price === `string`) {
+  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------`;
+  let total = 0;
+  for (const item of purchases) {
+    let price = calculateTicketPrice(ticketData, item);
+    if (typeof price !== `number`) {
       return price;
     }
-    totalPrice += price;
-    let entrant = purchase.entrantType.charAt(0).toUpperCase() + purchase.entrantType.slice(1);
-    let admission = purchase.ticketType.charAt(0).toUpperCase() + purchase.ticketType.slice(1);
-    let extraDesc = [];
-    let extraRec;
-    if (purchase.extras.length > 0) {
-      for (const i of purchase.extras) {
-        for (const k in ticketData.extras) {
-          if (i === k) {
-            extraDesc.push(ticketData[`extras`][k][`description`]);
-          }
-        }
-      }
-      extraRec = ` (` + extraDesc.join(`, `) + `)\n`;
+    total += price / 100;
+    let type = item[`ticketType`];
+    let age = item[`entrantType`];
+    let addOn = [];
+    receipt += `\n${age.charAt(0).toUpperCase() + age.slice(1)} ${ticketData[type][`description`]}: $${(price / 100).toFixed(2)}`;
+    for (const i of item[`extras`]) {
+      addOn.push(ticketData[`extras`][i][`description`]);
     }
-    receipt += `${entrant} ${admission} Admission: $${(price / 100).toFixed(2)}`;
-    if (extraRec) {
-      receipt += extraRec;
-    } else {
-      receipt += `\n`;
+    if (addOn[0]) {
+      receipt += ` (${addOn.join(`, `)})`
     }
   }
-  receipt += `-------------------------------------------\nTOTAL: $${(totalPrice / 100).toFixed(2)}`;
-  return receipt;
+  return receipt + `\n-------------------------------------------\nTOTAL: $${total.toFixed(2)}`;
 }
 
 // const purchases = [
