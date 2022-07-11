@@ -55,51 +55,27 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  /*returns total. 
-    ticketType: "general"/ entrantType: "child"/ extras: ["movie"] = available dot notation 
-    ERROR IF: `ticketInfo.ticketType` / `ticketInfo.entrantType`/  `ticketInfo.extras` key is incorrect message should be returned.
-    NEEDS accumulator
-    Create variables so I dont have to keep writing dot notes
-    should loop over the extras array 
-    should be checking if ticket info is in data????
-    may need something for a regular ticket??
-  */
-
     let total = 0
     //this is an accumulator for the total
     let ticket = ticketInfo.ticketType
     let entrant = ticketInfo.entrantType
     let extra = ticketInfo.extras 
-    //I genuinely don't want to have to write this a lot so I made lets it's not needed.
+    let regPrice
+    //These gives a variable to the dot notations. 
     if(!ticketData[ticket]) return `Ticket type '${ticket}' cannot be found.` 
-    let regPrice = ticketData[ticket].priceInCents[entrant] 
-    // //This cuts code if with the other lets. 
+    regPrice = ticketData[ticket].priceInCents[entrant]  
     if(!regPrice) return `Entrant type '${entrant}' cannot be found.` 
-    //This is checking if theres no extra
-    total += regPrice
-    if (extra)
+    //This is checking if theres no extra price. 
+    total += regPrice // if not that case total plus regular price. 
+    if (extra)//If extra then continue to loop. 
       for (i = 0; i < extra.length; i++){
+        //Looping through the extra length 
         if (!ticketData.extras[extra[i]])
+        //if extra at i is not inside extras in ticketData 
           return `Extra type '${extra}' cannot be found.`
-          //this works no matter where I put it. Which means its not really working.
     
-        total += ticketData.extras[extra[i]].priceInCents[entrant]
+        total += ticketData.extras[extra[i]].priceInCents[entrant] 
       }
-
-/* NOT WORKING
-   The code below would cut off my loop. Why? 
-
-  // if(!ticketData[extra]) 
-  // if(!extra.length)return regPrice
-  //`Extra type '${extra}' cannot be found.`//This wont work if moved to line 76
-
-  if(extra.length > 0)
-    for(i = 0; i < extra.length; i++){
-      if(ticketData.extras[i]) 
-      total += ticketData.extras[i].priceInCents[entrant]
-                            ^^^ Why didn't this way work? 
-   }
-*/
 return total
 }
 /**
