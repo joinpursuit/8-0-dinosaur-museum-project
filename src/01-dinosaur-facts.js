@@ -94,19 +94,15 @@ function getDinosaurDescription(dinosaurs, id) {
 function getDinosaursAliveMya(dinosaurs, mya, key = `dinosaurId`) {
   let aliveDinos = [];
   for (const dino of dinosaurs) {
-    if (dino.mya.length === 1) {
-      if (dino.mya[0] === mya || dino.mya[0] === mya + 1) {
-        aliveDinos.push(dino[key]);
-        continue;
-      }
+    if (dino.mya[0] === mya || dino.mya[0] === mya + 1) {
+    } else if (dino.mya[0] >= mya && dino.mya[1] <= mya) {
+    } else {
+      continue;
     }
-    if (dino.mya[0] >= mya && dino.mya[1] <= mya) {
-      aliveDinos.push(dino[key]);
-    }
+    aliveDinos.push(dino[key]);
   }
   return aliveDinos;
 }
-
 // console.log(getDinosaursAliveMya(exampleDinosaurData, 65, `name`))
 
 module.exports = {
