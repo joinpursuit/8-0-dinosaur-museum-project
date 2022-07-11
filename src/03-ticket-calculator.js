@@ -138,31 +138,48 @@ if(ticketInfo.ticketType in ticketData){
 function purchaseTickets(ticketData, purchases) {
   //Prints a receipt for a (person) General Admission ticket.
   let totalPrice = 0;
-  let receipt =  ""; 
+  let receipt =''; 
   for (let i=0; i < purchases.length; i++){
-    let xTra = purchases[i].extras;
-    let xTra2= xTra.splice(0,0," ").toString()
-    console.log(xTra2)
     //Find prices
     // call the function above within the function for ticket price --> 
     //console.log(price);
     let price = calculateTicketPrice(ticketData, purchases[i])
-      let person = purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)
-        let ticketType = purchases[i].ticketType[0].toUpperCase() + purchases[i].ticketType.slice(1)
-          let entryPass = `${person} ${ticketType} Admission: $${(price/100).toFixed(2)}`; 
-  //console.log(`${person} ${ticketType}`)
-            console.log(entryPass)
+    let person = purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)
+    
+    let ticketType = purchases[i].ticketType[0].toUpperCase() + purchases[i].ticketType.slice(1)
+    let entryPass = `${person} ${ticketType} Admission: $${(price/100).toFixed(2)}`; 
+    //console.log(`${person} ${ticketType}`)
+    //console.log(entryPass)
+    
+    
+    let receipt2 =[];
+    for (let e = 0; e < purchases[i].extras.length; e++){
 
+        //creating final receipt with extras and admisson prices
+        let xTra = ticketData.extras[e].description;// create a loop purchases[i].extras to match at data and extras.. match and get description with keys
+        receipt2.push(xTra);
+        //let xTra2= xTra.join(", ")// use join to add a space.. use with array && add ACCESS using a method, like concat
+        //upperCase
+        //calaculates final price
+        //
+        // if(purchases[i].entrantType){
+          
+          // }
+        }
+        if(xTra2){
 
-//calaculates final price
-totalPrice += (price/100).toFixed(2);
- 
-let str1= `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${ticketType} ${entryPass} ${xTra}`
+        };
+        let xTra2 =receipt2.join(", ") // must add spaces later && uppercase
+        
+        let str1= `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
 
-let strLast = `\n-------------------------------------------\nTOTAL: `
-console.log(str1)
- }
- return receipt;
+        let strLast = `\n-------------------------------------------\nTOTAL: ${totalPrice} `
+        //console.log(str1)
+        receipt = `${str1}${entryPass} (${xTra2}) ${strLast} `
+        totalPrice += (price); //move to end of loop, to reset at every loop
+      }
+///add to the final to uopdate price100).toFixed(2)
+return receipt;
 }
 
 

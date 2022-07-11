@@ -29,10 +29,12 @@ function getLongestDinosaur(dinosaurs) {
   if(dinosaurs.length === 0){
     return {};
   }
+  //created an object to return to 
   let tall = {}
+  //declared a varaible to start my count at the first dino
   let tallDino = dinosaurs[0];
 let newName = ""
-//compare first dino
+//compare first dino using a for loop
 for (let i=0; i<dinosaurs.length; i++){
 
   if(dinosaurs[i].lengthInMeters > tallDino.lengthInMeters){
