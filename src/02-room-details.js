@@ -28,23 +28,28 @@ const exampleRoomData = require("../data/rooms");
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   let dinoId;
 
+// looping through dinosaurs array; reassigning values for the name and ID to match with the rooms data
   for (let i = 0; i < dinosaurs.length; i++) {
     if(dinosaurs[i].name === dinosaurName){
       dinoId = dinosaurs[i].dinosaurId
     }    
   }
 
+// if the ID of the dinosaur doesn't exist, return error message
   if (!dinoId){
     return `Dinosaur with name '${dinosaurName}' cannot be found.`
   }
-  
+
+// looping through rooms array, adn then looping inside of that with dinosaurs array in order to match the ID of dinosaur between the dinosaurs array and rooms array. 
   for (let j = 0; j < rooms.length; j++) {
     for (let l = 0; l < rooms[j].dinosaurs.length; l++) {
+// if the dinosaur ID from the roms array matches the ID from the dinosaurs array, return name of the room.      
       if(rooms[j].dinosaurs[l] === dinoId){
         return rooms[j].name
       }     
     }  
   }
+// else if the ID cannot be found, return error message.
   return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
 }
 
@@ -71,21 +76,27 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
+// assigning new array to push values into  
   let array = [];
 
+// looping through rooms and within that loop, looping through connected rooms to match the room
   for (let i = 0; i < rooms.length; i++) {
     for (let j = 0; j < rooms[i].connectsTo.length; j++) {
+    // if the ID exists, push name of room into new array  
       if(rooms[i].connectsTo[j] === id){
         array.push(rooms[i].name)
     }
+    //otherwise, return error message if ID doesn't exist
     else if (rooms[i].connectsTo[j] === `incorrect-id`){
       return `Room with ID of 'incorrect-id' could not be found.`
       }
     } 
   }
+  //if array has no value, then return error message that room cannot be found.
   if(array.length === 0){
     return `Room with ID of '${id}' could not be found.`
     }  
+  // otherwise return name of room  
     return array
   }
 

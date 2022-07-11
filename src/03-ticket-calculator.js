@@ -55,27 +55,36 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
+// initialized a variable as an accumulator that values will be added to 
   let totalCost = 0;
 
+  // returns error message if ticket type cannot be found
   if(!ticketData[ticketInfo.ticketType]){
     return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
   }
 
+  // searching if ticket type exists within the ticket data
   if(ticketInfo.ticketType in ticketData){
+    // if ticket type exists, look for entrant type and find the price in cents
     if(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents){
+      // add the value to the accumulator
       totalCost += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+    //othersie, if entrant type does not exist, return error message
     } else if (!ticketData[ticketInfo.entrantType]) {
       return `Entrant type '${ticketInfo.entrantType}' cannot be found.` 
     }
   }
-
+// loop that accounts for extras
   for (let xtra of ticketInfo.extras){
     if(xtra in ticketData.extras){
+      // if extras exists, then add the price of cents of the extras to the accumulator
       totalCost += ticketData.extras[xtra].priceInCents[ticketInfo.entrantType]
     } else {
+      // otherwise, if extras do not exist, return error message.
       return `Extra type '${xtra}' cannot be found.`
     }
   }
+  // return final cost of ticket
   return totalCost
 }
 
@@ -133,25 +142,35 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
+  // initializing variables; creating a variable 'receipt' for the first part of the returned string; set a variable as an accumulator for the final price. 
   let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
   let totalPrice = 0
   
-  for (let purchase of purchases) {
-  let ticket = calculateTicketPrice(ticketData, purchase)
+  // looping through purchases and calling the previous function into the loop; this should account for the error messages since we already did them in the previous function
+  for (let p of purchases) {
+    let ticket = calculateTicketPrice(ticketData, p)
+    // if the variable we set equal to the previous function is a string, it will return the ticket data from the previous function (including price)
     if (typeof ticket === `string`){
       return ticket
     }
+  // creating a new variable set to an empty array for the ticket 'extras' part of the receipt.  
   let receipt2 = []
-  for (xtra of purchase.extras){
+  //if extras exists, push the extras description into the second part of the returned string of the receipt
+  for (xtra of p.extras){
     receipt2.push(ticketData.extras[xtra].description)
   }
-  if (purchase.extras.length){
+  // if ticket extras exists, and there are multiple ticket extras, use join method to connect them using a comma
+  if (p.extras.length){
     receipt2 = ` (${receipt2.join(`, `)})`
   }
-    receipt += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(ticket/100).toFixed(2)}${receipt2}\n`
+  // adding ticket info (entrant, type and description), the price of the ticket converted from cents to dollars (rounded to 2 decimal points), and adding the 'extras' part to the initial receipt as a string
+    receipt += `${p.entrantType[0].toUpperCase() + p.entrantType.slice(1)} ${ticketData[p.ticketType].description}: $${(ticket/100).toFixed(2)}${receipt2}\n`
+    // get total price by adding price in cents of the ticket(set equal to the previous function) converted to dollars
     totalPrice += ticket/100
   }
+  // last part of receipt string; combining all the strings (like concat, but using template literals) and adding the final price to the end of the receipt 
   receipt += `-------------------------------------------\nTOTAL: $${totalPrice.toFixed(2)}`
+  // returning final receipt with all necessary information of the ticket
   return receipt
 }  
 
