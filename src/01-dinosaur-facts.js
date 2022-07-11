@@ -24,19 +24,26 @@ const exampleDinosaurData = require("../data/dinosaurs");
  */
 function getLongestDinosaur(dinosaurs) {
   let max = 0
+  // Max length
   let name = 0
+  // empty string
   let newDino = {}
+  //empty object 
   if(dinosaurs.length === 0){
     return {}
   }
+  //It want us to return an empty object if there is nothing in it.
   for(let i = 0; i < dinosaurs.length; i++){
     if(dinosaurs[i].lengthInMeters > max){
     max = dinosaurs[i].lengthInMeters 
     name = dinosaurs[i].name
   }
+  //Looking for the longest Dinosaur setup a function that will loop through the array.
 }
   max *= 3.281
+  //Once we get the longest dinosaur we convert it to feet.
  newDino[name] = max 
+ //The empty object of newDino put in the object key of name and the key of max
  return newDino
 }
 /**
@@ -70,6 +77,7 @@ let newPeriod;
 let newMya;
 let newInfo;
 let exist = false
+//To match with the id value in the function
 
  for(let i = 0; i < dinosaurs.length; i++){
   if(dinosaurs[i].dinosaurId === id){
@@ -83,15 +91,17 @@ let exist = false
     newMya = dinosaurs[i].mya[dinosaurs[i].mya.length - 1]
     newInfo = dinosaurs[i].info
     exist = true
+    //To see if all the values matches with the id.
   }
  
   
  }
  if(exist === false){
   return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+  //To ge the error message if the dinosaur id does not match.
 }
  return `${newName} (${newPronunciation})\n${newInfo} It lived in the ${newPeriod} period, over ${newMya} million years ago.` 
-
+//Return message if the id matches
 }
 
 /**
@@ -120,6 +130,7 @@ let exist = false
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key = "dinosaurId") {
+  //set the key equal toe DinosaurId to push in the id into a new array later on
   let newArray = []
   for(let i = 0; i < dinosaurs.length; i++){
     if(dinosaurs[i].mya[0]-1 <= mya && dinosaurs[i].mya >= mya){

@@ -59,20 +59,29 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 let newPrice = 0
 if(ticketInfo.ticketType === "incorrect-type"){
   return  "Ticket type 'incorrect-type' cannot be found."
+  //Error message if the ticket type is incorrect
 }
 if(ticketInfo.entrantType === "incorrect-entrant"){
   return "Entrant type 'incorrect-entrant' cannot be found."
+  //Error message if the entrant type is incorrect
 }
 if(ticketInfo.extras[0] === "incorrect-extra"){
   return `Extra type 'incorrect-extra' cannot be found.`
+  //Error message if the extras is incorrect
 }
 if(ticketInfo.ticketType in ticketData){
+  //We are checking if ticket type is in the ticket data 
   if(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents){
+    //if its is then we are then checking if the entrant type matches with the prices 
     newPrice = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+    //We are then setting the the newPrice variable to the prices of the ticket base of entrant type 
   }
 for(let newExtra of ticketInfo.extras){
+  //Looping through extras object
   if(newExtra in ticketData.extras){
+    //Checking if the information in newExtras is in ticketData etras
     newPrice += ticketData.extras[newExtra].priceInCents[ticketInfo.entrantType]
+    //setting newPrice variable to the prices of the entrant type plus the extras 
   }
 }
 }
@@ -134,21 +143,21 @@ return newPrice
  */
 function purchaseTickets(ticketData, purchases) {
   let newStr = ""
-  let newPrice = 0 
-  
+  let sum = 0
+  let sum2 = 0
   for(let i = 0; i < purchases.length; i++){
-    if(purchases[i].ticketType in ticketData){
-      if(purchases[i].entrantType in ticketData[purchases[i].ticketType].priceInCents){
-      newPrice = ((ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType])/100).toFixed(2)  
-      newStr = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchases[i].entrantType.charAt(0).toUpperCase() + purchases[i].entrantType.slice(1) } ${purchases[i].ticketType.charAt(0).toUpperCase() + purchases[i].ticketType.slice(1)} Admission: $${newPrice}\n-------------------------------------------\nTOTAL: $${newPrice}`
+    let newType = calculateTicketPrice(ticketData, purchases[i])
+      if(typeof newType === "string"){
+         return newType
+      }
+      if(newType === ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType]){
+        sum += ((newType)/100)
+        sum2 = ((newType)/100)
+        newStr = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchases[i].entrantType.charAt(0).toUpperCase() + purchases[i].entrantType.slice(1) } ${purchases[i].ticketType.charAt(0).toUpperCase() + purchases[i].ticketType.slice(1)} Admission: $${sum2.toFixed(2)}\n-------------------------------------------\nTOTAL: $${sum.toFixed(2)}`
+      }
+  }
+    return newStr
     }
-  
-  }
-  
-  }
-  
-  return newStr
-}
 
 
 // Do not change anything below this line.
@@ -157,4 +166,4 @@ module.exports = {
   purchaseTickets,
 };
 
-// Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchases[i].entrantType.charAt(0).toUpperCase() + purchases[i].entrantType.slice(1) } ${purchases[i].ticketType.charAt(0).toUpperCase() + purchases[i].ticketType.slice(1)} Admission: $${newPrice}\n-------------------------------------------\nTOTAL: $${newPrice}`
+
