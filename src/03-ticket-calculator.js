@@ -54,8 +54,44 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  /*returns total. 
+    ticketType: "general"/ entrantType: "child"/ extras: ["movie"] = available dot notation 
+    ERROR IF: `ticketInfo.ticketType` / `ticketInfo.entrantType`/  `ticketInfo.extras` key is incorrect message should be returned.
+    NEEDS accumulator
+    Create variables so I dont have to keep writing dot notes
+    should loop over the extras array 
+    should be checking if ticket info is in data????
+    may need something for a regular ticket??
+  */
 
+    let total = 0
+    //this is an accumulator for the total
+    let ticket = ticketInfo.ticketType
+    let entrant = ticketInfo.entrantType
+    let extra = ticketInfo.extras 
+    //I genuinely don't want to have to write this a lot so I made lets it's not needed.
+    if(!ticketData[ticket]) return `Ticket type '${ticket}' cannot be found.` 
+    let regPrice = ticketData[ticket].priceInCents[entrant] 
+    // //This cuts code if with the other lets. 
+    if(!regPrice) return `Entrant type '${entrant}' cannot be found.` 
+    if(!extra.length)return regPrice
+    if(!ticketData[extra]) 
+    return `Extra type '${extra}' cannot be found.`//This wont work if moved to line 76
+   
+  
+
+
+/* NOT WORKING
+  if(extra.length > 0)
+    for(i = 0; i < extra.length; i++){
+      if(ticketData.extras[i]) 
+      total += ticketData.extras[i].priceInCents[entrant]
+   
+   }
+*/
+return total
+}
 /**
  * purchaseTickets()
  * ---------------------
