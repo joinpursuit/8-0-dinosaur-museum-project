@@ -140,7 +140,12 @@ function purchaseTickets(ticketData, purchases) {
   let price = 0
   let finalPrice = 0
   let receipt = ""
-  
+  for (let i= 0; i <purchases.length;i++){
+    let price =calculateTicketPrice(ticketData, purchases[i])
+    if (typeof price === "string"){
+      return price;
+    }
+  }
 for ( let data in ticketData){
   for( let p = 0; p <purchases.length; p++){
     if (!ticketData[purchases[p].ticketType]){
