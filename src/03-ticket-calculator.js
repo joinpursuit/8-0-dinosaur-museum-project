@@ -75,19 +75,29 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     let regPrice = ticketData[ticket].priceInCents[entrant] 
     // //This cuts code if with the other lets. 
     if(!regPrice) return `Entrant type '${entrant}' cannot be found.` 
-    if(!extra.length)return regPrice
-    if(!ticketData[extra]) 
-    return `Extra type '${extra}' cannot be found.`//This wont work if moved to line 76
-   
-  
-
+    //This is checking if theres no extra
+    total += regPrice
+    if (extra)
+      for (i = 0; i < extra.length; i++){
+        if (!ticketData.extras[extra[i]])
+          return `Extra type '${extra}' cannot be found.`
+          //this works no matter where I put it. Which means its not really working.
+    
+        total += ticketData.extras[extra[i]].priceInCents[entrant]
+      }
 
 /* NOT WORKING
+   The code below would cut off my loop. Why? 
+
+  // if(!ticketData[extra]) 
+  // if(!extra.length)return regPrice
+  //`Extra type '${extra}' cannot be found.`//This wont work if moved to line 76
+
   if(extra.length > 0)
     for(i = 0; i < extra.length; i++){
       if(ticketData.extras[i]) 
       total += ticketData.extras[i].priceInCents[entrant]
-   
+                            ^^^ Why didn't this way work? 
    }
 */
 return total
