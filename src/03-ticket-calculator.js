@@ -83,7 +83,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
           if (ticketData[`extras`][addOn]) {
             total += ticketData[`extras`][addOn][`priceInCents`][age];
           }
-          if (addOns.length > 0 && !ticketData[`extras`][addOn]) {
+          if (!ticketData[`extras`][addOn]) {
             return `Extra type '${addOn}' cannot be found.`
           }
         }
@@ -99,12 +99,12 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   // GENERAL ADMISSION WITHOUT EXTRAS
 
   
-    // for (let ticket of ticketInfo.ticketType) {
+  //   for (let ticket of ticketInfo.ticketType) {
      
-    //   total += ticketData[ticket].priceInCents[ticketInfo.entrantType]
+  //     total += ticketData[ticket].priceInCents[ticketInfo.entrantType]
      
-    //   console.log('***', ticketData[ticket].priceInCents[ticketInfo.entrantType])
-    // }
+  //     console.log('***', ticketData[ticket].priceInCents[ticketInfo.entrantType])
+  //   }
   
 
 
@@ -124,7 +124,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   //   total += ticketData.membership.priceInCents.senior;
   // }
 
-  ////GENERAL ADMISSION WITH EXTRAS
+  // //GENERAL ADMISSION WITH EXTRAS
   // if (ticketInfo.extras.length > 0) {
   //   for (let extra of ticketInfo.extras)
   //   {
@@ -155,7 +155,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 /**
  * purchaseTickets()
  * ---------------------
- * Returns a receipt based off of a number of purchase. Each "purchase" maintains the shape from `ticketInfo` in the previous function.
+ * Returns a receipt based off of a number of purchases. Each "purchase" maintains the shape from `ticketInfo` in the previous function.
  *
  * Any errors that would occur as a result of incorrect ticket information should be surfaced in the same way it is in the previous function.
  * 
@@ -206,19 +206,58 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-let total = 0
+  let retTotal
+
+  //ERRORS
+for (let purchase of purchases){
+  const total = calculateTicketPrice(ticketData, purchases[0]);
+  if (typeof total === 'string') {
+    return total;
+  } else if (typeof total === 'number') {
+    retTotal = (total / 100).toFixed(2)
+    return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $${retTotal}\n-------------------------------------------\nTOTAL: $${retTotal}`;
+    
+   
+    
+    
+    
+    
+  }
   
 
 
 
+    
+}
+ 
+  console.log('$$$',totalPrice)  
+  
+  return
 
 
 
+ 
 
 
+ // console.log('###',purchases[0])  
 
 
+  // if typeof = string, its an error, if typeof = nuber then run the function
+  // string for errors, numbers for output
 
+  //iterate over purchases and see if its an error and if it is then return the error 
+
+  
+  
+  
+
+
+  
+
+
+  
+  
+  
 }
 // Do not change anything below this line.
 module.exports = {
