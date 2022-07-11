@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { membership } = require("../data/tickets");
 const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
@@ -57,23 +58,61 @@ const exampleTicketData = require("../data/tickets");
  */
     function calculateTicketPrice(ticketData, ticketInfo) {
       let price = 0
-    //look inside ticketData to find out if ticketInfo.ticketType is the same then we need the error
-    for (let i = 0; i < ticketInfo.extras.length; i++) {
-      if(ticketData !== ticketData[ticketInfo.extras[i]]){
-        return "Extra type 'incorrect-extra' cannot be found."  
-    }
-    }
-    if([ticketInfo.ticketType] !== "general" && ticketInfo.ticketType !== "membership"){
-      return "Ticket type 'incorrect-type' cannot be found." 
-    } 
-    if(ticketData !== ticketInfo[0][priceInCents]){
-      return "Entrant type 'incorrect-entrant' cannot be found."
-    } 
-    
-    //Returns the ticket price (based on the ticket information supplied)
+      let extras = ticketInfo.extras.slice(0)
+     
+      if(ticketInfo.ticketType === "membership" || ticketInfo.ticketType === "general"){
+        if(ticketInfo.entrantType === "child" || ticketInfo.entrantType === "adult" ||ticketInfo.entrantType ===  "senior"){
+        price += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+        if(extras.length){
+          for (extra of extras) {
+          if(extra === "movie" || extra === "education" || extra === "terrace") {
+            price += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+          } else {
+            return `Extra type '${extra}' cannot be found.`
+          }
+          }
+        }
+        } else {
+          return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+        }
+      } else {
+      return `Ticket type '${ticketInfo.ticketType}' cannot be found.`  
+      }
     return price
     }
+//look inside ticketData to find out if ticketInfo.ticketType is the same then we need the error
+    // for (let i = 0; i < ticketInfo.extras.length; i++) {
+    //   if(ticketInfo.extras[i] !== "movie" || ticketInfo.extras[i] !== "education" || ticketInfo.extras[i] !== "terrace"){
+    //     return `Extra type '${ticketInfo.extras[i]}' cannot be found.`  
+    // }
+    // }
+    // if(ticketInfo.ticketType !== "general" || ticketInfo.ticketType !== "membership"){
+    //   return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+    // } 
+    // if(ticketInfo.entrantType !== "child" || ticketInfo.entrantType !== "adult" || ticketInfo.entrantType !== "senior"){
+    //   return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+    // } 
+  
+    // if(ticketInfo.extras.length){
+    //   return ticketData.general.priceInCents[ticketInfo.entrantType]
+    // }
+    // if(ticketInfo.extras.length === 0){
+    //   return ticketData.membership.priceInCents[ticketInfo.entrantType]}
 
+    
+  //  for (let i = 0; i < ticketInfo.extras.length; i++) {
+  //   let extras = ticketInfo.extras[i]
+  // if(extras === "movie"){
+
+    
+
+  // }
+      
+  
+    // // price += tickets.general.priceInCents 
+    // } 
+  //  }
+    //Returns the ticket price (based on the ticket information supplied)
 
 
 
