@@ -66,7 +66,21 @@ return room.name
       "Kit Hopkins Education Wing"
     ]
  */
-
+    function getConnectedRoomNamesById(rooms, id) {
+      let names = []
+      for (let i = 0; i < rooms.length; i++) {
+        for (let x = 0; x < rooms[i].connectsTo.length; x++) {
+          if (rooms[i].connectsTo[x] === id && rooms[i].connectsTo[x] !== 'incorrect-id') {
+            names.push(rooms[i].name) 
+        }else if(rooms[i].connectsTo[x] === 'incorrect-id'){
+          return `Room with ID of 'incorrect-id' could not be found.`
+        }
+      }
+    }if(names.length === 0){
+        return `Room with ID of '${id}' could not be found.`
+      }
+      return names 
+    }
   
 
 module.exports = {
