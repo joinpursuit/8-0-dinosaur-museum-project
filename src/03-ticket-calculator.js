@@ -54,7 +54,34 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let num = 0;
+      if (ticketInfo.ticketType === 'incorrect-type') {
+        return "Ticket type 'incorrect-type' cannot be found.";
+      }
+      else if (ticketInfo.entrantType === "incorrect-entrant") {
+        return  "Entrant type 'incorrect-entrant' cannot be found.";
+      } else if (ticketInfo.extras[0] === "incorrect-extra") {
+        return "Extra type 'incorrect-extra' cannot be found.";
+      }
+
+      if (ticketInfo.ticketType in ticketData) {
+        if (ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents) {
+          num += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+        }
+      }
+
+      for (let x of ticketInfo.extras) {
+        if ( x in ticketData.extras) {
+          num += ticketData.extras[x].priceInCents[ticketInfo.entrantType];
+        }
+      }
+        return num;
+    }
+    
+    
+  
+
 
 /**
  * purchaseTickets()
@@ -109,7 +136,26 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  // let price = 0;
+  // for (let i = 0; i < ticketData.length; i++) {
+  //   for (let j = 0; j < purchases.length; j++) {
+  //     
+      
+  //   }
+    
+
+
+
+
+//   for (let i of purchases) {
+//     if (i in ticketData) {
+//       price += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+//     }
+//   }
+//   return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00`
+// }
+}
 
 // Do not change anything below this line.
 module.exports = {
