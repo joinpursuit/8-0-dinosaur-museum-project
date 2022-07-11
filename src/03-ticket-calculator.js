@@ -55,44 +55,28 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
+
 function calculateTicketPrice(ticketData, ticketInfo) {
-  let priceTot;
-  let ticket;
-  let entrant;
-  let extraCount = -1;
-  for(const type in ticketData) {
-    if(type === ticketInfo.ticketType) {
-      ticket = `y`
-      for(const price in ticketData[type][`priceInCents`]) {
-        if(price === ticketInfo.entrantType) {
-          entrant = `y`
-          priceTot = ticketData[type][`priceInCents`][price];
-          for(let v = 0; v < ticketInfo.extras.length && ticketInfo.extras.length !== 0; v++) {
-            for(const k in ticketData.extras) {
-              if(ticketInfo[`extras`][v] === k) {
-                for(const i in ticketData[`extras`][k][`priceInCents`]) {
-                  if(price === i) {
-                    priceTot += ticketData[`extras`][k][`priceInCents`][i];
-                    extraCount ++;
-                  }
-                }
-              }
-            }
-            if(extraCount !== v) {
-              return `Extra type '${ticketInfo[`extras`][v]}' cannot be found.`
-            }
-          }
-        }
-      }
+  let total = 0;
+  let type = ticketInfo.ticketType;
+  let age = ticketInfo.entrantType;
+  let addOns = [...ticketInfo.extras];
+  if (!ticketData[type]) {
+    return `Ticket type '${type}' cannot be found.`
+  }
+  if (!ticketData[type][`priceInCents`][age]) {
+    return `Entrant type '${age}' cannot be found.`;
+  }
+  total += ticketData[type][`priceInCents`][age];
+  for (const addOn of addOns) {
+    if (ticketData[`extras`][addOn]) {
+      total += ticketData[`extras`][addOn][`priceInCents`][age];
+    }
+    if (addOns.length > 0 && !ticketData[`extras`][addOn]) {
+      return `Extra type '${addOn}' cannot be found.`
     }
   }
-  if(!ticket) {
-    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
-  }
-  if(!entrant) {
-    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
-  }
-  return priceTot;
+  return total;
 }
 
 // const ticketInfo = {
@@ -159,9 +143,9 @@ function purchaseTickets(ticketData, purchases) {
   let price;
   let totalPrice = 0;
   let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
-  for(const purchase of purchases) {
+  for (const purchase of purchases) {
     price = calculateTicketPrice(ticketData, purchase);
-    if(typeof price === `string`) {
+    if (typeof price === `string`) {
       return price;
     }
     totalPrice += price;
@@ -169,10 +153,10 @@ function purchaseTickets(ticketData, purchases) {
     let admission = purchase.ticketType.charAt(0).toUpperCase() + purchase.ticketType.slice(1);
     let extraDesc = [];
     let extraRec;
-    if(purchase.extras.length > 0) {
-      for(const i of purchase.extras) {
-        for(const k in ticketData.extras) {
-          if(i === k) {
+    if (purchase.extras.length > 0) {
+      for (const i of purchase.extras) {
+        for (const k in ticketData.extras) {
+          if (i === k) {
             extraDesc.push(ticketData[`extras`][k][`description`]);
           }
         }
@@ -180,7 +164,7 @@ function purchaseTickets(ticketData, purchases) {
       extraRec = ` (` + extraDesc.join(`, `) + `)\n`;
     }
     receipt += `${entrant} ${admission} Admission: $${(price / 100).toFixed(2)}`;
-    if(extraRec) {
+    if (extraRec) {
       receipt += extraRec;
     } else {
       receipt += `\n`;
