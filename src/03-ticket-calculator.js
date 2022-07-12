@@ -54,36 +54,6 @@ const exampleTicketData = require('../data/tickets');
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-// function calculateTicketPrice(tickets, ticketInfo) {
-//   let typeOfTicket = ticketInfo.ticketType;
-//   let typeOfEntrant = ticketInfo.entrantType;
-//   let entrancePrice = 0;
-//   let typeOfExtra = '';
-//   let extrasPrice = 0;
-
-//   for (let type of ticketInfo.extras) {
-//     typeOfExtra = type;
-//     // console.log(typeOfExtra)
-//   }
-//   if (typeOfEntrant !== 'child' || 'adult' || 'senior') {
-//     return `Entrant type '${typeOfEntrant}' cannot be found.`;
-//   }
-//   if (typeOfTicket !== 'membership' || 'general') {
-//     return `Entrant type '${typeOfTicket}' cannot be found."`;
-//   }
-//   if (ticketInfo.entrantType === 'child' || 'adult') {
-//     typeOfEntrant = ticketInfo.entrantType;
-//     if (typeOfTicket === 'membership' || 'general') {
-//       entrancePrice =
-//         tickets[`${typeOfTicket}`].priceInCents[`${typeOfEntrant}`];
-//       // console.log(entrancePrice)
-//       return entrancePrice;
-//     }
-//     return `Ticket type '${typeOfTicket}' cannot be found.`;
-//   }
-//   return `Entrant type '${typeOfEntrant}' cannot be found.`;
-// }
-
 function calculateTicketPrice(tickets, ticketInfo) {
   let typeOfTicket = ticketInfo.ticketType;
   let typeOfEntrant = ticketInfo.entrantType;
@@ -96,8 +66,14 @@ function calculateTicketPrice(tickets, ticketInfo) {
     return `Ticket type '${typeOfTicket}' cannot be found.`;
   }
 
-  // if (!tickets[`${typeOfEntrant}`]) {
-  //   return `Ticket type '${typeOfEntrant}' cannot be found.`;
+  const people = ['child', 'adult', 'senior'];
+  if (!people.includes(ticketInfo.entrantType)) {
+    return `Entrant type '${typeOfEntrant}' cannot be found.`;
+  }
+
+  // const extrass = ['movies', 'terrace', 'education'];
+  // if (!extrass.includes(ticketInfo.extras)) {
+  //   return `Extras type '${ticketInfo.extras}' cannot be found.`;
   // }
 
   if (typeOfTicket === 'membership' || 'general') {
@@ -106,8 +82,6 @@ function calculateTicketPrice(tickets, ticketInfo) {
         tickets[`${typeOfTicket}`].priceInCents[`${typeOfEntrant}`];
       // console.log(entrancePrice)
       // return entrancePrice;
-    } else {
-      return `Entrant type '${typeOfEntrant}' cannot be found.`;
     }
     if (extrasArr.length >= 1) {
       for (let extra of ticketInfo.extras) {
