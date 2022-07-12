@@ -55,7 +55,8 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  let num = 0;
+  let num = 0; // because I am expected to return a number, this var will allow me to store those numbers.
+  // return a string error message in case the key-values in the "ticketInfo" are incorrect.
       if (ticketInfo.ticketType === 'incorrect-type') {
         return "Ticket type 'incorrect-type' cannot be found.";
       }
@@ -64,18 +65,23 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       } else if (ticketInfo.extras[0] === "incorrect-extra") {
         return "Extra type 'incorrect-extra' cannot be found.";
       }
-
+// check if the ticket type in ticket info exist in ticketdata.
+// check the entrant type in ticket info and ticket data.
+// check the price based on the entrant and ticket types.
+// increment "num".
       if (ticketInfo.ticketType in ticketData) {
         if (ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents) {
           num += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
         }
       }
-
+// check for extras in ticket info.
+// if extras does exist, add its value to "num".
       for (let x of ticketInfo.extras) {
         if ( x in ticketData.extras) {
           num += ticketData.extras[x].priceInCents[ticketInfo.entrantType];
         }
       }
+      // return num;
         return num;
     }
     
@@ -137,27 +143,42 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  let totalPrice = 0;
+  let totalPrice = 0;  // this var will store my totality of the prices.
+  // the final string that I will return will have this string first, then more added later.
   let str = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+  // looping through the array of object "purchases".
+  // recalling the previous function "calculateTicketPrice".
+  // this will allow to me to return all the prices that are typeof string instead of number.
+  // this will allow me to return only the error messages from the previous function.
   for (let i of purchases) {
     let price = calculateTicketPrice(ticketData, i);
     if (typeof price === 'string') {
       return price;
     }
-    let arr = [];
+    let arr = []; // will push values of the "extras" here.
+    // looping through the "extras".
+    // if extra does exist, push the description to the empty arr.
+    //  if many extras exist, join them.
     for (let x of i.extras) {
       arr.push(ticketData.extras[x].description);
     }
     if (i.extras.length) {
       arr = ` (${arr.join(", ")})`;
     }
+    // adding ticket info to the str. 
+    // use multiple methods() to get the correct formatting of the str.
+    // convert from cents to dollars and fixed the price to 2 decimal places.
+    // increments the totalPrice and convert from cents to dollars.
     str += `${i.entrantType[0].toUpperCase() + i.entrantType.slice(1)} ${ticketData[i.ticketType].description}: $${(price / 100).toFixed(2)}${arr}\n`;
     totalPrice += (price / 100);
     
   }
+  // add a new line and fix the totalPrice to 2 decimal places
+  // return the final str.
   str += `-------------------------------------------\nTOTAL: $${totalPrice.toFixed(2)}`;
   return str;
 }
+// DISCLAIMER: I COULD NOT HAVE DONE THIS WITHOUT A LOT OF SUPPORT AND WORK THROUGH!
 
 // Do not change anything below this line.
 module.exports = {

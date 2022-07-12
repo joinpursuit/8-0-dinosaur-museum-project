@@ -26,16 +26,23 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  let name;
+  let name;  // will store my dino Id in this var later on.
+  // looping through my "dinosaurs" object.
+  // checking if the "dinosaurName" is strictly equals to the dino at index i.
+  // if yes assign the Id of that dino to my var "name".
   for (let i = 0; i < dinosaurs.length; i++) {
     if(dinosaurName === dinosaurs[i].name){
       name = dinosaurs[i].dinosaurId;
     }
   }
+  // return an error message if "name" does not exist.
   if (!name) {
     return `Dinosaur with name '${dinosaurName}' cannot be found.`;
   }
-
+  // looping through the "rooms" array of object.
+  // looping through the dinosaurs object at each rooms index [j].
+  // check if it equals to the "name".
+  // if yes return that name.
   for (let j = 0; j < rooms.length; j++) {
     for (let k = 0; k < rooms[j].dinosaurs.length; k++) {
       if(rooms[j].dinosaurs[k] === name) {
@@ -43,6 +50,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       }
     }
   }
+  // if dino name exist, but is not in any rooms, return this string.
   return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
 }
 
@@ -69,20 +77,28 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  let arr = [];
+  let arr = []; // will push rooms name in this empty array later on.
+  // looping through array of object "rooms".
+  // then looping through the array "connectsTo" that exist inside of the "rooms" object.
+  // check if an index at connectsTo matches the "id".
+  // if yes, push it in the empty array.
   for (let i = 0; i < rooms.length; i++) {
     for (let j = 0; j < rooms[i].connectsTo.length; j++) {
       if (rooms[i].connectsTo[j] === id) {
         arr.push(rooms[i].name);
       }
+      // if the id = 'incorrect-id', return that as a string error message.
       else if (rooms[i].connectsTo[j] === 'incorrect-id') {
         return `Room with ID of 'incorrect-id' could not be found.`;
       }
     }
   }
+  // if no name that matches the id gets push in the empty arr(if arr is still empty after looping through the whole array)
+  // return a string that says the id is not found.
   if (arr.length === 0) {
     return `Room with ID of '${id}' could not be found.`;
   }
+  // return arr contening the name of rooms that matches the id.
   return arr;
 }
 
