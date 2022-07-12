@@ -208,33 +208,54 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 function purchaseTickets(ticketData, purchases) {
   //worked with Mina, Edgy, Fadila
 
-  let retTotal
-  
-
-  
+  let retString = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n';
+  let ticketsTotal = 0;
 
   //ERRORS
   for (let purchase of purchases) {
+
+    let ticketTotal = 0;
+
     const total = calculateTicketPrice(ticketData, purchase);
     if (typeof total === 'string') {
       return total;
-    } else if (typeof total === 'number') {
-      retTotal = (total / 100).toFixed(2)
-      let retString = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $${retTotal}\n-------------------------------------------\nTOTAL: $${retTotal}` 
-
-      return retString
+      } else if (typeof total === 'number') {
+      ticketsTotal += total;
     }
+
+    let formattedTicketTotal = (total / 100).toFixed(2);
+
+    //DYNAMIC VARS
+    let capEntrant = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1) + " " + ticketData[purchase.ticketType][`description`] // WORKING
+             
+    retString += `${capEntrant}: $${formattedTicketTotal}`;
+
+    if (purchase.extras.length > 0) {
+
+      let extraString = [];
+      for (let extra of purchase.extras) {
+        extraString.push(extra[0].toUpperCase() + extra.slice(1) + ' Access');
+      }
+
+      let capExtra = extraString.join(", ");
+
+      retString += ` (${capExtra})`;
+    }
+
+    retString += "\n";
+    
   }
+
+  const formattedTotal = (ticketsTotal / 100).toFixed(2);
+
+  retString += `-------------------------------------------\nTOTAL: $${formattedTotal}`;
+
+  
+  return retString;
  
-  console.log('$$$', totalPrice)
   
 }
- // //DYNAMIC VARS
-      // let capEntrant = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1) + " " + ticketData[purchase.ticketType][`description`] // WORKING
-      // let capType = purchase.ticketType[0].toUpperCase() + purchase.ticketType.slice(1)//WORKING
-      // let noBacketsExtra = purchase.extras.join(", ")
-      // let capExtra =
-      // console.log(capExtra)
+
 
 
  
