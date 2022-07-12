@@ -156,7 +156,7 @@ function purchaseTickets(ticketData, purchases) {
   // creating a new variable set to an empty array for the ticket 'extras' part of the receipt.  
   let receipt2 = []
   //if extras exists, push the extras description into the second part of the returned string of the receipt
-  for (xtra of p.extras){
+  for (let xtra of p.extras){
     receipt2.push(ticketData.extras[xtra].description)
   }
   // if ticket extras exists, and there are multiple ticket extras, use join method to connect them using a comma
@@ -173,28 +173,6 @@ function purchaseTickets(ticketData, purchases) {
   // returning final receipt with all necessary information of the ticket
   return receipt
 }  
-
-// ATTEMPTED TO USE FOR LOOPS INSTEAD OF FOR OF LOOPS 
-// let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
-// let totalPrice = 0
-
-// for (let i = 0; i < purchases.length; i++){
-//   let ticket = calculateTicketPrice(ticketData, purchases[i])
-//   if (typeof ticket === `string`){
-//     return ticket
-//   }
-//   let receipt2 = []
-//   for (let j = 0; j < purchases[i].extras[j]; j++){
-//     receipt2.push(ticketData.extras[purchases[i].extras[j]].description)
-//   }
-//   if (purchases[i].extras.length){
-//     receipt2 = ` (${receipt2.join(`, `)})`
-//   }
-//   receipt += `${purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)} ${ticketData[purchases[i].ticketType].description}: $${(ticket/100).toFixed(2)}${receipt2}\n`
-//    totalPrice += ticket/100
-// }
-// receipt += `-------------------------------------------\nTOTAL: $${totalPrice.toFixed(2)}`
-// return receipt
 
 // Do not change anything below this line.
 module.exports = {
