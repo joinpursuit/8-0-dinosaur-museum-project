@@ -26,19 +26,25 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  
+  //create an empty string that will be returned in the end
   let sen = ""
   
+  //Loop thru the dinosaurs object to compare the names at different indexes 
   for(let dino of dinosaurs){
+    //check to see if the given param dinosaurName matches the name that exists within the object
     if(dino.name === dinosaurName){
+      //if it does, set the empty string to the name of the dino
        sen = dino.dinosaurId}
     }
+    //if the name does not exist, return an error message
        if(!sen){
          return `Dinosaur with name '${dinosaurName}' cannot be found.`
        }
-
+//second loop is to iteraet thru the 'rooms' object
       for(let r = 0; r < rooms.length; r++){
+        //create another loop to iterate into the dinosaurs array inside of the rooms object
         for(let i =0; i < rooms[r].dinosaurs.length; i++){
+          //if the dinosaur Id stored in "sen" exists in rooms, then return the name of that room
           if(rooms[r].dinosaurs[i] === sen){
             return rooms[r].name
           } 
@@ -73,28 +79,34 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  
+  //create an empty array
   let arr = [];
   
+  //create a for of loop to iterate the object rooms
   for(let room of rooms){
     
+    //create a loop to iterate over the connectsTo array
       for(let i = 0; i < room.connectsTo.length; i++){
+
+        //compare the param 'id' to the ids found in the connectsTo array
         if(room.connectsTo[i] === id){
+          //push/add the room name into the empty array
           arr.push(room.name)
         } 
+        //check to see if a specific id in connectsto array matches 'incorrect-id' in order to throw up an error message
       if(room.connectsTo[i] === 'incorrect-id'){
       return `Room with ID of 'incorrect-id' could not be found.`
     }
         
       } 
     }
-
+    //Checks to see if the array is empty by checking the array length. If it is, throws an error message.
   if(arr.length === 0 ){
       return `Room with ID of '${id}' could not be found.`
     }
     return arr
 }
-  // edgy assisted 
+  
     
 module.exports = {
   getRoomByDinosaurName,

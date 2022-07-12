@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { membership } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,54 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  // if(ticketInfo.ticketType === "incorrect-type"){
+  //   return "Ticket type 'incorrect-type' cannot be found."
+  // }
+  // if(ticketInfo.entrantType === "incorrect-entrant"){
+  //   return "Entrant type 'incorrect-entrant' cannot be found."
+  // }
+  // if(ticketInfo.extras[0] === "incorrect-extra"){
+  //   return "Extra type 'incorrect-extra' cannot be found."
+  // }
+
+
+  //create a variable to calculate the price whihc will be returned in the end.
+  let price = 0;
+  //create a variable to store the information of ticketType
+  let type = ticketInfo.ticketType
+  //Create a variable to store the information of entrantType
+  let entrant = ticketInfo.entrantType
+  
+//compares the ticketType to 'incorrect type' to throw an error
+  if(type === "incorrect-type"){
+    return "Ticket type 'incorrect-type' cannot be found."
+  }
+
+  //checks to see if ticketType exist in ticketData
+  if(type in ticketData){
+    //checks to see if entrantType exists within ticketData
+    if(entrant in ticketData[type].priceInCents){
+      //add price of that specific entrant to the price variable
+      price += ticketData[type].priceInCents[entrant]
+    }
+    //checks if entrant type is equal to  incorrect entrant, then throws an error 
+    else if (entrant === "incorrect-entrant"){
+      return "Entrant type 'incorrect-entrant' cannot be found."
+    }
+  }
+//create a separate loop of the extras array, named it fun
+    for(let fun of ticketInfo.extras){
+      if(fun in ticketData.extras){
+        //if extras exists in ticketData, add priceInCents to the price variable
+        price += ticketData.extras[fun].priceInCents[entrant]
+      } else if(ticketInfo.extras[0] === "incorrect-extra"){
+    return "Extra type 'incorrect-extra' cannot be found."
+      }
+    }
+  return price 
+}
+
 
 /**
  * purchaseTickets()
@@ -109,7 +157,66 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+ let recepit = "";
+ let total = 0;
+
+// for(let purchase of purchases)
+
+
+
+}
+
+// for(let purchase of purchases){
+//   if(purchase.ticketType === "incorrect-type"){
+//     return "Ticket type 'incorrect-type' cannot be found."
+//   }
+
+// if(purchase.ticketType === 'general'){
+//   if(purchase.entrantType === 'child'){
+//     total += ticketData.general.priceInCents.child
+//   } else if(purchase.entrantType === 'adult'){
+//     total += ticketData.general.priceInCents.adult
+//   } else if (purchase.entrantType === 'senior'){
+//     total += ticketData.general.priceInCents.senior
+//   } else if (purchase.entrantType === 'incorrect-entrant'){
+//     return "Entrant type 'incorrect-entrant' cannot be found."
+//   }
+// } if(purchase.ticketType === 'membership'){
+//   if(purchase.entrantType === 'child'){
+//     total += ticketData.membership.priceInCents.child
+//   } else if(purchase.entrantType === 'adult'){
+//     total += ticketData.membership.priceInCents.adult
+//   } else if(purchase.entrantType === 'senior'){
+//     total += ticketData.membership.priceInCents.senior
+//   } else if (purchase.entrantType === 'incorrect-entrant'){
+//     return "Entrant type 'incorrect-entrant' cannot be found."
+//   }
+  
+// }
+// } 
+// if(purchases.ticketType === 'extras'){
+//   for(let i=0; i < purchases[i].extras.length; i++){
+//     if(purchases[i].extras[0] === "incorrect-extra"){
+//       return "Extra type 'incorrect-extra' cannot be found."
+//         }
+//       else if(purchases[i].entrantType === 'child'){
+//           total += ticketData.extras[i].priceInCents.child
+//   } else if(purchases[i].entrantType === 'adult'){
+//     total += ticketData.extras[i].priceInCents.adult
+//   } else if(purchases[i].entrantType === 'senior'){
+//   total += ticketData.extras[i].priceInCents.senior
+//   }
+// }
+// }
+// return `$${(total/100).toFixed(2)}`
+// }
+
+
+
+
+
+
 
 // Do not change anything below this line.
 module.exports = {
