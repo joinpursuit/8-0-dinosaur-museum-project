@@ -26,27 +26,27 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  let string = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+  let roomName = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
   let dinosaur = `Dinosaur with name '${dinosaurName}' cannot be found.`;
 
-  for(let dino of dinosaurs){
-    if(dino.name.includes(dinosaurName)){
+  for(let dino of dinosaurs){ 
+    if(dino.name.includes(dinosaurName)){ // checks if a valid dinosaur name has been given, and then finds its ID if valid
       dinosaur = dino.dinosaurId;
     }
   }
   
-if(dinosaur === `Dinosaur with name '${dinosaurName}' cannot be found.`){
+if(dinosaur === `Dinosaur with name '${dinosaurName}' cannot be found.`){ //if dinosaur name is invalid, then an error message is returned
   return dinosaur;
 }
 
   for(let room of rooms){
-    if(room.dinosaurs.includes(dinosaur)){
-      string = room.name;
+    if(room.dinosaurs.includes(dinosaur)){ // Finds room that includes the dinosaur ID, or returns error message 
+      roomName = room.name;
     }
 
   }
 
-  return string
+  return roomName;
 
 }
 
@@ -74,39 +74,39 @@ if(dinosaur === `Dinosaur with name '${dinosaurName}' cannot be found.`){
  */
 function getConnectedRoomNamesById(rooms, id) {
   const errorTest = []; // tests if connected rooms has an invalid ID
-  const arr = [];
-  let rm; // array of connnected rooms
+  let connectedRooms; // array of connnected rooms
   
   for(let room of rooms){
-    if(room.roomId.includes(id)){
-      rm = room.connectsTo;
+    if(room.roomId.includes(id)){ // checks if given room ID is valid. If so, stores all connected rooms 
+      connectedRooms = room.connectsTo; 
       }
     }
   
-  if(!rm){
+  if(!connectedRooms){ // if nothing is stored in connected rooms, then ID is invalid
     return `Room with ID of '${id}' could not be found.`
   }
 
-  for(let i = 0; i < rm.length; i++){
+  // Changes room ID with the correct room name for reach connected room
+  for(let i = 0; i < connectedRooms.length; i++){
     for(let room of rooms){
-      if(room.roomId.includes(rm[i])){
-        rm[i] = room.name;
-        arr[i] = true;
+      if(room.roomId.includes(connectedRooms[i])){ // searches room data for the room name of each room ID
+        connectedRooms[i] = room.name; 
+        errorTest[i] = true;
         break;
         }
         else{
-          arr[i] = false;
+          errorTest[i] = false;
         }
       }
     
   }
 
-  if(arr.includes(false)){
-    return `Room with ID of '${rm[arr.indexOf(false)]}' could not be found.`
+  if(errorTest.includes(false)){ // Error message will return if there is a false value in the error test array. Indicating the invalid ID index and the index of the false value respectfully
+    return `Room with ID of '${connectedRooms[errorTest.indexOf(false)]}' could not be found.`
   }
 
-// for of - connected is a copy of that value
-  return rm;
+
+  return connectedRooms;
 
 }
 
