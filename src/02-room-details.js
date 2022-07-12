@@ -25,8 +25,34 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
-
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  //create variable to match id
+  let dinoId = "";
+  //create variable to return if dino isn't found
+  let notFound = "";
+  //create loop to iterate thru dinosaurs 
+  for (let i = 0; i < dinosaurs.length; i ++){
+  if (dinosaurName === dinosaurs[i].name){
+    //reassign dinoid to match the dino
+  dinoId = dinosaurs[i].dinosaurId; 
+  } 
+}
+//creat loop to iterate thru rooms
+  for (let j = 0; j < rooms.length; j ++){
+if (rooms[j].dinosaurs.includes(dinoId)){
+return rooms[j].name;
+  } else {
+    //error message if dinos are not found in rooms
+    notFound = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+  }
+} 
+//error message if the dino is not found at all
+if (!dinoId){
+  notFound = `Dinosaur with name '${dinosaurName}' cannot be found.`;
+}
+  return notFound;
+ }
+  
 /**
  * getConnectedRoomNamesById()
  * ---------------------
@@ -49,7 +75,31 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  //create empty array to return the ids and another array for the conversion into the names of the rooms
+  let arr = [];
+  let conv = [];
+for (let i = 0; i < rooms.length; i ++){
+ //if the id matches
+if(id === rooms[i].roomId){
+  //arr and rooms connected array would be the same
+  arr = rooms[i].connectsTo;
+} 
+} 
+//if the id didnt match a room or the arr is empty, send error message
+  if (arr.includes("incorrect-id") || !arr.length){
+return "Room with ID of 'incorrect-id' could not be found."
+}
+//if the id is included in the arr
+ for (let j = 0; j < rooms.length; j ++){
+    if (arr.includes(rooms[j].roomId)){
+      conv.push(rooms[j].name)
+    }
+ }
+//return the converted names of the rooms
+return conv;
+}
+
 
 module.exports = {
   getRoomByDinosaurName,
