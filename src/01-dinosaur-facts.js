@@ -22,7 +22,22 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+
+let tallestDino = {}
+let copy = [...dinosaurs]
+if(!copy.length){
+  return tallestDino
+}
+for (let i = 0; i < copy.length; i++) {
+  if(copy[i].lengthInMeters > copy[0].lengthInMeters){
+   copy[0] = copy[i]
+  }
+}
+tallestDino[copy[0].name] = copy[0].lengthInMeters * 3.281
+
+return tallestDino
+}
 
 /**
  * getDinosaurDescription()
@@ -44,8 +59,15 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
-
+function getDinosaurDescription(dinosaurs, id) {
+for (const dino of dinosaurs) {
+  if(dino.dinosaurId === id){
+    return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length - 1]} million years ago.`
+  }  
+}
+return `A dinosaur with an ID of 'incorrect-id' cannot be found.`  
+}
+ 
 /**
  * getDinosaursAliveMya()
  * ---------------------
@@ -71,8 +93,26 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
-
+function getDinosaursAliveMya(dinosaurs, mya, key = "dinosaurId") {
+  let value = []
+  for(let i = 0; i < dinosaurs.length; i++){
+     
+  if(dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya){
+    value.push(dinosaurs[i][key])
+  } else if(dinosaurs[i].mya.length === 1 && (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] === mya + 1)){
+    value.push(dinosaurs[i][key])
+  }
+    }
+   return value  
+}
+ //If the dinosaur only has a single value for `mya`, allows for the `mya` value to be equal to the given value or one less. 
+  //   if(dinosaurs[i].mya){
+  //    value = dinosaurs[i].mya <= 1 
+  //  //Otherwise, returns the ID.
+  //   } else{
+  //     return dinosaurs.dinosaurId
+  //   }
+   // Returns an array of dinosaurs who were alive at the given `mya` (i.e. "millions of years ago") value.
 module.exports = {
   getLongestDinosaur,
   getDinosaurDescription,
