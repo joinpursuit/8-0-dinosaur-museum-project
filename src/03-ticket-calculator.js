@@ -137,24 +137,26 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  // let price = 0;
-  // for (let i = 0; i < ticketData.length; i++) {
-  //   for (let j = 0; j < purchases.length; j++) {
-  //     
-      
-  //   }
+  let totalPrice = 0;
+  let str = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+  for (let i of purchases) {
+    let price = calculateTicketPrice(ticketData, i);
+    if (typeof price === 'string') {
+      return price;
+    }
+    let arr = [];
+    for (let x of i.extras) {
+      arr.push(ticketData.extras[x].description);
+    }
+    if (i.extras.length) {
+      arr = ` (${arr.join(", ")})`;
+    }
+    str += `${i.entrantType[0].toUpperCase() + i.entrantType.slice(1)} ${ticketData[i.ticketType].description}: $${(price / 100).toFixed(2)}${arr}\n`;
+    totalPrice += (price / 100);
     
-
-
-
-
-//   for (let i of purchases) {
-//     if (i in ticketData) {
-//       price += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
-//     }
-//   }
-//   return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00`
-// }
+  }
+  str += `-------------------------------------------\nTOTAL: $${totalPrice.toFixed(2)}`;
+  return str;
 }
 
 // Do not change anything below this line.
