@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,8 +55,37 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  //the return should be the cost of the ticket so we will start at 0
+  let cost = 0;
 
+  // check all cases of incorrect options entered
+    if (ticketInfo.ticketType !== "general" && ticketInfo.ticketType !== "membership"){
+      return `Ticket type \'${ticketInfo.ticketType}\' cannot be found.`;
+    }
+    if (ticketInfo.entrantType !== "child" && ticketInfo.entrantType !== "adult" && ticketInfo.entrantType !== "senior"){
+      return `Entrant type \'${ticketInfo.entrantType}\' cannot be found.`;
+    }
+    if (ticketInfo.extras.includes("incorrect-extra")){
+      return `Extra type \'${ticketInfo.extras}\' cannot be found.`;
+    }
+    // if the ticket type is valid
+    if (ticketInfo.ticketType === "general" || "membership"){
+      cost += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+    } 
+       //loop to add extras 
+  for (let extras of ticketInfo.extras){ 
+    //if the ticket data extra includes the extra from the ticket info
+  if (ticketData.extras){
+    cost += ticketData.extras[extras].priceInCents[ticketInfo.entrantType];
+  }
+}
+  return cost;
+}
+
+// if (!ticketInfo.extras.includes("movies") && !ticketInfo.extras.includes("education") && !ticketInfo.extras.includes("terrace")){
+//   return `Extra type \'${ticketInfo.extras}\' cannot be found.`;
+// }
 /**
  * purchaseTickets()
  * ---------------------
@@ -109,7 +139,48 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  //starting point of the receipt 
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  //the total price should start 0
+  let total = 0;
+  //loop thru each purchase array
+  for (let i = 0; i < purchases.length; i ++){
+    //create variable for the previous function
+    let currentTicket = calculateTicketPrice(ticketData, purchases[i]);
+    //the price of each ticket calculates with each run of the loop
+    total += currentTicket;
+    //from the previous function, the output could be a string error message or a number so we will check if its a string
+    if (typeof(currentTicket) === 'string') {
+      //if it is a string, it will be an error message so return it
+      return currentTicket;
+    }
+    //create a variable to store the extras array
+    let extras = purchases[i].extras;
+    //the extras receipt will be a separate receipt because some may not have any extras
+    let extrasReceipt = '';
+    //loop thru extras array
+    for (let j = 0; j < extras.length; j++){
+      //the extras description is added to the receipt
+      extrasReceipt += ticketData.extras[extras[j]].description;
+      /*if the extras array length - 1 isn't equal to index j (because we don't want a comma and space after the last element), add a comma and space. when the array length - 1 is equal to index j, the loop stops*/
+      if (extras.length - 1 !== j) {
+        extrasReceipt += ', ';
+      }
+    }
+    //this is the receipt without any extras
+    receipt += `${purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)} ${ticketData[purchases[i].ticketType].description}: $${(currentTicket / 100).toFixed(2)}`;
+    //if there are any extras, add them and then a new line
+    if (extras.length){
+      receipt += ` (${extrasReceipt})\n` 
+    } else {
+      //if there are not any extras, just a new line
+      receipt += `\n` 
+    }
+  }
+    //return the receipt and add the total price with the total converted from cents and fixed 2 decimal places
+  return `${receipt}-------------------------------------------\nTOTAL: $${(total / 100).toFixed(2)}`;
+}
 
 // Do not change anything below this line.
 module.exports = {
