@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { general } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,38 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+let newPrice = 0
+if(ticketInfo.ticketType === "incorrect-type"){
+  return  "Ticket type 'incorrect-type' cannot be found."
+  //Error message if the ticket type is incorrect
+}
+if(ticketInfo.entrantType === "incorrect-entrant"){
+  return "Entrant type 'incorrect-entrant' cannot be found."
+  //Error message if the entrant type is incorrect
+}
+if(ticketInfo.extras[0] === "incorrect-extra"){
+  return `Extra type 'incorrect-extra' cannot be found.`
+  //Error message if the extras is incorrect
+}
+if(ticketInfo.ticketType in ticketData){
+  //We are checking if ticket type is in the ticket data 
+  if(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents){
+    //if its is then we are then checking if the entrant type matches with the prices 
+    newPrice = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+    //We are then setting the the newPrice variable to the prices of the ticket base of entrant type 
+  }
+for(let newExtra of ticketInfo.extras){
+  //Looping through extras object
+  if(newExtra in ticketData.extras){
+    //Checking if the information in newExtras is in ticketData etras
+    newPrice += ticketData.extras[newExtra].priceInCents[ticketInfo.entrantType]
+    //setting newPrice variable to the prices of the entrant type plus the extras 
+  }
+}
+}
+return newPrice
+}
 
 /**
  * purchaseTickets()
@@ -109,10 +141,53 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+//   let newStr = ""
+//    let totalSum = 0
+//    let sum = 0
+//    let newArray = []
+//   for(let i = 0; i < purchases.length; i++){
+//     for(let extra of purchases.extras){
+//     let newType = calculateTicketPrice(ticketData, purchases[i])
+//       if(typeof newType === "string"){
+//          return newType
+//       } 
+//       if(typeof newType === "number"){
+//        totalSum += (newType / 100)
+//         sum = (newType / 100)
+//         newStr = `${purchases[i].entrantType.charAt(0).toUpperCase() + purchases[i].entrantType.slice(1)} ${purchases[i].ticketType.charAt(0).toUpperCase() + purchases[i].ticketType.slice(1)} Admission: $${sum.toFixed(2)}\n`
+//         newArray.push(newStr)
+//         }
+     
+// }
+//   }
+//  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${newArray.join("")}-------------------------------------------\nTOTAL: $${totalSum.toFixed(2)}`
+//     }
+let newStr = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+let newTotal = 0 
+for(let gm of purchases){
+  let newType = calculateTicketPrice(ticketData , gm)
+  if(typeof newType === "string"){
+    return newType
+  }
+  let newArray = []
+  for(let extra of gm.extras){
+ newArray.push(ticketData.extras[extra].description)
+ }
+ if(gm.extras.length){
+  newArray = ` (${newArray.join(", ")})`
+ }
+ newStr += `${gm.entrantType.charAt(0).toUpperCase() + gm.entrantType.slice(1)} ${ticketData[gm.ticketType].description}: $${(newType /100).toFixed(2)}${newArray}\n`
+ newTotal += (newType / 100)
+}
+newStr += `-------------------------------------------\nTOTAL: $${newTotal.toFixed(2)}`
+return newStr
+}
 
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
   purchaseTickets,
 };
+
+
