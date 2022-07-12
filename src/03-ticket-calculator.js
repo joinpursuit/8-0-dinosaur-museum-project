@@ -54,7 +54,34 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  //console.log(ticketData)
+  let ticket = 0;
+//LOGIC HERE PLZ EDGY
+//find base prices.. if ticket type is in data
+if(ticketInfo.ticketType in ticketData){
+  // now find the data of ticket type and its price in cents 
+    if(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents){
+      //update price value for each ticket
+      ticket += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+      //console.log(ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType])
+    }
+     else {
+      return `Entrant type 'incorrect-entrant' cannot be found.`
+    }
+  } 
+  else {
+    return `Ticket type 'incorrect-type' cannot be found.`
+  }
+  for (let x of ticketInfo.extras){
+    if(x in ticketData.extras){
+      ticket += ticketData.extras[x].priceInCents[ticketInfo.entrantType]
+    }else { 
+      return `Extra type 'incorrect-extra' cannot be found.`
+    }
+  }
+  return ticket;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +136,63 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  //Prints a receipt for a (person) General Admission ticket.
+  //error mesage 
+  for (let i=0; i <purchases.length;i++){
+    //setting ur error message
+    let thePrice = calculateTicketPrice(ticketData, purchases[i])
+    if (typeof thePrice === 'string'){
+      return thePrice;
+    }else if (typeof thePrice === 'number'){
+      return thePrice;
+    }
+    }
+  
+  let totalPrice = 0;
+  let receipt =''; 
+  for (let i=0; i < purchases.length; i++){
+    //Find prices
+    // call the function above within the function for ticket price --> 
+    //console.log(price);
+    let person = purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)
+    
+    let ticketType = purchases[i].ticketType[0].toUpperCase() + purchases[i].ticketType.slice(1) + " " + ticketData[purchases[i].ticketType][`description`];
+    console.log(ticketType)
+    let entryPass = `${person} ${ticketType} Admission: $${(price/100).toFixed(2)}`; 
+    //console.log(`${person} ${ticketType}`)
+    
+  
+    let receipt2 =[];
+    for (let e = 0; e < purchases[i].extras.length; e++){
+
+        //creating final receipt with extras and admisson prices
+        let xTra = ticketData.extras[e].description;// create a loop purchases[i].extras to match at data and extras.. match and get description with keys
+        receipt2.push(xTra);
+        //let xTra2= xTra.join(", ")// use join to add a space.. use with array && add ACCESS using a method, like concat
+        //upperCase
+        //calaculates final price
+        //
+        // if(purchases[i].entrantType){
+          
+          // }
+        }
+        if(xTra2){
+
+        };
+        let xTra2 =receipt2.join(", ") // must add spaces later && uppercase
+        
+        let str1= `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+
+        let strLast = `\n-------------------------------------------\nTOTAL: ${totalPrice} `
+        //console.log(str1)
+        receipt = `${str1}${entryPass} (${xTra2}) ${strLast} `
+        totalPrice += (price); //move to end of loop, to reset at every loop
+      }
+///add to the final to uopdate price100).toFixed(2)
+return receipt;
+}
+
 
 // Do not change anything below this line.
 module.exports = {
