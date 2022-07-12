@@ -65,7 +65,8 @@ return output
  * EXAMPLE:
  *  getDinosaurDescription(dinosaurs, "U9vuZmgKwUr");
  *  //> "Xenoceratops (ZEE-no-SEH-ruh-tops)\nXenoceratops had horns and a bony frill with elaborate ornamentation of projections, knobs, and spikes. It lived in the Early Cretaceous period, over 77.5 million years ago."
- *
+ * name pronounciation \n(new line) info .period
+ * 
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
@@ -76,21 +77,21 @@ function getDinosaurDescription(dinosaurs, id) {
 
   // declare
   let incorrectId = "incorrect-id"
-  // let output = dinosaurs[]
+  let output;
   // guard clause
-  if (dinosaurs.id === false){
-    return `A dinosaur with an ID of ${incorrectId} cannot be found.`
-  }
+  // if (dinosaurs.id === false){
+  //   return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+  // }
   // initalize
   for (let i = 0; i < dinosaurs.length; i++) {
-    if (dinosaurs[i].dinosaurId === id){
+    if (dinosaurs[i]. dinosaurId === id){
        output = dinosaurs[i]
-        name = dinosaurs[i].name 
-    } console.log(id)
+       return(`${output.name} (${output.pronunciation})\n${output.info} It lived in the ${output.period} period, over ${output.mya[output.mya.length- 1]} million years ago.`)
+    } 
   }
-  return `${dinosaurs[i].name} ${dinosaurs[i].pronunciation} \n${dinosaurs.[i].info}`
+  //console.log(output.name)
   
-  // return ` dino.id /n dino.info
+ return  `A dinosaur with an ID of 'incorrect-id' cannot be found.`
 
 }
 
@@ -119,7 +120,16 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key="dinosaurId") {
+  let array = []
+  for (const dinosaur of dinosaurs) {
+    if (dinosaur.mya[0] === mya || dinosaur.mya[0]-1 === mya ){
+      array.push(dinosaur[key])
+    } if ( dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya){
+      array.push(dinosaur[key])
+    }
+  }return array 
+}
 
 module.exports = {
   getLongestDinosaur,
