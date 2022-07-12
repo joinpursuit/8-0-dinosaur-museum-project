@@ -66,14 +66,14 @@ function calculateTicketPrice(tickets, ticketInfo) {
     return `Ticket type '${typeOfTicket}' cannot be found.`;
   }
 
-  const people = ['child', 'adult', 'senior'];
-  if (!people.includes(ticketInfo.entrantType)) {
-    return `Entrant type '${typeOfEntrant}' cannot be found.`;
-  }
+  // if (!ticketInfo.extras) {
+  //   return `Ticket type '${typeOfTicket}' cannot be found.`;
+  // }
 
-  // const extrass = ['movies', 'terrace', 'education'];
+  // const extrass = ['movie', 'terrace', 'education'];
   // if (!extrass.includes(ticketInfo.extras)) {
-  //   return `Extras type '${ticketInfo.extras}' cannot be found.`;
+  //   console.log(extrass);
+  //   return `Extra type '${ticketInfo.extras}' cannot be found.`;
   // }
 
   if (typeOfTicket === 'membership' || 'general') {
@@ -85,9 +85,9 @@ function calculateTicketPrice(tickets, ticketInfo) {
     }
     if (extrasArr.length >= 1) {
       for (let extra of ticketInfo.extras) {
-        typeOfExtra = extra;
         // console.log(extra)
-        extrasPrice += tickets.extras[typeOfExtra].priceInCents[typeOfEntrant];
+        console.log(`hello:`, tickets.extras[extra][extra.priceInCents]);
+        extrasPrice += tickets.extras[extra]['priceInCents'][typeOfEntrant];
       }
       // if (typeOfExtra === 'movie' || 'terrace' || 'education') {
       //   // console.log(typeOfExtra)
@@ -95,6 +95,10 @@ function calculateTicketPrice(tickets, ticketInfo) {
       //   // console.log(extrasPrice)
       // }
     }
+  }
+  const people = ['child', 'adult', 'senior'];
+  if (!people.includes(ticketInfo.entrantType)) {
+    return `Entrant type '${typeOfEntrant}' cannot be found.`;
   }
   return extrasPrice + entrancePrice;
 }
