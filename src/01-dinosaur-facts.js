@@ -63,8 +63,7 @@ function getDinosaurDescription(dinosaurs, id) {
 for (const dino of dinosaurs) {
   if(dino.dinosaurId === id){
     return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length - 1]} million years ago.`
-  } 
-  
+  }  
 }
 return `A dinosaur with an ID of 'incorrect-id' cannot be found.`  
 }

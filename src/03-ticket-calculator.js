@@ -80,42 +80,6 @@ const exampleTicketData = require("../data/tickets");
       }
     return price
     }
-//look inside ticketData to find out if ticketInfo.ticketType is the same then we need the error
-    // for (let i = 0; i < ticketInfo.extras.length; i++) {
-    //   if(ticketInfo.extras[i] !== "movie" || ticketInfo.extras[i] !== "education" || ticketInfo.extras[i] !== "terrace"){
-    //     return `Extra type '${ticketInfo.extras[i]}' cannot be found.`  
-    // }
-    // }
-    // if(ticketInfo.ticketType !== "general" || ticketInfo.ticketType !== "membership"){
-    //   return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
-    // } 
-    // if(ticketInfo.entrantType !== "child" || ticketInfo.entrantType !== "adult" || ticketInfo.entrantType !== "senior"){
-    //   return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
-    // } 
-  
-    // if(ticketInfo.extras.length){
-    //   return ticketData.general.priceInCents[ticketInfo.entrantType]
-    // }
-    // if(ticketInfo.extras.length === 0){
-    //   return ticketData.membership.priceInCents[ticketInfo.entrantType]}
-
-    
-  //  for (let i = 0; i < ticketInfo.extras.length; i++) {
-  //   let extras = ticketInfo.extras[i]
-  // if(extras === "movie"){
-
-    
-
-  // }
-      
-  
-    // // price += tickets.general.priceInCents 
-    // } 
-  //  }
-    //Returns the ticket price (based on the ticket information supplied)
-
-
-
 
 /**
  * purchaseTickets()
@@ -170,8 +134,40 @@ const exampleTicketData = require("../data/tickets");
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+//receipt is based off of a number of purchase
+let receipt = ``
+let total = 0
+//loop through the purchases object to account for the 
+for(let i = 0; i < purchases.length; i++){
+  let price = calculateTicketPrice(ticketData, purchases[i])
+  if(typeof price === 'string'){
+    return price
+  }
+  let extras = purchases[i].extras.slice(0)
+  let arr = []
+  total += price
+  for (const extra of extras) {
+    if(extras.length > 0){
+arr.push(ticketData.extras[extra].description)
+    } 
+  }
+if(purchases[i].extras.length > 0){
+receipt += `${purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)} ${purchases[i].ticketType[0].toUpperCase() + purchases[i].ticketType.slice(1)} Admission: $${(price / 100).toFixed(2)} (${arr.join(", ")})\n`
+}else{
+  receipt += `${purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)} ${purchases[i].ticketType[0].toUpperCase() + purchases[i].ticketType.slice(1)} Admission: $${(price / 100).toFixed(2)}\n`  
+}
+}
 
+  
+//create errors messages for incorrect ticket information the same way we did them in previous function
+ 
+//loop through the purchases array
+
+//Returns a receipt (based off of a number of purchase)
+return  `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------
+${receipt}-------------------------------------------\nTOTAL: $${(total / 100).toFixed(2)}`
+}
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
