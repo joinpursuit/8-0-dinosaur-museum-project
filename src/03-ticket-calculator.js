@@ -206,7 +206,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  //worked with Mina, Edgy, Fadila
+  //worked with Mina, Edgy, Fadila for part of it, but got outside help. I DIDN'T WRITE THIS
 
   let retString = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n';
   let ticketsTotal = 0;
@@ -234,7 +234,7 @@ function purchaseTickets(ticketData, purchases) {
 
       let extraString = [];
       for (let extra of purchase.extras) {
-        extraString.push(extra[0].toUpperCase() + extra.slice(1) + ' Access');
+        extraString.push(extra[0].toUpperCase() + extra.slice(1) + ' Access'); //WORKING
       }
 
       let capExtra = extraString.join(", ");
