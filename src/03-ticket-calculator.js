@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { general } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,50 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let total = 0
+  // happy case; general admission and membership admission with no extras.
+  if(ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'adult'){
+    total += ticketData.general.priceInCents.adult
+  }
+  if(ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'child'){
+    total += ticketData.general.priceInCents.child
+  }
+  if(ticketInfo.ticketType === 'general' && ticketInfo.entrantType === 'senior'){
+    total += ticketData.general.priceInCents.senior
+  }
+  if(ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'adult'){
+    total += ticketData.membership.priceInCents.adult
+  }
+  if(ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'child'){
+    total += ticketData.membership.priceInCents.child
+  }
+  if(ticketInfo.ticketType === 'membership' && ticketInfo.entrantType === 'senior'){
+    total += ticketData.membership.priceInCents.senior
+  }
+// for the extras
+  if(ticketInfo.extras.length > 0){
+    for (let i = 0; i < ticketInfo.extras.length; i++){
+      if(ticketInfo.extras[i] === 'movie'){ // if extra movie
+      total += 1000
+      // total += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+      }
+      if(ticketInfo.extras[i] === 'education' && ticketInfo.entrantType === 'child'){
+        total += 1000
+    } else if (ticketInfo.extras[i] === 'education' && (ticketInfo.entrantType === 'adult' || ticketInfo.entrantType === 'senior')){
+      total += 1200
+    }
+    if(ticketInfo.extras[i] === 'terrace' && ticketInfo.entrantType === 'child'){
+      total += 500
+  } else if (ticketInfo.extras[i] === 'terrace' && (ticketInfo.entrantType === 'adult' || ticketInfo.entrantType === 'senior')){
+    total += 1000
+  }
+
+  }
+}
+
+  return total
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +153,113 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let total = []
+  let output = ''
+  let GenAdm = 'Adult General Admission: '
+  output += `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+  // we need to iterate through our array of objects
+  for (const purchase of purchases) {
+    if(purchase.ticketType === 'general' && purchase.entrantType === 'adult'){
+      output += 'Adult General Admission: '
+     total.push(ticketData.general.priceInCents.adult) 
+    }
+    if(purchase.ticketType === 'general' && purchase.entrantType === 'child'){
+      output += 'Child General Admission: '
+      total.push(ticketData.general.priceInCents.child) 
+     }
+     if(purchase.ticketType === 'general' && purchase.entrantType === 'senior'){
+      output += 'Senior General Admission: '
+      total.push(ticketData.general.priceInCents.senior) 
+     }
+     if(purchase.ticketType === 'membership' && purchase.entrantType === 'adult'){
+      output += 'Adult Membership Admission: '
+      total.push(ticketData.membership.priceInCents.adult) 
+     }
+     if(purchase.ticketType === 'membership' && purchase.entrantType === 'child'){
+      output += 'Child Membership Admission: '
+      total.push(ticketData.membership.priceInCents.child) 
+     }
+     if(purchase.ticketType === 'membership' && purchase.entrantType === 'senior'){
+      output += 'Senior Membership Admission: '
+      total.push(ticketData.membership.priceInCents.senior) 
+     }
+     if(purchase.extras.length > 0){
+      for (let i = 0; i < purchase.extras.length; i++){
+        if(purchase.extras[i] === 'movie'){ // if extra movie
+        total.push(1000)
+        // total += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+        }
+        if(purchase.extras[i] === 'education' && purchase.entrantType === 'child'){
+          total.push(1000)
+      } else if (purchase.extras[i] === 'education' && (purchase.entrantType === 'adult' || purchase.entrantType === 'senior')){
+        total.push(1200)
+      }
+      if(purchase.extras[i] === 'terrace' && purchase.entrantType === 'child'){
+        total.push(500)
+    } else if (purchase.extras[i] === 'terrace' && (purchase.entrantType === 'adult' || purchase.entrantType === 'senior')){
+      total.push(1000)
+    }
+  }
+  // if(total.length === 0){
+    // output += `$${(total[0]/100).toFixed(2)}`
+    // output += `\n-------------------------------------------\nTOTAL: $${(total[0]/100).toFixed(2)}`
+  // }
+  // output += `$${(total[0]/100).toFixed(2)}`
+ }
+// output
+// start of output ( barebones )
+// if(total.length === 0){
+//   output += `$${(total[0]/100).toFixed(2)}`
+//   output += `\n-------------------------------------------\nTOTAL: $${(total[0]/100).toFixed(2)}`
+// }
+if(purchase.extras.length === 0){ // if we are not given an extra
+output += `$${(total[0]/100).toFixed(2)}`
+output += `\n-------------------------------------------\nTOTAL: $${(total[0]/100).toFixed(2)}`
+} else if(purchase.extras.length > 0){ // put a for loop inside of this if else to iterate through our extras array with similar logic as above.....
+  console.log('okay')
+}
+} // end of our for loop
+
+// for(const purchase of purchases){
+//   if(purchase.ticketType === 'general' && purchase.entrantType === 'adult'){
+//     output += 'Adult General Admission: '
+//    }
+// }
+
+
+console.log(output)
+return output
+} // end of our function
+    // for (const pur of purchase) {
+    //   if(pur.ticketType === 'general'){
+    //     return true
+    //   } 
+    // }
+  
+    // for (const i = 0;i < purchases.length; i++){
+    //   if(purchase[i].ticketType === 'general'){
+  //       return true
+  //     }
+  //   }
+  // }
+  //  if(total.length === 0){
+//   output = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${}Adult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00`
+// }
+
+// if(total === 0){ // for the error clause
+
+// return total
+// }
+
+// lets format
+// if (total.length = 0){
+// }
+
+
+// return (total[0]/100).toFixed(2)
+
+
 
 // Do not change anything below this line.
 module.exports = {

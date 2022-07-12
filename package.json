@@ -12,5 +12,8 @@
   "license": "ISC",
   "devDependencies": {
     "jest": "^27.0.6"
+  },
+  "dependencies": {
+    "8-0-dinosaur-museum-project": "github:PESolut/8-0-dinosaur-museum-project"
   }
 }
