@@ -54,7 +54,30 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let tixPrice = 0;
+  let tixType = ticketInfo['ticketType'];
+  let tixEntrant = ticketInfo['entrantType'];
+  let tixExtras = ticketInfo['extras'];
+
+  if (ticketData.hasOwnProperty(tixType)) {
+    if (ticketData[tixType]['priceInCents'].hasOwnProperty(tixEntrant)) {
+      tixPrice += ticketData[tixType]['priceInCents'][tixEntrant];
+    } else {
+      return `Entrant type '${tixEntrant}' cannot be found.`;
+    }
+  } else {
+    return `Ticket type '${tixType}' cannot be found.`;
+  }
+
+  for (const upcharge of tixExtras) {
+    if (!ticketData['extras'].hasOwnProperty(upcharge)) {
+      return `Extra type '${tixExtras}' cannot be found.`;
+    }
+    tixPrice += ticketData['extras'][upcharge]['priceInCents'][tixEntrant];
+  }
+  return tixPrice;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +132,41 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  const eachTicket = [];
+  let grandTotal = 0;
+  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+
+  for (const charge of purchases) {
+    let formatTixPrice;
+    let chargeValue = calculateTicketPrice(ticketData, charge);
+
+    let chargeEntrant = charge['entrantType'][0].toUpperCase() + charge['entrantType'].slice(1);
+    let chargeType = charge['ticketType'][0].toUpperCase() + charge['ticketType'].slice(1);
+    let chargeExtras = charge['extras'];
+    for (i = 0; i < chargeExtras.length; i++) {
+      chargeExtras[i] = chargeExtras[i][0].toUpperCase() + chargeExtras[i].slice(1) + " Access";
+    }
+  
+    if (typeof(chargeValue) === "string") {
+      return chargeValue;
+    }
+
+    grandTotal += chargeValue;
+    formatTixPrice = `$${(chargeValue/100).toFixed(2)}`;
+    chargeString = `${chargeEntrant} ${chargeType} Admission: ${formatTixPrice}`;
+    if (chargeExtras.length) {
+      chargeString += ' (' + chargeExtras.join(', ') + ')';
+    }
+    eachTicket.push(chargeString);
+  }
+
+  for (const finalTicket of eachTicket) {
+    receipt += finalTicket + '\n';
+  }
+  receipt += `-------------------------------------------\nTOTAL: $${(grandTotal/100).toFixed(2)}`;
+  return receipt;
+}
 
 // Do not change anything below this line.
 module.exports = {
