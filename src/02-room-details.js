@@ -25,7 +25,23 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  // outer loop to iterate dinosaurs
+  for (let dinosaur of dinosaurs){
+    // condition if a name for a dinosaur is equal to the given value
+    if(dinosaur.name === dinosaurName){
+      // inner loop to iterate through given value for rooms
+      for (let room of rooms){
+        // if the dinosaur in a room has a dinosaurs id, it will return the name of that room. if not , it will return an error message notifying that the dinosaur isnt found in a room. if the dinosaur isnt found in the dinosaur object, the error message will print.
+        if (room.dinosaurs.includes(dinosaur.dinosaurId)){
+          return room.name
+        }
+      }
+      return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+    }
+  }
+  return `Dinosaur with name '${dinosaurName}' cannot be found.`
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +65,32 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  // default value assigned as an array
+  let roomsName = []
+  
+  // outer loop will iterate through the rooms object.
+  for(let room of rooms){
+    
+    // if a room includes the value of the id. inner loop iterates through and connectsTo array inside of rooms. The variable will be set to true if there is a connection for rooms. The second if statement is for rooms that have connection by the id room. the third if statement is for if the connection for the room is true, but the id is wrong
+    if(room.roomId.includes(id)){
+      for(let connection of room.connectsTo){
+        let present = true
+        for (let room of rooms){
+          if(connection.includes(room.roomId)){
+            roomsName.push(room.name)
+            present = false
+          }
+        }
+          if (present){
+            return `Room with ID of '${connection}' could not be found.`
+          }
+        }
+        return roomsName
+      }
+    }
+    return `Room with ID of '${id}' could not be found.`
+}
 
 module.exports = {
   getRoomByDinosaurName,

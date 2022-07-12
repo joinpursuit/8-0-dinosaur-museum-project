@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,31 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+// default ticket price value
+  let ticketPrice = 0
+// first if checks if the ticketInfo ticketType keypair is false. second if checks for if the entrant's type cost is false using priceInCents. The ticketprice will then be determined by the entrant type.
+if (!(ticketInfo.ticketType in ticketData)) {
+  return `Ticket type 'incorrect-type' cannot be found.`
+}
+if ( !(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents)) {
+  return `Entrant type 'incorrect-entrant' cannot be found.`
+}  
+ ticketPrice = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+
+// last if checks for the condition for the elements in the array. this for loop iterates thrugh the array of ticketInfo. the ticketPrice will be based of the type of extras in each iteration
+if (ticketInfo.extras.length) {
+  for (const extra of ticketInfo.extras) {
+    if (extra in ticketData.extras) { 
+      ticketPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+    }
+    else {
+      return `Extra type 'incorrect-extra' cannot be found.`
+    }
+  }
+}
+return ticketPrice
+}
 
 /**
  * purchaseTickets()
@@ -109,8 +134,42 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+// default values
+let total = 0 
+let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
 
+// outer loop to iterate
+for(let purchase of purchases){
+
+// default value  
+let costOfTicket = calculateTicketPrice(ticketData, purchase);
+  
+// first if checks if the cost of the ticket isnt a numbeer
+  if(typeof costOfTicket === 'string'){
+    return costOfTicket
+  }
+
+// array for description for extras  
+let extraInfo = []
+
+// inner loop to iterate through extras in purchase array for description key
+for(let extra of purchase.extras){
+
+// pushed into array extraInfo  
+  extraInfo.push(ticketData.extras[extra].description)
+}
+
+// second if checks if the length is true. then will formart entrant type, access, and the cost of the ticket in a receipt. finally, the receipt with total price will be formatted
+if(purchase.extras.length){
+  extraInfo = ` (${extraInfo.join(', ')})`
+}
+receipt += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(costOfTicket/100).toFixed(2)}${extraInfo}\n`
+total += costOfTicket/100
+}
+receipt += `-------------------------------------------\nTOTAL: $${total.toFixed(2)}`
+return receipt
+}
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
