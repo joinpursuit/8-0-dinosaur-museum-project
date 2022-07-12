@@ -25,7 +25,30 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let roomName = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+  let dinosaur = `Dinosaur with name '${dinosaurName}' cannot be found.`;
+
+  for(let dino of dinosaurs){ 
+    if(dino.name.includes(dinosaurName)){ // checks if a valid dinosaur name has been given, and then finds its ID if valid
+      dinosaur = dino.dinosaurId;
+    }
+  }
+  
+if(dinosaur === `Dinosaur with name '${dinosaurName}' cannot be found.`){ //if dinosaur name is invalid, then an error message is returned
+  return dinosaur;
+}
+
+  for(let room of rooms){
+    if(room.dinosaurs.includes(dinosaur)){ // Finds room that includes the dinosaur ID, or returns error message 
+      roomName = room.name;
+    }
+
+  }
+
+  return roomName;
+
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +72,43 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  const errorTest = []; // tests if connected rooms has an invalid ID
+  let connectedRooms; // array of connnected rooms
+  
+  for(let room of rooms){
+    if(room.roomId.includes(id)){ // checks if given room ID is valid. If so, stores all connected rooms 
+      connectedRooms = room.connectsTo; 
+      }
+    }
+  
+  if(!connectedRooms){ // if nothing is stored in connected rooms, then ID is invalid
+    return `Room with ID of '${id}' could not be found.`
+  }
+
+  // Changes room ID with the correct room name for reach connected room
+  for(let i = 0; i < connectedRooms.length; i++){
+    for(let room of rooms){
+      if(room.roomId.includes(connectedRooms[i])){ // searches room data for the room name of each room ID
+        connectedRooms[i] = room.name; 
+        errorTest[i] = true;
+        break;
+        }
+        else{
+          errorTest[i] = false;
+        }
+      }
+    
+  }
+
+  if(errorTest.includes(false)){ // Error message will return if there is a false value in the error test array. Indicating the invalid ID index and the index of the false value respectfully
+    return `Room with ID of '${connectedRooms[errorTest.indexOf(false)]}' could not be found.`
+  }
+
+
+  return connectedRooms;
+
+}
 
 module.exports = {
   getRoomByDinosaurName,
