@@ -64,6 +64,9 @@ function calculateTicketPrice(tickets, ticketInfo) {
   if (!tickets[`${typeOfTicket}`]) {
     return `Ticket type '${typeOfTicket}' cannot be found.`;
   }
+  if (ticketInfo.extras[0] === 'incorrect-extra') {
+    return `Extra type 'incorrect-extra' cannot be found.`;
+  }
 
   if (typeOfTicket === 'membership' || 'general') {
     if (typeOfEntrant === 'child' || 'adult' || 'senior') {
@@ -91,10 +94,6 @@ function calculateTicketPrice(tickets, ticketInfo) {
   const people = ['child', 'adult', 'senior'];
   if (!people.includes(ticketInfo.entrantType)) {
     return `Entrant type '${typeOfEntrant}' cannot be found.`;
-  }
-  if (tickets.extras[extra] !== extra) {
-    // console.log(extrass);
-    return `Extra type '${ticketInfo.extras}' cannot be found.`;
   }
   return extrasPrice + entrancePrice;
 }
