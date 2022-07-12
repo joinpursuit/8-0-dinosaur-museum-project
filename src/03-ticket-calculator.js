@@ -26,42 +26,59 @@ const exampleTicketData = require("../data/tickets");
  * @param {string} ticketInfo.entrantType - Represents the type of entrant. Prices change depending on the entrant.
  * @param {string[]} ticketInfo.extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
  * @returns {number} The cost of the ticket in cents.
- *
- * EXAMPLE:
- *  const ticketInfo = {
-      ticketType: "general",
-      entrantType: "adult",
-      extras: [],
-    };
-    calculateTicketPrice(tickets, ticketInfo);
-    //> 3000
- *  
- * EXAMPLE:
- *  const ticketInfo = {
-      ticketType: "membership",
-      entrantType: "child",
-      extras: ["movie"],
-    };
-    calculateTicketPrice(tickets, ticketInfo);
-    //> 2500
-
- * EXAMPLE:
- *  const ticketInfo = {
-      ticketType: "general",
-      entrantType: "kid", // Incorrect
-      extras: ["movie"],
-    };
-    calculateTicketPrice(tickets, ticketInfo);
-    //> "Entrant type 'kid' cannot be found."
  */
+ // EXAMPLE:
+  // const ticketInfo = {
+  //     ticketType: "general",
+  //     entrantType: "adult",
+  //     extras: [],
+  //   };
+  //   calculateTicketPrice(tickets, ticketInfo);
+    //> 3000
+   
+//  EXAMPLE:
+//   const ticketInfo = {
+//       ticketType: "membership",
+//       entrantType: "child",
+//       extras: ["movie"],
+//     };
+//     calculateTicketPrice(tickets, ticketInfo);
+//     //> 2500
+
+// EXAMPLE:
+  // const ticketInfo = {
+  //     ticketType: "general",
+  //     entrantType: "kid", // Incorrect
+  //     extras: ["movie"],
+  //   };
+  //  calculateTicketPrice(tickets, ticketInfo);
+    //> "Entrant type 'kid' cannot be found."
+ 
 function calculateTicketPrice(ticketData, ticketInfo) {
+  console.log("This is ticketData " + ticketData.general)
+  console.log("This is ticketData " + ticketInfo)
   
+// for (let ticketBought in ticketInfo ){
+//     if(ticketBought.ticketType !== "general" || ticketBought.ticketType !== "membership"){
+//     return "Ticket type '" + ticketBought.ticketType + "' cannot be found."
+//     }
+//     if(ticketBought.entrantType !== "adult" || ticketBought.entrantType !== "senior" || ticketBought.entrantType !== "child" ){
+//     return "Entrant type '" + ticketBought.entrantType + "' cannot be found."
+//     }
+
+//     if(ticketBought.extras.includes("adult") === false 
+//        || ticketBought.extras.includes("senior") === false 
+//        || ticketBought.extras.includes("child") === false) {
+//           return "Extras type '" + ticketBought["extras "]+ "' cannot be found."
+//     }
+//   }  
+
 }
 
 /**
  * purchaseTickets()
  * ---------------------
- * Returns a receipt based off of a number of purchase. Each "purchase" maintains the shape from `ticketInfo` in the previous function.
+ * Returns a receipt based off of a number of purchase. Each "purchase" maintains the shape from `ticketBought` in the previous function.
  *
  * Any errors that would occur as a result of incorrect ticket information should be surfaced in the same way it is in the previous function.
  * 
