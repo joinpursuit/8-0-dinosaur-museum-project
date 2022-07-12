@@ -57,14 +57,14 @@ const exampleTicketData = require("../data/tickets");
 function calculateTicketPrice(ticketData, ticketInfo) {
   //console.log(ticketData)
   let ticket = 0;
-//LOGIC HERE PLZ
+//LOGIC HERE PLZ EDGY
 //find base prices.. if ticket type is in data
 if(ticketInfo.ticketType in ticketData){
   // now find the data of ticket type and its price in cents 
     if(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents){
-      //update price value 
+      //update price value for each ticket
       ticket += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
-      console.log(ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType])
+      //console.log(ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType])
     }
      else {
       return `Entrant type 'incorrect-entrant' cannot be found.`
@@ -144,8 +144,11 @@ function purchaseTickets(ticketData, purchases) {
     let thePrice = calculateTicketPrice(ticketData, purchases[i])
     if (typeof thePrice === 'string'){
       return thePrice;
+    }else if (typeof thePrice === 'number'){
+      return thePrice;
     }
-  } 
+    }
+  
   let totalPrice = 0;
   let receipt =''; 
   for (let i=0; i < purchases.length; i++){
@@ -154,12 +157,12 @@ function purchaseTickets(ticketData, purchases) {
     //console.log(price);
     let person = purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)
     
-    let ticketType = purchases[i].ticketType[0].toUpperCase() + purchases[i].ticketType.slice(1)
+    let ticketType = purchases[i].ticketType[0].toUpperCase() + purchases[i].ticketType.slice(1) + " " + ticketData[purchases[i].ticketType][`description`];
+    console.log(ticketType)
     let entryPass = `${person} ${ticketType} Admission: $${(price/100).toFixed(2)}`; 
     //console.log(`${person} ${ticketType}`)
-    //console.log(entryPass)
     
-    
+  
     let receipt2 =[];
     for (let e = 0; e < purchases[i].extras.length; e++){
 

@@ -33,21 +33,23 @@ function getLongestDinosaur(dinosaurs) {
   //created an object to return to 
   let tall = {}
   //declared a varaible to start my count at the first dino
-  let tallDino = dinosaurs[0];
+   let tallDino = dinosaurs[0];
   // declared a variable with an empty string. this will beused to store all the dino names.
-let newName = ""
+      let newName = ""
 //compare first dino using a for loop
-for (let i=0; i < dinosaurs.length; i++){
+        for (let i=0; i < dinosaurs.length; i++){
 //if there is a dino who's length is greastest, it will store the tallest dino in the dino object of arrays
   if(dinosaurs[i].lengthInMeters > tallDino.lengthInMeters){
+    //talldjno is updated with the each dino Id after it loops.. new name is updated with all the values of the dino name after each loop..
     tallDino = dinosaurs[i];
-    newName = dinosaurs[i].name;
+      newName = dinosaurs[i].name;
   
   }
 }
-let lengthInFeet = tallDino.lengthInMeters * 3.281
-//OR tallDino *= 3.281
-tall[newName] = lengthInFeet;
+      let lengthInFeet = tallDino.lengthInMeters * 3.281
+//OR tallDino.lenthInmeters *= 3.281
+// assiging the new key with a value of length in feet
+        tall[newName] = lengthInFeet;
 
 return tall;
 }
@@ -75,14 +77,14 @@ return tall;
 function getDinosaurDescription(dinosaurs, id) {
 //created a loop to go through the entire array of dino objects.
 for (let i = 0; i < dinosaurs.length; i++){
+  //comparing to find all dino with an available ID
   if(dinosaurs[i].dinosaurId === id){
-
     return`${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.`
   }
 }
  return "A dinosaur with an ID of 'incorrect-id' cannot be found."
- 
 }
+ 
 
 
 
