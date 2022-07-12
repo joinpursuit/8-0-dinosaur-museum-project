@@ -213,14 +213,11 @@ function purchaseTickets(ticketData, purchases) {
 //   output += `$${(total[0]/100).toFixed(2)}`
 //   output += `\n-------------------------------------------\nTOTAL: $${(total[0]/100).toFixed(2)}`
 // }
-if(purchase.extras.length === 0){
-  if(purchases.length === 1){
-
-  }
-  if(true){
+if(purchase.extras.length === 0){ // if we are not given an extra
 output += `$${(total[0]/100).toFixed(2)}`
 output += `\n-------------------------------------------\nTOTAL: $${(total[0]/100).toFixed(2)}`
-  }
+} else if(purchase.extras.length > 0){ // put a for loop inside of this if else to iterate through our extras array with similar logic as above.....
+  console.log('okay')
 }
 } // end of our for loop
 
