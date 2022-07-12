@@ -93,7 +93,7 @@ function getConnectedRoomNamesById(rooms, id) {
     } 
   }
   //if array has no value, then return error message that room cannot be found.
-  if(array.length === 0){
+  if(!array.length){
     return `Room with ID of '${id}' could not be found.`
     }  
   // otherwise return name of room  

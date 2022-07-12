@@ -174,6 +174,7 @@ function purchaseTickets(ticketData, purchases) {
   return receipt
 }  
 
+// ATTEMPTED TO USE FOR LOOPS INSTEAD OF FOR OF LOOPS 
 // let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
 // let totalPrice = 0
 
