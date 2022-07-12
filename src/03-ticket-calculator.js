@@ -212,6 +212,7 @@ function purchaseTickets(ticketData, purchases) {
   let ticketsTotal = 0;
 
   //ERRORS
+  // I did this part
   for (let purchase of purchases) {
 
     let ticketTotal = 0;
@@ -221,12 +222,13 @@ function purchaseTickets(ticketData, purchases) {
       return total;
       } else if (typeof total === 'number') {
       ticketsTotal += total;
-    }
+    }// end my part
 
     let formattedTicketTotal = (total / 100).toFixed(2);
 
-    //DYNAMIC VARS
-    let capEntrant = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1) + " " + ticketData[purchase.ticketType][`description`] // WORKING
+    // I did this part
+    let capEntrant = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1) + " " + ticketData[purchase.ticketType][`description`];
+    // end my part
              
     retString += `${capEntrant}: $${formattedTicketTotal}`;
 
@@ -234,7 +236,7 @@ function purchaseTickets(ticketData, purchases) {
 
       let extraString = [];
       for (let extra of purchase.extras) {
-        extraString.push(extra[0].toUpperCase() + extra.slice(1) + ' Access'); //WORKING
+        extraString.push(extra[0].toUpperCase() + extra.slice(1) + ' Access'); 
       }
 
       let capExtra = extraString.join(", ");
