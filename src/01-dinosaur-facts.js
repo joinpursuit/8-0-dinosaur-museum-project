@@ -22,7 +22,36 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  let dinoSizes = 0 // setting up a number variable for the dinosaur heights in the for loop
+  let dinoName = " " // setting up a string variable for the dinosaur names in the for loop
+
+  if (dinosaurs.length === 0){
+    return {}
+  } 
+  
+  // above is the guard clause, stating that if the length of the array equals zero, meaning there's nothing in it, then 
+  // return the empty object
+
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].lengthInMeters > dinoSizes){
+      dinoSizes = dinosaurs[i].lengthInMeters
+      dinoName = dinosaurs[i].name
+      console.log(dinoName)
+    }
+  }
+  
+  // the for loop above states that when going through every index in the dinosaurs array, if the lengthInMeters value is greater than
+  // the value of the dinoSizes variable, console.log the value of dinoName, which was assigned in the logic of the loop. it also
+  // reiterates the values of the dinoSizes and dinoName variables
+  
+  dinoSizes = dinoSizes * 3.281
+  let final = {}
+  final[dinoName] = dinoSizes
+  return final
+
+  // this final part converts the dinoSizes into meters and creates an empty object to assign the key value pair of dinoName and dinoSizes.
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +73,21 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+
+  // declare a variable to store your information
+  let allInfo;
+
+  // this loop explains that if each id in the dinosaurs object matches up to the id parameter, return the given string
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].dinosaurId === id){
+       allInfo = dinosaurs[i] // this declaration stores the information of every index in the dinosaurs object
+       return(`${allInfo.name} (${allInfo.pronunciation})\n${allInfo.info} It lived in the ${allInfo.period} period, over ${allInfo.mya[allInfo.mya.length - 1]} million years ago.`)
+    } 
+  }
+  // returns an error message if the for loop cannot be completed
+ return  `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +114,30 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key = "dinosaurId") {
+  // purpose of the function is to return an array of values containing dinosaurs that were alive at the given 'mya' parameter
+  // if key is provided, returns value of each key. otherwise if the value of the key is not provided, returns the id.
+  // if mya is a single digit, it's allowed to equal the given value or one less than the given value.
+  // this will be a for of loop, the two numbers are a range
+
+  let dinoArray = []; // create an empty array to push the information into
+  
+  for (const dinosaur of dinosaurs) { // separates the individual dinosaur objects from the dinosaurs array of objects
+    if (dinosaur.mya[0] === mya || dinosaur.mya[0] - 1 === mya ){ 
+      // if the first element of the individual dinosaur object in the key of mya is equal to the given value of the parameter mya
+      // or if one less of the first element of the individual dinosaur object in the key of mya is equal to the given value of the 
+      // parameter mya
+      dinoArray.push(dinosaur[key])
+      // then push that into the empty array dinoArray, specifically with the key of "dinosaurId", shown in the parameter above
+    } if (dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya){
+      // if the first element of the individual dinosaur object in the key of mya is greater than or equal to the given mya value 
+      // AND if the second element of the individual dinosaur object in the key of mya is less than or equal to the given mya value
+      dinoArray.push(dinosaur[key])
+      // then push that into the // then push that into the empty array dinoArray, specifically with the key of "dinosaurId"
+      // this covers the dinosaurs that were alive within a range of numbers
+    }
+  } return dinoArray 
+}
 
 module.exports = {
   getLongestDinosaur,
