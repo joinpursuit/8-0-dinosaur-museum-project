@@ -94,9 +94,9 @@ function getConnectedRoomNamesById(rooms, id) {
         nameArr.push(room.name);
       }
     }
-    if (connectedRoomFound !== room.roomId) {
-      return connectedErrorMessage;
-    }
+    // if (connectedRoomFound !== room.roomId) {
+    //   return connectedErrorMessage;
+    // }
   }
   return nameArr;
 }

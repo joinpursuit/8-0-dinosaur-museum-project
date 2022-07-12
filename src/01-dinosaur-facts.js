@@ -111,35 +111,16 @@ function getDinosaurDescription(dinosaurs, id) {
 //     return year;
 //   }
 // }
-function getDinosaursAliveMya(dinosaurs, mya, key) {
-  const newArr = [];
-
+function getDinosaursAliveMya(dinosaurs, mya, key = 'dinosaurId') {
+  let newArray = [];
   for (let dino of dinosaurs) {
-    // write code here for if there is a key
-    if (dino.key) {
-      newArr.push(dino.key);
-    } else {
-      // if there's no key
-      if (dino.mya.includes(mya) || dino.mya.includes(mya - 1)) {
-        newArr.push(dino.dinosaurId);
-      } else {
-        const x = dino.mya;
-        if (x.length == 1) {
-          if (x[0] === mya || x[0] === mya + 1) {
-            newArr.push(dino.dinosaurId);
-          }
-        } else {
-          x.sort((a, b) => {
-            return a - b;
-          });
-          if (x[0] <= mya && x[1] >= mya) {
-            newArr.push(dino.dinosaurId);
-          }
-        }
-      }
+    if (dino.mya[0] - 1 <= mya && dino.mya >= mya) {
+      newArray.push(dino[key]);
+    } else if (dino.mya[dino.mya.length - 1] <= mya && dino.mya[0] >= mya) {
+      newArray.push(dino[key]);
     }
   }
-  return newArr;
+  return newArray;
 }
 
 module.exports = {

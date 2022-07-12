@@ -58,23 +58,12 @@ function calculateTicketPrice(tickets, ticketInfo) {
   let typeOfTicket = ticketInfo.ticketType;
   let typeOfEntrant = ticketInfo.entrantType;
   let entrancePrice = 0;
-  let typeOfExtra = '';
   let extrasPrice = 0;
   let extrasArr = ticketInfo.extras;
 
   if (!tickets[`${typeOfTicket}`]) {
     return `Ticket type '${typeOfTicket}' cannot be found.`;
   }
-
-  // if (!ticketInfo.extras) {
-  //   return `Ticket type '${typeOfTicket}' cannot be found.`;
-  // }
-
-  // const extrass = ['movie', 'terrace', 'education'];
-  // if (!extrass.includes(ticketInfo.extras)) {
-  //   console.log(extrass);
-  //   return `Extra type '${ticketInfo.extras}' cannot be found.`;
-  // }
 
   if (typeOfTicket === 'membership' || 'general') {
     if (typeOfEntrant === 'child' || 'adult' || 'senior') {
@@ -86,8 +75,11 @@ function calculateTicketPrice(tickets, ticketInfo) {
     if (extrasArr.length >= 1) {
       for (let extra of ticketInfo.extras) {
         // console.log(extra)
-        console.log(`hello:`, tickets.extras[extra][extra.priceInCents]);
-        extrasPrice += tickets.extras[extra]['priceInCents'][typeOfEntrant];
+        // console.log(
+        //   `hello:`,
+        //   tickets.extras[extra][`priceInCents`][typeOfEntrant],
+        // );
+        extrasPrice += tickets.extras[extra][`priceInCents`][typeOfEntrant];
       }
       // if (typeOfExtra === 'movie' || 'terrace' || 'education') {
       //   // console.log(typeOfExtra)
@@ -99,6 +91,10 @@ function calculateTicketPrice(tickets, ticketInfo) {
   const people = ['child', 'adult', 'senior'];
   if (!people.includes(ticketInfo.entrantType)) {
     return `Entrant type '${typeOfEntrant}' cannot be found.`;
+  }
+  if (tickets.extras[extra] !== extra) {
+    // console.log(extrass);
+    return `Extra type '${ticketInfo.extras}' cannot be found.`;
   }
   return extrasPrice + entrancePrice;
 }
