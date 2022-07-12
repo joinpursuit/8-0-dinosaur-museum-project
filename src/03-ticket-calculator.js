@@ -154,25 +154,34 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  total = []
+  let total = []
+  let output = ''
+  let GenAdm = 'Adult General Admission: '
+  output += `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
   // we need to iterate through our array of objects
   for (const purchase of purchases) {
     if(purchase.ticketType === 'general' && purchase.entrantType === 'adult'){
+      output += 'Adult General Admission: '
      total.push(ticketData.general.priceInCents.adult) 
     }
     if(purchase.ticketType === 'general' && purchase.entrantType === 'child'){
+      output += 'Child General Admission: '
       total.push(ticketData.general.priceInCents.child) 
      }
      if(purchase.ticketType === 'general' && purchase.entrantType === 'senior'){
+      output += 'Senior General Admission: '
       total.push(ticketData.general.priceInCents.senior) 
      }
      if(purchase.ticketType === 'membership' && purchase.entrantType === 'adult'){
+      output += 'Adult Membership Admission: '
       total.push(ticketData.membership.priceInCents.adult) 
      }
      if(purchase.ticketType === 'membership' && purchase.entrantType === 'child'){
+      output += 'Child Membership Admission: '
       total.push(ticketData.membership.priceInCents.child) 
      }
      if(purchase.ticketType === 'membership' && purchase.entrantType === 'senior'){
+      output += 'Senior Membership Admission: '
       total.push(ticketData.membership.priceInCents.senior) 
      }
      if(purchase.extras.length > 0){
@@ -192,19 +201,39 @@ function purchaseTickets(ticketData, purchases) {
       total.push(1000)
     }
   }
+  // if(total.length === 0){
+    // output += `$${(total[0]/100).toFixed(2)}`
+    // output += `\n-------------------------------------------\nTOTAL: $${(total[0]/100).toFixed(2)}`
+  // }
+  // output += `$${(total[0]/100).toFixed(2)}`
  }
-}
-// if(total === 0){ // for the error clause
+// output
+// start of output ( barebones )
+// if(total.length === 0){
+//   output += `$${(total[0]/100).toFixed(2)}`
+//   output += `\n-------------------------------------------\nTOTAL: $${(total[0]/100).toFixed(2)}`
+// }
+if(purchase.extras.length === 0){
+  if(purchases.length === 1){
 
-// return total
+  }
+  if(true){
+output += `$${(total[0]/100).toFixed(2)}`
+output += `\n-------------------------------------------\nTOTAL: $${(total[0]/100).toFixed(2)}`
+  }
+}
+} // end of our for loop
+
+// for(const purchase of purchases){
+//   if(purchase.ticketType === 'general' && purchase.entrantType === 'adult'){
+//     output += 'Adult General Admission: '
+//    }
 // }
 
 
-return total
+console.log(output)
+return output
 } // end of our function
-
-
-  
     // for (const pur of purchase) {
     //   if(pur.ticketType === 'general'){
     //     return true
@@ -217,6 +246,21 @@ return total
   //     }
   //   }
   // }
+  //  if(total.length === 0){
+//   output = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${}Adult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00`
+// }
+
+// if(total === 0){ // for the error clause
+
+// return total
+// }
+
+// lets format
+// if (total.length = 0){
+// }
+
+
+// return (total[0]/100).toFixed(2)
 
 
 
