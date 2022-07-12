@@ -133,7 +133,9 @@ function getDinosaursAliveMya(dinosaurs, mya, key = "dinosaurId") {
   //set the key equal toe DinosaurId to push in the id into a new array later on
   let newArray = []
   for(let i = 0; i < dinosaurs.length; i++){
+    //Looping through dinosaurs array
     if(dinosaurs[i].mya[0]-1 <= mya && dinosaurs[i].mya >= mya){
+      //Checking if the dinosaurs mya is less than function mya
       newArray.push(dinosaurs[i][key])
     }
    else if (dinosaurs[i].mya[dinosaurs[i].mya.length - 1] <= mya && dinosaurs[i].mya[0] >= mya){

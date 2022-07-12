@@ -142,25 +142,47 @@ return newPrice
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  let newStr = ""
-   let totalSum = 0
-   let sum = 0
-   let newArray = []
-  for(let i = 0; i < purchases.length; i++){
-    let newType = calculateTicketPrice(ticketData, purchases[i])
-      if(typeof newType === "string"){
-         return newType
-      }  
-      if(typeof newType === "number"){
-       totalSum += (newType / 100)
-        sum = (newType / 100)
-        newStr = `${purchases[i].entrantType.charAt(0).toUpperCase() + purchases[i].entrantType.slice(1)} ${purchases[i].ticketType.charAt(0).toUpperCase() + purchases[i].ticketType.slice(1)} Admission: $${sum.toFixed(2)}\n`
-        newArray.push(newStr)
-        }  
+//   let newStr = ""
+//    let totalSum = 0
+//    let sum = 0
+//    let newArray = []
+//   for(let i = 0; i < purchases.length; i++){
+//     for(let extra of purchases.extras){
+//     let newType = calculateTicketPrice(ticketData, purchases[i])
+//       if(typeof newType === "string"){
+//          return newType
+//       } 
+//       if(typeof newType === "number"){
+//        totalSum += (newType / 100)
+//         sum = (newType / 100)
+//         newStr = `${purchases[i].entrantType.charAt(0).toUpperCase() + purchases[i].entrantType.slice(1)} ${purchases[i].ticketType.charAt(0).toUpperCase() + purchases[i].ticketType.slice(1)} Admission: $${sum.toFixed(2)}\n`
+//         newArray.push(newStr)
+//         }
+     
+// }
+//   }
+//  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${newArray.join("")}-------------------------------------------\nTOTAL: $${totalSum.toFixed(2)}`
+//     }
+let newStr = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+let newTotal = 0 
+for(let gm of purchases){
+  let newType = calculateTicketPrice(ticketData , gm)
+  if(typeof newType === "string"){
+    return newType
+  }
+  let newArray = []
+  for(let extra of gm.extras){
+ newArray.push(ticketData.extras[extra].description)
+ }
+ if(gm.extras.length){
+  newArray = ` (${newArray.join(", ")})`
+ }
+ newStr += `${gm.entrantType.charAt(0).toUpperCase() + gm.entrantType.slice(1)} ${ticketData[gm.ticketType].description}: $${(newType /100).toFixed(2)}${newArray}\n`
+ newTotal += (newType / 100)
 }
- return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${newArray.toString().replaceAll(',', '')}-------------------------------------------\nTOTAL: $${totalSum.toFixed(2)}`
-    }
-
+newStr += `-------------------------------------------\nTOTAL: $${newTotal.toFixed(2)}`
+return newStr
+}
 
 // Do not change anything below this line.
 module.exports = {
