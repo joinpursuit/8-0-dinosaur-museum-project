@@ -54,7 +54,25 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let info = 0, count = 0;
+  const extras = Object.keys(ticketData.extras), ticketType = ['child', 'adult', 'senior', 'general', 'membership'], ticketAge = ticketInfo.entrantType, ticketExtra = ticketInfo.extras;
+  if(!ticketType.includes(ticketInfo.ticketType)){
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  } else if (!ticketType.includes(ticketAge)) {
+    return `Entrant type '${ticketAge}' cannot be found.`
+  }
+  else if (ticketType.includes(ticketAge)){
+    info += ticketData[ticketInfo.ticketType].priceInCents[ticketAge];
+    ticketExtra.forEach(extra => {
+      extras.includes(extra) ? info += ticketData.extras[extra].priceInCents[ticketAge] : count++;
+    });}
+  // } else if (!ticketType.includes(ticketAge)) {
+  //   return `Entrant type '${ticketAge}' cannot be found.`
+  // }
+   
+  return count > 0 ? "Extra type 'incorrect-extra' cannot be found.": info;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +127,44 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  const ticketList = [];
+  let purchaseTotal = 0, extraList = [];
+  for (let purchase of purchases){
+    if(isNaN(calculateTicketPrice(ticketData, purchase))){
+      return calculateTicketPrice(ticketData, purchase);
+    } else if (purchase.extras.length === 0) {
+    ticketList.push(`${purchase.entrantType[0][0].toUpperCase()}${purchase.entrantType.slice(1)} ${purchase.ticketType[0][0].toUpperCase()}${purchase.ticketType.slice(1)} Admission: $${((calculateTicketPrice(ticketData, purchase)) / 100).toFixed(2)}`);
+ purchaseTotal += calculateTicketPrice(ticketData, purchase);
+  } else {
+    purchase.extras.forEach(extra =>
+     extraList.push(ticketData.extras[extra].description));
+     ticketList.push(`${purchase.entrantType[0][0].toUpperCase()}${purchase.entrantType.slice(1)} ${purchase.ticketType[0][0].toUpperCase()}${purchase.ticketType.slice(1)} Admission: $${((calculateTicketPrice(ticketData, purchase)) / 100).toFixed(2)} (${extraList.join(', ')})`);
+     purchaseTotal += calculateTicketPrice(ticketData, purchase);
+     extraList = [];
+  }
+} 
+  // purchases.forEach(purchase => {
+  //   if(isNaN(calculateTicketPrice(ticketData, purchase))){
+  //     console.log(isNaN(calculateTicketPrice(ticketData, purchase)));
+  //     console.log(calculateTicketPrice(ticketData, purchase));
+  //     return calculateTicketPrice(ticketData, purchase);
+  //   } else {
+  //     purchase.extras.forEach(extra =>
+  //       extraList.push(ticketData.extras[extra].description));
+  //     !!extraList ? ticketList.push(`${purchase.entrantType[0][0].toUpperCase()}${purchase.entrantType.slice(1)} ${purchase.ticketType[0][0].toUpperCase()}${purchase.ticketType.slice(1)} Admission: $${((calculateTicketPrice(ticketData, purchase)) / 100).toFixed(2)} (${extraList.join(', ')})`) : ticketList.push(`${purchase.entrantType[0][0].toUpperCase()}${purchase.entrantType.slice(1)} Membership Admission: $${((calculateTicketPrice(ticketData, purchase)) / 100).toFixed(2)}`);
+  //     total += calculateTicketPrice(ticketData, purchase);
+  //     console.log(extraList === undefined)
+  //     console.log(extraList)
+  //     // extraList = [];
+  //   };
+  // }
+  //   )
+  // console.log( `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${ticketList.join('\n')}
+  // -------------------------------------------\nTOTAL: $${(purchaseTotal / 100).toFixed(2)}`)
+return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${ticketList.join('\n')}
+-------------------------------------------\nTOTAL: $${(purchaseTotal / 100).toFixed(2)}`;
+}
 
 // Do not change anything below this line.
 module.exports = {
