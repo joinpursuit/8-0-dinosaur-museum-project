@@ -143,20 +143,22 @@ return newPrice
  */
 function purchaseTickets(ticketData, purchases) {
   let newStr = ""
-  let sum = 0
-  let sum2 = 0
+   let totalSum = 0
+   let sum = 0
+   let newArray = []
   for(let i = 0; i < purchases.length; i++){
     let newType = calculateTicketPrice(ticketData, purchases[i])
       if(typeof newType === "string"){
          return newType
-      }
-      if(newType === ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType]){
-        sum += ((newType)/100)
-        sum2 = ((newType)/100)
-        newStr = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchases[i].entrantType.charAt(0).toUpperCase() + purchases[i].entrantType.slice(1) } ${purchases[i].ticketType.charAt(0).toUpperCase() + purchases[i].ticketType.slice(1)} Admission: $${sum2.toFixed(2)}\n-------------------------------------------\nTOTAL: $${sum.toFixed(2)}`
-      }
-  }
-    return newStr
+      }  
+      if(typeof newType === "number"){
+       totalSum += (newType / 100)
+        sum = (newType / 100)
+        newStr = `${purchases[i].entrantType.charAt(0).toUpperCase() + purchases[i].entrantType.slice(1)} ${purchases[i].ticketType.charAt(0).toUpperCase() + purchases[i].ticketType.slice(1)} Admission: $${sum.toFixed(2)}\n`
+        newArray.push(newStr)
+        }  
+}
+ return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${newArray.toString().replaceAll(',', '')}-------------------------------------------\nTOTAL: $${totalSum.toFixed(2)}`
     }
 
 
