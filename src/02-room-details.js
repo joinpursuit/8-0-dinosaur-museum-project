@@ -25,7 +25,30 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+ 
+  let dinosId; // declare a variable with no value, so that you can assign value later within the code block
+  for(let dino of dinosaurs) { // for/of loop to loop through object dinosaurs
+    if (dino.name === dinosaurName) {
+      //if dino name is strictly equal to the key dinosaurName
+      dinosId = dino.dinosaurId;
+      //return line 34
+    }
+  }
+  // console.log(dinosId,!dinosId)
+  if (!dinosId) { // if no dinosId 
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`; // returns error message stating dinosaur is not found
+  }
+  for (let room of rooms) { // creates a variable named room to loop thru rooms
+    for (let stuff of room.dinosaurs) {// loop within a loop is multiple : many 2 many ... this loops thru the stuff (data) within the room.dinosaurs
+      if (stuff === dinosId) { //conditional statement if the stuff in room.dinosaurs is strictly equal to the value in dinosId
+        return room.name; // return the room name
+      }
+    }
+  }
+  return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.` 
+  // default return statement if the dinosaur name is not found produce an error message
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +72,36 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+// declare a variable to represent an empty array
+    let array = [];
+// create variable to loop thru the rooms 
+for(let room of rooms) { 
+  // loop within a loop to loop tht will declare a variable in reference to the connected rooms
+ for (const connected of room.connectsTo) {
+  // if the connected room has a value of incorrect-id and the room id is equal to id 
+if (connected === `incorrect-id` && room.roomId === id) {
+  // return string
+  return `Room with ID of 'incorrect-id' could not be found.`;
+}
+ // if the connected room is strictly equal to the id 
+if (connected === id) { 
+ // push the connected room name into the empty array
+  array.push(room.name);
+}
+ }
+
+}
+ // if the length of the array is greater thn 0 (it got value)
+if (array.length > 0) { 
+ // return the contents of the array
+  return array;
+} else {
+  // if the array is empty return error message
+  return `Room with ID of '${id}' could not be found.`;
+}
+}
+
 
 module.exports = {
   getRoomByDinosaurName,

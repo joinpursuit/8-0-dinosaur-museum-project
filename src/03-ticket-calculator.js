@@ -54,7 +54,38 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+ if (ticketData[ticketInfo['ticketType']] === undefined) 
+ //if ticket data has the key ticketInfo with an key position value of ticketType, and it does not exist, its value will be undefined.
+ {
+  return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  // return string error message
+ }
+ if (ticketData[ticketInfo['ticketType']].priceInCents[ticketInfo.entrantType] === undefined) 
+ // checks to see if the entrant type ticket is correct or not 
+ {
+  return `Entrant type 'incorrect-entrant' cannot be found.`;
+  // if entrant type is incorrect return error message.
+ }
+ let extraPrices = 0;
+ if (ticketInfo['extras'].length > 0)
+ // checks to see if key ticketInfo with the arr extra isn't a an empty arr
+ {
+  for (a of ticketInfo['extras']) 
+  // For of loop will loop thru all the data in extras
+  {
+    if (ticketData['extras'][a] === undefined) 
+    // if any values within extras is found it will be found as undefined
+    {
+      return "Extra type 'incorrect-extra' cannot be found.";
+      // return error message 
+    }
+    extraPrices += ticketData['extras'][a].priceInCents[ticketInfo.entrantType];
+    // 
+  }
+ }
+ return ticketData[ticketInfo['ticketType']].priceInCents[ticketInfo.entrantType]+ extraPrices; 
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +140,37 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  
+  function capitalizeFirstLetter(str) // capitalizes the first letters in necessary positions
+  {
+    const lower = str.toLowerCase();
+    return  str.charAt(0).toUpperCase()+lower.slice(1)
+
+  }
+
+// errors
+  let receipt = ""; // declare empty str 4 receipts
+  let totalReceiptCost = 0 // declare variable 4 totalReceoptCost with value of 0
+
+  for (let i of purchases) {
+    let cost = calculateTicketPrice(ticketData, i); // declare variable with prior function  and incorpate loop data
+    if (typeof cost === "string") { // if the vari cost is strictly equal to the data type string 
+      return cost; 
+    }
+totalReceiptCost += cost; // adds all tickets when purchased all at once
+
+let extraTickets = []; // declare empty arr
+for (let rcpt = 0; rcpt < i.extras.length; rcpt++) { // loop thru
+  extraTickets.push(ticketData["extras"][i.extras[rcpt]].description)
+}
+if (extraTickets.length > 0){
+  extraTickets = (` (${extraTickets.join(", ")})`);
+}
+receipt += `${capitalizeFirstLetter(i.entrantType)} ${capitalizeFirstLetter(i.ticketType)} Admission: $${(cost/100).toFixed(2)}${extraTickets}\n`
+  }
+return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${receipt}-------------------------------------------\nTOTAL: $${(totalReceiptCost/100).toFixed(2)}`;
+}
 
 // Do not change anything below this line.
 module.exports = {
