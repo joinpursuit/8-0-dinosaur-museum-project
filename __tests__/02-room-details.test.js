@@ -78,7 +78,7 @@ describe("getConnectedRoomNamesById()", () => {
   test("if initial room ID is incorrect, should return an error message", () => {
     const id = "incorrect-id";
     const actual = getConnectedRoomNamesById(rooms, id);
-    const expected = `Room with ID of 'incorrect-id' could not be found.`;
+    const expected = `Room with ID of '${id}' could not be found.`;
     expect(actual).toEqual(expected);
   });
 

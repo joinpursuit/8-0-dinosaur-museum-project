@@ -1,5 +1,5 @@
 const {
-  getTallestDinosaur,
+  getLongestDinosaur,
   getDinosaurDescription,
   getDinosaursAliveMya,
 } = require("../src/01-dinosaur-facts");
@@ -7,9 +7,9 @@ const {
 // Dinosaur data
 const dinosaurs = require("../data/dinosaurs");
 
-describe("getTallestDinosaur()", () => {
+describe("getLongestDinosaur()", () => {
   test("should return an object where the key is the tallest dinosaur name and the value is the length in feet", () => {
-    const actual = getTallestDinosaur(dinosaurs);
+    const actual = getLongestDinosaur(dinosaurs);
 
     const keys = Object.keys(actual);
     expect(keys.length).toEqual(1);
@@ -34,7 +34,7 @@ describe("getTallestDinosaur()", () => {
         info: "Not much is known about this dinosaur because it didn't exist.",
       },
     ];
-    const actual = getTallestDinosaur(input);
+    const actual = getLongestDinosaur(input);
 
     const keys = Object.keys(actual);
     expect(keys.length).toEqual(1);
@@ -45,7 +45,7 @@ describe("getTallestDinosaur()", () => {
   });
 
   test("should return an empty object if there are no dinosaurs", () => {
-    const actual = getTallestDinosaur([]);
+    const actual = getLongestDinosaur([]);
     const expected = {};
 
     expect(actual).toEqual(expected);

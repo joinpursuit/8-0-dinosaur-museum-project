@@ -9,9 +9,9 @@ const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
 /**
- * getTallestDinosaur()
+ * getLongestDinosaur()
  * ---------------------
- * Returns an object with the tallest dinosaur from the list. Converts from meters to feet.
+ * Returns an object with the longest dinosaur from the list. Converts from meters to feet.
  *
  * NOTE: To convert from meters to feet, multiply the meters by `3.281`.
  *
@@ -19,15 +19,18 @@ const exampleDinosaurData = require("../data/dinosaurs");
  * @returns {Object} An object where the key is the name of the dinosaur and the value is the height of the dinosaur in feet.
  *
  * EXAMPLE:
- *  getTallestDinosaur(dinosaurs);
+ *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
+
 function getTallestDinosaur(dinosaurs) {
   console.log(dinosaurs);
   return getTallestDinosaur.[2];
 }
 getTallestDinosaur(2);
 
+
+function getLongestDinosaur(dinosaurs) {}
 
 
 /**
@@ -88,7 +91,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
 }
 
 module.exports = {
-  getTallestDinosaur,
+  getLongestDinosaur,
   getDinosaurDescription,
   getDinosaursAliveMya,
 };
