@@ -132,34 +132,18 @@ return total
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  /*
-  Returns the receipt 
-  TicketInfo must included in each part of the function. 
-  All Errors must be the same as the function above (OR EACH OTHER)
-  Format must be the same as the example. 
-  have a case for invalid charges. 
-  Have something for accumulation 
-  Make a variable for receipt so dont have to make a long thingy.
-  create a helper function to capitalize words???
-  create a total variable
-  iterate through our purchases
-  call our function from above
-  based on its return value decide how we want to handle the data
-  if error returned we want to return that error
-  price - put in our string and add to our total
-  */
-
-
   let total = 0;
+  //accumulator added
   let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
-
+  //this is just a variable to hold receipt
   for (let i = 0; i < purchases.length; i ++){
+    //looping through purchases 
     let ticket = calculateTicketPrice(ticketData, purchases[i]);
- 
+   //creating a variable using the above function
     total += ticket;
  
     if (typeof(ticket) === 'string') {
-  
+     //converting said variable to string. 
       return ticket;
     }
 
