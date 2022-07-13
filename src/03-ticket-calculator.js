@@ -56,7 +56,7 @@ const exampleTicketData = require("../data/tickets");
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
     let total = 0
-    //this is an accumulator for the total
+    // this is an accumulator for the total
     let ticket = ticketInfo.ticketType
     let entrant = ticketInfo.entrantType
     let extra = ticketInfo.extras 
@@ -131,7 +131,61 @@ return total
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  /*
+  Returns the receipt 
+  TicketInfo must included in each part of the function. 
+  All Errors must be the same as the function above (OR EACH OTHER)
+  Format must be the same as the example. 
+  have a case for invalid charges. 
+  Have something for accumulation 
+  Make a variable for receipt so dont have to make a long thingy.
+  create a helper function to capitalize words???
+  create a total variable
+  iterate through our purchases
+  call our function from above
+  based on its return value decide how we want to handle the data
+  if error returned we want to return that error
+  price - put in our string and add to our total
+  */
+
+
+  let total = 0;
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+
+  for (let i = 0; i < purchases.length; i ++){
+    let ticket = calculateTicketPrice(ticketData, purchases[i]);
+ 
+    total += ticket;
+ 
+    if (typeof(ticket) === 'string') {
+  
+      return ticket;
+    }
+    //create a variable to store the extras array
+    let extras = purchases[i].extras;
+ 
+    let altReceipt = '';
+
+    for (let e = 0; e < extras.length; e++){
+      altReceipt += ticketData.extras[extras[e]].description;
+     
+      if (extras.length - 1 !== e) {
+       altReceipt.join(', ')
+       //I don't know why this isn't working. I understand that a += would work. but I don't want that. So can you explain why this doesn't work. 
+      }
+    }
+  
+    receipt += `${purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)} ${ticketData[purchases[i].ticketType].description}: $${(ticket / 100).toFixed(2)}`;
+  
+    if (extras.length){
+      receipt += ` (${altReceipt})\n` 
+    } else {
+      receipt += `\n` 
+    }
+  }
+  return `${receipt}-------------------------------------------\nTOTAL: $${(total / 100).toFixed(2)}`
+}
 
 // Do not change anything below this line.
 module.exports = {
