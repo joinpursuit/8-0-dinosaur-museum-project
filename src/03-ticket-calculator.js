@@ -206,64 +206,81 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  //worked with Mina, Edgy, Fadila for part of it, but got outside help. I DIDN'T WRITE THIS
-
-  let retString = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n';
+  //worked with Mina, Edgy, Fadila for part of it, got outside help which gave me the idea of what the problem expected an d a clearer way of how to solve it. I decided to give this another try and IT WORKED! I WROTE THIS!!! WHOOHOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  let retString = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
   let ticketsTotal = 0;
+  let formattedTicketsTotal = 0;
 
+  
   //ERRORS
-  // I did this part
   for (let purchase of purchases) {
-
-    let ticketTotal = 0;
 
     const total = calculateTicketPrice(ticketData, purchase);
     if (typeof total === 'string') {
       return total;
-      } else if (typeof total === 'number') {
+    } else if (typeof total === 'number') {
       ticketsTotal += total;
-    }// end my part
+      formattedTicketsTotal = (total / 100).toFixed(2);
 
-    let formattedTicketTotal = (total / 100).toFixed(2);
 
-    // I did this part
-    let capEntrant = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1) + " " + ticketData[purchase.ticketType][`description`];
-    // end my part
-             
-    retString += `${capEntrant}: $${formattedTicketTotal}`;
+      // console.log('***** formattedTicketTotal', formattedTicketsTotal)
+      
+    }
+    
 
+    //DYNAMIC VARS
+    let capEntrant = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1) + " " + ticketData[purchase.ticketType][`description`] + ":";
+    
+    retString += `${capEntrant} $${formattedTicketsTotal}`
+    
+
+    // if purchase array is defined
     if (purchase.extras.length > 0) {
 
-      let extraString = [];
+      //DYNAMIC CAPITALIZED EXTRAS 
+      let capExtraArray = [];
       for (let extra of purchase.extras) {
-        extraString.push(extra[0].toUpperCase() + extra.slice(1) + ' Access'); 
+        capExtraArray.push(extra[0].toUpperCase() + extra.slice(1) + ' Access');
       }
+        let capExtras = capExtraArray.join(", ");
+        // console.log('!!!!!', capExtras);
+        // RETSTRING BODY
+        retString += ` (${capExtras})`
+      
 
-      let capExtra = extraString.join(", ");
+       
+        
+      // "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nSenior Membership Admission: $45.00 (Terrace Access, Education Access)\nChild Membership Admission: $25.00 (Education Access)\nChild Membership Admission: $25.00 (Education Access)\nChild Membership Admission: $25.00 (Education Access)\nChild Membership Admission: $25.00 (Education Access)\nAdult Membership Admission: $50.00 (Terrace Access, Education Access)\n-------------------------------------------\nTOTAL: $195.00";
 
-      retString += ` (${capExtra})`;
+      // extraArr.forEach(element => { capExtras.push(element[0].toUpperCase() + element[0].slice(1) + ' Access')
+      // ;
+      
+    
+    
+    
     }
-
-    retString += "\n";
+   
+  retString += `\n`
     
   }
+  finalTotal = (ticketsTotal / 100).toFixed(2);
+  // console.log('$$$finalTota', finalTotal);
 
-  const formattedTotal = (ticketsTotal / 100).toFixed(2);
+  retString += `-------------------------------------------\nTOTAL: $${finalTotal}`;
+  console.log(retString);
+    
 
-  retString += `-------------------------------------------\nTOTAL: $${formattedTotal}`;
-
-  
   return retString;
- 
-  
 }
 
 
 
- 
 
 
- // console.log('###',purchases[0])  
+
+
+
+ // console.log('###',purchases[0];)  
 
 
   // if typeof = string, its an error, if typeof = nuber then run the function
