@@ -95,10 +95,11 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   let value = key || "dinosaurId";
   const dinoArr = [];
   dinosaurs.forEach(dinosaur => {
-    if ( dinosaur.mya.includes(mya)){
- dinoArr.push(dinosaur[value]);
-    }
-    else if (dinosaur.mya.length === 1){
+    if ( dinosaur.mya.includes(mya)){ // Is Mya directly in dino array?
+        dinoArr.push(dinosaur[value]);
+    } else if ((dinosaur.mya[1] <=mya) && (dinosaur.mya[0] >=mya)){  // Is MYA in dino array range?
+      dinoArr.push(dinosaur[value]);
+    } else if (dinosaur.mya.length === 1){ //is MYA only length of one?
         if (dinosaur.mya.includes(mya - 1) || dinosaur.mya.includes(mya + 1)){
           dinoArr.push(dinosaur[value]);
         }
