@@ -35,7 +35,7 @@ const exampleTicketData = require("../data/tickets");
     };
     calculateTicketPrice(tickets, ticketInfo);
     //> 3000
- *  
+ *
  * EXAMPLE:
  *  const ticketInfo = {
       ticketType: "membership",
@@ -54,7 +54,32 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  const { ticketType, entrantType, extras } = ticketInfo;
+  let price = 0;
+
+  const ticType = ticketData[ticketType];
+  if (!ticType) return `Ticket type '${ticketType}' cannot be found.`;
+
+  const cents = ticType.priceInCents[entrantType];
+  if (!cents) return `Entrant type '${entrantType}' cannot be found.`;
+
+  price += cents;
+
+  for (const extra of extras) {
+    const extraPrice = ticketData.extras[extra];
+    if (!extraPrice) {
+      return `Extra type '${extra}' cannot be found.`;
+    }
+    const cost = extraPrice.priceInCents[entrantType];
+    if (!cost) {
+      return `Entrant type '${entrantType}' cannot be found.`;
+    }
+    price += cost;
+  }
+
+  return price;
+}
 
 /**
  * purchaseTickets()
@@ -62,7 +87,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
  * Returns a receipt based off of a number of purchase. Each "purchase" maintains the shape from `ticketInfo` in the previous function.
  *
  * Any errors that would occur as a result of incorrect ticket information should be surfaced in the same way it is in the previous function.
- * 
+ *
  * NOTE: Pay close attention to the format in the examples below and tests. You will need to have the same format to get the tests to pass.
  *
  * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
@@ -109,7 +134,37 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let output = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+
+  let total = 0;
+  for (const purchase of purchases) {
+    const result = calculateTicketPrice(ticketData, purchase);
+    if (typeof result === "string") {
+      return result;
+    }
+    const { entrantType, ticketType, extras } = purchase;
+    let extrasOutput = extras
+      .map((extra) => capitalize(extra) + " Access")
+      .join(", ");
+
+    extrasOutput = extrasOutput && ` (${extrasOutput})`;
+
+    total += result;
+    const price = parseFloat(result / 100).toFixed(2);
+    output += `${capitalize(entrantType)} ${capitalize(
+      ticketType
+    )} Admission: $${price}${extrasOutput}\n`;
+  }
+
+  const totalOutput = parseFloat(total / 100).toFixed(2);
+  output += `-------------------------------------------\nTOTAL: $${totalOutput}`;
+  return output;
+
+  function capitalize(str) {
+    return str[0].toUpperCase() + str.slice(1);
+  }
+}
 
 // Do not change anything below this line.
 module.exports = {
