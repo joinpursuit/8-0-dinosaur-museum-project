@@ -71,7 +71,13 @@ function getConnectedRoomNamesById(rooms, id) {
   let arr = [];
   for(const room of rooms) {
     for(const code of room.connectsTo) {
-      if(code.length > 10) {
+      let checkId;
+      for(const i of rooms) {
+        if(code === i[`roomId`]) {
+          checkId = `Y`;
+        }
+      }
+      if(!checkId) {
         return `Room with ID of '${code}' could not be found.`;
       }
       if(code === id) {

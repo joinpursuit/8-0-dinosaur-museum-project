@@ -5,7 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
-const { extras } = require("../data/tickets");
+const { extras, membership } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
