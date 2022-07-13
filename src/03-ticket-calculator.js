@@ -54,7 +54,41 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+// check ticket type
+  if (ticketData[ticketInfo['ticketType']] === undefined) 
+  //undefined if type of ticket is not in data. If the key does not exist.  If ticket data has the key ticketInfo, position ticketType, if this data exists it will be undefined. So then return error message.
+  {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  } 
+  // check entrant type
+  if (ticketData[ticketInfo['ticketType']].priceInCents[ticketInfo.entrantType] === undefined)
+  /* can also code: 
+  let basePrice = (ticketData[ticketInfo['ticketType']].priceInCents[ticketInfo.entrantType] === undefined)
+  if (basePrice === undefined) 
+  */
+  {
+    return `Entrant type 'incorrect-entrant' cannot be found.`;
+  }
+  // check extra types 
+    let extrasPrice = 0;
+  if (ticketInfo['extras'].length > 0) 
+  // if ticketInfo key with array of extra, checking if it's an array
+  {
+    for(let x of ticketInfo['extras'])  // the loop will run through all data of extras 
+    {
+      if(ticketData['extras'][x] === undefined)  // if any array of extras within ticketData is found it will be undefined.
+      {
+        return "Extra type 'incorrect-extra' cannot be found.";
+      }
+      
+      extrasPrice += ticketData['extras'][x].priceInCents[ticketInfo.entrantType]; // accumulate: add extrasPrices to ticket price according to the type of entrant
+    }
+  }
+  // console.log (ticketData, ticketInfo);
+  return ticketData[ticketInfo['ticketType']].priceInCents[ticketInfo.entrantType] + extrasPrice;
+  // If using basePrice return basePrice + extrasPrice.
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +143,42 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  // console.log (ticketData, purchases);
+  
+  // Below function capitalizes necessary words
+  function capitalize(str) {
+    const lower = str.toLowerCase();
+    return str.charAt(0).toUpperCase()+lower.slice(1)
+  }
+
+  // errors
+let receipts = "";  // declare empty string for receipt
+let totalCost = 0 //declare variable for totalCost to 0
+
+for (let i of purchases)  // iterate through purchases 
+{
+  let costs = calculateTicketPrice(ticketData, i);  // declare variable using prior function data and incorporating loop data
+  if (typeof costs === 'string') {  // checks to see if variable is a string. If so, then it's an error.
+    return costs // output of 'if' statement 
+  }
+  totalCost += costs;  // adds up all tickets when purchased simultaneously
+
+  // extras
+  let ticketExtras = [];  // declare empty array
+  for (let r = 0; r < i.extras.length; r++ )  //loop through extras to see if there are extras purchased
+  {
+    ticketExtras.push (ticketData["extras"][i.extras[r]].description)     // running through loop and pushes each extra to end
+  }
+  if (ticketExtras.length > 0) {
+    ticketExtras = (` (${ticketExtras.join(", ")})`);
+  }  // prints out extras in correct format if it is true (>0 letters)
+   receipts += `${capitalize(i.entrantType)} ${capitalize(i.ticketType)} Admission: $${(costs/100).toFixed(2)}${ticketExtras}\n`
+  // sets up receipts with correct output format for final return
+}
+  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${receipts}-------------------------------------------\nTOTAL: $${(totalCost/100).toFixed(2)}`;
+  
+}
 
 // Do not change anything below this line.
 module.exports = {
