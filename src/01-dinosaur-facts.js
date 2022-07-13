@@ -16,13 +16,38 @@ const exampleDinosaurData = require("../data/dinosaurs");
  * NOTE: To convert from meters to feet, multiply the meters by `3.281`.
  *
  * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file for an example of the input.
- * @returns {Object} An object where the key is the name of the dinosaur and the value is the height of the dinosaur in feet.
+ * @returns {Object} An object where the key is the name of the dinosaur and the value is the length of the dinosaur in feet.
  *
  * EXAMPLE:
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  let dinoLength = 0
+  let dinoName = ""
+  let dinoObj = {}
+
+  if (dinosaurs.length === 0) {
+    return {}
+  }
+
+  // const results = dinosaurs.filter(dinosaurs => {
+  //   return dinosaurs.lengthInMeters === Math.max
+  // })
+
+  
+
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].lengthInMeters > dinoLength) {
+      dinoLength = dinosaurs[i].lengthInMeters
+      dinoName = dinosaurs[i].name
+}
+  }
+  dinoLength *= 3.281
+  dinoObj[dinoName] = dinoLength
+    
+return dinoObj
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +69,15 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+
+  for (let dino of dinosaurs) {
+    if (id === dino.dinosaurId) {
+      return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length - 1]} million years ago.`
+    }
+  }
+  return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +104,36 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+// I Worked with Jahaad on this, I had code that was written before I worked with him and it "looked slightly different" unfourtunately, after trying to implement some code to implement th MYA -1 functionality I broke my own code and couldn't rescue it easily (don't yet know how to revert from github) I used Jahaads code as an ad-hoc backup. Var names are renamed to names I had in my own code. The logic and syntax between Jahaads and the code I lost are almost the same-- it was collaborative code after all. But thats why the code I have 
+
+
+  let myaArray = []
+  let keyArray = []
+  for (let dino of dinosaurs) {
+    if (dino.mya.length > 1) {
+      if (mya >= dino.mya[dino.mya.length - 1] && mya <= dino.mya[0]) {
+        myaArray.push(dino.dinosaurId)
+      }
+    } else if (dino.mya[0] === mya || (dino.mya[0] - 1) === mya) {
+      myaArray.push(dino.dinosaurId)
+    }
+  }
+  if (key === 'name') {
+    for (let dino of dinosaurs) {
+      if (dino.mya.length > 1) {
+        if (mya >= dino.mya[dino.mya.length - 1] && mya <= dino.mya[0]) {
+          keyArray.push(dino.name)
+        }
+      } else if (dino.mya.includes(mya)) { 
+        keyArray.push(dino.name)
+      }
+    }
+    return keyArray
+  }
+  return myaArray
+}
+
 
 module.exports = {
   getLongestDinosaur,

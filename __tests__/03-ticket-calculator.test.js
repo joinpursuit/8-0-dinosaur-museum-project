@@ -379,8 +379,8 @@ describe("purchaseTickets()", () => {
           "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $30.00\n-------------------------------------------\nTOTAL: $30.00";
         expect(actual).toEqual(expected);
       });
-
-      test("prints a receipt for a 2 Adult General Admission tickets", () => {
+          //******************* */
+      test ("prints a receipt for a 2 Adult General Admission tickets", () => {
         const ticketInfo = [
           {
             ticketType: "general",
