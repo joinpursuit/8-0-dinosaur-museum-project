@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,37 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let cost=0
+ 
+  if (ticketData[ticketInfo.ticketType]===undefined){
+    return "Ticket type 'incorrect-type' cannot be found."
+  }
+  if (ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]===undefined){
+    return "Entrant type 'incorrect-entrant' cannot be found."
+  }
+  
+  if (ticketData[ticketInfo.ticketType]!=='extras'){
+    switch (ticketInfo.entrantType){
+      case 'child': cost= ticketData[ticketInfo.ticketType].priceInCents.child
+      break;
+      case 'adult': cost =ticketData[ticketInfo.ticketType].priceInCents.adult
+      break;
+      case 'senior':cost=ticketData[ticketInfo.ticketType].priceInCents.senior
+      break;
+      
+    } 
+    
+  } 
+    let totalCost=cost
+    for (let extra of ticketInfo.extras){
+    if (ticketData.extras[extra]=== undefined){
+      return "Extra type 'incorrect-extra' cannot be found."
+    }
+    totalCost += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+  }
+  return totalCost
+}
 
 /**
  * purchaseTickets()
@@ -109,10 +140,62 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+//  console.log(ticketData,purchases)
+  let str=""
+  // let eType= purchase.entrantType
+  // let tType= purchase.ticketType
+  // let cDollars= ticketData[purchase.ticketType].priceInCents[purchase.entrantType]
+  // let es= ticketData.extras[purchase.extras]
+  let totalPrice=0
+for (let purchase of purchases){ 
+  let eachCost = calculateTicketPrice(ticketData,purchase)
+  if (typeof eachCost=== "string"){
+    return eachCost
+  }   
+  totalPrice+= eachCost
+  let eType= purchase.entrantType
+  eType= eType[0].toUpperCase() + eType.slice(1)
+  let tType= ticketData[purchase.ticketType].description
+  
+ 
+  
+  let newStr= []
+  
+  for (let i of purchase.extras){
+    newStr.push(ticketData.extras[i].description)
+  }
+ 
+  if (newStr.length===0){
+    newStr=""
+  }
+  else{
+    newStr= ` (${newStr.join(", ")})`
+  }
+  
+  
+  str+= `${eType} ${tType}: $${(eachCost/100).toFixed(2)}${newStr}\n`
+  
+}
+
+ return`Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${str}-------------------------------------------\nTOTAL: $${(totalPrice/100).toFixed(2)}`
+}
 
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
   purchaseTickets,
 };
+// switch (ticketInfo){
+    //   case  "General Admission":
+    //     switch (ticket.entrantType){
+    //       case "child": ticket.general.priceInCents.child
+    //       break;
+    //       case "adult": ticket.priceInCents=3000
+    //       break;
+    //       case "senior": ticket.priceInCents=2500
+    //       break;
+    //     }
+    //     return ticket.ticketType.priceInCents
+    // }
+    // ${purchase.entrantType} ${ticketData[purchase.ticketType]["description"]}:${eachCost.toFixed(2)} (${ticketData.extras.movie.description}, ${extrasStr}: ${eachCost.toFixed(2)})\n`
