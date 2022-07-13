@@ -111,7 +111,7 @@ if (ticketInfo.entrantType !== "child" && ticketInfo.entrantType !== "adult" && 
 if (ticketInfo.extras.includes("incorrect-extra")){
   return `Extra type '${ticketInfo.extras}' cannot be found.`;
 }
-// if the ticket type is valid
+
 if (ticketInfo.ticketType === "general" || ticketInfo.ticketType === "membership"){
   total += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
 } 
@@ -185,7 +185,51 @@ calculateTicketPrice(tickets, ticketInfo);
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
+  let total = 0
+  
+
+  for (let i = 0; i < purchases.length; i ++){
+    let extras = purchases[i]['extras']
+    
+    let ticket = calculateTicketPrice(ticketData, purchases[i])
+    total += ticket
+    if (typeof(ticket) == 'string'){
+      return( ticket)
+      }
+    extras[i] = ticketData[i]
+    
+      console.log(extras)
+    }
+
+}
+
+const purchases = [
+  
+    {
+      ticketType: "general",
+      entrantType: "adult",
+      extras: ["movie", "terrace"],
+    },
+    {
+      ticketType: "general",
+      entrantType: "senior",
+      extras: ["terrace"],
+    },
+    {
+      ticketType: "general",
+      entrantType: "child",
+      extras: ["education", "movie", "terrace"],
+    },
+    {
+      ticketType: "general",
+      entrantType: "child",
+      extras: ["education", "movie", "terrace"],
+    }
+  
+]
+purchaseTickets(tickets, purchases)
 
 // Do not change anything below this line.
 module.exports = {

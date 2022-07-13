@@ -338,8 +338,8 @@ for (i=0;i<dinosaurs.length;i++){
     }
   }
   // aliveArr= element
-  // return(aliveArr)
-  console.log(aliveArr)
+  return(aliveArr)
+  // console.log(aliveArr)
 }   
 
 getDinosaursAliveMya(dinosaurs, 66, "name")

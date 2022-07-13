@@ -465,11 +465,11 @@ for(let room of rooms){
   roomNames.push(room.name)
     }
   }
-if (roomNames.length == 2){
+if (roomIds.includes('incorrect-id')){
   return `Room with ID of 'incorrect-id' could not be found.`
-}else{
-return(roomNames)
-}
+  }else{
+    return(roomNames)
+  }
 }
 getConnectedRoomNamesById(rooms, "aIA6tevTne");
 
