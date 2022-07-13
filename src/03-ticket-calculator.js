@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { extras } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -55,25 +56,70 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  
 function calculateTicketPrice(ticketData, ticketInfo) {
-  console.log("This is ticketData " + ticketData.general)
-  console.log("This is ticketData " + ticketInfo)
-  
-// for (let ticketBought in ticketInfo ){
-//     if(ticketBought.ticketType !== "general" || ticketBought.ticketType !== "membership"){
-//     return "Ticket type '" + ticketBought.ticketType + "' cannot be found."
-//     }
-//     if(ticketBought.entrantType !== "adult" || ticketBought.entrantType !== "senior" || ticketBought.entrantType !== "child" ){
-//     return "Entrant type '" + ticketBought.entrantType + "' cannot be found."
-//     }
+ // console.log("This is ticketData ", ticketData)
+  //console.log("This is ticketData ", ticketInfo.extras)
+  let error = ""
+  let cost = 0
 
-//     if(ticketBought.extras.includes("adult") === false 
-//        || ticketBought.extras.includes("senior") === false 
-//        || ticketBought.extras.includes("child") === false) {
-//           return "Extras type '" + ticketBought["extras "]+ "' cannot be found."
-//     }
-//   }  
 
+    if(ticketInfo.ticketType !== "general" && ticketInfo.ticketType !== "membership"){
+    error = "Ticket type 'incorrect-type' cannot be found."
+    return error
+    } else
+    if(ticketInfo.entrantType !== "adult" && ticketInfo.entrantType !== "senior" && ticketInfo.entrantType !== "child" ){
+    error = "Entrant type 'incorrect-entrant' cannot be found."
+    return error
+    } 
+
+
+  //if(ticketInfo.extras.length === 0 ){
+     if (ticketInfo.ticketType === "general"  && ticketInfo.entrantType === "adult"){
+     cost += ticketData.general.priceInCents.adult                              
+     //return cost
+     }
+     if (ticketInfo.ticketType === "general"  && ticketInfo.entrantType === "senior"){
+      cost += ticketData.general.priceInCents.senior  
+    // return cost
+     }
+     if (ticketInfo.ticketType === "general"  && ticketInfo.entrantType === "child"){
+      cost += ticketData.general.priceInCents.child  
+     //return cost
+     }
+     if (ticketInfo.ticketType === "membership"  && ticketInfo.entrantType === "adult"){
+      cost += ticketData.membership.priceInCents.adult 
+    // return cost
+     }
+     if (ticketInfo.ticketType === "membership"  && ticketInfo.entrantType === "senior"){
+      cost +=  ticketData.membership.priceInCents.senior 
+     //return cost
+     }
+     if (ticketInfo.ticketType === "membership"  && ticketInfo.entrantType === "child"){
+       cost += ticketData.membership.priceInCents.child  
+    // return cost                                                
+     }
+ // }
+  // If the ticket is purchased with extra perks - movie access, education, and / or terrace access
+  if(ticketInfo.extras.length > 0 ){
+    for (let tXtra of ticketInfo.extras) {
+     for (let extra in ticketData.extras){
+         if(extra === tXtra)
+          cost += ticketData["extras"][tXtra]["priceInCents"][ticketInfo.entrantType]
+
+     }
+    }
+  }
+   
+
+    for (let tXtra of ticketInfo.extras) {
+         if(!ticketData.extras[tXtra])
+        // return `Extra type '${tXtra}' cannot be found.`
+        return "Extra type 'incorrect-extra' cannot be found."
+     }
+   return cost
 }
+
+
+
 
 /**
  * purchaseTickets()
