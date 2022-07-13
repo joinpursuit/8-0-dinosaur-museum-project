@@ -54,8 +54,30 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
-
+function calculateTicketPrice(ticketData, ticketInfo) {
+    let total = 0
+    // this is an accumulator for the total
+    let ticket = ticketInfo.ticketType
+    let entrant = ticketInfo.entrantType
+    let extra = ticketInfo.extras 
+    let regPrice
+    //These gives a variable to the dot notations. 
+    if(!ticketData[ticket]) return `Ticket type '${ticket}' cannot be found.` 
+    regPrice = ticketData[ticket].priceInCents[entrant]  
+    if(!regPrice) return `Entrant type '${entrant}' cannot be found.` 
+    //This is checking if theres no extra price. 
+    total += regPrice // if not that case total plus regular price. 
+    if (extra)//If extra then continue to loop. 
+      for (i = 0; i < extra.length; i++){
+        //Looping through the extra length 
+        if (!ticketData.extras[extra[i]])
+        //if extra at i is not inside extras in ticketData 
+          return `Extra type '${extra}' cannot be found.`
+    
+        total += ticketData.extras[extra[i]].priceInCents[entrant] 
+      }
+return total
+}
 /**
  * purchaseTickets()
  * ---------------------
@@ -109,7 +131,45 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let total = 0;
+  //accumulator added
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  //this is just a variable to hold receipt
+  for (let i = 0; i < purchases.length; i ++){
+    //looping through purchases 
+    let ticket = calculateTicketPrice(ticketData, purchases[i]);
+   //creating a variable using the above function
+    total += ticket;
+ 
+    if (typeof(ticket) === 'string') {
+     //converting said variable to string. 
+      return ticket;
+    }
+
+    let extras = purchases[i].extras;
+ 
+    let altReceipt = '';
+
+    for (let e = 0; e < extras.length; e++){
+      altReceipt += ticketData.extras[extras[e]].description;
+     
+      if (extras.length - 1 !== e) {
+       altReceipt += ", "
+      }
+      //I dont like this way. IT's not my code it's Rae's. Can you give me the Alternative please. 
+    }
+  
+    receipt += `${purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)} ${ticketData[purchases[i].ticketType].description}: $${(ticket / 100).toFixed(2)}`;
+  
+    if (extras.length){
+      receipt += ` (${altReceipt})\n` 
+    } else {
+      receipt += `\n` 
+    }
+  }
+  return `${receipt}-------------------------------------------\nTOTAL: $${(total / 100).toFixed(2)}`
+}
 
 // Do not change anything below this line.
 module.exports = {
