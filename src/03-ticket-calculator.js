@@ -162,7 +162,7 @@ function purchaseTickets(ticketData, purchases) {
   
       return ticket;
     }
-    //create a variable to store the extras array
+
     let extras = purchases[i].extras;
  
     let altReceipt = '';
@@ -171,9 +171,9 @@ function purchaseTickets(ticketData, purchases) {
       altReceipt += ticketData.extras[extras[e]].description;
      
       if (extras.length - 1 !== e) {
-       altReceipt.join(', ')
-       //I don't know why this isn't working. I understand that a += would work. but I don't want that. So can you explain why this doesn't work. 
+       altReceipt += ", "
       }
+      //I dont like this way. IT's not my code it's Rae's. Can you give me the Alternative please. 
     }
   
     receipt += `${purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)} ${ticketData[purchases[i].ticketType].description}: $${(ticket / 100).toFixed(2)}`;
