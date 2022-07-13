@@ -1,3 +1,48 @@
+const tickets = {
+  general: {
+    description: "General Admission",
+    priceInCents: {
+      child: 2000,
+      adult: 3000,
+      senior: 2500,
+    },
+  },
+  membership: {
+    description: "Membership Admission",
+    priceInCents: {
+      child: 1500,
+      adult: 2800,
+      senior: 2300,
+    },
+  },
+  extras: {
+    movie: {
+      description: "Movie Access",
+      priceInCents: {
+        child: 1000,
+        adult: 1000,
+        senior: 1000,
+      },
+    },
+    education: {
+      description: "Education Access",
+      priceInCents: {
+        child: 1000,
+        adult: 1200,
+        senior: 1200,
+      },
+    },
+    terrace: {
+      description: "Terrace Access",
+      priceInCents: {
+        child: 500,
+        adult: 1000,
+        senior: 1000,
+      },
+    },
+  },
+};
+const { general } = require("../data/tickets");
 /*
   Do not change the line below. If you'd like to run code from this file, you may use the `exampleTicketData` variable below to gain access to tickets data. This data is pulled from the `data/tickets.js` file.
 
@@ -54,8 +99,39 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
 
+let total = 0
+if (ticketInfo.ticketType !== "general" && ticketInfo.ticketType !== "membership"){
+  return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+}
+if (ticketInfo.entrantType !== "child" && ticketInfo.entrantType !== "adult" && ticketInfo.entrantType !== "senior"){
+  return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+}
+if (ticketInfo.extras.includes("incorrect-extra")){
+  return `Extra type '${ticketInfo.extras}' cannot be found.`;
+}
+// if the ticket type is valid
+if (ticketInfo.ticketType === "general" || ticketInfo.ticketType === "membership"){
+  total += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+} 
+
+for (let extras of ticketInfo.extras){ 
+  if (ticketData.extras){
+    total += ticketData.extras[extras].priceInCents[ticketInfo.entrantType];
+    }
+  }
+  return total;
+}
+
+
+const ticketInfo = {
+  ticketType: "general",
+  entrantType: "adult",
+  extras: [],
+};
+
+calculateTicketPrice(tickets, ticketInfo);
 /**
  * purchaseTickets()
  * ---------------------
