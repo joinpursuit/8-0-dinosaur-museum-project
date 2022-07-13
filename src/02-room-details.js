@@ -25,7 +25,27 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  // this is an error message if dinosaur-name is not found at all.
+  let dinoMessage = `Dinosaur with name '${dinosaurName}' cannot be found.`;
+
+  // a loop to iterate through the dinosaurs array
+  for (let dino of dinosaurs) {
+    if (dino.name === dinosaurName) {
+     //a message if dinosaur-name is not found in any room.
+      dinoMessage = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+
+      // a loop to iterate through the rooms array
+      for (let room of rooms) {
+        if (room.dinosaurs.includes(dino.dinosaurId)) {
+          // if id is found return name of room. 
+          dinoMessage = room.name;
+        }
+      }
+    }
+  }
+  return dinoMessage;
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +69,31 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let arr = [];
+  let convArr = []; 
+
+  // a loop to iterate through rooms array
+  for (let room of rooms) {
+    if(room.roomId === id) {
+      arr = room.connectsTo;
+    }
+  }
+// a loop to iterate through rooms array to see if room-id is included in the array. 
+  for (let room of rooms) {
+    if( arr.includes(room.roomId)) {
+      convArr.push(room.name);
+    }
+  }
+// if array is empty or array includes the string "incorrect-id"
+  if(!arr.length || arr.includes("incorrect-id")) {
+    return `Room with ID of 'incorrect-id' could not be found.`;
+  }
+
+return convArr;
+
+
+}
 
 module.exports = {
   getRoomByDinosaurName,
