@@ -11,18 +11,33 @@ const exampleDinosaurData = require("../data/dinosaurs");
 /**
  * getLongestDinosaur()
  * ---------------------
- * Returns an object with the longest dinosaur from the list. Converts from meters to feet.
+ * Returns an curlyect with the longest dinosaur from the list. Converts from meters to feet.
  *
  * NOTE: To convert from meters to feet, multiply the meters by `3.281`.
  *
- * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file for an example of the input.
- * @returns {Object} An object where the key is the name of the dinosaur and the value is the height of the dinosaur in feet.
+ * @param {curlyect[]} dinosaurs - An array of dinosaur curlyects. See the `data/dinosaurs.js` file for an example of the input.
+ * @returns {curlyect} An curlyect where the key is the name of the dinosaur and the value is the height of the dinosaur in feet.
  *
  * EXAMPLE:
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+ let curly = {}
+  let name = "";
+  let theBigOne = 0; //undefined
+  for (let dinosaur of dinosaurs) {
+    if (dinosaur.lengthInMeters > theBigOne) {
+      name = dinosaur.name;
+      theBigOne = dinosaur.lengthInMeters;
+    }
+  }
+  if (theBigOne > 0) {
+    curly[name] = theBigOne*3.281;
+  }
+
+  return curly;
+}
 
 /**
  * getDinosaurDescription()
@@ -33,7 +48,7 @@ function getLongestDinosaur(dinosaurs) {}
  *
  * NOTE: The `\n` represents a new line in text.
  *
- * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file for an example of the input.
+ * @param {curlyect[]} dinosaurs - An array of dinosaur curlyects. See the `data/dinosaurs.js` file for an example of the input.
  * @param {string} id - The unique identifier for the dinosaur.
  * @returns {string} A detailed description of the dinosaur.
  *
@@ -44,7 +59,18 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+    // - set the error as a default description.
+    let dinosaurDescription = `A dinosaur with an ID of '${id}' cannot be found.`;
+    for (let dinosaur of dinosaurs) {
+      // - check if id exists and {array} mya is not empty, and reassign description accordingly.
+        if (dinosaur.dinosaurId === id && dinosaur.mya.length) {
+            dinosaurDescription = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[dinosaur.mya.length - 1]} million years ago.`;
+        } 
+    }
+    return dinosaurDescription;
+}
+
 
 /**
  * getDinosaursAliveMya()
@@ -53,7 +79,7 @@ function getDinosaurDescription(dinosaurs, id) {}
  *
  * If the dinosaur only has a single value for `mya`, allows for the `mya` value to be equal to the given value or one less. For example, if a dinosaur has a `mya` value of `[29]`, the dinosaur's information will be returned if `29` is entered or `28` is entered.
  *
- * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file for an example of the input.
+ * @param {curlyect[]} dinosaurs - An array of dinosaur curlyects. See the `data/dinosaurs.js` file for an example of the input.
  * @param {number} mya - "Millions of years ago."
  * @param {string} key - An optional parameter. If included, for dinosaurs that lived during the `mya` value given, will return the value of the supplied key. Otherwise, returns the ID.
  * @returns {*[]} An array of values, which depend on the key given. The array should only include data of dinosaurs who lived during the given time period.
@@ -71,7 +97,18 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let myaDinoRunForYaLife = []; 
+  dinosaurs.forEach(dinosaur => {  
+      if (dinosaur.mya[0] === mya || dinosaur.mya[0] - 1 === mya) {
+          dinosaur[key] ? myaDinoRunForYaLife.push(dinosaur[key]) : myaDinoRunForYaLife.push(dinosaur.dinosaurId);
+      } else if (dinosaur.mya[0] >= mya && mya >= dinosaur.mya[1]) {
+          dinosaur[key] ? myaDinoRunForYaLife.push(dinosaur[key]) : myaDinoRunForYaLife.push(dinosaur.dinosaurId);
+      } 
+  });
+
+  return myaDinoRunForYaLife;
+}
 
 module.exports = {
   getLongestDinosaur,
