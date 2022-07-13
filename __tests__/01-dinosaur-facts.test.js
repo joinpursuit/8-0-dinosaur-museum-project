@@ -61,7 +61,7 @@ describe("getDinosaurDescription()", () => {
     expect(actual).toEqual(expected);
   });
 
-  test("should work for dinosaurs with only one value in `mya`", () => {
+  test("should work for dinosaurs w one value in `mya`", () => {
     const id = "GKl035EYKN";
     const actual = getDinosaurDescription(dinosaurs, id);
     const expected =
@@ -106,7 +106,7 @@ describe("getDinosaursAliveMya()", () => {
     expect(actual).toEqual(expected);
   });
 
-  test("should include dinosaurs with only one `mya` year", () => {
+  test("should include dinosaurs w one `mya` year", () => {
     const mya = 66;
     const actual = getDinosaursAliveMya(dinosaurs, mya);
     const expected = ["WHQcpcOj0G", "2GglUqKT0G", "wuL4ddBinQ"];

@@ -25,7 +25,24 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let nameFound;
+  let roomName;
+   dinosaurs.forEach(dinosaur => {
+     //  Search for dinosaur name.
+
+     dinosaur.name == dinosaurName ? nameFound = dinosaur.dinosaurId : '';
+  });
+   rooms.forEach(room => {
+    //search for room name.
+     room.dinosaurs.includes(nameFound) ? roomName = room.name : '';
+  })
+  return  !nameFound ? 
+    `Dinosaur with name '${dinosaurName}' cannot be found.` 
+    : !roomName ? 
+      `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.` 
+        : roomName;
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +66,29 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let roomList;
+  let roomNames = [];
+  // Theory:  Should work with .push.  Will not explore .map or other higher functions.
+  rooms.forEach(room => {
+    room.roomId === id ?  roomList = [...room.connectsTo] : '';
+  })
+
+if (roomList === undefined) {
+  return `Room with ID of '${id}' could not be found.`;
+}
+const count = roomList.length;
+
+  if (!!roomList){
+    rooms.forEach(room => 
+      roomList.includes(room.roomId) ? 
+      roomNames.push(room.name) : roomName = room.roomId);
+
+  }
+  return count === roomNames.length ? roomNames : `Room with ID of 'incorrect-id' could not be found.`;
+  // count === roomNames.length ? roomNames : `Room with ID of '${roomName}' could not be found.`;
+
+}
 
 module.exports = {
   getRoomByDinosaurName,
