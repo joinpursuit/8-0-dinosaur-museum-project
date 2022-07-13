@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { extras } = require("../data/tickets");
 const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
@@ -135,7 +136,19 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let total = 0
+  for(let i=0; i < purchases.length; i++){
+    total = calculateTicketPrice(ticketData, purchases[i])
+  if (typeof total === 'string'){
+    return total
+  } else {
+    return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchases[i].entrantType.charAt(0).toUpperCase()} ${purchases[i].entrantType.splice(1)} ${purchases[i].ticketType.charAt(0).toUpperCase()} ${purchases[i].ticketType.splice(1)} Admission: $${(total/100).toFixed(2)}\n-------------------------------------------\nTOTAL: $${(total/100).toFixed(2)}`
+  } 
+}
+  // Thank you for visiting the Dinosaur Museum!\n${purchases.entrantType} ${purchases.
+  // ticketType}: $${(total/100).toFixed(2)}\nTOTAL: $${(total/100).toFixed(2)}`
+}
 
 // Do not change anything below this line.
 module.exports = {
