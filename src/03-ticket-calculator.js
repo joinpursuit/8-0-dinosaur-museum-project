@@ -54,7 +54,32 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let cost = 0;
+
+  if (!(ticketInfo.ticketType in ticketData)) {
+    return `Ticket type 'incorrect-type' cannot be found.`;
+  }
+  if (
+    !(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents)
+  ) {
+    return `Entrant type 'incorrect-entrant' cannot be found.`;
+  }
+  cost +=
+    ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+
+  if (ticketInfo.extras.length) {
+    for (extra of ticketInfo.extras) {
+      if (extra in ticketData.extras) {
+        cost += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+      } else {
+        return `Extra type 'incorrect-extra' cannot be found.`;
+      }
+    }
+  }
+
+  return cost;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +134,41 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let finalCost = 0;
+  let reciept =
+    "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  for (let i = 0; i < purchases.length; i++) {
+    const ticketPrice = calculateTicketPrice(ticketData, purchases[i]);
+    finalCost += ticketPrice;
+    if (typeof ticketPrice === "string") {
+      return ticketPrice;
+    }
+    let extras = purchases[i].extras;
+    let extraReciept = "";
+    for (let i = 0; i < extras.length; i++) {
+      extraReciept += ticketData.extras[extras[i]].description;
+      if (i !== extras.length - 1) {
+        extraReciept += ", ";
+      }
+    }
+    let formattedEntrant =
+      purchases[i].entrantType[0].toUpperCase() +
+      purchases[i].entrantType.slice(1);
+    reciept += `${formattedEntrant} ${
+      ticketData[purchases[i].ticketType].description
+    }: $${(ticketPrice / 100).toFixed(2)}`;
+    if (extras.length > 0) {
+      reciept += ` (${extraReciept})\n`;
+    } else {
+      reciept += `\n`;
+    }
+  }
+  reciept += `-------------------------------------------\nTOTAL: $${(
+    finalCost / 100
+  ).toFixed(2)}`;
+  return reciept;
+}
 
 // Do not change anything below this line.
 module.exports = {
