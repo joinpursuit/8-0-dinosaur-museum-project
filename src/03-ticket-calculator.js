@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { extras } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -26,40 +27,104 @@ const exampleTicketData = require("../data/tickets");
  * @param {string} ticketInfo.entrantType - Represents the type of entrant. Prices change depending on the entrant.
  * @param {string[]} ticketInfo.extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
  * @returns {number} The cost of the ticket in cents.
- *
- * EXAMPLE:
- *  const ticketInfo = {
-      ticketType: "general",
-      entrantType: "adult",
-      extras: [],
-    };
-    calculateTicketPrice(tickets, ticketInfo);
-    //> 3000
- *  
- * EXAMPLE:
- *  const ticketInfo = {
-      ticketType: "membership",
-      entrantType: "child",
-      extras: ["movie"],
-    };
-    calculateTicketPrice(tickets, ticketInfo);
-    //> 2500
-
- * EXAMPLE:
- *  const ticketInfo = {
-      ticketType: "general",
-      entrantType: "kid", // Incorrect
-      extras: ["movie"],
-    };
-    calculateTicketPrice(tickets, ticketInfo);
-    //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+ // EXAMPLE:
+  // const ticketInfo = {
+  //     ticketType: "general",
+  //     entrantType: "adult",
+  //     extras: [],
+  //   };
+  //   calculateTicketPrice(tickets, ticketInfo);
+    //> 3000
+   
+//  EXAMPLE:
+//   const ticketInfo = {
+//       ticketType: "membership",
+//       entrantType: "child",
+//       extras: ["movie"],
+//     };
+//     calculateTicketPrice(tickets, ticketInfo);
+//     //> 2500
+
+// EXAMPLE:
+  // const ticketInfo = {
+  //     ticketType: "general",
+  //     entrantType: "kid", // Incorrect
+  //     extras: ["movie"],
+  //   };
+  //  calculateTicketPrice(tickets, ticketInfo);
+    //> "Entrant type 'kid' cannot be found."
+ 
+function calculateTicketPrice(ticketData, ticketInfo) {
+ // console.log("This is ticketData ", ticketData)
+  //console.log("This is ticketData ", ticketInfo.extras)
+  let error = ""
+  let cost = 0
+
+
+    if(ticketInfo.ticketType !== "general" && ticketInfo.ticketType !== "membership"){
+    error = "Ticket type 'incorrect-type' cannot be found."
+    return error
+    } else
+    if(ticketInfo.entrantType !== "adult" && ticketInfo.entrantType !== "senior" && ticketInfo.entrantType !== "child" ){
+    error = "Entrant type 'incorrect-entrant' cannot be found."
+    return error
+    } 
+
+
+  //if(ticketInfo.extras.length === 0 ){
+     if (ticketInfo.ticketType === "general"  && ticketInfo.entrantType === "adult"){
+     cost += ticketData.general.priceInCents.adult                              
+     //return cost
+     }
+     if (ticketInfo.ticketType === "general"  && ticketInfo.entrantType === "senior"){
+      cost += ticketData.general.priceInCents.senior  
+    // return cost
+     }
+     if (ticketInfo.ticketType === "general"  && ticketInfo.entrantType === "child"){
+      cost += ticketData.general.priceInCents.child  
+     //return cost
+     }
+     if (ticketInfo.ticketType === "membership"  && ticketInfo.entrantType === "adult"){
+      cost += ticketData.membership.priceInCents.adult 
+    // return cost
+     }
+     if (ticketInfo.ticketType === "membership"  && ticketInfo.entrantType === "senior"){
+      cost +=  ticketData.membership.priceInCents.senior 
+     //return cost
+     }
+     if (ticketInfo.ticketType === "membership"  && ticketInfo.entrantType === "child"){
+       cost += ticketData.membership.priceInCents.child  
+    // return cost                                                
+     }
+ // }
+  // If the ticket is purchased with extra perks - movie access, education, and / or terrace access
+  if(ticketInfo.extras.length > 0 ){
+    for (let tXtra of ticketInfo.extras) {
+     for (let extra in ticketData.extras){
+         if(extra === tXtra)
+          cost += ticketData["extras"][tXtra]["priceInCents"][ticketInfo.entrantType]
+
+     }
+    }
+  }
+   
+
+    for (let tXtra of ticketInfo.extras) {
+         if(!ticketData.extras[tXtra])
+        // return `Extra type '${tXtra}' cannot be found.`
+        return "Extra type 'incorrect-extra' cannot be found."
+     }
+   return cost
+}
+
+
+
 
 /**
  * purchaseTickets()
  * ---------------------
- * Returns a receipt based off of a number of purchase. Each "purchase" maintains the shape from `ticketInfo` in the previous function.
+ * Returns a receipt based off of a number of purchase. Each "purchase" maintains the shape from `ticketBought` in the previous function.
  *
  * Any errors that would occur as a result of incorrect ticket information should be surfaced in the same way it is in the previous function.
  * 

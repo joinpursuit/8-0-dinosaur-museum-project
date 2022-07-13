@@ -25,7 +25,25 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+ 
+  for ( let oneDino of dinosaurs) {
+    if(dinosaurName === oneDino.name){
+      for ( let room of rooms ) {
+        for(i = 0; i < room.dinosaurs.length; i++){
+           if(room.dinosaurs[i] === oneDino.dinosaurId){
+            console.log(room.name)
+            return(room.name)
+           }
+        }
+      }
+     // after For loop - dinosaur id in room search is completed and dinosaurName is still not found, print error message 
+     return "Dinosaur with name '" + dinosaurName + "' cannot be found in any rooms."
+    }
+  }
+  //After conditional check if dinosaurName exists in array of dinosaur bjects is completed and none is found, print error message
+  return "Dinosaur with name '" + dinosaurName + "' cannot be found."
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,9 +67,68 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+
+    function getConnectedRoomNamesById(rooms, id) {
+      let cRoomNames = []
+      let cRoomNameIds = []
+      let roomIs = false
+      let croomIs = false
+      let tempRoom
+
+      for (let room of rooms) {
+        //console.log(room) // yields list of rooms
+        if(room["roomId"] === id){
+          //console.log(room["roomId"] )
+          roomIs = true
+          cRoomNameIds = room.connectsTo
+        }
+      } 
+      if(roomIs === false)
+
+      return  "Room with ID of 'incorrect-id' could not be found."
+
+        for (let cNameId of cRoomNameIds){  //not filtering based on if statement
+          tempRoom = 0
+          for (let rm of rooms){
+          if(cNameId === rm.roomId) {
+           cRoomNames.push(rm.name)
+           tempRoom++
+          } 
+        }
+      }   
+        if(tempRoom === 0){
+          return  "Room with ID of 'incorrect-id' could not be found."
+        }
+        return cRoomNames
+    }
 
 module.exports = {
   getRoomByDinosaurName,
   getConnectedRoomNamesById,
 };
+
+
+
+
+/*  
+ 
+     //ID of Connected Rooms - attempt 1
+     } else {
+     if(cNameId !== rm.roomId) 
+     return  "Room with ID of 'incorrect-id' could not be found."
+    
+    // ID of Connected Rooms - attempt 2
+    if(cNameId !== rm.roomId) {
+    return  "Room with ID of 'incorrect-id' could not be found." 
+    } else {
+      return cRoomNames
+    }
+
+
+
+     //Initial ID of Rooms -
+     if(room["roomId"] !== id)
+     return  "Room with ID of 'incorrect-id' could not be found."
+
+
+*/
