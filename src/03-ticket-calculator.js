@@ -56,17 +56,31 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-let cost = 0
-  for(const ticket in ticketData){
-  if (ticket === ticketInfo.ticketType && (ticketInfo.entrantType === `child` || ticketInfo.entrantType === `adult` || ticketInfo.entrantType === `senior`)){
-    cost = ticket.priceInCents[ticketInfo.entrantType]
-  } else if (cost === 0 && ticket !== ticketInfo.ticketType){
-    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
-  } else if (cost === 0 && (ticketInfo.entrantType !== `child` || ticketInfo.entrantType !== `adult` || ticketInfo.entrantType !== `senior`)){
-    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+  let cost = 0
+  if (ticketInfo.ticketType !== 'general'&& ticketInfo.ticketType !== 'membership'){
+      return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+    } if (cost === 0 && (ticketInfo.entrantType !== `child` && ticketInfo.entrantType !== `adult` && ticketInfo.entrantType !== `senior`)){
+      return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+    } if (ticketInfo.extras.length >= 1 && (ticketInfo.extras.includes(`movie`) === false && ticketInfo.extras.includes(`education`) === false && ticketInfo.extras.includes(`terrace`) === false)) {
+     return `Extra type 'incorrect-extra' cannot be found.`}
+    
+    for(const ticket in ticketData){
+    if (ticket === ticketInfo.ticketType && (ticketInfo.entrantType === `child` || ticketInfo.entrantType === `adult` || ticketInfo.entrantType === `senior`)){
+      cost = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+    } 
+  } if (ticketInfo.extras.length < 1){
+    return cost
+  } if (ticketInfo.extras.includes('movie') === true){
+    cost += ticketData.extras.movie.priceInCents[ticketInfo.entrantType]
+  } if (ticketInfo.extras.includes('education') === true){
+    cost += ticketData.extras.education.priceInCents[ticketInfo.entrantType]
+  } if (ticketInfo.extras.includes('terrace') === true){
+    cost += ticketData.extras.terrace.priceInCents[ticketInfo.entrantType]
+  } 
+    return cost
   }
-}
-}
+
+  
 
 /**
  * purchaseTickets()
