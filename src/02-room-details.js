@@ -25,7 +25,24 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let dinoId = "";
+  for (const dino of dinosaurs) {
+    if (dinosaurName === dino['name']) {
+      dinoId = dino['dinosaurId'];
+    }
+  }
+  if (!dinoId) {
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`
+  }
+
+  for (const room of rooms) {
+    if (room['dinosaurs'].includes(dinoId)) {
+      return room['name'];
+    }
+  }
+  return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +66,33 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let whereRWe = "";
+  const roomGuide = {};
+  const connectedRooms = [];
+
+  for (const room of rooms) {
+    roomGuide[room['roomId']] = room['name'];
+    if (id === room['roomId']) {
+      whereRWe = id;
+    }
+  }
+  if (!whereRWe) {
+    return `Room with ID of '${id}' could not be found.`;
+  }
+
+  for (const room of rooms) {
+    if (whereRWe === room['roomId']) {
+      for (const connectRoom of room['connectsTo']) {
+        if (!roomGuide.hasOwnProperty(connectRoom)) {
+          return `Room with ID of '${connectRoom}' could not be found.`;
+        }
+        connectedRooms.push(roomGuide[connectRoom]);
+      }
+    }
+  }
+  return connectedRooms;
+}
 
 module.exports = {
   getRoomByDinosaurName,
