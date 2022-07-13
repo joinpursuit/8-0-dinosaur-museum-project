@@ -143,7 +143,7 @@ function purchaseTickets(ticketData, purchases) {
   if (typeof total === 'string'){
     return total
   } else {
-    return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchases[i].entrantType.charAt(0).toUpperCase()} ${purchases[i].entrantType.splice(1)} ${purchases[i].ticketType.charAt(0).toUpperCase()} ${purchases[i].ticketType.splice(1)} Admission: $${(total/100).toFixed(2)}\n-------------------------------------------\nTOTAL: $${(total/100).toFixed(2)}`
+    return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchases[i].entrantType.charAt(0).toUpperCase()}${purchases[i].entrantType.substring(1)} ${purchases[i].ticketType.charAt(0).toUpperCase()}${purchases[i].ticketType.substring(1)} Admission: $${(total/100).toFixed(2)}\n-------------------------------------------\nTOTAL: $${(total/100).toFixed(2)}`
   } 
 }
   // Thank you for visiting the Dinosaur Museum!\n${purchases.entrantType} ${purchases.
