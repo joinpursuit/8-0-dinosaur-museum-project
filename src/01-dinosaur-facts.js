@@ -143,16 +143,34 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
     // else if(oneDino[key] && mya <= oneDino.mya[0]  && mya >= oneDino.mya[1]) {
     //   wasAlive.push(oneDino[key])
      //}
-     else if (oneDino[key] ) {
+     
+     if (key &&  oneDino.mya.length === 1 && oneDino.mya[0] === mya )  {
+      if(oneDino[key])
+      wasAlive.push(oneDino[key])
+      else{
+       wasAlive.push(oneDino.dinosaurId)
+      }
+    }
+
+     if (key &&  oneDino.mya.length === 1 && oneDino.mya[0]-1 === mya )  {
+      if(oneDino[key])
+      wasAlive.push(oneDino[key])
+      else{
+       wasAlive.push(oneDino.dinosaurId)
+      }
+    }
+
+     if (key &&  mya <= oneDino.mya[0]  && mya >= oneDino.mya[1])  {
+       if(oneDino[key])
        wasAlive.push(oneDino[key])
+       else{
+        wasAlive.push(oneDino.dinosaurId)
+       }
      }
 
     //else if(!oneDino[key]){
      // else {wasAlive.push(oneDino.dinosaurId)
     //  }
-  
-    
-
   }
  return wasAlive
 }
