@@ -76,7 +76,7 @@ return result
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  //strings of a room connected to the given room.
+
   let result = []
   for (let room of rooms) {
     for(connect of room.connectsTo){
