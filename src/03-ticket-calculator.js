@@ -540,7 +540,6 @@ receipt = receipt.replaceAll('s,T',"s, T")
 let hmm = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------${receipt}\n-------------------------------------------\nTOTAL: $${sum.toFixed(2)}`
 
 
-console.log(hmm)
 
 for(i=0;i<purchases.length;i++){
 if(!(purchases[i].ticketType.includes("general") ||
