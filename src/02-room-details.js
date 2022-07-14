@@ -25,7 +25,52 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+let roomsArray = []
+let dinoID = []
+dinoName = []
+
+//Makes two different arrays where indexes match with dinosaur name and dinosaur ID
+for (let y=0;y<dinosaurs.length;y++){
+  dinoName.push(dinosaurs[y].name)
+  dinoID.push(dinosaurs[y].dinosaurId)
+}
+
+if(!dinoName.includes(dinosaurName)){
+return `Dinosaur with name '${dinosaurName}' cannot be found.`
+}
+
+//Will loop through created array so that if the dinosaur name is equal to dinonosaur name at a certain index, we can easily pull ID from DinoID array and use it since indexes corresponds to same dinosaur
+for (let z=0; z<dinoName.length;z++){
+if(dinosaurName ===dinoName[z]){
+
+//The Loops below will iterate through the rooms array for the dinosaur ID that corresponds with an actual Dinosaur ID in the dinosaurs Array.
+for (let i=0;i<rooms.length;i++){//will iterate through rooms array
+  for (let x=0;x<rooms[i].dinosaurs.length;x++){//will iterate through the dinosaur IDs from the rooms array
+  if(dinoID[z] ===rooms[i].dinosaurs[x]){
+
+    roomsArray.push(rooms[i].name)
+  } 
+
+
+}
+}
+}
+// if(roomsArray.length ===0)
+}
+
+
+
+if (roomsArray.length===0){
+  {return`Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`}
+}else{
+for(j=0;j<roomsArray.length;j++){
+return roomsArray[j]}
+}
+}
+// 
+
+
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +94,47 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+connectedROOMSID = []
+let roomsArray = []//dinosaurs name array
+let roomsIDArray = []//dinosaurs ID array
+let connectedROOMS = []
+for(i=0;i<rooms.length;i++){
+  roomsArray.push(rooms[i].name)
+  roomsIDArray.push(rooms[i].roomId)
+}
+
+
+for(i=0;i<rooms.length;i++){//will iterate through the rooms array
+
+  if(!roomsIDArray.includes(id)){
+    return `Room with ID of '${id}' could not be found.`
+  }
+  for(x=0;x<rooms[i].connectsTo.length;x++){
+  if (!roomsIDArray.includes(rooms[i].connectsTo[x])){
+     return `Room with ID of 'incorrect-id' could not be found.`
+       }}
+
+if(rooms[i].roomId ===id){
+  for(x=0;x<rooms[i].connectsTo.length;x++){//will iterate through connected rooms by ID
+    connectedROOMSID.push(rooms[i].connectsTo[x])
+ }
+
+}
+}
+
+for (y=0;y<roomsArray.length;y++){//will iterate through the entire dinosaurs name array/ID array
+  for(i=0;i<connectedROOMSID.length;i++){
+if (roomsIDArray[y] === connectedROOMSID[i]){
+  connectedROOMS.push(roomsArray[y])
+ }
+}}
+
+return connectedROOMS}
+
+
+
+
 
 module.exports = {
   getRoomByDinosaurName,
