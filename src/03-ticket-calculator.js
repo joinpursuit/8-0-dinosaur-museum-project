@@ -416,6 +416,9 @@ return totalPrice}
  */
 function purchaseTickets(ticketData, purchases) {
 
+
+
+
 priceArray = [] // will contain an array of all values of each ticket in the ticketPRiceArray
 let sum = 0 //the starting point for the accululator pattern summation of costs of tickets
 
@@ -525,17 +528,36 @@ receipt.push(`\n${entrantArray7[i]} ${ticketArray7[i]} Admission: $${prices7[i]}
 // receipt;
 // ;
 receipt=receipt.join('')
-receipt = receipt.replace('s,',"s, ")
+
+receipt = receipt.replaceAll('s,',"s, ")
+receipt = receipt.replaceAll('s,E',"s, E")
+receipt = receipt.replaceAll('s,M',"s, M")
+receipt = receipt.replaceAll('s,T',"s, T")
+
+
+
 
 let hmm = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------${receipt}\n-------------------------------------------\nTOTAL: $${sum.toFixed(2)}`
 
 
 console.log(hmm)
 
-return hmm
+for(i=0;i<purchases.length;i++){
+if(!(purchases[i].ticketType.includes("general") ||
+purchases[i].ticketType.includes("membership")))
+{return`Ticket type '${purchases[i].ticketType}' cannot be found.` }
+else if(!(purchases[i].entrantType.includes("child") || purchases[i].entrantType.includes("adult")  ||purchases[i].entrantType.includes("senior")))
+{return `Entrant type '${purchases[i].entrantType}' cannot be found.`}
+else if(hmm.includes('NaN')){
+return `Extra type '${purchases[i].extras}' cannot be found.`
+}
+// else if(!(purchases[i].extras.includes("movie")||purchases[i].extras.includes("education")||purchases[i].extras.includes("terrace"))) {}
+
+else{
+return hmm}
 }
 
-
+}
 /////////////////////////////////////////////
 
 // let entrantArray7 = []
