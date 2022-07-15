@@ -60,21 +60,19 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   let total = 0;
   const type = ticketInfo.ticketType;
   const age = ticketInfo.entrantType;
-  const addOns = [...ticketInfo.extras];
+  const addOns = ticketInfo.extras;
   if (!ticketData[type]) {
-    return `Ticket type '${type}' cannot be found.`
+    return `Ticket type '${type}' cannot be found.`;
   }
   if (!ticketData[type][`priceInCents`][age]) {
     return `Entrant type '${age}' cannot be found.`;
   }
   total += ticketData[type][`priceInCents`][age];
   for (const addOn of addOns) {
-    if (ticketData[`extras`][addOn]) {
-      total += ticketData[`extras`][addOn][`priceInCents`][age];
+    if (!ticketData[`extras`][addOn]) {
+      return `Extra type '${addOn}' cannot be found.`;
     }
-    if (addOns.length > 0 && !ticketData[`extras`][addOn]) {
-      return `Extra type '${addOn}' cannot be found.`
-    }
+    total += ticketData[`extras`][addOn][`priceInCents`][age];
   }
   return total;
 }
