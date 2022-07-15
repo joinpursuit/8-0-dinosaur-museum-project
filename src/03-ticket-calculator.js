@@ -140,16 +140,21 @@ function purchaseTickets(ticketData, purchases) {
   let total = 0
   let message = ""
   let tickets = []
+  let ticketStr = ``
+  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+  let ending = `-------------------------------------------\n`
   for(let i=0; i < purchases.length; i++){
     message = calculateTicketPrice(ticketData, purchases[i])
   if (typeof message === 'string'){
     return message
   } else {
     total += calculateTicketPrice(ticketData, purchases[i])
-    tickets.push(\n`${purchases[i].entrantType.charAt(0).toUpperCase()}${purchases[i].entrantType.substring(1)} ${purchases[i].ticketType.charAt(0).toUpperCase()}${purchases[i].ticketType.substring(1)}`)
-    return 
+    tickets.push(`${purchases[i].entrantType.charAt(0).toUpperCase()}${purchases[i].entrantType.slice(1)} ${purchases[i].ticketType.charAt(0).toUpperCase()}${purchases[i].ticketType.slice(1)} Admission: $${(calculateTicketPrice(ticketData, purchases[i])/100).toFixed(2)}`)
     } 
-  } `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchases[i].entrantType.charAt(0).toUpperCase()}${purchases[i].entrantType.substring(1)} ${purchases[i].ticketType.charAt(0).toUpperCase()}${purchases[i].ticketType.substring(1)} Admission: $${(total/100).toFixed(2)}\n-------------------------------------------\nTOTAL: $${(total/100).toFixed(2)}`
+  }
+  for (let ticket of tickets){
+    ticketStr += `${ticket}\n`
+  } return `${receipt}${ticketStr}${ending}TOTAL: $${(total/100).toFixed(2)}`
 }
 
 // Do not change anything below this line.
