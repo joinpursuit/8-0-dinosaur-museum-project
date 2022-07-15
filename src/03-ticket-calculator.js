@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { extras, membership } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,34 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let total = 0;
+  const type = ticketInfo.ticketType;
+  const age = ticketInfo.entrantType;
+  const addOns = ticketInfo.extras;
+  if (!ticketData[type]) {
+    return `Ticket type '${type}' cannot be found.`;
+  }
+  if (!ticketData[type][`priceInCents`][age]) {
+    return `Entrant type '${age}' cannot be found.`;
+  }
+  total += ticketData[type][`priceInCents`][age];
+  for (const addOn of addOns) {
+    if (!ticketData[`extras`][addOn]) {
+      return `Extra type '${addOn}' cannot be found.`;
+    }
+    total += ticketData[`extras`][addOn][`priceInCents`][age];
+  }
+  return total;
+}
+
+// const ticketInfo = {
+//   ticketType: "general",
+//   entrantType: "adult",
+//   extras: [`movie`, `terr`]
+// };
+// console.log(calculateTicketPrice(exampleTicketData,ticketInfo))
 
 /**
  * purchaseTickets()
@@ -109,7 +137,38 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+function purchaseTickets(ticketData, purchases) {
+  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------`;
+  let total = 0;
+  for (const item of purchases) {
+    const price = calculateTicketPrice(ticketData, item);
+    if (typeof price !== `number`) {
+      return price;
+    }
+    total += price / 100;
+    const type = item[`ticketType`];
+    const age = item[`entrantType`];
+    const addOn = [];
+    receipt += `\n${age.charAt(0).toUpperCase() + age.slice(1)} ${ticketData[type][`description`]}: $${(price / 100).toFixed(2)}`;
+    for (const i of item[`extras`]) {
+      addOn.push(ticketData[`extras`][i][`description`]);
+    }
+    if (addOn[0]) {
+      receipt += ` (${addOn.join(`, `)})`
+    }
+  }
+  return receipt + `\n-------------------------------------------\nTOTAL: $${total.toFixed(2)}`;
+}
+
+// const purchases = [
+//   {
+//     ticketType: "membership",
+//     entrantType: "adult",
+//     extras: ["movie", "terrace"],
+//   }
+// ]
+// console.log(purchaseTickets(exampleTicketData, purchases));
 
 // Do not change anything below this line.
 module.exports = {
