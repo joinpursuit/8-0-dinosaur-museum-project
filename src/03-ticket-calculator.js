@@ -54,7 +54,26 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let {ticketType, entrantType, extras} = ticketInfo;
+  if(!ticketData[ticketType]) {
+    return `Ticket type '${ticketType}' cannot be found.`;
+  }
+  if(!ticketData[ticketType].priceInCents[entrantType]) {
+    return `Entrant type '${entrantType}' cannot be found.`;
+  }
+  let baseCost = ticketData[ticketType].priceInCents[entrantType];
+  let extrasCost = 0;
+  for(let extra of extras) {
+    if(!ticketData.extras[extra]) {
+      return `Extra type '${extra}' cannot be found.`;
+    }
+    else {
+      extrasCost += ticketData.extras[extra].priceInCents[entrantType];
+    }
+  }
+  return baseCost + extrasCost;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +128,31 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let ticketGreeting = [
+    "Thank you for visiting the Dinosaur Museum!",
+    "-------------------------------------------",
+  ];
+  let totalPrice = 0;
+  for(let ticket of purchases) {
+    let price = calculateTicketPrice(ticketData, ticket);
+    totalPrice += price;
+    if(typeof price === "string") {
+      return price;
+    }
+    let entrant = ticket.entrantType[0].toUpperCase() + ticket.entrantType.slice(1);
+    let ticketName = ticketData[ticket.ticketType].description;
+    let formattedPrice = "$" + (price / 100).toFixed(2);
+    let extras = ticket.extras.map(extra => ticketData.extras[extra].description).join(", ");
+    if(extras) {
+      extras = ` (${extras})`;
+    }
+    ticketGreeting.push(`${entrant} ${ticketName}: ${formattedPrice}${extras}`);
+  }
+  ticketGreeting.push("-------------------------------------------");
+  ticketGreeting.push(`TOTAL: $${(totalPrice / 100). toFixed(2)}`);
+  return ticketGreeting.join("\n");
+}
 
 // Do not change anything below this line.
 module.exports = {
