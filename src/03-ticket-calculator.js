@@ -153,7 +153,7 @@ function purchaseTickets(ticketData, purchases) {
     } 
   }
   for (let ticket of tickets){
-    ticket = ticket.replaceAll(`movie`, `Movie Access`).replaceAll(`terrace`, `Terrace Access`).replaceAll(`education`, `Education Access`).replaceAll(` ()`, ``)
+    ticket = ticket.replaceAll(`movie`, `Movie Access`).replaceAll(`terrace`, `Terrace Access`).replaceAll(`education`, `Education Access`).replaceAll(` ()`, ``).replaceAll(`s,`, `s, `)
     ticketStr += `${ticket}\n`
   } return `${receipt}${ticketStr}${ending}TOTAL: $${(total/100).toFixed(2)}`
 }
