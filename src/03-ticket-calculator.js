@@ -54,7 +54,38 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  const ticketType = ticketInfo.ticketType;
+  const entrantType = ticketInfo.entrantType;
+  const extras = ticketInfo.extras;
+  
+  if(!ticketData[ticketType]) {
+    return `Ticket type '${ticketType}' cannot be found.`;
+  }
+  
+  if(!ticketData[ticketType].priceInCents[entrantType]) {
+    return `Entrant type '${entrantType}' cannot be found.`;
+  }
+
+  const basePrice = ticketData[ticketType].priceInCents[entrantType];
+  let extrasCost = 0;
+
+  for (let extra of extras) {
+    if(!ticketData.extras[extra]) {
+      return `Extra type '${extra}' cannot be found.`;
+    }
+    else {
+      extrasCost += ticketData.extras[extra].priceInCents[entrantType];
+    }
+  }
+  return basePrice + extrasCost;
+}
+
+
+
+
+
+
 
 /**
  * purchaseTickets()
@@ -109,7 +140,49 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+
+  const standard = [
+    "Thank you for visiting the Dinosaur Museum!",
+    "-------------------------------------------", 
+  ];
+  
+  let total = 0;
+
+  for(let ticket of purchases) {
+    let price = calculateTicketPrice(ticketData, ticket);
+    total += price;
+    if(typeof price === "string") {
+      return price;
+    }
+
+    let entrant = ticket.entrantType[0].toUpperCase() + ticket.entrantType.slice(1);
+    let ticketName = ticketData[ticket.ticketType].description;
+    let formattedPrice = "$" + (price / 100).toFixed(2);
+
+    // let extras = ticket.extras.map(
+    //   extra => ticketData.extras[extra].description
+    //   ).join(", ");
+    let extras =[];
+    for(let extras of ticket.extras) { 
+      extras.push(ticketData.extras[extras].description);
+    }
+    extras = extras.join(", ");
+     
+
+    if(extras) {
+      extras = ` (${extras})`;
+    }
+
+    standard.push(`${entrant} ${ticketName}: ${formattedPrice}${extras}`);
+  }
+
+  standard.push("-------------------------------------------");
+  standard.push(`TOTAL: $${(total / 100).toFixed(2)}`);
+
+  return standard.join("\n");
+}
+
 
 // Do not change anything below this line.
 module.exports = {
