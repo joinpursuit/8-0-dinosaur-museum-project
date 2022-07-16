@@ -25,7 +25,40 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+
+
+ // Helper function to conver id to the name
+//  function dinoNameToId (dinosaurs, dinosaurName) {
+//   let dinoId = '';
+//     for (dinos of dinosaurs) {
+//       if (dinosaurName === dinos.name) {
+//         dinoId = dinos.dinosaurId;
+//       }
+//     }
+//     return dinoId;
+//   }
+
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let dinoId;
+  let noDinoFound;
+  for (let i= 0; i< dinosaurs.length; i++) {
+    if (dinosaurs[i].name === dinosaurName) {
+      dinoId = dinosaurs[i].dinosaurId
+    } 
+  }
+  for (let j =0; j< rooms.length; j++) {
+    if (rooms[j].dinosaurs.includes(dinoId)) {
+      return rooms[j].name;
+    } else {
+      noDinoFound = `Dinosaur with name \'${dinosaurName}\' cannot be found in any rooms.`
+    }
+    if (!dinoId) {
+      noDinoFound = `Dinosaur with name \'${dinosaurName}\' cannot be found.`
+    }
+  }
+  return noDinoFound;
+}
+// getRoomByDinosaurName(exampleDinosaurData, exampleRoomData, "Pterodactyl");
 
 /**
  * getConnectedRoomNamesById()
@@ -49,8 +82,52 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
-
+// in first loop create new Array that takes all the room ids only, then in second loop cross checks the ids To parameter id and give error if not found. 
+    // function formatArr(arrConnectedRooms, rooms) {
+    //   formattedArr = [];
+    //   for (i=0; i<arrConnectedRooms.length; i++) {
+    //     for (j=0; j<rooms.length; j++) {
+    //       if (arrConnectedRooms[i] === rooms[j].roomId) {
+    //        formattedArr.push(rooms[j].name);
+    //       }
+    //     }
+    //   }
+    //   return formattedArr;
+    // }
+   // take array of strings (room Ids) and cross check each individual string to all the roomIds in our Array of Objects Rooms
+   
+    function getConnectedRoomNamesById(rooms, id) {
+     let newArr =[];
+     let  formatArr =[];
+     for (let i =0; i<rooms.length; i++) {
+        if (rooms[i].roomId === id) {
+         newArr = rooms[i].connectsTo;
+      }
+    }
+    for (let j=0; j<rooms.length; j++) {
+      if (newArr.includes(rooms[j].roomId)) {
+        formatArr.push(rooms[j].name)
+      }
+    }
+    if (!newArr.length || newArr.includes('incorrect-id')) {
+      return "Room with ID of 'incorrect-id' could not be found.";
+    } 
+    return formatArr;
+  }
+      
+  // getConnectedRoomNamesById(exampleRoomData, "A6QaYdyKra");
+      
+      
+    //   roomArrFormatted = [];
+    //   for (room of rooms) {
+    //     if (room.roomId === id) {
+    //       for (let i=0; i<room['connectsTo'].length; i++) {
+    //        roomArrFormatted.push(roomIdFormat(room.connectsTo[i]))
+    //       }
+    //     }
+    //   }
+    //   return roomArrFormatted;
+    // }
 module.exports = {
   getRoomByDinosaurName,
   getConnectedRoomNamesById,
