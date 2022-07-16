@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { membership, extras } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,47 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  // initialize accumulator
+  let totalPrice =0;
+ 
+  // Created guard clause to check if obj(ticketInfo) is a correct value.
+
+  if(ticketInfo.ticketType !== "general" && ticketInfo.ticketType !== "membership") {
+    return `Ticket type \'${ticketInfo.ticketType}\' cannot be found.`;
+  }
+  if (ticketInfo.entrantType !== "child" && ticketInfo.entrantType !== "adult" && ticketInfo.entrantType !== "senior") {
+    return `Entrant type \'${ticketInfo.entrantType}\' cannot be found.`;
+  }
+  if(ticketInfo.extras.includes("incorrect-extra")) {
+    return`Extra type \'${ticketInfo.extras}\' cannot be found.`;
+  }
+  // calculates ticket price with No add-ons.
+  if (ticketInfo.ticketType === 'general' || 'membership') {
+    totalPrice += ticketData[ticketInfo.ticketType]["priceInCents"][ticketInfo.entrantType];
+  } 
+  // calculates ticket price with extra add-ons.
+  for (let addExtras of ticketInfo.extras) {
+    if (ticketData.extras) {
+      totalPrice += ticketData.extras[addExtras].priceInCents[ticketInfo.entrantType];
+    }
+  }
+return totalPrice;
+}
+
+// const ticketInfo = {
+//   ticketType: "general",
+//   entrantType: "adult",
+//   extras: ["movie",],
+// };
+
+// calculateTicketPrice(exampleTicketData, ticketInfo);
+
+// for (let i=0; i<ticketInfo.extras; i++) {
+//   if (ticketData.extras) {
+//   totalPrice += ticketData.extras[ticketInfo.extras[i]]["priceInCents"][ticketInfo.entrantType];
+// }
+// }
 
 /**
  * purchaseTickets()
@@ -109,7 +150,62 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+function purchaseTickets(ticketData, purchases) {
+  // initialize accumulator
+  let firstReceipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  let totalPrice = 0;
+//loop through ArrayObj(purchases)
+  for (let i=0; i<purchases.length; i++) {
+// calculate PriceInCents at current iteration of ArrayObj(purchases) else return error
+    let currentTicket = calculateTicketPrice(ticketData, purchases[i]);
+    if (typeof currentTicket === 'string') {
+      return currentTicket;
+    } else {
+      totalPrice += currentTicket;
+    }
+    // create second half of receipt for Extra Add-Ons
+    ticketExtras = purchases[i].extras;
+    let secondReceipt ='';
+    for (let j=0; j<ticketExtras.length; j++) {
+      secondReceipt += ticketData.extras[ticketExtras[j]].description;
+      if (j !==ticketExtras.length - 1) {
+        secondReceipt += ', '
+      }
+    }
+     //Capitalize entrant type for the string before adding it
+     let capEntrant = purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)
+     // formalize final receipt by addint FirstReceipt + SecondReceipt
+     firstReceipt += `${capEntrant} ${ticketData[purchases[i].ticketType].description}: $${(currentTicket/100).toFixed(2)}`
+     firstReceipt += ticketExtras.length >0 ? ` (${secondReceipt})\n` : "\n";
+  }
+  firstReceipt += `-------------------------------------------\nTOTAL: $${(totalPrice/100).toFixed(2)}`
+  return firstReceipt;
+}
+const purchases = [
+  {
+    ticketType: "general",
+    entrantType: "adult",
+    extras: ["movie", "terrace"],
+  },
+  {
+    ticketType: "general",
+    entrantType: "senior",
+    extras: ["terrace"],
+  },
+  {
+    ticketType: "general",
+    entrantType: "child",
+    extras: ["education", "movie", "terrace"],
+  },
+  {
+    ticketType: "general",
+    entrantType: "child",
+    extras: ["education", "movie", "terrace"],
+  },
+];
+
+ purchaseTickets(exampleTicketData, purchases);
 
 // Do not change anything below this line.
 module.exports = {
