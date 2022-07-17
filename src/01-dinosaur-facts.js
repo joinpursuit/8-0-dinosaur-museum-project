@@ -22,7 +22,20 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  // let dinoObj = {}
+  // let nameArray = []
+  // let lengthArray = []
+  // let dinoLengthInFeet = dinosaurs.lengthInMeters * 3.281
+
+  // for(let i = 0; i < dinosaurs.length; i++) {
+  //     nameArray.push(dinosaurs[i].name)
+  //     lengthArray.push(dinosaurs[i].lengthInMeters)
+  //   } let longestDino = Math.max(lengthArray)
+  } 
+
+  // I struggled for a while with this one. Could not for the life of me, get any of the tests to run. 
+  // I have to go over the recording for once. Hope I was sort of close to the answer lol. 
 
 /**
  * getDinosaurDescription()
@@ -44,7 +57,23 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+
+    for(let i = 0; i < dinosaurs.length; i++) {
+      if(dinosaurs[i].dinosaurId === id) {
+        while(dinosaurs[i].mya.length === 1) {
+        return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[0]} million years ago.`
+      } while(dinosaurs[i].mya.length > 1) {
+        return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[1]} million years ago.`
+      } 
+      }
+      } while(id !== dinosaurs) {
+        return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+      }
+      }
+      
+  
+
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +100,19 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+//   let dinoArray = []
+//   let keyNeeded = key || dinosaurId
+
+//   // let myaYearBefore = mya - 1 ??
+
+//   for(let dinos of dinosaurs){
+//     if(dinoArray.mya.length) {
+
+//     }
+//   }
+
+}
 
 module.exports = {
   getLongestDinosaur,
