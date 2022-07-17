@@ -160,14 +160,14 @@ function purchaseTickets(ticketData, purchases) {
     let ticketName = ticketData[ticket.ticketType].description;
     let formattedPrice = "$" + (price / 100).toFixed(2);
 
-    // let extras = ticket.extras.map(
-    //   extra => ticketData.extras[extra].description
-    //   ).join(", ");
-    let extras =[];
-    for(let extras of ticket.extras) { 
-      extras.push(ticketData.extras[extras].description);
-    }
-    extras = extras.join(", ");
+    let extras = ticket.extras.map(
+      extra => ticketData.extras[extra].description
+      ).join(", ");
+    // let extras =[];
+    // for(let extras of ticket.extras) { 
+    //   extras.push(ticketData.extras[extras].description);
+    // }
+    // extras = extras.join(", ");
      
 
     if(extras) {
