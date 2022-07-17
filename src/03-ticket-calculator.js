@@ -54,7 +54,21 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  if (ticketData[ticketInfo["ticketType"]] === undefined) {
+  return `Ticket type '${ticketInfo.ticketType}' cannot be found.`; }
+ if (ticketData[ticketInfo["ticketType"]].priceInCents[ticketInfo.entrantType] === undefined) {
+  return `Entrant type 'incorrect-entrant' cannot be found.`; }
+
+ let extraPrices = 0;
+
+ if (ticketInfo['extras'].length > 0) {
+  for (a of ticketInfo['extras']) {
+    if (ticketData['extras'][a] === undefined) {
+      return "Extra type 'incorrect-extra' cannot be found."; }
+    extraPrices += ticketData['extras'][a].priceInCents[ticketInfo.entrantType]; }
+  }
+return ticketData[ticketInfo['ticketType']].priceInCents[ticketInfo.entrantType]+ extraPrices; }
 
 /**
  * purchaseTickets()
@@ -109,7 +123,34 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+
+  function capitalizeFirstLetter(str) {
+    const lower = str.toLowerCase();
+    return  str.charAt(0).toUpperCase()+lower.slice(1) }
+
+  let receipt = ""; 
+  let totalReceipt = 0 
+
+  for (let i of purchases) {
+    let cost = calculateTicketPrice(ticketData, i); 
+    if (typeof cost === "string") { 
+      return cost; 
+    }
+totalReceipt += cost; 
+
+let extra = []; 
+
+for (let receipt2 = 0; receipt2 < i.extras.length; receipt2++) { 
+  extra.push(ticketData["extras"][i.extras[receipt2]].description)
+}
+if (extra.length > 0){
+  extra = (` (${extra.join(", ")})`);
+}
+receipt += `${capitalizeFirstLetter(i.entrantType)} ${capitalizeFirstLetter(i.ticketType)} Admission: $${(cost/100).toFixed(2)}${extra}\n`
+  }
+return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${receipt}-------------------------------------------\nTOTAL: $${(totalReceipt/100).toFixed(2)}`;
+}
 
 // Do not change anything below this line.
 module.exports = {
