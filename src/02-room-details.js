@@ -99,19 +99,21 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     function getConnectedRoomNamesById(rooms, id) {
      let newArr =[];
      let  formatArr =[];
+     let newArrIds = [];
      for (let i =0; i<rooms.length; i++) {
+        newArrIds.push(rooms[i].roomId)
         if (rooms[i].roomId === id) {
          newArr = rooms[i].connectsTo;
-      }
-    }
-    for (let j=0; j<rooms.length; j++) {
-      if (newArr.includes(rooms[j].roomId)) {
-        formatArr.push(rooms[j].name)
       }
     }
     if (!newArr.length || newArr.includes('incorrect-id')) {
       return "Room with ID of 'incorrect-id' could not be found.";
     } 
+    for (let j=0; j<rooms.length; j++) {
+      if (newArr.includes(rooms[j].roomId)) {
+        formatArr.push(rooms[j].name)
+      }
+    }
     return formatArr;
   }
       
