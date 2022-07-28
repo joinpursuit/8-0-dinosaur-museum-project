@@ -134,15 +134,15 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  let entrant = ticket.entrantType[0].toUpperCase()+ticket.entrant
+  let entrant = ticket.entrantType[0].toUpperCase()+ticket.entrantType.slice(1)
   let ticketName = ticketData[ticket.ticketType].description;
   let formattedPrice = "$" + (price / 100).toFixed(2);
 
-  let extras = ticket.extras.map(
+  let extra = ticket.extras.map(
     extra => ticketData.extras[extra].description
   ).join(", ");
   let extras = [];
-  for(let extra of ticket.extras) {
+  for(let extras of ticket.extras) {
     extras.push(ticketData.extras[extra].description);
   }
   extras = extras.join(", ")
