@@ -133,7 +133,16 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let totalPrice = 0;
+  for (purchase of purchases){
+    let res = calculateTicketPrice(ticketData,purchase);
+    console.log(res);
+    if (typeof res === "string"){
+      return res;
+    }
+  }
+}
 
 // Do not change anything below this line.
 module.exports = {
