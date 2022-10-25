@@ -61,7 +61,6 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     if (ticketInfo.entrantType in ticketData[ticketInfo.ticketType]["priceInCents"]){
       ticketPriceCents += ticketData[ticketInfo.ticketType][ticketInfo.entrantType];
       for (extra of ticketInfo.extras){
-        console.log(extra);
         if (!(extra in ticketData.extras)){
           return `Extra type '${extra}' cannot be found.`
         }
