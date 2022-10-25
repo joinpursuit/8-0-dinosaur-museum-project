@@ -138,7 +138,6 @@ function purchaseTickets(ticketData, purchases) {
   let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------";
   for (purchase of purchases){
     let res = calculateTicketPrice(ticketData,purchase);
-    console.log(res);
     if (typeof res === "string"){
       return res;
     }
