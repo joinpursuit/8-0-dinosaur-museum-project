@@ -28,7 +28,7 @@ function getLongestDinosaur(dinosaurs) {
   //create a variable for the index of the longest dino
   let longestIndex = 0; 
   //loop through dinosaur array
-  for (i = 0; i < dinosaurs.length; i++){
+  for (let i = 0; i < dinosaurs.length; i++){
     //if the dinosaur at the longestIndex is shorter than the next dino in the array
     if (dinosaurs[longestIndex].lengthInMeters < dinosaurs[i].lengthInMeters){
       //the new index becomes the current dino
@@ -62,7 +62,18 @@ function getLongestDinosaur(dinosaurs) {
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  //loop through dinosaur array
+  for (let i = 0; i < dinosaurs.length; i++){
+    //check if ids match
+    if (dinosaurs[i].dinosaurId === id){
+      //return a string with the dinos name, pronunciation, info, period, and mya
+      return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.`
+    }
+  }
+  //return id not found message
+  return `A dinosaur with an ID of '${id}' cannot be found.`
+}
 
 /**
  * getDinosaursAliveMya()
