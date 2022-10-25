@@ -70,9 +70,10 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-
+  // the .find() method returns the first element by the provided conditional. If it is not found undefined is returned.
   let dino = dinosaurs.find( dino => dino.dinosaurId  === id )
 
+  // If the previous value came back as undefined. Then the provide iD was invalid
   if( !dino )
     return `A dinosaur with an ID of '${id}' cannot be found.`
   else
@@ -109,14 +110,14 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-
+  // Using the .filter() method creates a shallow copy *references to encapsulating the object*
   let dinosFound = dinosaurs.filter( dino => {
-
+    // Since all the requirements make us return a single dino object. I figured it would be best to combine it into one ifElse statement with 4 conditionals
     if( dino.mya.includes(mya) || dino.mya[0] > mya && dino.mya[1] < mya || dino.mya.length === 1 && ( dino.mya - 1 )  === mya )
       return dino
 
   }).map( dinoObject => {
-
+    // Using a ternary logical operator to be fancy. An ifElse statement could be used here.
     return !key ? dinoObject.dinosaurId : dinoObject[key];
 
   });
