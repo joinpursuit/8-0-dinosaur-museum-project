@@ -28,7 +28,6 @@ const exampleRoomData = require("../data/rooms");
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   let dinoId = "";
   for (dino of dinosaurs){
-    console.log(`${dinosaurName} vs ${dino.name}`);
     if (dino.name === dinosaurName){
       dinoId = dino.dinosaurId;
       break;
