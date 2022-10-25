@@ -32,10 +32,10 @@ function getLongestDinosaur(dinosaurs) {
     // returning empty object if there are no dinosaurs provided
     return dinoObj;
 
-  }else{
+  }else{  
 
-    // find the longest `lengthInMeters`
-    let result = Math.max.apply( Math, dinosaurs.map( dino => dino.lengthInMeters ) )
+    // find the longest `lengthInMeters` 
+    let result = Math.max.apply( Math, dinosaurs.map( dino => dino.lengthInMeters ) ) 
     
     // matching that `lengthInMeter` to the dinosaurs. It will give us the first one due to find() - returns the first one found
     let dino = dinosaurs.find( dino => dino.lengthInMeters === result )
@@ -44,10 +44,10 @@ function getLongestDinosaur(dinosaurs) {
     dinoObj[`${dino.name}`] = dino.lengthInMeters * 3.281
     
     return dinoObj
-    
-  }
 
-} // ends getLongestDinosaur
+  } 
+
+} // ends getLongestDinosaur()
 
 /**
  * getDinosaurDescription()
@@ -84,9 +84,11 @@ function getDinosaurDescription(dinosaurs, id) {
 /**
  * getDinosaursAliveMya()
  * ---------------------
- * Returns an array of dinosaurs who were alive at the given `mya` (i.e. "millions of years ago") value. If a `key` is provided, returns the value of that key for each dinosaur alive at that time. Otherwise, returns the ID.
+ * Returns an array of dinosaurs who were alive at the given `mya` (i.e. "millions of years ago") value. 
+ * If a `key` is provided, returns the value of that key for each dinosaur alive at that time. Otherwise, returns the ID.
  *
- * If the dinosaur only has a single value for `mya`, allows for the `mya` value to be equal to the given value or one less. For example, if a dinosaur has a `mya` value of `[29]`, the dinosaur's information will be returned if `29` is entered or `28` is entered.
+ * If the dinosaur only has a single value for `mya`, allows for the `mya` value to be equal to the given value or one less. 
+ * For example, if a dinosaur has a `mya` value of `[29]`, the dinosaur's information will be returned if `29` is entered or `28` is entered.
  *
  * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file for an example of the input.
  * @param {number} mya - "Millions of years ago."
@@ -115,7 +117,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
 
   }).map( dinoObject => {
 
-    return !key ? dinoObject.dinosaurId : dinoObject.name;
+    return !key ? dinoObject.dinosaurId : dinoObject[key];
 
   });
 
