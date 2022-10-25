@@ -27,7 +27,6 @@ function getLongestDinosaur(dinosaurs) {
   if (dinosaurs.length !== 0){
     tallestDino[dinosaurs[0].name] = dinosaurs[0].lengthInMeters * 3.281;
     for (dino of dinosaurs){
-      console.log(tallestDino[Object.keys(tallestDino)[0]])
       if (tallestDino[Object.keys(tallestDino)[0]] < dino.lengthInMeters * 3.281){
         tallestDino = {};
         tallestDino[dino.name] = dino.lengthInMeters * 3.281;
