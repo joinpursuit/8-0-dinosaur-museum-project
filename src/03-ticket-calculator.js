@@ -59,10 +59,14 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   let ticketPriceCents = 0;
   if (ticketInfo.ticketType in ticketData){
     if (ticketInfo.entrantType in ticketData[ticketInfo.ticketType]["priceInCents"]){
-      ticketPriceCents += ticketData[ticketInfo.ticketType][ticketInfo.entrantType];
+      ticketPriceCents += ticketData[ticketInfo.ticketType]["priceInCents"][ticketInfo.entrantType];
       for (extra of ticketInfo.extras){
         if (!(extra in ticketData.extras)){
           return `Extra type '${extra}' cannot be found.`
+        }
+        else {
+          ticketPriceCents += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+          console.log(ticketPriceCents);
         }
       }
       
@@ -74,6 +78,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   else {
     return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
   }
+  return ticketPriceCents;
 }
 
 /**
