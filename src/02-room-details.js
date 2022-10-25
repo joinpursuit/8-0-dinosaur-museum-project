@@ -25,7 +25,23 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+
+  let dinoFound = dinosaurs.find( dino => dino.name === dinosaurName )
+
+  if( !dinoFound )
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+
+  // console.log(dinoFound)
+
+  for( let i = 0; i < rooms.length; i++ ){
+    if( rooms[i].dinosaurs.includes(dinoFound.dinosaurId) )
+      return rooms[i].name
+  }
+
+  return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+
+} // ends getRoomByDinosaurName() 
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +65,37 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+
+  // will come back empty if the roomId does not match the 'id' provided 
+  let roomByID = rooms.filter( room => room.roomId === id )
+
+  if( !roomByID.length )
+    return `Room with ID of '${id}' could not be found.`
+
+  let connRooms =  roomByID.map( room => room.connectsTo )
+
+  // Mapping roomByID which was an object returned the connectedRooms as an array. Spreading the elements returned without the spread operator
+  let spreadConnRooms = [].concat.apply([], connRooms)
+  
+  // converting the roomIds into roomNames
+  for( let i = 0; i < spreadConnRooms.length; i++ ){
+
+    let found = rooms.find( room => spreadConnRooms[i] == room.roomId )
+
+    if( found ){
+      spreadConnRooms[i] = found
+    }else{
+      return `Room with ID of '${spreadConnRooms[i]}' could not be found.`
+    }
+  }
+
+  // after making sure there are no `incorrect-id` 
+  let finalResult = spreadConnRooms.map( roomNameOnly => roomNameOnly.name )
+
+  return finalResult
+
+} // ends getConnectedRoomNamesById
 
 module.exports = {
   getRoomByDinosaurName,
