@@ -24,10 +24,7 @@ const exampleDinosaurData = require("../data/dinosaurs");
  */
 function getLongestDinosaur(dinosaurs) {
   let tallestDino = {};
-  if (dinosaurs.length === 0){
-    return tallestDino;
-  }
-  else{
+  if (dinosaurs.length !== 0){
     tallestDino[dinosaurs[0].name] = dinosaurs[0].lengthInMeters * 3.281;
     for (dino of dinosaurs){
       console.log(tallestDino[Object.keys(tallestDino)[0]])
