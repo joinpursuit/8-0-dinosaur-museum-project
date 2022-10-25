@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { extras } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -57,8 +58,15 @@ const exampleTicketData = require("../data/tickets");
 function calculateTicketPrice(ticketData, ticketInfo) {
   let ticketPriceCents = 0;
   if (ticketInfo.ticketType in ticketData){
-    if (ticketInfo.entrantType in ticketData[ticketInfo.ticketType]){
-
+    if (ticketInfo.entrantType in ticketData[ticketInfo.ticketType]["priceInCents"]){
+      ticketPriceCents += ticketData[ticketInfo.ticketType][ticketInfo.entrantType];
+      for (extra of ticketInfo.extras){
+        console.log(extra);
+        if (!(extra in ticketData.extras)){
+          return `Extra type '${extra}' cannot be found.`
+        }
+      }
+      
     }
     else {
       return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
