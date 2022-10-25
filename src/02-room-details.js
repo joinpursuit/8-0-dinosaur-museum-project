@@ -73,36 +73,36 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
-    function getConnectedRoomNamesById(rooms, id) {
-      let tracker = [];
-      let result = [];
-    
-      //cycles through rooms and adds correct roomsID's "connects to" key values to tracker variable
-      for (let room of rooms){
-        if (room.roomId == id){
-          tracker = room.connectsTo
-        }
-      }
-    
-      if(tracker.length == 0){
-        return `Room with ID of '${id}' could not be found.`
-      }
-    
-      //cycles through each entry in tracker varible, and pushes correct room name to result 
-      for (let roomID of tracker){
-        for (let i = 0; i < rooms.length; i++){
-          if (rooms[i].roomId == roomID){
-            result.push(rooms[i].name)
-          }
-        }
-      }
-    
-      if(tracker.length !== result.length){
-        return `Room with ID of 'incorrect-id' could not be found.`
-      }
-    
-      return result;
+function getConnectedRoomNamesById(rooms, id) {
+  let tracker = [];
+  let result = [];
+
+  //cycles through rooms and adds correct roomsID's "connects to" key values to tracker variable
+  for (let room of rooms){
+    if (room.roomId == id){
+      tracker = room.connectsTo
     }
+  }
+
+  if(tracker.length == 0){
+    return `Room with ID of '${id}' could not be found.`
+  }
+
+  //cycles through each entry in tracker varible, and pushes correct room name to result 
+  for (let roomID of tracker){
+    for (let i = 0; i < rooms.length; i++){
+      if (rooms[i].roomId == roomID){
+        result.push(rooms[i].name)
+      }
+    }
+  }
+
+  if(tracker.length !== result.length){
+    return `Room with ID of 'incorrect-id' could not be found.`
+  }
+
+  return result;
+}
 
 module.exports = {
   getRoomByDinosaurName,
