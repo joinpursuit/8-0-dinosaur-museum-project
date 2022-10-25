@@ -54,7 +54,29 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+
+  if ( ticketData.hasOwnProperty( ticketInfo.ticketType ) && ticketData[ticketInfo.ticketType].priceInCents.hasOwnProperty( ticketInfo.entrantType ) ){
+    
+    let extrasPrice = 0;
+    
+    for( let index in ticketInfo.extras ){
+  
+      if( ticketData.extras.hasOwnProperty( ticketInfo.extras[index] ) )
+        extrasPrice += ticketData.extras[ticketInfo.extras[index]].priceInCents[ticketInfo.entrantType]
+      else
+        return `Extra type '${ticketInfo.extras}' cannot be found.`
+  
+      } // ends forLoop searching for 'extras'
+    
+    return ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType] + extrasPrice;
+  
+  }else if( !ticketData.hasOwnProperty( ticketInfo.ticketType ) )
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+  else if( !ticketData[ticketInfo.ticketType].priceInCents.hasOwnProperty( ticketInfo.entrantType ) )
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+
+} // ends calculateTicketPrice()
 
 /**
  * purchaseTickets()
@@ -109,7 +131,48 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+
+  // Declaring Variables that will be used inside our function 
+  let totalPrice = 0;
+  
+  // initial value of the reciept as per instructions
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------";
+
+  // starts the forLetInLoop
+  for( let index in purchases ){
+
+    // creating variables inside the forLetInLoop because we need them to reset everytime we go into the loop.
+    let extras = '';
+    let extrasPrice = 0;
+
+    // creating booleans to make it more understanble 
+    let ticketTypeBool = ticketData.hasOwnProperty( purchases[index].ticketType );
+    let entrantTypeBool = ticketData[purchases[index].ticketType].priceInCents.hasOwnProperty( purchases[index].entrantType ) 
+    
+    // like in the previous function we will use an ifElse statement to check if we have valid entrantType or ticketType
+    if(  ticketTypeBool && entrantTypeBool ){
+      
+      // formatting the values of entrant and ticket
+      let ticketType = `${purchases[index].entrantType[0].toUpperCase()}${purchases[index].entrantType.slice(1).toLocaleLowerCase()}`
+      let entrantType = `${purchases[index].ticketType[0].toUpperCase()}${purchases[index].ticketType.slice(1).toLocaleLowerCase()}`
+
+      // adding to entrantType and ticket type to the receipt
+      receipt += `\n${entrantType} ${ticketType} Admission: `;
+
+      // for readability purposes we will store extras inside a variable
+      let extrasArray = `( ${purchases[index].extras.join(', ')} )`;
+
+      console.log( extrasArray )
+    }else if( !ticketTypeBool )
+      return `Ticket type '${purchases[index].ticketType}' cannot be found.`
+    else if( !entrantTypeBool )
+    return `Entrant type '${purchases[index].entrantType}' cannot be found.`
+    // ends ifElse statement that checks for valid entrant && ticket type
+
+  }// ends the forLetInLoop
+
+} // ends purchaseTickets()
 
 // Do not change anything below this line.
 module.exports = {
