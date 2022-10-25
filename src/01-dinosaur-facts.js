@@ -22,7 +22,32 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  
+  // creating and empty obj 
+  let dinoObj = {}
+
+  if ( !dinosaurs.length ){
+
+    // returning empty object if there are no dinosaurs provided
+    return dinoObj;
+
+  }else{
+
+    // find the longest `lengthInMeters`
+    let result = Math.max.apply( Math, dinosaurs.map( dino => dino.lengthInMeters ) )
+    
+    // matching that `lengthInMeter` to the dinosaurs. It will give us the first one due to find() - returns the first one found
+    let dino = dinosaurs.find( dino => dino.lengthInMeters === result )
+
+    // formatting it to fit requirement needs
+    dinoObj[`${dino.name}`] = dino.lengthInMeters * 3.281
+    
+    return dinoObj
+    
+  }
+
+} // ends getLongestDinosaur
 
 /**
  * getDinosaurDescription()
@@ -44,7 +69,9 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+
+} // ends getDinosaurDescription
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +98,9 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+
+} // ends getDinosaursAliveMya
 
 module.exports = {
   getLongestDinosaur,
