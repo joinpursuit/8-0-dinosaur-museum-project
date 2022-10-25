@@ -22,7 +22,22 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  let result = {};
+  let name = ""
+  let count = -Infinity
+
+  for(let dino of dinosaurs){
+    if(dino.lengthInMeters > count){
+      name = dino.name
+      count = dino.lengthInMeters;
+    }
+  }
+  
+ if(!!name){result[name] = Math.round(count*100*3.28084)/100}
+
+  return result
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +59,25 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let name, pronounciation, info, period, mya;
+
+  for (let dino of dinosaurs){
+    if(dino.dinosaurId == id){
+      name = dino.name
+      pronounciation = dino.pronunciation
+      info = dino.info
+      period = dino.period
+      mya = dino.mya[dino.mya.length-1]
+    }
+  }
+
+  if(name){
+    return `${name} (${pronounciation})\n${info} It lived in the ${period} period, over ${mya} million years ago.`
+  } else {
+    return `A dinosaur with an ID of '${id}' cannot be found.`
+  }
+}
 
 /**
  * getDinosaursAliveMya()
