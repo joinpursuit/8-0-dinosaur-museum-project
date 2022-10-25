@@ -135,13 +135,31 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  */
 function purchaseTickets(ticketData, purchases) {
   let totalPrice = 0;
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------";
   for (purchase of purchases){
     let res = calculateTicketPrice(ticketData,purchase);
     console.log(res);
     if (typeof res === "string"){
       return res;
     }
+    else {
+      totalPrice += res;
+      let extras = [];
+      for (extra of purchase.extras){
+        extras.push(ticketData.extras[extra].description);
+      }
+      let ticketEntrant = purchase.entrantType.charAt(0).toUpperCase() + purchase.entrantType.slice(1);
+      let ticketType = ticketData[purchase.ticketType].description;
+      let indPrice = (res/100).toFixed(2);
+      let extraList = "";
+      if (extras.length!==0){
+        extraList = ` (${extras.join(', ')})`
+      }
+      receipt += `\n${ticketEntrant} ${ticketType}: $${indPrice}${extraList}`;
+    }
   }
+  receipt += `\n-------------------------------------------\nTOTAL: $${(totalPrice/100).toFixed(2)}`;
+  return receipt;
 }
 
 // Do not change anything below this line.
