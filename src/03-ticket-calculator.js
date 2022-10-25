@@ -66,7 +66,6 @@ function calculateTicketPrice(ticketData, ticketInfo) {
         }
         else {
           ticketPriceCents += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
-          console.log(ticketPriceCents);
         }
       }
       
