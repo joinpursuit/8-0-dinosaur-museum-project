@@ -23,12 +23,21 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getLongestDinosaur(dinosaurs) {
-  let tallestDino = {};
+  let tallestDino = {}; //Create empty object to store dino
+
+  //Check if dinosaurs actually contains dinosaurs to compare.
   if (dinosaurs.length !== 0){
+
+    //Intialize empty object as the first dino for comparison
     tallestDino[dinosaurs[0].name] = dinosaurs[0].lengthInMeters * 3.281;
+
+    //Iterate through dinosaurs
     for (dino of dinosaurs){
       if (tallestDino[Object.keys(tallestDino)[0]] < dino.lengthInMeters * 3.281){
-        tallestDino = {};
+
+        tallestDino = {}; //Reinitalizes the object whenever a taller dino is found
+        
+        //Set up new information for taller dino.
         tallestDino[dino.name] = dino.lengthInMeters * 3.281;
       }
     }
@@ -57,11 +66,19 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
+  //Iterate through dinosaurs to search for match.
   for (let dino of dinosaurs){
     if (dino.dinosaurId === id){
-      return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`
+
+      //Format time string for a bit more readability of the template literal
+      let time = dino.mya[dino.mya.length-1];
+
+      //Return remplate literal result according to format.
+      return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${time} million years ago.`
     }
   }
+
+  //Return error message if dinosaur can't be found.
   return `A dinosaur with an ID of '${id}' cannot be found.`
 }
 
@@ -91,10 +108,20 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
+
+  //Create empty array to store living dinos.
   let datapoints = [];
+
+  //Iterate through dinosaur array.
   for (let dino of dinosaurs){
+
+    //Check if mya is 1, or 2 values
     if (dino.mya.length===2){
+
+      //Check if the dinosaur's mya value matches the search.
       if (mya <= dino.mya[0] && mya >= dino.mya[1]){
+
+        //Check if the last argument is usable for data.
         if (Object.keys(dino).includes(key)){
           datapoints.push(dino[key]);
         }
@@ -104,7 +131,11 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
       }
     }
     else{
+
+      //Check if the dinosaur's mya value matches the search.
       if (mya === dino.mya[0] || mya === dino.mya[0]-1){
+
+        //Check if the last argument is usable for data.
         if (Object.keys(dino).includes(key)){
           datapoints.push(dino[key]);
         }
