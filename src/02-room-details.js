@@ -90,7 +90,6 @@ function getConnectedRoomNamesById(rooms, id) {
             return `Room with ID of 'incorrect-id' could not be found.`;
           }
         }
-
       } 
       //return the new array
       return roomListArr;

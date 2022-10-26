@@ -109,7 +109,19 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  //create price variable
+  let totalPrice = 0;
+  let extrasPurchased = [];
+  //variable for the receipt message and set it equal to the beginning of the message
+  let receiptMessage = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------`
+  //add in the ticket purchased
+  receiptMessage += `\n${purchases.entrantType} ${purchases.ticketType} Admission: ${(ticketPrice/100).toFixed(2)} (${extrasPurchased})`
+  //\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)
+  //finally, add the total to the receipt
+  receiptMessage += `\n-------------------------------------------\nTOTAL: $${(totalPrice/100).toFixed(2)}`
+  return receiptMessage;
+}
 
 // Do not change anything below this line.
 module.exports = {
