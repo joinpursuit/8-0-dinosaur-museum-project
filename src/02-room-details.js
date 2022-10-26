@@ -27,6 +27,7 @@ const exampleRoomData = require("../data/rooms");
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
 
+
 /**
  * getConnectedRoomNamesById()
  * ---------------------

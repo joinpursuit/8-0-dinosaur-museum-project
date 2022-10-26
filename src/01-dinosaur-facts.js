@@ -100,7 +100,26 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  //create empty array
+  let aliveArr = [];
+  //loop through dinosaurs
+  for (let i = 0; i < dinosaurs.length; i++){
+    //check if the input mya is between the current dinos timespan OR if it only has on mya and the input mya is equal to or one more than its mya  
+    if ((dinosaurs[i].mya[0] >= mya && mya >= dinosaurs[i].mya[1]) || (dinosaurs[i].mya[0] && (dinosaurs[i].mya[0] === mya + 1 || dinosaurs[i].mya[0] === mya))){
+      //check if the input key exists
+      if (key !== undefined && dinosaurs[i][key]){
+        //push the key value
+        aliveArr.push(dinosaurs[i][key]);
+      } else {
+        //push the name
+        aliveArr.push(dinosaurs[i].dinosaurId);
+      }
+    }
+  }
+  //return the array
+  return aliveArr;
+}
 
 module.exports = {
   getLongestDinosaur,
