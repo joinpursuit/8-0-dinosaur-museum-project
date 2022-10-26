@@ -52,7 +52,7 @@ describe("getLongestDinosaur()", () => {
   });
 });
 
-describe("getDinosaurDescription()", () => {
+describe.only("getDinosaurDescription()", () => {
   test("should return a string description of a dinosaur, by ID", () => {
     const id = "U9vuZmgKwUr";
     const actual = getDinosaurDescription(dinosaurs, id);

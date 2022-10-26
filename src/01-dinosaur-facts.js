@@ -22,7 +22,28 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) { 
+  if (dinosaurs.length === 0) {  //guard clause
+    return {}
+  } 
+  let winnerObject = {}  //create a new object
+  let longLength=0       //figure out which dino is longest
+  for (let i=0; i<dinosaurs.length; i++){
+    if (dinosaurs[i].lengthInMeters > longLength){
+      longLength = dinosaurs[i].lengthInMeters;
+      winnerObject = dinosaurs[i]
+    }
+  }
+
+let final = {} ; //declare object
+final[winnerObject.name] = winnerObject.lengthInMeters*3.281;
+return final;
+}
+
+
+/* I thought that I could use winnerObject as the final object, but I couldn't. I used the winnerObject to hold the information about which dinosaur is the longest and then created a new object for the return. We added the one key pair to final, but apparently don't need a paranthesis to add it to the object. 
+*/   
+
 
 /**
  * getDinosaurDescription()
@@ -44,7 +65,25 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+//I want to find the name of the dinosaur based on the ID number.
+// if the ID doesn't exist, let them know it. 
+// iterate to find the ID first
+// Once the ID is found, though, include the name of the *name of the dino* with the *pronounciation.* Make a *new line* and then *include the description.*
+
+
+const searchProp = dinosaurs.dinosaurId;
+const searchValue = id;
+// const result = dinosaurs.filter((user) => user[searchProp] === searchValue);
+for (let i=0; i<dinosaurs.length; i++){
+
+}
+dinosaurs.find()
+console.log()`${dinosaurs.name} (${dinosaurs.} ${}`
+return result
+
+
+}
 
 /**
  * getDinosaursAliveMya()
