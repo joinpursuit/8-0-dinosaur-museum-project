@@ -71,19 +71,40 @@ function getDinosaurDescription(dinosaurs, id) {
 // iterate to find the ID first
 // Once the ID is found, though, include the name of the *name of the dino* with the *pronounciation.* Make a *new line* and then *include the description.*
 
+let desiredDino = ""  //create a new variable
 
-const searchProp = dinosaurs.dinosaurId;
-const searchValue = id;
-// const result = dinosaurs.filter((user) => user[searchProp] === searchValue);
+/*guard clause
+if (typeof dinosaurs === "undefined"){
+  return `A dinosaur with an ID of ${ID} cannot be found.`
+}
+*/
+
+      //find the right dino
 for (let i=0; i<dinosaurs.length; i++){
-
+  if(dinosaurs[i].dinosaurId === id) {
+  desiredDino = dinosaurs[i];
+  }
 }
-dinosaurs.find()
-console.log()`${dinosaurs.name} (${dinosaurs.} ${}`
-return result
 
+if (desiredDino.mya.length===1){
+finalReturn =`${desiredDino.name} (${desiredDino.pronunciation})\n${desiredDino.info} It lived in the ${desiredDino.period} period, over ${desiredDino.mya[0]} million years ago.`
+  } else if (desiredDino.mya.length===2){
+    finalReturn =`${desiredDino.name} (${desiredDino.pronunciation})\n${desiredDino.info} It lived in the ${desiredDino.period} period, over ${desiredDino.mya[1]} million years ago.`
+  }
 
+return finalReturn
 }
+
+
+/* const searchProp = dinosaurs.dinosaurId;
+ const searchValue = id;
+ const result = dinosaurs.filter((user) => user[searchProp] === searchValue);
+ dinosaurs.find()
+
+  if() {
+   return `A dinosaur with an ID of ${id} cannot be found.`
+ }
+*/
 
 /**
  * getDinosaursAliveMya()
