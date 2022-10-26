@@ -22,7 +22,27 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  let newObj = {};
+  let lengthOfDino = 0;
+  let nameOfDino = '';
+  //if the array it's empty, return the empty object.
+  if (dinosaurs.length === 0) {
+    return newObj;
+  }
+  for (let dino of dinosaurs) {
+    //if the next dinosaur length is bigger than current value in "strOfHeight",
+    //update the name of the dino and the its length.
+    if (dino.lengthInMeters > lengthOfDino) {
+      nameOfDino = dino.name;
+      lengthOfDino = dino.lengthInMeters;
+    } 
+  }
+  //set key and value in the object with final updated name and length of longest Dinosaur.
+  //converted string to number, from meters to feet, and set to have only two to decimals.
+  newObj[nameOfDino] = Number((lengthOfDino * 3.281).toFixed(2));
+  return newObj;
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +64,23 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let str = '';
+  for (let dino of dinosaurs) {
+    //if the "dinosaurId" of the current index is iqual to "id",
+    //return a text with given format. For "mya" value, return the last element of the array.
+    //must break out of the loop if the "id" is found, so it doesn't keep updating with wrong value.
+    if (dino.dinosaurId === id) {
+      str = `${dino.name} (${dino.pronunciation})
+${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`;
+      break;
+      //if can't find it, return an error massage.
+    } else {
+      str = `A dinosaur with an ID of '${id}' cannot be found.`;
+    }
+  }
+  return str;
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +107,48 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let arr = [];
+  for (let dino of dinosaurs) {
+    //checking if the "param mya" is in between the numbers of "array mya"
+    if (dino.mya[0] >= mya && mya >= dino.mya[dino.mya.length-1]) {
+      //if it has key in the "dinosaurs", push the value of the key to the array
+      if (dino[key]) {
+        arr.push(dino[key]);
+        //if not, push the "dinosaurId" to the array
+      } else {
+        arr.push(dino.dinosaurId);
+      }
+      //if it has only one value in the array
+      //and the value is equal or one less to the "param mya", push the "dinosaurId" to the array
+    } else if (mya === dino.mya[0]-1) {
+      arr.push(dino.dinosaurId)
+    }
+  }
+  return arr;
+}
+// FIRST ATTEMPT (trying out):
+// function getDinosaursAliveMya(dinosaurs, mya, key) {
+//   let arr = [];
+//   for (let dino of dinosaurs) {
+//     if (dino.mya.length > 1 && mya < dino.mya[0] && mya >= dino.mya[dino.mya.length-1]) {
+//       if (dino[key]) {
+//         arr.push(dino[key])
+//       } else {
+//         arr.push(dino.dinosaurId)
+//       }
+//     } else {
+//       if (mya === dino.mya[0] || mya === dino.mya[0]-1) {
+//         if (dino[key]) {
+//           arr.push(dino[key])
+//         } else {
+//           arr.push(dino.dinosaurId)
+//         }
+//       }
+//     }
+//   }
+//   return arr;
+// }
 
 module.exports = {
   getLongestDinosaur,
