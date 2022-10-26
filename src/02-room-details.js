@@ -71,14 +71,17 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
+  //3 empty buckets; 1 to hold connected room Ids based on id param; 1 to use prev arr to find roo names; 1 for error message
   let roomIdArr = [];
   let roomNameArr = [];
   let error = `Room with ID of '${id}' could not be found.`;
+  // Loop to search rooms for id param and .push connected room array into empty array
   for (let i = 0; i < rooms.length; i++) {
     if (rooms[i].roomId === id) {
       roomIdArr.push(...rooms[i].connectsTo);
     }
   }
+  // Loop to cycle throuhg each rooms object so we can search new roomIDArr to see if it contains the roomId, if it does, push it to new roomNameArr; second conditional to check for 'incorrect-id' and return error
   for (let r = 0; r < rooms.length; r++) {
     if (roomIdArr.includes(rooms[r].roomId)) {
       roomNameArr.push(rooms[r].name);
@@ -86,6 +89,7 @@ function getConnectedRoomNamesById(rooms, id) {
       return `Room with ID of 'incorrect-id' could not be found.`;
     }
   }
+  // check to ensure we do not return empty arr
   if (roomNameArr.length === 0) {
     return error;
   }
