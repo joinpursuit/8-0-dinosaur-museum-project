@@ -133,44 +133,69 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  */
 function purchaseTickets(ticketData, purchases) {
 
-  // Declaring Variables that will be used inside our function 
+  // Declaring variable outside the loop because it will have our total price
   let totalPrice = 0;
   
   // initial value of the reciept as per instructions
   let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------";
 
-  // starts the forLetInLoop
+  // starts the forLetInLoop to iterate over purchasesArray
   for( let index in purchases ){
 
-    // creating variables inside the forLetInLoop because we need them to reset everytime we go into the loop.
-    let extras = '';
+    // creating variables inside the forLetInLoop because we need them to reset everytime we go back to the top of the loop.
     let extrasPrice = 0;
 
-    // creating booleans to make it more understanble 
-    let ticketTypeBool = ticketData.hasOwnProperty( purchases[index].ticketType );
-    let entrantTypeBool = ticketData[purchases[index].ticketType].priceInCents.hasOwnProperty( purchases[index].entrantType ) 
-    
     // like in the previous function we will use an ifElse statement to check if we have valid entrantType or ticketType
-    if(  ticketTypeBool && entrantTypeBool ){
-      
-      // formatting the values of entrant and ticket
-      let ticketType = `${purchases[index].entrantType[0].toUpperCase()}${purchases[index].entrantType.slice(1).toLocaleLowerCase()}`
-      let entrantType = `${purchases[index].ticketType[0].toUpperCase()}${purchases[index].ticketType.slice(1).toLocaleLowerCase()}`
+    if( ticketData.hasOwnProperty( purchases[index].ticketType ) && ticketData[purchases[index].ticketType].priceInCents.hasOwnProperty( purchases[index].entrantType ) ){
 
+      // accessing the values of ticketType and entrantType once we know it has properties needed to access 
+      let ticketType = purchases[index].ticketType;
+      let entrantType = purchases[index].entrantType;
+
+      // accessing the ticket price using my variables declared above
+      let ticketPrice = Number(ticketData[ ticketType ].priceInCents[ entrantType ]/100);
+
+      // formatting the values of entrant and ticket to print in receipt
+      ticketType = `${ticketType[0].toUpperCase()}${ticketType.slice(1).toLowerCase()}`
+      entrantType = `${entrantType[0].toUpperCase()}${entrantType.slice(1).toLowerCase()}`
+      
       // adding to entrantType and ticket type to the receipt
       receipt += `\n${entrantType} ${ticketType} Admission: `;
 
-      // for readability purposes we will store extras inside a variable
-      let extrasArray = `( ${purchases[index].extras.join(', ')} )`;
+      let extrasArray = purchases[index].extras;
 
-      console.log( extrasArray )
-    }else if( !ticketTypeBool )
+      // We have to call the toLowerCase() on entrantType because we've modified it above.
+      for( let i = 0; i < extrasArray.length; i++){
+
+        if( ticketData.extras.hasOwnProperty( extrasArray[i] ) )
+          extrasPrice += Number( ticketData.extras[ extrasArray[i] ].priceInCents[ entrantType.toLowerCase() ]/100 );
+        else
+          return `Extra type '${extrasArray[i]}' cannot be found.`;
+
+      }
+
+      // adding extrasPrice to ticketPrice if there is any
+      ticketPrice += extrasPrice;
+
+      receipt += `$${ (ticketPrice).toFixed(2) }`;
+
+      // fancy way of getting elements in an array and converting them into a string that meets our conditions only running it if there even is a length
+      if( extrasArray.length >= 1)
+        receipt += ` (${extrasArray.map( element => `${element.charAt(0).toUpperCase()}${element.slice(1).toLowerCase()}`).join(' Access, ')} Access)`;
+      
+      totalPrice += ticketPrice;
+  
+    }else if( !ticketData.hasOwnProperty( purchases[index].ticketType) )
       return `Ticket type '${purchases[index].ticketType}' cannot be found.`
-    else if( !entrantTypeBool )
+    else if( !ticketData[purchases[index].ticketType].priceInCents.hasOwnProperty( purchases[index].entrantType ))
     return `Entrant type '${purchases[index].entrantType}' cannot be found.`
     // ends ifElse statement that checks for valid entrant && ticket type
 
   }// ends the forLetInLoop
+
+  receipt += `\n-------------------------------------------\nTOTAL: $${totalPrice.toFixed(2)}`
+  // console.log( receipt )
+  return receipt;
 
 } // ends purchaseTickets()
 
