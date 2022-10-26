@@ -54,7 +54,7 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {
+function calculateTicketPrice(ticketData, ticketInfo) { 
   const {ticketType: type, entrantType: age, extras: extraArr} = ticketInfo;
   let price;
 
@@ -128,7 +128,50 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+  let total = 0;
+
+  for(let purchase of purchases){
+    //creates variables that corrispond to the current purchase object's values, and declares a price and recipt accumulators
+    const {ticketType: type, entrantType: age, extras: extraArr} = purchase;
+    let priceInDollars, purchaseReceipt;
+
+    //creats function that takes a string and returns a copy with the first letter capitalized
+    const UpperCase = string => string[0].toUpperCase() + string.slice(1);
+  
+    if (ticketData.hasOwnProperty(type)){
+      if(ticketData[type]['priceInCents'].hasOwnProperty(age)){
+
+        priceInDollars = ticketData[type]['priceInCents'][age]/100;
+        purchaseReceipt = `${UpperCase(age)} ${UpperCase(type)} Admission: `;
+
+      } else return `Entrant type '${age}' cannot be found.`
+    } else return `Ticket type '${type}' cannot be found.`
+
+  
+    if(extraArr.length > 0){
+      let captArr = [];
+      for (let extra of extraArr){
+        if(ticketData.extras.hasOwnProperty(extra)){
+
+          priceInDollars += (ticketData.extras[extra].priceInCents[age])/100
+          captArr.push(UpperCase(extra))
+          
+        } else {
+          return `Extra type '${extra}' cannot be found.`
+        }
+      }
+      purchaseReceipt += `$${priceInDollars.toFixed(2)} (${captArr.join(" Access, ")} Access)\n`
+    } else {
+      purchaseReceipt += `$${priceInDollars.toFixed(2)}\n`
+    }
+    receipt += purchaseReceipt
+    total += priceInDollars;
+  }
+
+  return receipt + `-------------------------------------------\nTOTAL: $${(total).toFixed(2)}`
+}
 
 // Do not change anything below this line.
 module.exports = {
