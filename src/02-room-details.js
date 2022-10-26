@@ -26,15 +26,24 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  let dinoNameId = {}
-  for (i = 0; i < dinosaurs.length; i++) {
+  let dinoNameId = ''
+  let notFound = `Dinosaur with name '${dinosaurName}' cannot be found.`
+  for (let i = 0; i < dinosaurs.length; i++) {
     if (dinosaurs[i].name === dinosaurName) {
-      dinoNameId[dinosaurs[i].name] = dinosaurs[i].dinosaurId;
+      dinoNameId = dinosaurs[i].dinosaurId;
+    } else if (dinosaurs[i].name !== dinosaurName) {
+      notFound = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
     }
   }
-  for (r = 0; r < rooms.length; r++) {
-    if (rooms[r].)
+  // console.log(Object.values(dinoNameId))
+  for (let r = 0; r < rooms.length; r++) {
+    if (rooms[r].dinosaurs.includes(dinoNameId)) {
+      return rooms[r].name;
+    } else {
+      notFound = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+    }
   }
+  return notFound;
 }
 
 /**
@@ -59,7 +68,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) { }
 
 module.exports = {
   getRoomByDinosaurName,
