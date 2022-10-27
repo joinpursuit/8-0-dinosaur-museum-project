@@ -22,7 +22,23 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  let longestDinosaur = {};
+  let longestDinosaurLengthInMeters = 0;
+  for (let dinosaur of dinosaurs) {
+    /*
+    If the tested dinosaur's length is greater than the longest dinosaur previously measured, then the conditional triggers.  The tested dinosaur is set as the longest dinosaur and its length is set as the length of the dinosaur with the longest length.
+    */
+    if (dinosaur.lengthInMeters > longestDinosaurLengthInMeters) {
+      longestDinosaurLengthInMeters = dinosaur.lengthInMeters;
+      /*
+      If a new key : value were added to the object, the return object would have multiple key : values.  The desired output is an object with a single key : value pair.  So the object is reassigned each time, rather than a new key : value added.  This way there's only one key : value at most.  (If no dinosaur objects in array then "if" conditional doesn't trigger and returned object returns an empty object.)  Value multiplies by 3.281 to convert meters to feet.
+      */
+      longestDinosaur = { [dinosaur.name] : dinosaur.lengthInMeters*3.281 };
+    }
+  }
+  return longestDinosaur;
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +60,22 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  /*
+  sets default return value to a string dinosaur not found message.
+  */
+  let dinoDescriptionOrIDNotFoundMessage = `A dinosaur with an ID of '${id}' cannot be found.`
+  /*
+  iterates through dinosaurs array matching each dinosaur's ID against the ID sought.  If a match is found, puts some of that dinosaur's data as a string literal into the return value and sends return value immediately so unneeded iterations are not run.
+  */
+  for (let dinosaur of dinosaurs) {
+    if (dinosaur.dinosaurId === id) {
+      dinoDescriptionOrIDNotFoundMessage = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[dinosaur.mya.length-1]} million years ago.`
+      return dinoDescriptionOrIDNotFoundMessage;
+    }
+  }
+  return dinoDescriptionOrIDNotFoundMessage;
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +102,47 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+/*
+A default value of "dinosaurId" is set for the "key" parameter.  This is not necessary for the current implementation, but if the code was changed to check validation differently (i.e. no "unknown-key" in the data), then runtime of the function could be decreased by removing the if() section near the end of the function and simply executing dinosaurValuesArray.push(dinosaur[key]) which would then always successfully enter a correct and desired value into the array.
+*/
+function getDinosaursAliveMya(dinosaurs, mya, key = "dinosaurId") {
+  let dinosaurValuesArray = [];
+  for (let dinosaur of dinosaurs) {
+    let dinosaurInMYARange = false;
+     /*
+     dinosaurInMYARange evaluates whether the currently evaluated dinosaur lived during the "mya" argument passed in.  The "mya" array sometimes contains only a single value; the first "if" conditional evalutes this case.
+    
+    The first part of the statement with && looks at the truthy/falsy of dinosaur.mya[1]; if undefined or 0 then returns falsy, not operator changes to true.  So for the first if to execute, we know dinosaur.mya[1] must be undefined or 0.
+    
+    The second part of the statement with && compares the value of dinosaur.mya[1] to 0.  If they are equal, then true is returned; the not operator changes to false.
+
+    For the entire expression (!dinosaur.mya[1] && !(dinosaur.mya[1] === 0)) to be true, then, dinosaur.mya[1] must be undefined or 0, and must also not be 0.
+
+    The "if" inside the first "if" conditional executes only if mya[1] is undefined.  The instructions for this function stated if only mya has only one parameter, to use the range inclusive from mya to 1 less.
+    */
+    if (!dinosaur.mya[1] && !(dinosaur.mya[1] === 0)) {
+      if (dinosaur.mya[0] >= mya && dinosaur.mya[0] - 1 <= mya) {
+        dinosaurInMYARange = true;
+      }
+         /*
+    If the initial "if" is false, then the following "else if" is tested, checking to see if the mya passed into the function is in the range of the current dinosaur's mya two-element array.
+    */
+     } else if (dinosaur.mya[1] <= mya && dinosaur.mya[0] >= mya) {
+        dinosaurInMYARange = true;
+      }
+      if (dinosaurInMYARange) {
+        /*
+        A key may exist for some dinosaurs but not others (e.g. "finLength".  The currently evaluated dinosaur is checked to see if the "key" passed in exists, if not then the value corresponding to dinosaur.dinosaurId is added to the array.  If the key does exist, then the value corresponding to dinosaur[key] is added to the array.)
+        */
+        if (!dinosaur[key]) {
+          dinosaurValuesArray.push(dinosaur.dinosaurId);
+        } else {
+          dinosaurValuesArray.push(dinosaur[key])
+        }
+      }
+    }
+    return dinosaurValuesArray;
+  }
 
 module.exports = {
   getLongestDinosaur,
