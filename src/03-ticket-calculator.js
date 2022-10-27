@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { general } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,79 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let tikCost = 0;
+  let extraCost = 0;
+  let totalCost = 0;
+  let errorTik = `Ticket type 'incorrect-type' cannot be found.`;
+  let errorEnt = `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  let errorExt = `Extra type 'incorrect-extra' cannot be found.`;
+
+  if (ticketInfo.entrantType !== 'child' && ticketInfo.entrantType !== 'adult' && ticketInfo.entrantType !== 'senior') {
+    return errorEnt;
+  }
+
+  if (ticketInfo.ticketType === 'incorrect-type') {
+    return errorTik;
+  }
+
+  if (ticketInfo.extras.includes('incorrect-extra')) {
+    return errorExt;
+  }
+
+  if (ticketInfo.entrantType === 'child') {
+    if (ticketInfo.ticketType === 'general') {
+      tikCost = ticketData.general.priceInCents.child;
+    } else if (ticketInfo.ticketType === 'membership') {
+      tikCost = ticketData.membership.priceInCents.child;
+    }
+  } else if (ticketInfo.entrantType === 'adult') {
+    if (ticketInfo.ticketType === 'general') {
+      tikCost = ticketData.general.priceInCents.adult;
+    } else if (ticketInfo.ticketType === 'membership') {
+      tikCost = ticketData.membership.priceInCents.adult;
+    }
+  } else if (ticketInfo.entrantType === 'senior') {
+    if (ticketInfo.ticketType === 'general') {
+      tikCost = ticketData.general.priceInCents.senior;
+    } else if (ticketInfo.ticketType === 'membership') {
+      tikCost = ticketData.membership.priceInCents.senior;
+    }
+  }
+
+  if (ticketInfo.extras.includes('movie')) {
+    if (ticketInfo.entrantType === 'child') {
+      extraCost += ticketData.extras.movie.priceInCents.child;
+    } else if (ticketInfo.entrantType === 'adult') {
+      extraCost += ticketData.extras.movie.priceInCents.adult;
+    } else if (ticketInfo.entrantType === 'senior') {
+      extraCost += ticketData.extras.movie.priceInCents.senior;
+    }
+  }
+
+  if (ticketInfo.extras.includes('terrace')) {
+    if (ticketInfo.entrantType === 'child') {
+      extraCost += ticketData.extras.terrace.priceInCents.child;
+    } else if (ticketInfo.entrantType === 'adult') {
+      extraCost += ticketData.extras.terrace.priceInCents.adult;
+    } else if (ticketInfo.entrantType === 'senior') {
+      extraCost += ticketData.extras.terrace.priceInCents.senior;
+    }
+  }
+  if (ticketInfo.extras.includes('education')) {
+    if (ticketInfo.entrantType === 'child') {
+      extraCost += ticketData.extras.education.priceInCents.child;
+    } else if (ticketInfo.entrantType === 'adult') {
+      extraCost += ticketData.extras.education.priceInCents.adult;
+    } else if (ticketInfo.entrantType === 'senior') {
+      extraCost += ticketData.extras.education.priceInCents.senior;
+    }
+  }
+  totalCost = tikCost + extraCost;
+  return totalCost;
+}
+
+
 
 /**
  * purchaseTickets()
@@ -109,7 +182,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) { }
 
 // Do not change anything below this line.
 module.exports = {

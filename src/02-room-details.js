@@ -26,10 +26,10 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  //2 var; 1 to get updated if dinoName param is found, other to hold answer is it is not found
+  //2 new var; 1 to get updated if dinoName param is found, other to hold answer if it's not found
   let dinoNameId = ''
   let notFound = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
-  //Loop to search fo dinoName param and update var to the Id of the dino that is found
+  //Loop to search for dinoName param and update var to the Id of the dino that is found
   for (let i = 0; i < dinosaurs.length; i++) {
     if (dinosaurs[i].name === dinosaurName) {
       dinoNameId = dinosaurs[i].dinosaurId;
