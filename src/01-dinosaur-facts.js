@@ -62,13 +62,10 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
+  // Loop to go through the dinosaur param and look for the given id param.  If found, will return string that uses various properties from the given dino object
   for (i = 0; i < dinosaurs.length; i++) {
-    if (dinosaurs[i].dinosaurId === id) {  //checking param to key
-      if (dinosaurs[i].mya.length === 2) {  //condtional to check mya array length
-        return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[1]} million years ago.`;
-      } else if (dinosaurs[i].mya.length === 1) {
-        return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[0]} million years ago.`;
-      }
+    if (dinosaurs[i].dinosaurId === id) {
+      return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.`;
     }
   }
   return `A dinosaur with an ID of '${id}' cannot be found.`
