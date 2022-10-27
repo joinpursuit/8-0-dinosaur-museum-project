@@ -33,12 +33,12 @@ const exampleDinosaurData = require("../data/dinosaurs");
     }
   }
     obj[name] = longest * 3.281
-  if(obj[name] === 0){
+  if(dinosaurs.length === 0){
     return {}
-  } else {
+  } 
     return obj
 } 
-}
+
 
 /**
  * getDinosaurDescription()
@@ -99,25 +99,23 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
  function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let arr = [];
-  for (i=0 ; i < dinosaurs.length ; i++) {
-     dinosaurs[i].mya;
-  if (dinosaurs[i].mya.length === 2 && dinosaurs[i].mya[0] >= mya &&
-    dinosaurs[i].mya[1] <= mya){
+  let result = [];
+  for (i = 0 ; i < dinosaurs.length ; i++) {
+  if (dinosaurs[i].mya.length === 2 && dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya){
     if (Object.keys(dinosaurs[i]).includes(key)){
-      arr.push(dinosaurs[i][key])
-    } else if (!Object.keys(dinosaurs[i]).includes(key)){
-      arr.push(dinosaurs[i].dinosaurId)
+      result.push(dinosaurs[i][key])
+    } else {
+      result.push(dinosaurs[i].dinosaurId)
       }
-    } else if (dinosaurs[i].mya.length === 1 && (dinosaurs[i].mya[0]-1 === mya || dinosaurs[i].mya[0] === mya)){
-    if (Object.keys(dinosaurs[i]).includes(key)){
-      arr.push(dinosaurs[i][key])
-    } else if (!Object.keys(dinosaurs[i]).includes(key)){
-      arr.push(dinosaurs[i].dinosaurId)
+    } else if (dinosaurs[i].mya.length === 1 && (dinosaurs[i].mya[0] - 1 === mya || dinosaurs[i].mya[0] === mya)){
+        if (Object.keys(dinosaurs[i]).includes(key)){
+      result.push(dinosaurs[i][key])
+        } else {
+      result.push(dinosaurs[i].dinosaurId)
       }
     }
   }
-  return arr
+  return result
 }
 
 module.exports = {
