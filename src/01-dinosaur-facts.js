@@ -60,7 +60,7 @@ return {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-let dinoId = null
+  let dinoId = null
   for (const dinosaur of dinosaurs) {
     if(id === dinosaur.dinosaurId){
       dinoId = dinosaur

@@ -54,7 +54,29 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+    function calculateTicketPrice(ticketData, ticketInfo) {
+      //const ticketType = ticketInfo.ticketType
+  //const entrantType = ticketInfo.entrantType
+  const{ticketType,entrantType, extras} = ticketInfo
+  // line 60 is a short hand for line 58 & 59
+    if(!ticketData[ticketType]){
+      return `Ticket type '${ticketType}' cannot be found.`
+    }
+  if(!ticketData[ticketType].priceInCents[entrantType]){
+    return `Entrant type '${entrantType}' cannot be found.`
+  }
+  const basePrice = ticketData[ticketType].priceInCents[entrantType] 
+  let extrasCost = 0
+  
+  for(let extra of extras){
+    if(!ticketData.extras[extra]){
+      return `Extra type '${extra}' cannot be found.`
+    } else {
+      extrasCost += ticketData.extras[extra].priceInCents[entrantType]
+    }
+  }
+  return basePrice + extrasCost
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +131,57 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+
+  let total = 0 ;
+let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+
+//outer loop to  iterate through purchases 
+for(let purchase of purchases){
+
+  //cost of ticket assigned to helper fucntion to calculate ticket pricing
+  let costOfTicket = calculateTicketPrice(ticketData, purchase);
+
+//if the cost of the ticket isnt a number (return for errors)
+  if(typeof costOfTicket === 'string'){
+    return costOfTicket;
+  };
+
+//declaring a array for description (access) in extras
+let extraInfo = [];
+//inner loop to iterate through extras in purchases array for the description key (strings) 
+for(let extra of purchase.extras){
+  //descriptions should be pushed to the array extraInfo (access)
+  extraInfo.push(ticketData.extras[extra].description);
+}
+//if the length is true. For every element will be seperated by commas
+if(purchase.extras.length){
+  extraInfo = ` (${extraInfo.join(', ')})`;
+};
+//formatting entrant type,access, and cost of ticket for receipt 
+receipt += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(costOfTicket/100).toFixed(2)}${extraInfo}\n`;
+
+total += costOfTicket/100
+};
+//formatting the receipt for total (price)
+receipt += `-------------------------------------------\nTOTAL: $${total.toFixed(2)}`
+
+return receipt;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Do not change anything below this line.
 module.exports = {
