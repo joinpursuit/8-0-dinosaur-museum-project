@@ -22,25 +22,34 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
+/*First approach:
+-loop through the "lengthOfDino" and get the biggest number.
+-find the name of the dinosaur that has the biggest "lengthOfDino" number.
+-assign to a new object and return it. 
+>This approach needs two loops, one to find biggest num and another to find the name.
+
+Better approach:
+-loop through the "lengthOfDino" and get the biggest number.
+-if found, assign the biggest number AND the name of the dinosaur in the variable
+-assign to a new object and return it.*/
 function getLongestDinosaur(dinosaurs) {
   let newObj = {};
-  let lengthOfDino = 0;
   let nameOfDino = '';
-  //if the array it's empty, return the empty object.
-  if (dinosaurs.length === 0) {
-    return newObj;
+  let lengthOfDino = 0;
+  //if the array it's empty, it will return the empty object.
+  if (dinosaurs.length !== 0) {
+    for (let dino of dinosaurs) {
+      //if the next dinosaur length is bigger than current value in "strOfHeight",
+      //update the name of the dino and the its length.
+      if (dino.lengthInMeters > lengthOfDino) {
+        nameOfDino = dino.name;
+        lengthOfDino = dino.lengthInMeters;
+      } 
+    }
+    //set key and value in the object with final updated name and length of longest Dinosaur.
+    //converted string to number, from meters to feet, and set to have only two to decimals.
+    newObj[nameOfDino] = Number((lengthOfDino * 3.281).toFixed(2));
   }
-  for (let dino of dinosaurs) {
-    //if the next dinosaur length is bigger than current value in "strOfHeight",
-    //update the name of the dino and the its length.
-    if (dino.lengthInMeters > lengthOfDino) {
-      nameOfDino = dino.name;
-      lengthOfDino = dino.lengthInMeters;
-    } 
-  }
-  //set key and value in the object with final updated name and length of longest Dinosaur.
-  //converted string to number, from meters to feet, and set to have only two to decimals.
-  newObj[nameOfDino] = Number((lengthOfDino * 3.281).toFixed(2));
   return newObj;
 }
 

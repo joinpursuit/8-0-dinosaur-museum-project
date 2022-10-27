@@ -25,7 +25,26 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  const obj = {};
+  //assign to the "obj" with dinosaur names as keys and dinosaur Ids as values, so I can reference later.
+  dinosaurs.forEach((value) => obj[value.name] = value.dinosaurId);
+  //if in "obj" doesn't have a property of @dinosaurName, return an error message with @dinosaurName.
+  if (!obj.hasOwnProperty(dinosaurName)) {
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+  }
+  //loop through @rooms, array of objetcs.
+  for (let room of rooms) {
+    //if the array "dinosaurs" in the array of object @rooms has the @dinosaurName id, return the room name.
+    if (room["dinosaurs"].includes(obj[dinosaurName])) {
+      return room.name;
+    }
+  }
+  //if there's no dinosaur in the array "dinosaurs" in the array of object @rooms, return an error message with @dinosaurName.
+  if (!rooms.dinosaurs) {
+    return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+  }
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +68,29 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  const obj = {};
+  let result = [];
+  //assign to the "obj" with room Ids as keys and room names as values, so I can reference later.
+  rooms.forEach((value) => obj[value.roomId] = value.name);
+  //if in "obj" doens't have the property of @id, return an error message with @id.
+  if (!obj.hasOwnProperty(id)) {
+    return `Room with ID of '${id}' could not be found.`;
+  }
+  //nested for loops. first, to loop through the array of objects. second, to loop through the array in objects.
+  for (let room of rooms) {
+    for (let connectTo of room.connectsTo) {
+      //if in the "obj" doesn't have the "roomId" in the array of "connectsTo" or is undefined, return an error message.
+      if (!obj.hasOwnProperty(connectTo) || connectTo === undefined) {
+        return `Room with ID of 'incorrect-id' could not be found.`;
+        //if @id is equal to "roomId", change the room id to the room name through "obj" and add to the end of the array "result".
+      } else if (id === room.roomId) {
+        result.push(obj[connectTo]);
+      }
+    }
+  }
+  return result;
+}
 
 module.exports = {
   getRoomByDinosaurName,
