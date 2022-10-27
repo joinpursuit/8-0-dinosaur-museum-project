@@ -56,25 +56,29 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
+  // 6 new var created; 1 for tik cost, 1 for extra cost total, 1 for total cost; 3 separate error messages
   let tikCost = 0;
   let extraCost = 0;
   let totalCost = 0;
-  let errorTik = `Ticket type 'incorrect-type' cannot be found.`;
   let errorEnt = `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  let errorTik = `Ticket type 'incorrect-type' cannot be found.`;
   let errorExt = `Extra type 'incorrect-extra' cannot be found.`;
 
+  // Check for incorrect entrant type
   if (ticketInfo.entrantType !== 'child' && ticketInfo.entrantType !== 'adult' && ticketInfo.entrantType !== 'senior') {
     return errorEnt;
   }
 
+  // Check for incorrect ticket type
   if (ticketInfo.ticketType === 'incorrect-type') {
     return errorTik;
   }
 
+  // Check for incorrect extra
   if (ticketInfo.extras.includes('incorrect-extra')) {
     return errorExt;
   }
-
+  // The following are checks for entrant type, each of the 3 conditionals then check for general or memebership pricing, and update the tikCost accordingly
   if (ticketInfo.entrantType === 'child') {
     if (ticketInfo.ticketType === 'general') {
       tikCost = ticketData.general.priceInCents.child;
@@ -95,6 +99,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     }
   }
 
+  // The following 3 conditionals check for the 3 different extras; then check for entrant type; then add and update the appropriate cost to the extraCost var bucket
   if (ticketInfo.extras.includes('movie')) {
     if (ticketInfo.entrantType === 'child') {
       extraCost += ticketData.extras.movie.priceInCents.child;
@@ -104,7 +109,6 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       extraCost += ticketData.extras.movie.priceInCents.senior;
     }
   }
-
   if (ticketInfo.extras.includes('terrace')) {
     if (ticketInfo.entrantType === 'child') {
       extraCost += ticketData.extras.terrace.priceInCents.child;
@@ -123,6 +127,8 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       extraCost += ticketData.extras.education.priceInCents.senior;
     }
   }
+
+  //Adding the accurate cost of the ticket, plus the total of all desired extras and then returning the totalCost 
   totalCost = tikCost + extraCost;
   return totalCost;
 }
