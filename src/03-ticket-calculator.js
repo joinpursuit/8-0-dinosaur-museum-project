@@ -112,7 +112,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       break;
       //if ticket type doesnt exist
       default:
-        return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+        return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
   }
 
   //loop through extras
@@ -164,7 +164,8 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     }
   //if the extra isnt movie terrace or education
     if (ex !== "movie" && ex !== "education" && ex !== "terrace"){
-      return `Extra type '${ex}' cannot be found.`
+      //extras error message
+      return `Extra type '${ex}' cannot be found.`;
     }
   }
   //return the price in cents
@@ -225,133 +226,175 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  //create price variable
+  //create total price variable
   let totalPrice = 0;
-  //create extras empty string 
+  //variable for the receipt message and set it equal to the beginning of the message
+  let receiptMessage = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------`;
+
+  //create extras empty string
   //!!!!! USE .join(" Access,") + "Access"  !!!!!
   let extrasPurchased = "";
 
-  //check the ticket type
-  switch (ticketInfo.ticketType){
-    //if ticket is general
-    case "general":
-      //check the entrant type
-      switch (ticketInfo.entrantType){
-        //if the entrant is child
-        case "child":
-          //add the general child price
-          totalPrice += ticketData.general.priceInCents.child;
-          break;
-        //if the entrant is adult
-        case "adult":
-          //add the general adult price
-          totalPrice += ticketData.general.priceInCents.adult;
-          break;
-        //if the entrant is senior
-        case "senior":
-          //add the general senior price
-          totalPrice += ticketData.general.priceInCents.senior;
-          break;
-          //if not those entrant types
+  //loop through tickets purchases
+  for (ticket of purchases){
+    //create a ticket price variable
+    let ticketPrice = 0;
+    //check the ticket type
+    switch (ticket.ticketType){
+      //if ticket is general
+      case "general":
+        //check the entrant type
+        switch (ticket.entrantType){
+          //if the entrant is child
+          case "child":
+            //add the general child price
+            totalPrice += ticketData.general.priceInCents.child;
+            ticketPrice += ticketData.general.priceInCents.child;
+            //put entrant type and ticket type on the receipt
+            receiptMessage += `\n${ticket.entrantType} ${ticket.ticketType} Admission: `;
+            break;
+          //if the entrant is adult
+          case "adult":
+            //add the general adult price
+            totalPrice += ticketData.general.priceInCents.adult;
+            ticketPrice += ticketData.general.priceInCents.adult;
+            //put entrant type and ticket type on the receipt
+            receiptMessage += `\n${ticket.entrantType} ${ticket.ticketType} Admission: `;
+            break;
+          //if the entrant is senior
+          case "senior":
+            //add the general senior price
+            totalPrice += ticketData.general.priceInCents.senior;
+            ticketPrice += ticketData.general.priceInCents.senior;
+            //put entrant type and ticket type on the receipt
+            receiptMessage += `\n${ticket.entrantType} ${ticket.ticketType} Admission: `;
+            break;
+            //if not those entrant types
+          default:
+            //return entrant error message
+            return `Entrant type '${ticket.entrantType}' cannot be found.`;
+        }
+        break;
+        //if ticket is membership
+      case "membership":
+        //check the entrant type
+        switch (ticket.entrantType){
+          //if the entrant is child
+          case "child":
+            //add the membership child price
+            totalPrice += ticketData.membership.priceInCents.child;
+            ticketPrice += ticketData.membership.priceInCents.child;
+            //put entrant type and ticket type on the receipt
+            receiptMessage += `\n${ticket.entrantType} ${ticket.ticketType} Admission: `;
+            break;
+          //if the entrant is adult
+          case "adult":
+            //add the membership adult price
+            totalPrice += ticketData.membership.priceInCents.adult;
+            ticketPrice += ticketData.membership.priceInCents.adult;
+            //put entrant type and ticket type on the receipt
+            receiptMessage += `\n${ticket.entrantType} ${ticket.ticketType} Admission: `;
+            break;
+          //if the entrant is senior
+          case "senior":
+            //add the membership senior price
+            totalPrice += ticketData.membership.priceInCents.senior;
+            ticketPrice += ticketData.membership.priceInCents.senior;
+            //put entrant type and ticket type on the receipt
+            receiptMessage += `\n${ticket.entrantType} ${ticket.ticketType} Admission: `;
+            break;
+            //if not those entrant types
+          default:
+            //return entrant error message
+            return `Entrant type '${ticket.entrantType}' cannot be found.`;
+        }
+        break;
+        //if ticket type doesnt exist
         default:
-          //return entrant error message
-          return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
-      }
-      break;
-      //if ticket is membership
-    case "membership":
-      //check the entrant type
-      switch (ticketInfo.entrantType){
-        //if the entrant is child
-        case "child":
-          //add the membership child price
-          totalPrice += ticketData.membership.priceInCents.child;
-          break;
-        //if the entrant is adult
-        case "adult":
-          //add the membership adult price
-          totalPrice += ticketData.membership.priceInCents.adult;
-          break;
-        //if the entrant is senior
-        case "senior":
-          //add the membership senior price
-          totalPrice += ticketData.membership.priceInCents.senior;
-          break;
-          //if not those entrant types
-        default:
-          //return entrant error message
-          return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
-      }
-      break;
-      //if ticket type doesnt exist
-      default:
-        return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+          return `Ticket type '${ticket.ticketType}' cannot be found.`;
+    }
+
+
+    //loop through extras
+    if (ticket.extras[0]){
+      for (let ex of ticket.extras){
+        //check if ticket has the movie extra
+        if (ex === "movie"){
+          //add the movie price
+          totalPrice += 1000;
+          ticketPrice += 1000;
+        } 
+        //check if ticket has the education extra
+        if (ex === "education"){
+          switch (ticket.entrantType){
+            //if the entrant is child
+            case "child":
+              //add the education child price
+              totalPrice += ticketData.extras.education.priceInCents.child;
+              ticketPrice += ticketData.extras.education.priceInCents.child;
+              break;
+            //if the entrant is adult
+            case "adult":
+              //add the education adult price
+              totalPrice += ticketData.extras.education.priceInCents.adult;
+              ticketPrice += ticketData.extras.education.priceInCents.adult;
+              break;
+            //if the entrant is senior
+            case "senior":
+              //add the education senior price
+              totalPrice += ticketData.extras.education.priceInCents.senior;
+              ticketPrice += ticketData.extras.education.priceInCents.senior;
+              break;
+          }
+        }
+      
+        //check if ticket has the terrace extra
+        if (ex === "terrace"){
+          switch (ticket.entrantType){
+            //if the entrant is child
+            case "child":
+              //add the terrace child price
+              totalPrice += ticketData.extras.terrace.priceInCents.child;
+              ticketPrice += ticketData.extras.terrace.priceInCents.child;
+              break;
+            //if the entrant is adult
+            case "adult":
+              //add the terrace adult price
+              totalPrice += ticketData.extras.terrace.priceInCents.adult;
+              ticketPrice += ticketData.extras.terrace.priceInCents.adult;
+              break;
+            //if the entrant is senior
+            case "senior":
+              //add the terrace senior price
+              totalPrice += ticketData.extras.terrace.priceInCents.senior;
+              ticketPrice += ticketData.extras.terrace.priceInCents.senior;
+              break;
+          }
+        }
+        //if the extra isnt movie terrace or education
+        if (ex !== "movie" && ex !== "education" && ex !== "terrace"){
+          //extras error message
+          return `Extra type '${ex}' cannot be found.`;
+        }
+        //put the extras array into a string
+        extrasPurchased = ticket.extras.join(" Access, ");
+      }  
+      //add in the ticket price and extras  
+      receiptMessage += `$${(ticketPrice/100).toFixed(2)} (${extrasPurchased} Access)`;
+    } else {
+      //add in the ticket price
+      receiptMessage += `$${(ticketPrice/100).toFixed(2)}`;
+    }
   }
 
-  //loop through extras
-  for (let ex of ticketInfo.extras){
-    //check if ticket has the movie extra
-    if (ex === "movie"){
-      //add the movie price
-      totalPrice += 1000;
-    } 
-    //check if ticket has the education extra
-    if (ex === "education"){
-      switch (ticketInfo.entrantType){
-        //if the entrant is child
-        case "child":
-          //add the education child price
-          totalPrice += ticketData.extras.education.priceInCents.child;
-          break;
-        //if the entrant is adult
-        case "adult":
-          //add the education adult price
-          totalPrice += ticketData.extras.education.priceInCents.adult;
-          break;
-        //if the entrant is senior
-        case "senior":
-          //add the education senior price
-          totalPrice += ticketData.extras.education.priceInCents.senior;
-          break;
-      }
-    }
-    //check if ticket has the terrace extra
-    if (ex === "terrace"){
-      switch (ticketInfo.entrantType){
-        //if the entrant is child
-        case "child":
-          //add the terrace child price
-          totalPrice += ticketData.extras.terrace.priceInCents.child;
-          break;
-        //if the entrant is adult
-        case "adult":
-          //add the terrace adult price
-          totalPrice += ticketData.extras.terrace.priceInCents.adult;
-          break;
-        //if the entrant is senior
-        case "senior":
-          //add the terrace senior price
-          totalPrice += ticketData.extras.terrace.priceInCents.senior;
-          break;
-      }
-    }
-  //if the extra isnt movie terrace or education
-    if (ex !== "movie" && ex !== "education" && ex !== "terrace"){
-      return `Extra type '${ex}' cannot be found.`
-    }
-  }
 
 
-
-  //variable for the receipt message and set it equal to the beginning of the message
-  let receiptMessage = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------`
-  //add in the ticket purchased
-  receiptMessage += `\n${purchases.entrantType} ${purchases.ticketType} Admission: ${(ticketPrice/100).toFixed(2)} (${extrasPurchased})`
   //\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)
   //finally, add the total to the receipt
-  receiptMessage += `\n-------------------------------------------\nTOTAL: $${(totalPrice/100).toFixed(2)}`
+  receiptMessage += `\n-------------------------------------------\nTOTAL: $${(totalPrice/100).toFixed(2)}`;
   return receiptMessage;
 }
+
 
 // Do not change anything below this line.
 module.exports = {
