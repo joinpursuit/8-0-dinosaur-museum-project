@@ -22,7 +22,44 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  let theeDinosaur = {}
+  if (!dinosaurs.length) {
+    return theeDinosaur 
+  } 
+  let tallDino = dinosaurs[0].lengthInMeters
+  let tallDinoName = dinosaurs[0].name
+  for (let i = 1; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].lengthInMeters > tallDino) {
+      tallDino = dinosaurs[i].lengthInMeters
+      tallDinoName = dinosaurs[i].name
+    }
+  }
+  theeDinosaur[tallDinoName] = tallDino * 3.281
+  return theeDinosaur
+
+}
+ // return `{ ${dinosaurs[3].name}: ${dinosaurs.[3].lengthInMeters * 3.281} feet }`
+  
+    
+    //return `{${tallDino.name}: ${tallDino.lengthinMeters}}`
+  //   dinosaurs[.lengthInMeters] =  .lengthInMeters * 3.281
+
+ // {[tallDinoName] :tallDino * 3.281}
+// let firstDino = dinosaurs[0].lengthInMeters
+  // for (let i = 0; i < dinosaurs.length-1; i++) {
+  // accessHeight = dinosaurs[i].lengthInMeters
+  // accessHeight > firstDino
+  // } return 
+
+  //   dinosaurs.forEach((element) => {
+// return element.name
+//   });
+  //return { longDino: feet }
+  //for (let i = 0; i < dinosaurs.length; i++) {
+  // if (dinosaurs[i].lengthInMeters < tallDino.lengthInMeters) {
+  //   tallDino.lengthInMeters * 3.281
+  //  }
 
 /**
  * getDinosaurDescription()
@@ -44,7 +81,8 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+}
 
 /**
  * getDinosaursAliveMya()
