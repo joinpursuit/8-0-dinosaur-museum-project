@@ -10,7 +10,9 @@ const exampleRoomData = require("../data/rooms");
 /**
  * getRoomByDinosaurName()
  * ---------------------
- * Return the name of the room where the given dinosaur can be found. If the dinosaur does not exist in the `dinosaurs` list or cannot be found in any room, return an error message that says so.
+ * Return the name of the room where the given dinosaur can be found. 
+ * If the dinosaur does not exist in the `dinosaurs` list or cannot be found in any room, 
+ * return an error message that says so.
  *
  * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file for an example of the input.
  * @param {Object[]} rooms - An array of room objects. See the `data/rooms.js` file for an example of the input.
