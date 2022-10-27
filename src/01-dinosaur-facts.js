@@ -27,6 +27,8 @@ function getLongestDinosaur(dinosaurs) {
  let dinoName = "";
  let dinoHeight = 0;
   if (dinosaurs.length != 0) {
+
+
    for (const dino of dinosaurs) {
      if (dino.lengthInMeters > dinoHeight) {
        dinoHeight = dino.lengthInMeters;
