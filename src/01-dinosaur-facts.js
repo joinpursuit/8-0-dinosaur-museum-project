@@ -25,7 +25,7 @@ const exampleDinosaurData = require("../data/dinosaurs");
 function getLongestDinosaur(dinosaurs) {
   
   // creating and empty obj 
-  let dinoObj = {}
+  let dinoObj = {};
 
   if ( !dinosaurs.length ){
 
@@ -79,6 +79,11 @@ function getDinosaurDescription(dinosaurs, id) {
   else
     return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length - 1]} million years ago.` 
 
+// for(let i = 0; i < dinosaurs.length; i++){
+//   if( dinosaurs[i].dinosaurId === id  )
+//     return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.` 
+// }
+//   return `A dinosaur with an ID of '${id}' cannot be found.`
 
 } // ends getDinosaurDescription
 
@@ -113,7 +118,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   // Using the .filter() method creates a shallow copy *references to encapsulating the object*
   let dinosFound = dinosaurs.filter( dino => {
     // Since all the requirements make us return a single dino object. I figured it would be best to combine it into one ifElse statement with 4 conditionals
-    if( dino.mya.includes(mya) || dino.mya[0] > mya && dino.mya[1] < mya || dino.mya.length === 1 && ( dino.mya - 1 )  === mya )
+    if( dino.mya.includes(mya) || dino.mya[0] > mya && dino.mya[1] < mya || ( dino.mya - 1 )  === mya )
       return dino
 
   }).map( dinoObject => {
