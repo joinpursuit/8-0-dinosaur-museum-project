@@ -118,7 +118,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   // Using the .filter() method creates a shallow copy *references to encapsulating the object*
   let dinosFound = dinosaurs.filter( dino => {
     // Since all the requirements make us return a single dino object. I figured it would be best to combine it into one ifElse statement with 4 conditionals
-    if( dino.mya.includes(mya) || dino.mya[0] > mya && dino.mya[1] < mya || ( dino.mya - 1 )  === mya )
+    if( dino.mya.includes(mya) || dino.mya[0] > mya && dino.mya[1] < mya ||  dino.mya - 1  === mya )
       return dino
 
   }).map( dinoObject => {
