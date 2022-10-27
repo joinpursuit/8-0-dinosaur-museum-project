@@ -54,7 +54,43 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  /*
+  In Javascript, variables are hoisted to top of scope, so assigning variables with nice descriptive names to hold long complicated reference values can cause code to crash or otherwise result in error as the variable is evaluated.  Declaring variables first and assigning after error checks bypasses this issue.
+
+  However, this function code still does not use many variables with descriptive names.  Such variables cannot easily be used during "if" validation checks as assigning values can cause problems.  After validation checks, assigning complicated names then using new variables is an additional complication.  So I just explain what the code does.
+
+  Below validation checks return error messages if ticket type or entrant type cannot be found.  Simply declaring the returnPriceInCents variable does not cause a crash.
+  */
+  let returnPriceInCents;
+  if (!ticketData[ticketInfo.ticketType]) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+  } else if (!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+  }
+  /*
+  Assigns a value to returnPriceInCents after validation checks.  Though returnPriceInCents does not run a validation check, it might in the future; separate assignation anticipates this possibility.
+  */
+  returnPriceInCents = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+
+  /*
+  For each element in the ticketInfo extras array
+  */
+  for (let extra of ticketInfo.extras) {
+    /*
+    Checks to see if that ticketInfo "extra" exists in ticketData.  If not, then returns error.
+    */
+    if (!ticketData.extras[extra]) {
+      return `Extra type '${ticketInfo.extras}' cannot be found.`
+    } else {
+      /*
+      If ticketInfo "extra" exists in ticketData, increments returnPriceInCents by the value stored in ticketData.
+      */
+      returnPriceInCents += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+    }
+  }
+  return returnPriceInCents;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +145,74 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  /*
+  Declares and assigns a value to returnString; this value concatenated with other values to generate a final return string, or returnString is ignored to return a completely different error message.
+
+  Declares and assigns the value 0 to runningTotal.
+
+  Both variables are increased in iterative loops so must be declared outside those loop so their values may be referenced outside those loops.
+  */
+  let returnString = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  let runningTotal = 0;
+  /*
+  Various strings needed first letter capitalized; rather than writing for each separately, wrote a function inside a function.  In other circumstances I would create the function separately, outside the function, but I don't know if that will work with npm test.
+  */
+  /**
+   * capitalizeFirstLetter()
+   * ---------------------
+  * Returns a string with first letter capitalized.
+  *  * @param {string} stringNeedingACapital - a string to be converted to have its first letter capitalized.
+  *  * @returns {string} a string with first letter capitalized
+  * */
+ function capitalizeFirstLetter (stringNeedingACapital) {
+  return stringNeedingACapital.charAt(0).toUpperCase() + stringNeedingACapital.slice(1);
+ }
+ /*
+ Iterates through each purchase (ticket object) in the purchases array.
+ */
+ for (let purchase of purchases) {
+  /*
+  Validation checks; checks if data from the purchase (ticket object) in the purchases array has a corresponding value to look up in ticketData.  If not, returns an error message.
+  */
+  if (!ticketData[purchase.ticketType]) {
+    return `Ticket type '${purchase.ticketType}' cannot be found.`;
+  } else if (!ticketData[purchase.ticketType].priceInCents[purchase.entrantType]) {
+    return `Entrant type '${purchase.entrantType}' cannot be found.`;
+  }
+  /*
+  If validation checks pass, runningTotal is incremented by the ticket price for the current purchase (ticket object) in the purchases array, and returnString is incremented by the text appropriate to evaluation without accounting for extras.
+
+  Extras is not accounted for in this step, as there is no guarantee there are any extras for the current purchase (ticket object).
+  */
+  runningTotal += calculateTicketPrice(ticketData, purchase);
+  returnString += `${capitalizeFirstLetter(purchase.entrantType)} ${capitalizeFirstLetter(purchase.ticketType)} Admission: $${(calculateTicketPrice(ticketData, purchase)/100).toFixed(2)}`;
+  /*
+  Validation checks; checks if there are more than zero extras for the currently evaluated purchase (ticket object) of the purchases array.  If there are, then the appropriate text is generated.  Near the end of the code executed after a successful "if" check, the last two elements of the returnString are removed to eliminate the trailing ", ", then ")/n" appended to close the section out properly.
+  */
+   if (purchase.extras.length > 0) {
+     returnString += " (";
+      for (let extra of purchase.extras) {
+        if (!ticketData.extras[extra]) {
+          return `Extra type '${extra}' cannot be found.`;
+        }
+    returnString += `${capitalizeFirstLetter(extra)} Access, `;
+      }
+     returnString = returnString.slice(0, returnString.length-2);
+     returnString += ")\n";  
+     /*
+     If the validation check did not pass for the above if, then there are ticket has no extras.  "/n" is appended to returnString to move to the next line.
+     */ 
+   } else {
+     returnString += "\n"
+   }
+ }
+ /*
+ returnString is incremented by the text at the end of the receipt.  This text is outside and after the starting text and the loops texts.
+ */
+ returnString += `-------------------------------------------\nTOTAL: $${(runningTotal/100).toFixed(2)}`;
+  return returnString;
+}
 
 // Do not change anything below this line.
 module.exports = {
