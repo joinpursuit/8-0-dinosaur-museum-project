@@ -64,29 +64,43 @@ return final;
  *
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
- */
-function getDinosaurDescription(dinosaurs, id) {
-//I want to find the name of the dinosaur based on the ID number.
-// if the ID doesn't exist, let them know it. 
-// iterate to find the ID first
-// Once the ID is found, though, include the name of the *name of the dino* with the *pronounciation.* Make a *new line* and then *include the description.*
 
-let desiredDino = ""  //create a new variable
 
-/*guard clause
-if (typeof dinosaurs === "undefined"){
-  return `A dinosaur with an ID of ${ID} cannot be found.`
+//possible guard clauses
+
+/* if(!dinosaurs.length) { return {}}
+ 
+const searchProp = dinosaurs.dinosaurId;
+ const searchValue = id;
+ const result = dinosaurs.filter((user) => user[searchProp] === searchValue);
+ dinosaurs.find()
+
+  if() {
+   return `A dinosaur with an ID of ${id} cannot be found.`
+ }
+ if (dinosaurs.id === null){
+  return `A dinosaur with an ID of ${id} cannot be found.`
 }
+let workable = "no";
+function yeahDino(){
+    workable === "yes"}
+function goAhead (){
+    if (yeahDino != "yes"){}}
 */
+    //find the right dino
 
-      //find the right dino
+    function getDinosaurDescription(dinosaurs, id) {
+
+    let desiredDino = {} //create a new variable   
 for (let i=0; i<dinosaurs.length; i++){
   if(dinosaurs[i].dinosaurId === id) {
   desiredDino = dinosaurs[i];
   }
 }
 
-if (desiredDino.mya.length===1){
+if (!desiredDino.mya) {
+  return  `A dinosaur with an ID of '${id}' cannot be found.`
+} else if (desiredDino.mya.length===1){
 finalReturn =`${desiredDino.name} (${desiredDino.pronunciation})\n${desiredDino.info} It lived in the ${desiredDino.period} period, over ${desiredDino.mya[0]} million years ago.`
   } else if (desiredDino.mya.length===2){
     finalReturn =`${desiredDino.name} (${desiredDino.pronunciation})\n${desiredDino.info} It lived in the ${desiredDino.period} period, over ${desiredDino.mya[1]} million years ago.`
@@ -95,16 +109,6 @@ finalReturn =`${desiredDino.name} (${desiredDino.pronunciation})\n${desiredDino.
 return finalReturn
 }
 
-
-/* const searchProp = dinosaurs.dinosaurId;
- const searchValue = id;
- const result = dinosaurs.filter((user) => user[searchProp] === searchValue);
- dinosaurs.find()
-
-  if() {
-   return `A dinosaur with an ID of ${id} cannot be found.`
- }
-*/
 
 /**
  * getDinosaursAliveMya()
@@ -131,7 +135,32 @@ return finalReturn
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinoArray = [];   //create what will be the final array
+
+  // create a loop that will examine dinosaurs
+  for (let i=0; i<dinosaurs.length; i++){
+    //if the mya key holds 2 numbers, see if the year given is between those two numbers
+    if (dinosaurs[i].mya.length===2){    
+      if ( mya <= dinosaurs[i].mya[0] && mya >= dinosaurs[i].mya[1] && key === "name") {
+        dinoArray.push(dinosaurs[i].name);
+        //do different things depending on the 3rd parameter
+
+        } else if ( mya <= dinosaurs[i].mya[0] && mya >= dinosaurs[i].mya[1]) {
+            dinoArray.push(dinosaurs[i].dinosaurId);
+          } 
+      //if the mya key holds 1 number, see if the year given is that year or one less
+             else if (dinosaurs[i].mya.length===1) {
+              if (mya === dinosaurs[i].mya[0] || mya === dinosaurs[i].mya[0]-1 && key === "name") {
+                dinoArray.push(dinosaurs[i].name);
+              } else if (mya === dinosaurs[i].mya[0] || mya === dinosaurs[i].mya[0]-1 && key !== "name") {
+                dinoArray.push(dinosaurs[i].dinosaurId)
+              } 
+    }
+    return dinoArray
+  } 
+  }
+}
 
 module.exports = {
   getLongestDinosaur,
