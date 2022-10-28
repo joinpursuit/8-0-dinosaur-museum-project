@@ -101,9 +101,14 @@ for (const dino of dinosaurs) {
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   let finalArr =[];
+  let finalArrOne = []
+  
   for (const dino of dinosaurs) {
-     
+      if ((dino.mya.length === 1) && (mya === dino.mya[0]-1)) {
+        finalArrOne.push(dino.dinosaurId)
+      }
       if  ((mya <= dino.mya[0])  && (mya >= dino.mya[dino.mya.length -1]))   {
+        
         if(key === undefined) {
          finalArr.push(dino.dinosaurId)
         } 
@@ -112,7 +117,10 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
       }  
     } 
 }
-  return finalArr
+if (finalArrOne.length != 0) {
+  return finalArrOne
+} 
+return finalArr
 }
 
 
