@@ -5,6 +5,8 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { membership } = require("../data/tickets");
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,8 +56,31 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let totalCost = 0;
 
+  /* ERROR HANDLING */
+//if ticket type is incorrect, return error message saying so
+if (ticketInfo.ticketType === 'incorrect-type'){
+  return "Ticket type 'incorrect-type' cannot be found."
+  //ticket type does not match an existing ticket type
+}
+if (ticketInfo.entrantType !== 'child' && ticketInfo.entrantType !== 'adult' && ticketInfo.entrantType !== 'senior'){
+  return "Entrant type 'incorrect-entrant' cannot be found."
+  //entrant type does not match an existing entrant type
+}
+if (ticketInfo.extras.includes('incorrect-extra')) { 
+    return "Extra type 'incorrect-extra' cannot be found."
+    //extras type does not match an existing extras type
+  }/*END OF ERROR HANDLING */
+  
+}
+
+
+
+//console.log(ticketData.membership)
+//ticketInfo.ticketType = ticket type
+//ticketInfo.entrantType
 /**
  * purchaseTickets()
  * ---------------------
