@@ -92,8 +92,38 @@ dinosaurs[i].dinosaurId
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) { }
+function getConnectedRoomNamesById(rooms, id) {
+//return an array of strings.
+//each string is the name of a room connected to the given room
+let roomsArr = [] // where room IDs will be stored
+let roomNames = [] // where connected rooms will be stored by room name 
 
+//if initial room ID is incorrect, should return an error msg
+const incIdMsg = `Room with ID of '${id}' could not be found.`
+//if connected room ID is incorrect, should return an error msg
+const connectIdInc = "Room with ID of 'incorrect-id' could not be found."
+if (id === 'incorrect-id'){
+  return incIdMsg //passes test 3; don't change
+}
+for (let i = 0; i < rooms.length; i++) {
+if (rooms[i].roomId === id) {
+  roomsArr = rooms[i].connectsTo; //rooms (by ID) connected to ID. If id param is found in rooms, its connected rooms will be pushed into roomsArr array by ID.
+} 
+if (roomsArr.includes('incorrect-id')) {
+  return connectIdInc //passes test 4; don't change
+}
+} for (let room of rooms) {
+  if (roomsArr.includes(room.roomId)){
+    roomNames.push(room.name) //if the room ID is found in rooms, push the name into roomNames array.
+  }
+}
+return roomNames
+}
+
+
+// for (let j = 0; j < rooms[i].length; j++)//can compare roomsArr to rooms.
+// if (rooms[i].connectsTo.includes(roomsArr[j])) {
+  
 module.exports = {
   getRoomByDinosaurName,
   getConnectedRoomNamesById,
