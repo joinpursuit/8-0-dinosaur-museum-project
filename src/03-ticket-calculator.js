@@ -177,7 +177,7 @@ function purchaseTickets(ticketData, purchases) {
     }
     finalStr += `\n${purchase.entrantType.charAt(0).toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(tempTotal[j]/100).toFixed(2)}${tempStr}`
     finaltTotal += ticketData[purchase.ticketType].priceInCents[purchase.entrantType]
-    j++
+   j++
     tempStr = "";
   } //for --> purchase
   finalStr += `\n-------------------------------------------\nTOTAL: $${(finaltTotal/100).toFixed(2)}`
