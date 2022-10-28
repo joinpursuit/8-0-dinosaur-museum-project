@@ -8,7 +8,7 @@
 const { general } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
-
+const banana = require("../data/tickets");
 /**
  * calculateTicketPrice()
  * ---------------------
@@ -68,19 +68,25 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     if (!['movie','education','terrace'].includes(extra)) {
       return "Extra type 'incorrect-extra' cannot be found."
       }
+     }
+    if (ticketInfo.extras.length === 0) {
+      return ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+    }
+    else {
+      finalPrice = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+      for (const extra of ticketInfo.extras) {
+        finalPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+      }
+    }
+  return finalPrice
   }
-if (ticketInfo.extras.length === 0) {
-  return ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
-}
-else {
-  finalPrice = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
-  for (const extra of ticketInfo.extras) {
-     finalPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
-  }
-}
-return finalPrice
 
-}
+const ticketInfo_copy = {
+  ticketType: "incorrect-type",
+  entrantType: "child",
+  extras: [],
+};
+calculateTicketPrice(banana, ticketInfo_copy)
 
 /**
  * purchaseTickets()
@@ -159,9 +165,6 @@ function purchaseTickets(ticketData, purchases) {
  // With no Extras and Extras too
     tempTotal.push(ticketData[purchase.ticketType].priceInCents[purchase.entrantType])
     
-   // finalStr += `\n${purchase.entrantType.charAt(0).toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(tempTotal[j]/100).toFixed(2)}`
-    //finaltTotal += ticketData[purchase.ticketType].priceInCents[purchase.entrantType]
-    
     if (purchase.extras.length != 0) {
          tempStr += ` (`
          for (let i= 0; i < purchase.extras.length; i++) {
@@ -184,8 +187,11 @@ function purchaseTickets(ticketData, purchases) {
   return finalStr;
 }
 
+
+
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
   purchaseTickets,
 };
+
