@@ -98,7 +98,7 @@ describe("getDinosaurDescription()", () => {
 });
 
 describe("getDinosaursAliveMya()", () => {
-  test("should return the IDs of all dinosaurs that were alive approximately at the given time", () => {
+  test.only("should return the IDs of all dinosaurs that were alive approximately at the given time", () => {
     const mya = 150;
     const actual = getDinosaursAliveMya(dinosaurs, mya);
     const expected = ["YLtkN9R37", "GGvO1X9Zeh", "BFjjLjea-O", "V53DvdhV2A"];
@@ -106,7 +106,7 @@ describe("getDinosaursAliveMya()", () => {
     expect(actual).toEqual(expected);
   });
 
-  test("should include dinosaurs with only one `mya` year", () => {
+  test.only("should include dinosaurs with only one `mya` year", () => {
     const mya = 66;
     const actual = getDinosaursAliveMya(dinosaurs, mya);
     const expected = ["WHQcpcOj0G", "2GglUqKT0G", "wuL4ddBinQ"];
@@ -114,7 +114,7 @@ describe("getDinosaursAliveMya()", () => {
     expect(actual).toEqual(expected);
   });
 
-  test("if the `mya` key is an array of one number, should allow for 1 MYA less than the amount", () => {
+  test.only("if the `mya` key is an array of one number, should allow for 1 MYA less than the amount", () => {
     const mya = 65;
     const actual = getDinosaursAliveMya(dinosaurs, mya);
     const expected = ["WHQcpcOj0G"];
@@ -122,7 +122,7 @@ describe("getDinosaursAliveMya()", () => {
     expect(actual).toEqual(expected);
   });
 
-  test("should return an empty array if the year does not match any", () => {
+  test.only("should return an empty array if the year does not match any", () => {
     const mya = 5;
     const actual = getDinosaursAliveMya(dinosaurs, mya);
     const expected = [];
@@ -130,7 +130,7 @@ describe("getDinosaursAliveMya()", () => {
     expect(actual).toEqual(expected);
   });
 
-  test("if the third argument is set, should replace the IDs with the value of the given key", () => {
+  test.only("if the third argument is set, should replace the IDs with the value of the given key", () => {
     const mya = 66;
     const key = "name";
     const actual = getDinosaursAliveMya(dinosaurs, mya, key);
@@ -139,7 +139,7 @@ describe("getDinosaursAliveMya()", () => {
     expect(actual).toEqual(expected);
   });
 
-  test("if the third argument is set, but to a key that doesn't return a value, should return the IDs", () => {
+  test.only("if the third argument is set, but to a key that doesn't return a value, should return the IDs", () => {
     const mya = 66;
     const key = "name";
     const actual = getDinosaursAliveMya(dinosaurs, mya, key);
