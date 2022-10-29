@@ -6,6 +6,8 @@
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
 const exampleTicketData = require("../data/tickets");
+const tickets = require("../data/tickets");
+
 // Do not change the line above.
 
 /**
@@ -54,7 +56,29 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let ticketPrice = 0;
+ 
+  // Return an error message if the ticketType does not exist as an object name inside of ticketData
+  if (!ticketData[ticketInfo.ticketType]) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  } 
+  // Return an error message if the ticketEntrant does not exist as a key inside of priceInCents inside of the outer object name of ticketData
+  if (!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  } 
+
+  // Return an error message if extras does not contain a valid option, otherwise update ticketPrice using ticketData's info
+  if (ticketInfo.extras.every(extra => ticketData.extras[extra])) {
+    ticketInfo.extras.forEach(ele => ticketPrice += ticketData.extras[ele].priceInCents[ticketInfo.entrantType]);
+  }  else {
+    return `Extra type '${ticketInfo.extras[0]}' cannot be found.`;
+  }
+
+  return ticketPrice += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+
+ 
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +133,84 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+
+  // A string that will be used to return the full receipt
+  let receiptDetails = "";
+  let totalPrice = 0;
+
+  // Loop through the purchases array to access each object element
+  for (let i = 0; i < purchases.length; i++) {
+    // Variable for holding the price for each ticket
+    let ticketPrice = 0;
+    // String that will contain the extras in the format of (Terrace Access, Education Access)
+    let extraString = "";
+
+    // Return an error message if the ticketType does not exist as an object name inside of ticketData
+    if (!ticketData[purchases[i].ticketType]) {
+      return `Ticket type '${purchases[i].ticketType}' cannot be found.`;
+    }
+    // Return an error message if the ticketEntrant does not exist as a key inside of priceInCents inside of the outer object name of ticketData
+    if (!ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType]) {
+      return `Entrant type '${purchases[i].entrantType}' cannot be found.`;
+    }
+
+    // Add the cost of admission to ticketPrice based on the type of ticket purchased and who(entrantType) the ticket is for
+    ticketPrice += ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType];
+   
+
+    // If extras array inside of every object is empty return the receipt without extras 
+    if (purchases[i].extras.length === 0) {
+      receiptDetails += `${capitalize(purchases[i].entrantType)} ${ticketData[purchases[i].ticketType].description}: $${(ticketPrice / 100).toFixed(2)}`;
+      // Format spacing depending on how many objects are in the purchases array and whether or not the last object has been
+      if (purchases.length > 1 && i <= purchases.length - 2) {receiptDetails += '\n';}
+
+    } else {
+      // Count used to determine how to format the extras with spacing and commas 
+      let extraCount = 0;
+     
+      // Return an error message if ticketData.extras does not contain any of the elements of the extras array within purchases object otherwise add ticketData.description to extraString variable
+      for (let extra of purchases[i].extras) {
+        
+        if (!ticketData.extras[extra]) {
+          return `Extra type '${extra}' cannot be found.`;
+        } else {
+          // Update the ticketPrice to include the price of each extra in the array
+          ticketPrice += ticketData.extras[extra].priceInCents[purchases[i].entrantType];
+          // Format the extras string with comma and space and add current extra priceInCents to the ticketPrice and totalPrice
+          if (extraCount === 0) { 
+            extraString += `${ticketData.extras[extra].description}`;
+          } else {
+            extraString += `, ${ticketData.extras[extra].description}`;
+          }
+        }
+        extraCount++;
+      }
+     
+      // Update the receiptDetails variable with the extras inside of parentheses
+      receiptDetails += `${capitalize(purchases[i].entrantType)} ${ticketData[purchases[i].ticketType].description}: $${(ticketPrice / 100).toFixed(2)} (${extraString})`;
+      if (purchases.length > 1 && i <= purchases.length - 2) { receiptDetails += '\n'; }
+    }
+    // Update the totalPrice with the current ticketPrice for every iteration 
+    totalPrice += ticketPrice;
+  }
+
+  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${receiptDetails}\n-------------------------------------------\nTOTAL: $${(totalPrice / 100).toFixed(2)}`;
+}
+
+function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+
+
+
+
+
+
+
+
+
 
 // Do not change anything below this line.
 module.exports = {
