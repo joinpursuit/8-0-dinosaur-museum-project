@@ -54,7 +54,28 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+
+  if ( ticketData.hasOwnProperty( ticketInfo.ticketType ) && ticketData[ticketInfo.ticketType].priceInCents.hasOwnProperty( ticketInfo.entrantType ) ){
+    
+    let extras = 0;
+    
+    for( let i in ticketInfo.extras ){
+  
+      if( ticketData.extras.hasOwnProperty( ticketInfo.extras[i] ) )
+        extras += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType]
+      else
+        return `Extra type '${ticketInfo.extras}' cannot be found.`
+  
+      } 
+    return ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType] + extras;
+  
+  }else if( !ticketData.hasOwnProperty( ticketInfo.ticketType ) )
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+  else if( !ticketData[ticketInfo.ticketType].priceInCents.hasOwnProperty( ticketInfo.entrantType ) )
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +130,42 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+   let total = 0;
+   let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------";
+   for( let index in purchases ){
+     let extrasPrice = 0;
+     if( ticketData.hasOwnProperty( purchases[index].ticketType ) && ticketData[purchases[index].ticketType].priceInCents.hasOwnProperty( purchases[index].entrantType ) ){
+       let ticketType = purchases[index].ticketType;
+       let entrantType = purchases[index].entrantType;
+       let ticketPrice = Number(ticketData[ ticketType ].priceInCents[ entrantType ]/100);
+       ticketType = `${ticketType[0].toUpperCase()}${ticketType.slice(1).toLowerCase()}`
+       entrantType = `${entrantType[0].toUpperCase()}${entrantType.slice(1).toLowerCase()}`
+       receipt += `\n${entrantType} ${ticketType} Admission: `;
+       let extrasArray = purchases[index].extras;
+       for( let i = 0; i < extrasArray.length; i++){
+ 
+         if( ticketData.extras.hasOwnProperty( extrasArray[i] ) )
+           extrasPrice += Number( ticketData.extras[ extrasArray[i] ].priceInCents[ entrantType.toLowerCase() ]/100 );
+         else
+           return `Extra type '${extrasArray[i]}' cannot be found.`;
+ 
+       }
+       ticketPrice += extrasPrice;
+ 
+       receipt += `$${ (ticketPrice).toFixed(2) }`;
+        if( extrasArray.length >= 1)
+         receipt += ` (${extrasArray.map( element => `${element.charAt(0).toUpperCase()}${element.slice(1).toLowerCase()}`).join(' Access, ')} Access)`;       
+         total += ticketPrice;
+   
+     }else if( !ticketData.hasOwnProperty( purchases[index].ticketType) )
+       return `Ticket type '${purchases[index].ticketType}' cannot be found.`
+     else if( !ticketData[purchases[index].ticketType].priceInCents.hasOwnProperty( purchases[index].entrantType ))
+     return `Entrant type '${purchases[index].entrantType}' cannot be found.` 
+   }
+   receipt += `\n-------------------------------------------\nTOTAL: $${total.toFixed(2)}`
+   return receipt;
+}
 
 // Do not change anything below this line.
 module.exports = {
