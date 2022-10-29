@@ -73,26 +73,24 @@ const exampleRoomData = require("../data/rooms");
  */
 function getConnectedRoomNamesById(rooms, id) {
 let idToName = makingObj(rooms)
-let newArr = []
+let newArr = [];
 function makingObj(rooms){
   let obj = {};
-  for (let i = 0; i < rooms.length; i++){
-    obj[rooms[i].roomId] = rooms[i].name
+  for (let i of rooms){
+    obj[i.roomId] = i.name;
   } return obj
-} if (!makingObj[id]){
+} if (!idToName[id]){
   return `Room with ID of '${id}' could not be found.`
 } else {
-  loopingThru:
-  for (let j of rooms){
-    if (j.roomId == id){
-    for (let ide of j.connectsTo){
+  for (let i of rooms){
+    if (i.roomId === id){
+    for (let ide of i.connectsTo){
       if ((idToName[ide]) || (idToName[ide]) === ""){
         newArr.push(idToName[ide])
       } else {
         return `Room with ID of '${ide}' could not be found.`
       }
     }
-    break loopingThru;
   }  
   }
 } return newArr
