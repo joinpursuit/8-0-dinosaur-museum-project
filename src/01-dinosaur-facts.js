@@ -25,18 +25,22 @@ const exampleDinosaurData = require("../data/dinosaurs");
 function getLongestDinosaur(dinosaurs) {
   let tallestDino = {}
   let tallestDinoLength = 0
+
   for (let i = 0; i < dinosaurs.length; i++){
     if (dinosaurs[i].lengthInMeters > tallestDinoLength){
       tallestDinoLength = dinosaurs[i].lengthInMeters;
     } 
-  } console.log(tallestDinoLength);
+  } 
+  // console.log(tallestDinoLength);
+  
   for (let j = 0; j < dinosaurs.length; j++){
     if (dinosaurs[j].lengthInMeters === tallestDinoLength){
-       tallestDino[dinosaurs[j].name] = tallestDinoLength * 3.281
-       return tallestDino
+       tallestDino[dinosaurs[j].name] = tallestDinoLength * 3.281;
+       return tallestDino;
       }
-    } return tallestDino
+    } return tallestDino;
   }
+  
 /**
  * getDinosaurDescription()
  * ---------------------
@@ -98,20 +102,30 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   // console.log(key)
   // console.log(dinosaurs[0].mya[0])
   // console.log(mya)
-  console.log(dinosaurs[4].dinosaurId)
+  // console.log(dinosaurs[4].dinosaurId)
 
-  let dinosAlive = []
+  let newArr = []
   
   for (let i = 0; i < dinosaurs.length; i++){
-
-    let range = ((dinosaurs[i].mya[0] === mya) || (dinosaurs[i].mya[0] === (mya -1)))
-    // let other = (dinosaurs[i].mya.includes(mya || (mya -1)))
-    if ((dinosaurs[i].mya.length === 1) && (dinosaurs[i].mya[0] === (mya -1))){
-      dinosAlive.push(dinosaurs[i].dinosaurId)
-    } 
+    let dino = dinosaurs[i]
+  if (dino.mya.length === 1){
+    if ((dino.mya[0]=== mya) || (dino.mya[0] === (mya-1)) || (dino.mya[0] === (mya + 1))){
+      if (key){
+        newArr.push(dino[key])
+      } else {
+        newArr.push(dino.dinosaurId)
+      }
+    }
+  } else {
+    if ((mya >= dino.mya[1]) && (mya <= dino.mya[0])){
+      if (key){
+        newArr.push(dino[key])
+      } else {
+        newArr.push(dino.dinosaurId)
+      }
+    }
   }
-
-return dinosAlive
+  } return newArr
 }
 
 module.exports = {

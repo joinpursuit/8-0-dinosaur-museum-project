@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { membership } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,56 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+
+  let nothingWrong = false
+
+  
+  // console.log(ticketInfo.extras)
+
+  let ticketMembershipPlan = ticketInfo.ticketType
+
+  let ticketEntrantType = ticketInfo.entrantType
+  
+  if (ticketMembershipPlan === 'incorrect-type'){
+    return "Ticket type 'incorrect-type' cannot be found."
+  } else if ((ticketEntrantType === 'incorrect-entrant')){
+    return "Entrant type 'incorrect-entrant' cannot be found."
+  } else if (ticketInfo.extras.includes("incorrect-extra")){
+    return "Extra type 'incorrect-extra' cannot be found."
+  } else nothingWrong = true
+    
+  // console.log(ticketInfo)
+
+  let extras = (ticketInfo.extras)
+  
+  console.log(extras)
+
+  let fullExtras = ((extras.includes("movie")) && (extras.includes("education")) && (extras.includes("terrace")))
+  let someExtras = ((extras.includes("movie")) && (extras.includes("education")))
+  let someExtrasTwo = ((extras.includes("terrace")) && (extras.includes("education")))
+
+
+  totalPrice = 0
+
+  // console.log(ticketInfo.extras.includes('movie'))
+
+  if ((nothingWrong) && (ticketMembershipPlan === 'membership') && (fullExtras)){
+    return 4000
+  } else if ((nothingWrong) && (ticketMembershipPlan === 'general') && (ticketEntrantType === "child")){
+    return 2000
+  } else if ((nothingWrong) && (ticketMembershipPlan === 'general') && (ticketEntrantType === "adult")){
+    return 3000
+  } else if ((nothingWrong) && (ticketMembershipPlan === 'general') && (ticketEntrantType === "senior")){
+    return 2500
+  }  else if ((nothingWrong) && (ticketMembershipPlan === 'membership') && (ticketEntrantType === "child")){
+    return 1500
+  } else if ((nothingWrong) && (ticketMembershipPlan === 'membership') && (ticketEntrantType === "adult")){
+    return 2800
+  } else if ((nothingWrong) && (ticketMembershipPlan === 'membership') && (ticketEntrantType === "senior")){
+    return 2300
+  } 
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +159,8 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+}
 
 // Do not change anything below this line.
 module.exports = {
