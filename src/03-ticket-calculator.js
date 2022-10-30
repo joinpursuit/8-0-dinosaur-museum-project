@@ -193,7 +193,6 @@ function purchaseTickets(ticketData, purchases) {
   let purchaseTotal = 0;
   let lineTotal = 0;
   let lineFormat = '';
-  let extraArr = [];
   let receipt = ['Thank you for visiting the Dinosaur Museum!\n-------------------------------------------'];
   let i = 0;
   let errorEnt = `Entrant type '${purchases[i].entrantType}' cannot be found.`;
@@ -202,6 +201,7 @@ function purchaseTickets(ticketData, purchases) {
 
   // Loop to comb through purchases param and look at each individual ticket+ any extras.  Will take values found and add to lineTotal var in order to keep track of total and each lap of loop will push that to receipt array
   for (i = 0; i < purchases.length; i++) {
+    let extraArr = [];
     // 3 escapes for errors
     if (purchases[i].entrantType !== 'child' && purchases[i].entrantType !== 'adult' && purchases[i].entrantType !== 'senior') {
       return errorEnt;
