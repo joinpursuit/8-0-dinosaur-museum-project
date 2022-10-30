@@ -190,7 +190,8 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  let receipt = "";
+  let receipt = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n';
+  let priceTotal = 0;
   for (let a = 0; a < purchases.length; a++) {
     if (purchases[a].ticketType != 'general' && purchases[a].ticketType != 'membership') {
       return `Ticket type '${purchases[a].ticketType}' cannot be found.`;
@@ -203,7 +204,49 @@ function purchaseTickets(ticketData, purchases) {
     if (purchases[a].entrantType != 'child' && purchases[a].entrantType != 'adult' && purchases[a].entrantType != 'senior') {
       return "Entrant type 'incorrect-entrant' cannot be found.";
     }
+
+    //> "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
+    if (purchases[a].entrantType == 'child') {
+      receipt += 'Child ';
+    } else if (purchases[a].entrantType == 'adult') {
+      receipt += 'Adult ';      
+    } else {
+      receipt += 'Senior ';
+    }
+
+    if (purchases[a].ticketType == 'general') {
+      receipt += 'General ';
+    } else {
+      receipt += 'Membership ';
+    }
+
+    let priceOfEachPurchase = calculateTicketPrice(ticketData, purchases[a]) / 100;
+    priceTotal += priceOfEachPurchase;
+    receipt += `Admission: $${priceOfEachPurchase.toFixed(2)}`;
+    
+    
+    let extrasArray = [];
+    if (purchases[a].extras.includes('education')) {
+      extrasArray.push('Education Access');
+    }
+    if (purchases[a].extras.includes('movie')) {
+      extrasArray.push('Movie Access');
+    }
+    if (purchases[a].extras.includes('terrace')) {
+      extrasArray.push('Terrace Access');
+    }
+    if (purchases[a].extras.includes('terrace') && purchases[a].extras.includes('education') && !purchases[a].extras.includes('movie')) {
+      extrasArray[0] = extrasArray.splice(1, 1, extrasArray[0]);
+    }
+    if (extrasArray.length != 0) {
+      const extrasString = extrasArray.join(', ');
+      receipt += ` (${extrasString})\n`;    
+    } else {
+      receipt += '\n'
+    }
   }
+  receipt += `-------------------------------------------\nTOTAL: $${priceTotal.toFixed(2)}`;
+  return receipt;
 }
 
 // Do not change anything below this line.

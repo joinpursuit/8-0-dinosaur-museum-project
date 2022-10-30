@@ -329,8 +329,8 @@ describe("calculateTicketPrice()", () => {
   });
 });
 
-describe("purchaseTickets()", () => {
-  describe.only("errors", () => {
+describe.only("purchaseTickets()", () => {
+  describe("errors", () => {
     test("should surface errors from calculateTicketPrice()", () => {
       // Incorrect ticket type
       const incorrectTicketType = {
