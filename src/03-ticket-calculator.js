@@ -68,17 +68,65 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  if (ticketInfo.ticketType != ('general' || 'membership')) {
+  let costInCents = 0;
+  if (ticketInfo.ticketType != 'general' && ticketInfo.ticketType != 'membership') {
     return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
   }
   for (let a = 0; a < ticketInfo.extras.length; a++) {
-    if (ticketInfo.extras[a] != ('movie' || 'education' || 'terrace')) {
+    if (ticketInfo.extras[a] != 'movie' && ticketInfo.extras[a] != 'education' && ticketInfo.extras[a] != 'terrace') {
       return "Extra type 'incorrect-extra' cannot be found.";
     }
   }
-  if (ticketInfo.entrantType != ('child' || 'adult' || 'senior')) {
+  if (ticketInfo.entrantType != 'child' && ticketInfo.entrantType != 'adult' && ticketInfo.entrantType != 'senior') {
     return "Entrant type 'incorrect-entrant' cannot be found.";
   }
+  if (ticketInfo.entrantType == 'child') {
+    if (ticketInfo.ticketType == 'general') {
+      costInCents += 2000;
+    } else {
+      costInCents += 1500;
+    }
+    if (ticketInfo.extras.includes('movie')) {
+      costInCents += 1000;
+    }
+    if (ticketInfo.extras.includes('education')) {
+      costInCents += 1000;
+    }
+    if (ticketInfo.extras.includes('terrace')) {
+      costInCents += 500;
+    }
+  } else if (ticketInfo.entrantType == 'adult') {
+    if (ticketInfo.ticketType == 'general') {
+      costInCents += 3000;
+    } else {
+      costInCents += 2800;
+    }
+    if (ticketInfo.extras.includes('movie')) {
+      costInCents += 1000;
+    }
+    if (ticketInfo.extras.includes('education')) {
+      costInCents += 1200;
+    }
+    if (ticketInfo.extras.includes('terrace')) {
+      costInCents += 1000;
+    } 
+  } else {
+    if (ticketInfo.ticketType == 'general') {
+      costInCents += 2500;
+    } else {
+      costInCents += 2300;
+    }
+    if (ticketInfo.extras.includes('movie')) {
+      costInCents += 1000;
+    }
+    if (ticketInfo.extras.includes('education')) {
+      costInCents += 1200;
+    }
+    if (ticketInfo.extras.includes('terrace')) {
+      costInCents += 1000;
+    }
+  }
+  return costInCents;
 }
 
 /**
