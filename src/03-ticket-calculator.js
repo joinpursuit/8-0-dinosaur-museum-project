@@ -128,7 +128,38 @@ for (let x of extra){
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let receiptMessage = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n';
+  let total;
+  let extraData = ticketData.extras
+  let addOnMessage1;
+  let addOnMessage2;
+  let finalTotal=0;
+
+for (let x of purchases){
+  let entrant = x.entrantType
+  let type = x.ticketType
+  let extra = x.extras
+  if (!ticketData[type]){
+    return `Ticket type '${type}' cannot be found.`
+  } else if (!ticketData[type].priceInCents[entrant]){
+    return `Entrant type '${entrant}' cannot be found.`
+  } total = ticketData[type].priceInCents[entrant]
+  finalTotal += total
+  for (let i of extra){
+    if (!(extraData[i])){
+      return `Extra type '${extra}' cannot be found.`
+    } else {
+      total += extraData[i].priceInCents[entrant]
+    }
+  } addOnMessage1 = entrant.charAt(0).toUpperCase() + entrant.slice(1)
+  addOnMessage2 = type.charAt(0).toUpperCase() + type.slice(1)
+  receiptMessage += `${addOnMessage1} ${addOnMessage2} Admission: $${(total/100).toFixed(2)}\n`
+  } //console.log(finalTotal) 
+  receiptMessage += `-------------------------------------------\nTOTAL: $${(finalTotal/100).toFixed(2)}`
+  return receiptMessage
+
+}
 
 // Do not change anything below this line.
 module.exports = {
