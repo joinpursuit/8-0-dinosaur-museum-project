@@ -29,14 +29,15 @@ function getLongestDinosaur(dinosaurs) {
   let longLength = 0;
   //Loop checking to see if the length is longer than the new var which is updated as we lap
   for (i = 0; i < dinosaurs.length; i++) {
+    // If the length of the dino at i index is longer than the longLength var, we will update the var as well as the longName var.
     if (dinosaurs[i].lengthInMeters > longLength) {
-      longLength = dinosaurs[i].lengthInMeters;  
+      longLength = dinosaurs[i].lengthInMeters;
       longName = dinosaurs[i].name;
     }
   }
   //After the loop is done, we do the meter=>feet calc; if check to stop us from putting empty values in our new oject
   longLength = longLength * 3.281;
-  if (longName !== undefined) {  
+  if (longName !== undefined) {
     longDino[longName] = longLength;
   }
   // console.log (longLength)
@@ -64,12 +65,16 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  // Loop to go through the dinosaur param and look for the given id param.  If found, will return string that uses various properties from the given dino object
+  /**
+   * Loop to go through the dinosaur param and look for the given id param.
+   * If found, will return string that uses various properties from the given dino object.
+  */
   for (i = 0; i < dinosaurs.length; i++) {
     if (dinosaurs[i].dinosaurId === id) {
       return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.`;
     }
   }
+  // If the loop completes and the id param is not found, we will return this erro message.
   return `A dinosaur with an ID of '${id}' cannot be found.`
 }
 
@@ -99,18 +104,29 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  //new empty array for return
+  //New empty array which will be used to push alive dinos too.
   let aliveDino = [];
   for (i = 0; i < dinosaurs.length; i++) {
-    if (dinosaurs[i].mya.length === 2) {  //checking mya array length
-      if (dinosaurs[i].mya[1] <= mya && dinosaurs[i].mya[0] >= mya) { //checking if mya param is within dino.mya array range
-        if (key) {  //if there is a key param
+    /**
+     * We start by checking mya array length.
+     * If it is 2, we then check is the given mya param falls within the range of the 2 elements.
+     * If there is a key param given, we push that to our empty aliveDino array.
+     * If there is no key param given, then we push the dinoId as instructed.
+    */
+    if (dinosaurs[i].mya.length === 2) {
+      if (dinosaurs[i].mya[1] <= mya && dinosaurs[i].mya[0] >= mya) {
+        if (key) {
           aliveDino.push(dinosaurs[i][key]);
-        } else {  //if there isnt a key param
+        } else {
           aliveDino.push(dinosaurs[i].dinosaurId);
         }
       }
-    } else if (dinosaurs[i].mya.length === 1) {  //if there is only 1 element in the mya array
+      /**
+       * If there is only one element in the mya array, then we will check to see if the mya params matches it or is within 1.
+       * If there is a key param given, we push that to our empty aliveDino array.
+       * If there is no key param given, then we push the dinoId as instructed.
+      */
+    } else if (dinosaurs[i].mya.length === 1) {
       if (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] - 1 === mya) {
         if (key) {
           aliveDino.push(dinosaurs[i][key]);
