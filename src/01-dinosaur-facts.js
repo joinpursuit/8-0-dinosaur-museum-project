@@ -26,7 +26,7 @@ const exampleDinosaurData = require("../data/dinosaurs");
   let dinoObj = {};
   //set tallestDino to the fist dinosaur 
   let tallestDino = dinosaurs[0]
-  if(dinosaurs.length < 1){
+  if(!dinosaurs.length){
     return dinoObj;
   }
   for(let i = 0; i < dinosaurs.length; i++){
