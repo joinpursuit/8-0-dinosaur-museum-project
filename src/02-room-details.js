@@ -27,8 +27,10 @@ const exampleRoomData = require("../data/rooms");
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   const obj = {};
+
   //assign to the "obj" with dinosaur names as keys and dinosaur Ids as values, so I can reference later.
   dinosaurs.forEach((value) => obj[value.name] = value.dinosaurId);
+
   //if in "obj" doesn't have a property of @dinosaurName, return an error message with @dinosaurName.
   if (!obj.hasOwnProperty(dinosaurName)) {
     return `Dinosaur with name '${dinosaurName}' cannot be found.`;
@@ -71,13 +73,15 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 function getConnectedRoomNamesById(rooms, id) {
   const obj = {};
   let result = [];
+  
   //assign to the "obj" with room Ids as keys and room names as values, so I can reference later.
   rooms.forEach((value) => obj[value.roomId] = value.name);
+
   //if in "obj" doens't have the property of @id, return an error message with @id.
   if (!obj.hasOwnProperty(id)) {
     return `Room with ID of '${id}' could not be found.`;
   }
-  //nested for loops. first, to loop through the array of objects. second, to loop through the array in objects.
+  //nested for loops. first, to loop through the array of objects. second, to loop through the array of strings.
   for (let room of rooms) {
     for (let connectTo of room.connectsTo) {
       //if in the "obj" doesn't have the "roomId" in the array of "connectsTo" or is undefined, return an error message.

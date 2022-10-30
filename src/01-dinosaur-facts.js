@@ -130,7 +130,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
       }
       //if it has only one value in the array
       //and the value is equal or one less to the "param mya", push the "dinosaurId" to the array
-    } else if (mya === dino.mya[0]-1) {
+    } else if (mya === dino.mya || mya === dino.mya[0]-1) {
       arr.push(dino.dinosaurId)
     }
   }
