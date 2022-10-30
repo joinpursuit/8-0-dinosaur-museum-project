@@ -54,7 +54,26 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+
+}
+
+// ??ERRORS
+// no existing ticket 'incorrect-type', entrant 'child', extras[]
+// -- entrant
+// 'general', entrant 'incorrect-entrant', extras []
+// -- extra
+// 'general', entrant 'adult', extra['incorrect-extra']
+
+//       --NO EXTRAS
+// child--'general', entrant 'child', extras [] 2000
+// adult--'general', entrant 'adult', extras [] 3000
+// senior--'general', entrant 'senior', extras [] 2500
+
+// --MEMBERSHIPS
+// 'membership' child [] 1500
+// 'membership' adult [] 2800
+// 'membership' senior [] 2300
 
 /**
  * purchaseTickets()

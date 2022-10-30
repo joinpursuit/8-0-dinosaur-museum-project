@@ -81,9 +81,66 @@ function getLongestDinosaur(dinosaurs) {
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {
-}
+function getDinosaurDescription(dinosaurs, id) {  
+  for(let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].dinosaurId == id) {
+      return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.`
+    }
+    }
+return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+  }
+//let dinoDescribe = `A dinosaur with an ID of '${id}' cannot be found.`
+  
+ //`${dNames} + (${dSound}) + \n${description}`
+// const _ = require(`underscore`)
+  // let dNames = _.pluck(dinosaurs, `name`)
+  // let dSound = _.pluck(dinosaurs, `pronunciation`)
+  // let description = _.pluck(dinosaurs, `info`)
+  //`${dinosaurs[i].id}`
+  // } else if (!dinosaurs.id) {
+    //   return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+    //  for (let i = 0; i < dinosaurs.length; i++) {
+    //   let dNames = dinosaurs[i].name
+    //   let dSound = dinosaurs[i].pronunciation
+    //   let description = dinosaurs[i].info
+    //   let dinoId = dinosaurs[i].id
+    //   Object.keys(dinosaurs[i].mya).length = milYears
+    //   console.log(milYears)
+// Object.keys(dinosaurs[i].mya).length >= 1)
+  // for (let i = 0; i < dinosaurs.length; i++) {
+  //   let dNames = dinosaurs[i].name
+  //   let dSound = dinosaurs[i].pronunciation
+  //   let description = dinosaurs[i].info
+  // let compact = dNames + dSound + description
+  // arr.push(compact) 
+  // console.log(dNames)
+  // return compact
+  
+  //   console.log(dNames, dSound, description)
+  //  } return `${dNames} + (${dSound}) + \n${description}`
+  // const pluck = (arr, key) => arr.map(i => i[key]);
+  // return pluck(dinosaurs, `name`)
+  
+ //(dinosaurs[d].name + dinosaurs[d][(`${pronunciation}`)] + dinosaurs[d].info)
 
+// dinosaurs.reduce((accumulator, dinosaurs) => {
+// accumulator[dinosaurs.name] 
+// console.log(accumulator)
+// ;
+//   return accumulator;
+// }, {})
+// }
+
+
+// use id to get -> .name (.pronunciation) `\n` .info 
+// --1 value of mya
+//detailed description of dinosaur
+//dinosaurs[0].info
+//"A dinosaur with an ID of 'incorrect-id' cannot be found."
+// let dinosaurCount = dinosaurs.length
+  
+//   for(let d = 0; d < dinosaurCount; d++) {
+//   if (dinosaurs[d].id)
 /**
  * getDinosaursAliveMya()
  * ---------------------
@@ -109,8 +166,29 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+let dinoDataArr = []
+for (let j = 0; j < dinosaurs.length; j++) {
+  let dinoId = dinosaurs[j].dinosaurId
+  let max = dinosaurs[j].mya[0] //156 is an example of the highest mya in the dino data
+  let min = dinosaurs[j].mya[1] //144
+  let firstArr = []
+  while(min <= max) {
+    firstArr.push(max--)
+  }
+if (Object.keys(dinosaurs[j]).includes(key)) {
+  dinoId = dinosaurs[j][key]
+}
+if (firstArr.includes(mya)) {
+  dinoDataArr.push(dinoId)
+} else if (dinosaurs[j].mya[0] === mya || dinosaurs[j].mya[0] - 1 === mya) {
+  dinoDataArr.push(dinoId)
+}
+}
+return dinoDataArr
+}
 
+//for (let j = 0; j < dinosaurs.length; i++)
 module.exports = {
   getLongestDinosaur,
   getDinosaurDescription,
