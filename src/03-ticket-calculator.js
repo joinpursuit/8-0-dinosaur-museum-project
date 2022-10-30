@@ -132,17 +132,24 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 /**
  * purchaseTickets()
  * ---------------------
- * Returns a receipt based off of a number of purchase. Each "purchase" maintains the shape from `ticketInfo` in the previous function.
+ * Returns a receipt based off of a number of purchases. Each "purchase" maintains the shape 
+ * from `ticketInfo` in the previous function.
  *
- * Any errors that would occur as a result of incorrect ticket information should be surfaced in the same way it is in the previous function.
+ * Any errors that would occur as a result of incorrect ticket information should be surfaced in the same way it 
+ * is in the previous function.
  * 
- * NOTE: Pay close attention to the format in the examples below and tests. You will need to have the same format to get the tests to pass.
+ * NOTE: Pay close attention to the format in the examples below and tests. You will need to have the same format 
+ * to get the tests to pass.
  *
- * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
+ * @param {Object} ticketData - An object containing data about prices to enter the museum. See the 
+ * `data/tickets.js` file for an example of the input.
  * @param {Object[]} purchases - An array of objects. Each object represents a single ticket being purchased.
- * @param {string} purchases[].ticketType - Represents the type of ticket. Could be any string except the value "extras".
- * @param {string} purchases[].entrantType - Represents the type of entrant. Prices change depending on the entrant.
- * @param {string[]} purchases[].extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
+ * @param {string} purchases[].ticketType - Represents the type of ticket. Could be any string except the value 
+ * "extras".
+ * @param {string} purchases[].entrantType - Represents the type of entrant. Prices change depending on the 
+ * entrant.
+ * @param {string[]} purchases[].extras - An array of strings where each string represent a different "extra" 
+ * that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
  * @returns {string} A full receipt, with each individual ticket bought and the total.
  *
  * EXAMPLE:
@@ -182,7 +189,22 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let receipt = "";
+  for (let a = 0; a < purchases.length; a++) {
+    if (purchases[a].ticketType != 'general' && purchases[a].ticketType != 'membership') {
+      return `Ticket type '${purchases[a].ticketType}' cannot be found.`;
+    }
+    for (let b = 0; b < purchases[a].extras.length; b++) {
+      if (purchases[a].extras[b] != 'movie' && purchases[a].extras[b] != 'education' && purchases[a].extras[b] != 'terrace') {
+        return "Extra type 'incorrect-extra' cannot be found.";
+      }
+    }
+    if (purchases[a].entrantType != 'child' && purchases[a].entrantType != 'adult' && purchases[a].entrantType != 'senior') {
+      return "Entrant type 'incorrect-entrant' cannot be found.";
+    }
+  }
+}
 
 // Do not change anything below this line.
 module.exports = {
