@@ -140,58 +140,6 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-// function purchaseTickets(ticketData, purchases) {
-//   //created the variables for reference(easy access).
-//   let inputTicket;
-//   let inputEntrant;
-//   let inputExtra;
-//   //updated the reference(easy access) variables.
-//   for (let purchase of purchases) {
-//     inputTicket = purchase.ticketType; //@ticketType
-//     inputEntrant = purchase.entrantType; //@entrantType
-//     inputExtra = purchase.extras; //@extras
-//   }
-
-//   //first letter capitalized.
-//   const capTicket = inputTicket.charAt(0).toUpperCase() + inputTicket.slice(1);
-//   let capEntrant = inputEntrant.charAt(0).toUpperCase() + inputEntrant.slice(1);
-//   let capExtra = '';
-
-//   //the number variables to track the ticket and total price.
-//   let ticketPrice = 0;
-//   let totalPrice = 0;
-
-//   //a string variable for the first test on the receipt.
-//   let str = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
-
-//   //error messages
-//   if (!ticketData[inputTicket]) { //if @ticketType doesn't exist, return an error message.
-//     return `Ticket type '${inputTicket}' cannot be found.`;
-//   } else if (!ticketData[inputTicket].priceInCents[inputEntrant]) { //if @entrantType doesn't exist, return an error message.
-//     return `Entrant type '${inputEntrant}' cannot be found.`;
-//   } 
-
-//   for (let i = 0; i < purchases.length; i++) {
-//     inputEntrant = purchases[i].entrantType;
-//     capEntrant = inputEntrant.charAt(0).toUpperCase() + inputEntrant.slice(1);
-
-//     ticketPrice = ticketData[inputTicket].priceInCents[inputEntrant];
-//     str += `${capEntrant} ${capTicket} Admission: $${(ticketPrice/100).toFixed(2)}`;
-//     str += "\n";
-//     totalPrice += ticketPrice;
-//   }
-//   str += "-------------------------------------------\n";
-//   str += `TOTAL: $${(totalPrice/100).toFixed(2)}`;
-
-//   for (let extra of inputExtra) { //to loop through the @extras array.
-//     capExtra = extra.charAt(0).toUpperCase() + extra.slice(1);
-//     if (extra !== ticketData.extras) { //if @extras doesn't exist, return an error message.
-//       return `Extra type '${extra}' cannot be found.`;
-//     }
-//   }
-
-//   return str;
-// }
 function purchaseTickets(ticketData, purchases) {
   //set the variables for reference (easy access).
   let inputTicket;
