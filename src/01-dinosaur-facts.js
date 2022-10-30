@@ -70,11 +70,16 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
+  // Iterates through the array of objects called 'dinosaurs'
   for (let i = 0; i < dinosaurs.length; i++) {
+    // Checks if the current object's id matches with the given id
     if (dinosaurs[i].dinosaurId == id) {
+      // If there is a matching id, returns a formatted string with the required information by accessing the 
+      // corresponding properties of the current object
       return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.`
     }
   }
+  // If there is no matching id, returns a formatted error message
   return `A dinosaur with an ID of '${id}' cannot be found.`
 }
 
@@ -113,25 +118,43 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
+  // Creates empty array to be filled with IDs of dinosaurs alive in the given time period
   const aliveDinos = [];
+  // Iterates through the array of objects called 'dinosaurs'
   for (let i = 0; i < dinosaurs.length; i++) {
+    // Checks if the 'millions of years ago' key of the current dinosaur has more than one value
     if (dinosaurs[i].mya.length > 1) {
+      // If it has more than one value, 
+      // checks if the given time period is within the time period interval between the two values (inclusive)
       if (mya <= dinosaurs[i].mya[0] && mya >= dinosaurs[i].mya[1]) {
+        // If it is, adds the current dinosaur's ID to the array of aliveDinos
         aliveDinos.push(dinosaurs[i].dinosaurId);
       } 
+      // If it does not have more than one value, checks if the given time period matches the value, 
+      // or the value minus 1
     } else if (mya == dinosaurs[i].mya[0] || mya == dinosaurs[i].mya[0] - 1) {
+      // If it does, adds the current dinosaur's ID to the array of aliveDinos
       aliveDinos.push(dinosaurs[i].dinosaurId);
     }
   }
+
+  // If a third argument is given
   if (key) {
+    // Iterates through the array of aliveDinos
     for (let j = 0; j < aliveDinos.length; j++) {
+      // Iterates through the array of dinosaurs to access their properties and match IDs
       for (let x = 0; x < dinosaurs.length; x++) {
+        // Checks if IDs match
         if (dinosaurs[x].dinosaurId == aliveDinos[j]) {
+          // If IDs match, sets the value of the current element in the array to be equal to the value of the 
+          // required key of the current dinosaur
           aliveDinos[j] = dinosaurs[x][key];
         }
       }
     }
   }
+  // Returns an array of IDs of dinosaurs alive in the given time period if a third argument was not provided,
+  // or an array of values corresponding to the desired key of dinosaurs alive in the given time period
   return aliveDinos;
 }
 
