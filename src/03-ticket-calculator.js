@@ -56,20 +56,25 @@ const exampleTicketData = require("../data/tickets");
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
   let total;
+  //lines 60 - 65 are guard checking for errors by checking if ticketData has the properties given.
   if (!ticketData.hasOwnProperty(ticketInfo.ticketType)) {
     return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
   }
   else if (!ticketData[ticketInfo.ticketType].priceInCents.hasOwnProperty([ticketInfo.entrantType])) {
     return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
   }
+  //looping through tickeData checking for a match with ticketType
   for (let ticket in ticketData) {
     if (ticket === ticketInfo.ticketType) {
+      //if theres a match return the price of that ticket
       total = ticketData[ticket].priceInCents[ticketInfo.entrantType];
     }
   }
+  //checking for extras in ticket
   if (!ticketInfo.extras.length) {
     return total;
   }
+  //if theres extras then add prices of extras to total
   for (let i = 0; i < ticketInfo.extras.length; i++) {
     let extra = ticketInfo.extras[i];
     if (!ticketData.extras.hasOwnProperty(extra)) {
@@ -139,38 +144,49 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
+  //declaring and initializing variables to be used
   let ticketPurchase;
   let receipt = "Thank you for visiting the Dinosaur Museum!\n";
   let divider = "-------------------------------------------\n";
   let total = 0;
   let priceOfTicket;
   receipt += divider;
+  //looping through tickets array
   for (let i = 0; i < purchases.length; i++) {
     ticketPurchase = purchases[i];
+    //return the price of each ticket by calling the calculateTicketPrice function
     priceOfTicket = calculateTicketPrice(ticketData, ticketPurchase);
+    //if priceOfTicket is not a number - then it is an error message, return error message
     if (typeof priceOfTicket !== "number") {
       return priceOfTicket;
     }
     priceOfTicket /= 100;
+    //adding the price of each ticket to the total
     total += priceOfTicket;
+    //checking if each tickets has any extras
     if (!ticketPurchase.extras.length) {
       receipt += `${ticketPurchase.entrantType[0].toUpperCase() + ticketPurchase.entrantType.substring(1)} ${ticketData[ticketPurchase.ticketType].description}: $${priceOfTicket.toFixed(2)}\n`;
-    } else {
+    } 
+    //if tickets has extras add them to receipt
+    else {
       receipt += `${ticketPurchase.entrantType[0].toUpperCase() + ticketPurchase.entrantType.substring(1)} ${ticketData[ticketPurchase.ticketType].description}: $${priceOfTicket.toFixed(2)} (`;
+      //looping through extras
       for (let j = 0; j < purchases[i].extras.length; j++) {
+        //to circumvent for the commas when there is more than one extra - the loop is adding a comma to each extra except the last one
         if (j !== purchases[i].extras.length - 1) {
           receipt += `${purchases[i].extras[j][0].toUpperCase()}${purchases[i].extras[j].substring(1)} Access, `;
         } else {
           receipt += `${purchases[i].extras[j][0].toUpperCase()}${purchases[i].extras[j].substring(1)} Access`;
         }
       }
+      //pretty printing the receipt
       receipt += ")";
       receipt += "\n";
     }
   }
   receipt += divider;
   receipt += `TOTAL: $${total.toFixed(2)}`;
-
+//after pretty printing the receipt return it
   return receipt;
 }
 
