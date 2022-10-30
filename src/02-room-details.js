@@ -25,8 +25,27 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
-
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let dinoRoom = ''
+  for (let i = 0; i < dinosaurs.length; i++) {// start of for loop
+    if (dinosaurs[i].name === dinosaurName) {//check the name of the index and see if it's similar to what they provided
+      dinoRoom = dinosaurs[i].dinosaurId //dinoRoom equaled to dinosaurId
+      break;
+    }
+  }
+  for (let i = 0; i < rooms.length; i++) {//start of for loop
+    for (let j = 0; j < rooms[i].dinosaurs.length; j++) {//nested loop to compare index i(rooms) and new index j(dino)
+      if (rooms[i].dinosaurs[j] === dinoRoom) {// compare if rooms[i] and dino[j] is equal to dinoRoom.
+        return rooms[i].name
+      }
+    }
+  }
+  if (dinoRoom === '') {
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`
+  } else {
+    return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`// stating that dinoRoom is equal to empty string, return Dino with name cannot be found/cannot be found in any rooms.
+  }
+}
 /**
  * getConnectedRoomNamesById()
  * ---------------------
@@ -49,7 +68,28 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let Arr1 = []
+  let Arr2 = []
+  for (let i = 0; i < rooms.length; i++) {//start of for loop
+    if (rooms[i].roomId === id) {
+      Arr1 = rooms[i].connectsTo
+    }//end of if statement
+  }//end of for loop
+  for (let i = 0; i < Arr1.length; i++) {//start of 2nd for loop
+    for (let j = 0; j < rooms.length; j++) {//start of 3rd for loop
+      if (rooms[j].roomId === Arr1[i]) {
+        Arr2.push(rooms[j].name)
+      }
+    }//end of 3rd for loop
+  }//end of 2nd for loop
+  if (Arr1.length === 0) {
+    return `Room with ID of '${id}' could not be found.`
+  } else if (Arr1.length !== Arr2.length) {
+    return `Room with ID of 'incorrect-id' could not be found.`
+  } 
+  return Arr2
+} 
 
 module.exports = {
   getRoomByDinosaurName,
