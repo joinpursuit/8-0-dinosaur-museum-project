@@ -41,6 +41,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       }
     }
   }
+
   // if ( id === "" ) {
   //   return `Dinosaur with name '${dinosaurName}' cannot be found.`
   // } else {
@@ -92,12 +93,13 @@ function getConnectedRoomNamesById(rooms, id) {
         outputConnect.push(rooms[j].name);
       }
     }
-  } if (output.length === 0) {
-    return `Room with ID of '${id}' could not be found.`
-  } else if (outputConnect.length !== output.length) {
-    return `Room with ID of 'incorrect-id' could not be found.`
   }
-  return outputConnect
+  if (output.length === 0) {
+    return `Room with ID of '${id}' could not be found.`;
+  } else if (outputConnect.length !== output.length) {
+    return `Room with ID of 'incorrect-id' could not be found.`;
+  }
+  return outputConnect;
 }
 
 module.exports = {
