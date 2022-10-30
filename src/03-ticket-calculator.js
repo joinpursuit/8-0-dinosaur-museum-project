@@ -56,7 +56,7 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  // 6 new var created; 1 for tik cost, 1 for extra cost total, 1 for total cost; 3 separate error messages
+  // 6 new var created; 1 for tik cost, 1 for extra cost total, 1 for total cost; 3 separate error messages.
   let tikCost = 0;
   let extraCost = 0;
   let totalCost = 0;
@@ -64,21 +64,24 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   let errorTik = `Ticket type 'incorrect-type' cannot be found.`;
   let errorExt = `Extra type 'incorrect-extra' cannot be found.`;
 
-  // Check for incorrect entrant type
+  // Check for incorrect entrant type.
   if (ticketInfo.entrantType !== 'child' && ticketInfo.entrantType !== 'adult' && ticketInfo.entrantType !== 'senior') {
     return errorEnt;
   }
 
-  // Check for incorrect ticket type
+  // Check for incorrect ticket type.
   if (ticketInfo.ticketType === 'incorrect-type') {
     return errorTik;
   }
 
-  // Check for incorrect extra
+  // Check for incorrect extra.
   if (ticketInfo.extras.includes('incorrect-extra')) {
     return errorExt;
   }
-  // The following are checks for entrant type, each of the 3 conditionals then check for general or memebership pricing, and update the tikCost accordingly
+  /** The following are checks for entrant type.
+   * Each of the 3 conditionals then check for general or memebership pricing.
+   * Once we know what the entrant & ticket type are, we update our tikCost var accordingly.
+   */
   if (ticketInfo.entrantType === 'child') {
     if (ticketInfo.ticketType === 'general') {
       tikCost = ticketData.general.priceInCents.child;
@@ -99,7 +102,11 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     }
   }
 
-  // The following 3 conditionals check for the 3 different extras; then check for entrant type; then add and update the appropriate cost to the extraCost var bucket
+  /**
+   * The following 3 conditionals check for the 3 different extras. 
+   * We then check for entrant type. 
+   * Then we add and update the appropriate cost to the extraCost var bucket.
+   */
   if (ticketInfo.extras.includes('movie')) {
     if (ticketInfo.entrantType === 'child') {
       extraCost += ticketData.extras.movie.priceInCents.child;
@@ -189,13 +196,13 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  /* 
-  Several variables to use, call and manipulate as we loop.
-  lineTotal: used to hold cost per individual ticket
-  purchaseTotal: used to add lineTotal each lap of loop
-  lineFormat: used to properly uppercase entrant & ticket type values and add them together with required spacing
-  receipt: empty array that we will push to each lap of loop
-  errors x3: 3 error messages, I know we dont NEED a variable for these, but I like having them here
+  /** 
+   * Several variables to use, call and manipulate as we loop.
+   * lineTotal: used to hold cost per individual ticket
+   * purchaseTotal: used to add lineTotal each lap of loop
+   * lineFormat: used to properly uppercase entrant & ticket type values and add them together with required spacing
+   * receipt: empty array that we will push to each lap of loop
+   * errors x3: 3 error messages, I know we dont NEED a variable for these, but I like having them here
   */
   let lineTotal = 0;
   let purchaseTotal = 0;
@@ -206,13 +213,16 @@ function purchaseTickets(ticketData, purchases) {
   let errorTik = `Ticket type '${purchases[i].ticketType}' cannot be found.`;
   let errorExt = `Extra type 'incorrect-extra' cannot be found.`;
 
-  /* 
-  Loop to comb through purchases param and look at each individual ticket+ any extras.  
-  Using previous calculateTicketPrice fucntion, we can find the total of each ticket(each object in the purchases array).  
-  We will add this to lineTotal var in order to keep track of total and each lap of loop will push that to receipt array.
+  /**
+   * Loop to comb through purchases param and look at each individual ticket + any extras.  
+   * Using previous calculateTicketPrice fucntion, we can find the total of each ticket(each object in the purchases array).  
+   * We will add this to lineTotal var in order to keep track of total and each lap of loop will push that to receipt array.
    */
   for (i = 0; i < purchases.length; i++) {
-    // Empty array to push the extras of each ticket to, placed within for loop so it will reset after each lap of loop which prevents duplicates being pushed to the final receipt array.
+    /**
+     * Empty array to push the extras of each ticket to.
+     * We placed within for loop so it will reset after each lap of loop which prevents duplicates being pushed to the final receipt array.
+     */
     let extraArr = [];
     // 3 escapes for errors.
     if (purchases[i].entrantType !== 'child' && purchases[i].entrantType !== 'adult' && purchases[i].entrantType !== 'senior') {
@@ -226,18 +236,19 @@ function purchaseTickets(ticketData, purchases) {
     }
     // Calling previous function to find total of each ticket and setting that to lineTotal.
     lineTotal = calculateTicketPrice(ticketData, purchases[i]) / 100;
-    /*
-    Here is how we format each ticket line.
-    We use toUpperCase to capitalize the first letter of the entrant type & then use substring to add the rest of the string back to the capitalized first letter.
-    We then do the same for ticket type as well as add in necessary spaces, commas, the word Admission & the dollar sign.
+    /**
+     * Here is how we format each ticket line.
+     * We use toUpperCase to capitalize the first letter of the entrant type.
+     * We then use substring to add the rest of the string back to the capitalized first letter.
+     * We then do the same for ticket type as well as add in necessary spaces, commas, the word Admission & the dollar sign.
     */
     lineFormat = `\n${(purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.substring(1)) + ' ' + (purchases[i].ticketType[0].toUpperCase() + purchases[i].ticketType.substring(1)) + ' Admission: ' + '$' + (lineTotal) + '.00'}`
     receipt.push(lineFormat)
-    /*
-    Nested loop to cycle through the extras array in each purchase object.
-    As we do this, we push the coresponding string the our extraArr array.
-    Then, outside of this loop, we make sure that the extraArr is not empty, to prevent pushing nothing.
-    If the extraArr has elements, we push that to our receipt array and turn it into a string using .join()
+    /**
+     * Nested loop to cycle through the extras array in each purchase object.
+     * As we do this, we push the coresponding string the our extraArr array.
+     * Then, outside of this loop, we make sure that the extraArr is not empty, to prevent pushing nothing.
+     * If the extraArr has elements, we push that to our receipt array and turn it into a string using .join().
     */
     for (let e = 0; e < purchases[i].extras.length; e++) {
       if (purchases[i].extras[e] === 'movie') {
@@ -251,10 +262,11 @@ function purchaseTickets(ticketData, purchases) {
     if (extraArr.length !== 0) {
       receipt.push(` (${extraArr.join(', ')})`)
     }
-    /*
-    I left all of this in bc this is what I was working on before I discovered that I could call the previpous function that I had already completed.
-    It requireda good deal of reworking, but it was necessary to slim down and simplify my function.
-    Changing it from the below also allowed me to recreate the extra for loop.
+    /**
+     * I left all of this in bc this is what I was working on before I discovered that I could call the previous function that I had already completed.
+     * It required a good deal of reworking, but it was necessary to slim down and simplify my function.
+     * Changing it from the below also allowed me to recreate the extra for loop.
+     * I wanted to leave my work to show where my logic started and how I was able to level up my functions code.
     */
 
     // // Conditionals to check entrant type, and then within that chec ticket type
