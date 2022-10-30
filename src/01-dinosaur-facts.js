@@ -22,7 +22,20 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  if (dinosaurs.length === 0) { // checking if theres no dinosaurs
+    return {} //if there is no dinosaurs , we are returning an empty object
+  }
+  let longestDino = dinosaurs[0] // we are letting L.D equal dinosaurs at the first index 
+  for (let i = 1; i < dinosaurs.length; i++) { //starting our for loop at 1 since we are already starting at 0
+    if (dinosaurs[i].lengthInMeters > longestDino.lengthInMeters) { // are condition her is testing if dino at postion [i] is greater than lonestDino at length in meters 
+      longestDino = dinosaurs[i] // here we are setting longest to be equal to dinosaurs at index i
+    }
+  }
+  let finalDino = {} // here we are creating an empty object to be able to return our value in 
+  finalDino[longestDino.name] = longestDino.lengthInMeters * 3.281 //here we are setting up the in the proper order , finding the the name of the dino = to the length in meters * 3.381 to covert it to feet
+  return finalDino // returning the longest dino 
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +57,14 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  for (let i = 0; i < dinosaurs.length; i++) { // here i created a for loop to go thur the array of dino 
+    if (dinosaurs[i].dinosaurId === id) //checking if dino at index i is equal to the id 
+      return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.` // if the condition is true we return the dino in the this format, providing information thur dot notiation 
+  }
+  return `A dinosaur with an ID of '${id}' cannot be found.` // if the dino at index i != the the id we want to return a statment saying the dino was not found with the id. we do this outside the for loop
+}
+
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +91,27 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dino = []
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].mya.length === 1) {
+      if (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] - 1 === mya) {
+        if (key) {
+          dino.push(dinosaurs[i][key])
+        } else {
+          dino.push(dinosaurs[i].dinosaurId)
+        }
+      }// 2nd if statment 
+    } else if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya) { //finding range 
+      if (key) {
+        dino.push(dinosaurs[i][key])
+      } else {
+        dino.push(dinosaurs[i].dinosaurId)
+      }
+    }
+  }//end of loop
+  return dino
+}//end of function
 
 module.exports = {
   getLongestDinosaur,
