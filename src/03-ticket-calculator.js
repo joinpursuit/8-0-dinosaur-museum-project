@@ -190,6 +190,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
+  
   let receipt = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n';
   let priceTotal = 0;
   for (let a = 0; a < purchases.length; a++) {

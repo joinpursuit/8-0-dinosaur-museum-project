@@ -33,17 +33,29 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  // Creates a new string to be changed
   let dinoId = '';
+  // Iterates through the dinosaurs array of objects
   for (let i = 0; i < dinosaurs.length; i++) {
+    // If the given dinosaur name is found in the current dinosaur
     if (dinosaurs[i].name == dinosaurName) {
+      // Set dinoId to be equal to the current dinosaur's ID
       dinoId = dinosaurs[i].dinosaurId;
     }
   }
+
+  // If dinoId is unchanged
   if (dinoId === '') {
+    // The given dinosaur name did not match, so returns error message
     return `Dinosaur with name '${dinosaurName}' cannot be found.`
   }
+
+  // Iterates through rooms array of objects
   for (let j = 0; j < rooms.length; j++) {
+    // If the dinosaur's ID is in the current room's list of dinosaurs
+    // Used .includes instead of a nested for loop for simplicity
     if (rooms[j].dinosaurs.includes(dinoId)) {
+      // Returns the name of the current room
       return rooms[j].name;
     }
     // for (let x = 0; x < rooms[j].dinosaurs.length; x++) {
@@ -52,6 +64,9 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     //   }
     // }
   }
+
+  // If the previous condition was not met, then the dinosaur did not match with any room. 
+  // Returns corresponding error message
   return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
 }
 
@@ -80,23 +95,36 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
+  // Creates empty array to be filled with names of rooms that connect to the room that corresponds to the given ID
   const connectingRooms = [];
+
+  // Iterates through the rooms array of objects
   for (let i = 0; i < rooms.length; i++) {
+    // If the current room's ID matches with the given ID
     if (rooms[i].roomId == id) {
+      // Iterates through the array of room IDs that connect to the current room
       for (let j = 0; j < rooms[i].connectsTo.length; j++) {
+        // Iterates through the rooms array again to match room IDs
         for (let x = 0; x < rooms.length; x++) {
+          // If room IDs match
           if (rooms[i].connectsTo[j] == rooms[x].roomId) {
+            // Adds the name of the current room to the array of connecting rooms
             connectingRooms.push(rooms[x].name);
           }
         }
         
       }
+      // If the length of the array of connecting rooms' IDs is not equal to the length of the array of connecting rooms' names
       if (rooms[i].connectsTo.length !== connectingRooms.length) {
+        // Returns corresponding error message
         return `Room with ID of 'incorrect-id' could not be found.`;
       }
+
+      // Returns array of names of connecting rooms
       return connectingRooms;
     }
   }
+  // If the first condition was not met, returns corresponding error message
   return `Room with ID of '${id}' could not be found.`;
 }
 
