@@ -67,7 +67,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       else
         return `Extra type '${ticketInfo.extras}' cannot be found.`
   
-      } // ends forLoop searching for 'extras'
+    } // ends forLoop searching for 'extras'
     
     return ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType] + extrasPrice;
   
@@ -162,6 +162,7 @@ function purchaseTickets(ticketData, purchases) {
       // adding to entrantType and ticket type to the receipt
       receipt += `\n${entrantType} ${ticketType} Admission: `;
 
+      // for readability purposes
       let extrasArray = purchases[index].extras;
 
       // We have to call the toLowerCase() on entrantType because we've modified it above.
@@ -172,11 +173,12 @@ function purchaseTickets(ticketData, purchases) {
         else
           return `Extra type '${extrasArray[i]}' cannot be found.`;
 
-      }
+      } // ends forLoop for extrasArray
 
       // adding extrasPrice to ticketPrice if there is any
       ticketPrice += extrasPrice;
-
+      
+      // formatting the ticketPrice to fit requirement needs for receipt.
       receipt += `$${ (ticketPrice).toFixed(2) }`;
 
       // fancy way of getting elements in an array and converting them into a string that meets our conditions only running it if there even is a length
@@ -188,7 +190,7 @@ function purchaseTickets(ticketData, purchases) {
     }else if( !ticketData.hasOwnProperty( purchases[index].ticketType) )
       return `Ticket type '${purchases[index].ticketType}' cannot be found.`
     else if( !ticketData[purchases[index].ticketType].priceInCents.hasOwnProperty( purchases[index].entrantType ))
-    return `Entrant type '${purchases[index].entrantType}' cannot be found.`
+      return `Entrant type '${purchases[index].entrantType}' cannot be found.`
     // ends ifElse statement that checks for valid entrant && ticket type
 
   }// ends the forLetInLoop
