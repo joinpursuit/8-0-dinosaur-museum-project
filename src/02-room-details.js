@@ -71,7 +71,28 @@ return roomNotice
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-
+let connectedRoom = []
+let dinoNamesArr = []
+for (let x = 0; x < rooms.length; x++) {
+  let room = rooms[x]
+  if (room.roomId === id) {
+    connectedRoom.push(...room.connectsTo)
+    for (let id of connectedRoom) {
+      for (let room of rooms) {
+        if (id === room.roomId) {
+          dinoNamesArr.push(room.name)
+        }
+      }
+    }
+  }
+}
+if (dinoNamesArr.length !== connectedRoom.length) {
+  return `Room with ID of 'incorrect-id' could not be found.`
+}
+if (dinoNamesArr.length === 0) {
+  return `Room with ID of '${id}' could not be found.`
+}
+return dinoNamesArr
 }
 // return [`stringofroom`,`stringofroom`,]
 //return if no room === error message
