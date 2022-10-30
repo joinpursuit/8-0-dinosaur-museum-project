@@ -25,8 +25,26 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
-
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let dinoFound = false; // Accumulator
+  let dino = "";
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].name === dinosaurName) {
+      // we want to access the dinosaurs inside of the room @ [i]
+      dinoFound = true;
+      dino = dinosaurs[i].dinosaurId;
+    }
+  }
+  if (!dinoFound) {
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+  } // outside for loop
+  for (let i = 0; i < rooms.length; i++) {
+    if (rooms[i].dinosaurs.includes(dino)) {
+      return rooms[i].name; // returns the name of room if dino is found!
+    }
+  }
+  return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+}
 /**
  * getConnectedRoomNamesById()
  * ---------------------
@@ -49,7 +67,57 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+let found = false
+let errorMessage = ""
+for (let i = 0; i < rooms.length; i++) {
+  if (rooms[i].roomId === id){
+    found = true
+  } 
+} 
+
+if (!found) { // guard clause
+  return `Room with ID of '${id}' could not be found.`} // returns initial room error message
+  let isConnectedRoom = []; // set an empty array
+  for (let i = 0; i < rooms.length; i++) {
+    if (rooms[i].roomId === id) {
+      isConnectedRoom.push(rooms[i].connectsTo); //returns all connected rooms
+    }
+  } 
+ isConnectedRoom = [].concat.apply([], isConnectedRoom)
+ for (let i = 0; i < isConnectedRoom.length; i++) {
+ let roomFound = rooms.find(room => isConnectedRoom[i] === room.roomId) // find method is going to bring back the first object if evaluated to true -- or will bring back undefined.
+ if (!roomFound) {
+  return `Room with ID of '${isConnectedRoom[i]}' could not be found.`
+  } else {
+     isConnectedRoom[i] = roomFound // making sure the room ids are correct gives back the same array
+  }
+ } 
+ isConnectedRoom = isConnectedRoom.map(room => room.name)
+ return isConnectedRoom//mutability
+}
+
+
+
+
+
+
+
+  // for (let i = 0; i < isConnectedRoom.length; i++) {
+  //   for (let j= 0; j < rooms.length; j++) {
+  //     if (isConnectedRoom[i] === rooms[i].roomId){
+  //       isConnectedRoom[i] = rooms[j].name // asking for mutability to change the OG array to correct name inside the rooms.
+  //     }
+  // }
+  // }
+
+  // console.log(isConnectedRoom)
+  // return isConnectedRoom;
+  // if (!rooms[i].roomId === id) {
+  //   return `Room with ID of 'rooms.roomId' could not be found.`; // returns incorrect id error message
+  // }
+
+//
 
 module.exports = {
   getRoomByDinosaurName,
