@@ -251,7 +251,7 @@ function purchaseTickets(ticketData, purchases) {
             totalPrice += ticketData.general.priceInCents.child;
             ticketPrice += ticketData.general.priceInCents.child;
             //put entrant type and ticket type on the receipt
-            receiptMessage += `\n${ticket.entrantType} ${ticket.ticketType} Admission: `;
+            receiptMessage += `\n${ticket.entrantType[0].toUpperCase() + ticket.entrantType.substring(1)} ${ticket.ticketType[0].toUpperCase() + ticket.ticketType.substring(1)} Admission: `;
             break;
           //if the entrant is adult
           case "adult":
@@ -259,7 +259,7 @@ function purchaseTickets(ticketData, purchases) {
             totalPrice += ticketData.general.priceInCents.adult;
             ticketPrice += ticketData.general.priceInCents.adult;
             //put entrant type and ticket type on the receipt
-            receiptMessage += `\n${ticket.entrantType} ${ticket.ticketType} Admission: `;
+            receiptMessage += `\n${ticket.entrantType[0].toUpperCase() + ticket.entrantType.substring(1)} ${ticket.ticketType[0].toUpperCase() + ticket.ticketType.substring(1)} Admission: `;
             break;
           //if the entrant is senior
           case "senior":
@@ -267,7 +267,7 @@ function purchaseTickets(ticketData, purchases) {
             totalPrice += ticketData.general.priceInCents.senior;
             ticketPrice += ticketData.general.priceInCents.senior;
             //put entrant type and ticket type on the receipt
-            receiptMessage += `\n${ticket.entrantType} ${ticket.ticketType} Admission: `;
+            receiptMessage += `\n${ticket.entrantType[0].toUpperCase() + ticket.entrantType.substring(1)} ${ticket.ticketType[0].toUpperCase() + ticket.ticketType.substring(1)} Admission: `;
             break;
             //if not those entrant types
           default:
@@ -285,7 +285,7 @@ function purchaseTickets(ticketData, purchases) {
             totalPrice += ticketData.membership.priceInCents.child;
             ticketPrice += ticketData.membership.priceInCents.child;
             //put entrant type and ticket type on the receipt
-            receiptMessage += `\n${ticket.entrantType} ${ticket.ticketType} Admission: `;
+            receiptMessage += `\n${ticket.entrantType[0].toUpperCase() + ticket.entrantType.substring(1)} ${ticket.ticketType[0].toUpperCase() + ticket.ticketType.substring(1)} Admission: `;
             break;
           //if the entrant is adult
           case "adult":
@@ -293,7 +293,7 @@ function purchaseTickets(ticketData, purchases) {
             totalPrice += ticketData.membership.priceInCents.adult;
             ticketPrice += ticketData.membership.priceInCents.adult;
             //put entrant type and ticket type on the receipt
-            receiptMessage += `\n${ticket.entrantType} ${ticket.ticketType} Admission: `;
+            receiptMessage += `\n${ticket.entrantType[0].toUpperCase() + ticket.entrantType.substring(1)} ${ticket.ticketType[0].toUpperCase() + ticket.ticketType.substring(1)} Admission: `;
             break;
           //if the entrant is senior
           case "senior":
@@ -301,7 +301,7 @@ function purchaseTickets(ticketData, purchases) {
             totalPrice += ticketData.membership.priceInCents.senior;
             ticketPrice += ticketData.membership.priceInCents.senior;
             //put entrant type and ticket type on the receipt
-            receiptMessage += `\n${ticket.entrantType} ${ticket.ticketType} Admission: `;
+            receiptMessage += `\n${ticket.entrantType[0].toUpperCase() + ticket.entrantType.substring(1)} ${ticket.ticketType[0].toUpperCase() + ticket.ticketType.substring(1)} Admission: `;
             break;
             //if not those entrant types
           default:
@@ -315,8 +315,11 @@ function purchaseTickets(ticketData, purchases) {
     }
 
 
-    //loop through extras
+    //check if theres extras
     if (ticket.extras[0]){
+      //create an array for the extras descriptions
+      let extrasDescArr = [];
+      //loop through the extras
       for (let ex of ticket.extras){
         //check if ticket has the movie extra
         if (ex === "movie"){
@@ -376,11 +379,13 @@ function purchaseTickets(ticketData, purchases) {
           //extras error message
           return `Extra type '${ex}' cannot be found.`;
         }
-        //put the extras array into a string
-        extrasPurchased = ticket.extras.join(" Access, ");
+        //push the descriptions
+        extrasDescArr.push(ticketData.extras[ex].description);
       }  
+      //put the extras array into a string
+      extrasPurchased = extrasDescArr.join(", ");
       //add in the ticket price and extras  
-      receiptMessage += `$${(ticketPrice/100).toFixed(2)} (${extrasPurchased} Access)`;
+      receiptMessage += `$${(ticketPrice/100).toFixed(2)} (${extrasPurchased})`;
     } else {
       //add in the ticket price
       receiptMessage += `$${(ticketPrice/100).toFixed(2)}`;
