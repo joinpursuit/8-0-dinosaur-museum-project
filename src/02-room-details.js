@@ -58,9 +58,11 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 /**
  * getConnectedRoomNamesById()
  * ---------------------
- * Returns an array of strings, where each string is the name of a room connected to the given room. If a room ID cannot be found, an error message is returned.
+ * Returns an array of strings, where each string is the name of a room connected to the given 
+ * room. If a room ID cannot be found, an error message is returned.
  *
- * @param {Object[]} rooms - An array of room objects. See the `data/rooms.js` file for an example of the input.
+ * @param {Object[]} rooms - An array of room objects. See the `data/rooms.js` file for an 
+ * example of the input.
  * @param {string} id - A unique room identifier.
  * @returns {string|string[]} An array of room names, or an error message.
  *
@@ -77,7 +79,26 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  const connectingRooms = [];
+  for (let i = 0; i < rooms.length; i++) {
+    if (rooms[i].roomId == id) {
+      for (let j = 0; j < rooms[i].connectsTo.length; j++) {
+        for (let x = 0; x < rooms.length; x++) {
+          if (rooms[i].connectsTo[j] == rooms[x].roomId) {
+            connectingRooms.push(rooms[x].name);
+          }
+        }
+        
+      }
+      if (rooms[i].connectsTo.length !== connectingRooms.length) {
+        return `Room with ID of 'incorrect-id' could not be found.`;
+      }
+      return connectingRooms;
+    }
+  }
+  return `Room with ID of '${id}' could not be found.`;
+}
 
 module.exports = {
   getRoomByDinosaurName,
