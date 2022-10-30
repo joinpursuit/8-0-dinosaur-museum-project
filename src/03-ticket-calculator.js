@@ -141,23 +141,18 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  //set the variables for reference (easy access).
-  let inputTicket;
-  let inputEntrant;
-  let inputExtra;
   //set the variables to track the ticket price and total price.
   let ticketPrice = 0;
   let totalPrice = 0;
-  
   //set the variable for the first text on the receipt.
   let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
 
   //to loop throught the @purchases array of objects.
   for (let purchase of purchases) {
-    //update the reference (easy access) variables.
-    inputTicket = purchase.ticketType; //@ticketType
-    inputEntrant = purchase.entrantType; //@entrantType
-    inputExtra = purchase.extras; //@extras
+    //set the variables for reference (easy access).
+    let inputTicket = purchase.ticketType; //@ticketType
+    let inputEntrant = purchase.entrantType; //@entrantType
+    let inputExtra = purchase.extras; //@extras
 
     //first letter capitalized for @ticketType and @entrantType.
     const capTicket = inputTicket.charAt(0).toUpperCase() + inputTicket.slice(1);
