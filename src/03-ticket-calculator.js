@@ -193,7 +193,7 @@ function purchaseTickets(ticketData, purchases) {
   let purchaseTotal = 0;
   let lineTotal = 0;
   let lineFormat = '';
-  let extraFormat = '';
+  let extraArr = [];
   let receipt = ['Thank you for visiting the Dinosaur Museum!\n-------------------------------------------'];
   let i = 0;
   let errorEnt = `Entrant type '${purchases[i].entrantType}' cannot be found.`;
@@ -213,46 +213,65 @@ function purchaseTickets(ticketData, purchases) {
       return errorExt;
     }
 
-    // Conditionals to check entrant type, and then within that chec ticket type and any extras
-    if (purchases[i].entrantType === 'child') {
-      if (purchases[i].ticketType === 'general') {
-        lineTotal = ticketData.general.priceInCents.child / 100;
-      } else if (purchases[i].ticketType === 'membership') {
-        lineTotal = ticketData.membership.priceInCents.child / 100;
-      }
-    } else if (purchases[i].entrantType === 'adult') {
-      if (purchases[i].ticketType === 'general') {
-        lineTotal = ticketData.general.priceInCents.adult / 100;
-      } else if (purchases[i].ticketType === 'membership') {
-        lineTotal = ticketData.membership.priceInCents.adult / 100;
-      }
-    } else if (purchases[i].entrantType === 'senior') {
-      if (purchases[i].ticketType === 'general') {
-        lineTotal = ticketData.general.priceInCents.senior / 100;
-      } else if (purchases[i].ticketType === 'membership') {
-        lineTotal = ticketData.membership.priceInCents.senior / 100;
-      }
-    }
+    lineTotal = calculateTicketPrice(ticketData, purchases[i]) / 100;
+
+    lineFormat = `\n${(purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.substring(1)) + ' ' + (purchases[i].ticketType[0].toUpperCase() + purchases[i].ticketType.substring(1)) + ' Admission: ' + '$' + (lineTotal) + '.00'}`
+    receipt.push(lineFormat)
 
     for (let e = 0; e < purchases[i].extras.length; e++) {
-      // checking extras chosen
       if (purchases[i].extras[e] === 'movie') {
-        lineTotal += ticketData.extras.movie.priceInCents.child / 100;
-        receipt.push(`(${extraFormat})`)
-      }
-      if (purchases[i].extras.includes('education')) {
-        lineTotal += ticketData.extras.education.priceInCents.child / 100;
-      }
-      if (purchases[i].extras.includes('terrace')) {
-        lineTotal += ticketData.extras.terrace.priceInCents.child / 100;
+        extraArr.push('Movie Access');
+      } else if (purchases[i].extras[e] === 'education') {
+        extraArr.push('Education Access');
+      } else if (purchases[i].extras[e] === 'terrace') {
+        extraArr.push('Terrace Access');
       }
     }
+        if (extraArr.length !== 0) {
+      receipt.push(` (${extraArr.join(', ')})`)
+    }
+
+    // // Conditionals to check entrant type, and then within that chec ticket type
+    // if (purchases[i].entrantType === 'child') {
+    //   if (purchases[i].ticketType === 'general') {
+    //     lineTotal = ticketData.general.priceInCents.child / 100;
+    //   } else if (purchases[i].ticketType === 'membership') {
+    //     lineTotal = ticketData.membership.priceInCents.child / 100;
+    //   }
+    // } else if (purchases[i].entrantType === 'adult') {
+    //   if (purchases[i].ticketType === 'general') {
+    //     lineTotal = ticketData.general.priceInCents.adult / 100;
+    //   } else if (purchases[i].ticketType === 'membership') {
+    //     lineTotal = ticketData.membership.priceInCents.adult / 100;
+    //   }
+    // } else if (purchases[i].entrantType === 'senior') {
+    //   if (purchases[i].ticketType === 'general') {
+    //     lineTotal = ticketData.general.priceInCents.senior / 100;
+    //   } else if (purchases[i].ticketType === 'membership') {
+    //     lineTotal = ticketData.membership.priceInCents.senior / 100;
+    //   }
+    // }
+    // //Nested loop to check extras array
+    // for (let e = 0; e < purchases[i].extras.length; e++) {
+    //   // checking extras chosen
+    //   if (purchases[i].extras[e] === 'movie') {
+    //     lineTotal += ticketData.extras.movie.priceInCents.child / 100;
+    //   } else if (purchases[i].extras[e] === 'education' && purchases[i].entrantType === 'child') {
+    //     lineTotal += ticketData.extras.education.priceInCents.child / 100;
+    //   } else if (purchases[i].extras[e] === 'education' && purchases[i].entrantType !== 'child') {
+    //     lineTotal += ticketData.extras.education.priceInCents.adult / 100;
+    //   } else if (purchases[i].extras[e] === 'terrace' && purchases[i].entrantType === 'child') {
+    //     lineTotal += ticketData.extras.terrace.priceInCents.child / 100;
+    //   } else if (purchases[i].extras[e] === 'terrace' && purchases[i].entrantType !== 'child') {
+    //     lineTotal += ticketData.extras.terrace.priceInCents.adult / 100;
+    //   }
+    //   extraFormat = purchases[i].extras.slice(0, 1).join()
+    //   extraFormat = extraFormat[0].toUpperCase() + extraFormat.substring(1);
+    // }
     purchaseTotal += lineTotal;
-    lineFormat = (purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.substring(1)) + ' ' + (purchases[i].ticketType[0].toUpperCase() + purchases[i].ticketType.substring(1)) + ' Admission: ' + '$' + (lineTotal) + '.00'
-    receipt.push(lineFormat)
   }
-  receipt.push(`-------------------------------------------\nTOTAL: $${purchaseTotal}.00`)
-  return receipt.join('\n');
+  receipt.push(`\n-------------------------------------------\nTOTAL: $${purchaseTotal}.00`)
+  return receipt.join('');
 }
 
 // Do not change anything below this line.
