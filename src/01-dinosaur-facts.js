@@ -26,12 +26,14 @@ const exampleDinosaurData = require("../data/dinosaurs");
   let dinoObj = {};
   //set tallestDino to the fist dinosaur 
   let tallestDino = dinosaurs[0]
+  //if dino array is empty return dino object
   if(!dinosaurs.length){
     return dinoObj;
   }
   for(let i = 0; i < dinosaurs.length; i++){
     //check each length property 
     if(dinosaurs[i].lengthInMeters > tallestDino.lengthInMeters){
+      //updating tallesDino to current tallest dinosaur
       tallestDino = dinosaurs[i];
     }
   }
@@ -61,6 +63,7 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
  function getDinosaurDescription(dinosaurs, id) {
+  //looping through dinosaurs array and checkid for an id match;
   for(let i = 0; i < dinosaurs.length; i++){
     if(dinosaurs[i].dinosaurId === id){
       return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.` 
@@ -106,6 +109,7 @@ const exampleDinosaurData = require("../data/dinosaurs");
     if(dinosaurs[i].mya.length === 1 && ((dinosaurs[i].mya[0] - mya) === 1)){
      dinoArr.push(dinosaurs[i][outPut]); 
     }
+    //checking if mya is between the dinosaurs mya
     else if(dinosaurs[i].mya[dinosaurs[i].mya.length - 1] <= mya && mya <= dinosaurs[i].mya[0]){
       dinoArr.push(dinosaurs[i][outPut]);
     }
