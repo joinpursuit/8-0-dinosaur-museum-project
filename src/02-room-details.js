@@ -25,7 +25,24 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let dinoFound = false // accumulator 
+  let dino = ""
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].name === dinosaurName) { //access the dinosaurs inside of the room [i]
+      dinoFound = true
+      dino = dinosaurs[i].dinosaurId
+    }
+  }
+  if (!dinoFound) {
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`
+  } // outside of the for loop
+  for (let i = 0; i < rooms.length; i++) {
+    if (rooms[i].dinosaurs.includes(dino)) {
+      return rooms[i].name //returns name of room if the dino is found
+    }
+  } return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +66,24 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let found = false
+  let errorMessage = ""
+  for (let i = 0; i < rooms.length; i++)
+  if (rooms[i].roomID === id){
+    found = true
+
+  }
+
+  }
+  let isConnectedRoom = [] //set isConnectedRoom as an empty array
+  for (let i = 0; i < rooms.length; i++) { // for loop begins 
+    if (rooms[i].roomId === id) {
+      isConnectedRoom = rooms[i].push(connectsTo) //property, has the name of the rooms
+    }
+  }return isConnectedRoom 
+  if (!found) {
+}return `Room with ID of '${id}' could not be found.`
 
 module.exports = {
   getRoomByDinosaurName,
