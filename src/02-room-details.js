@@ -81,7 +81,7 @@ function getConnectedRoomNamesById(rooms, id) {
       roomIdArr.push(...rooms[i].connectsTo);
     }
   }
-  // Loop to cycle throuhg each rooms object so we can search new roomIDArr to see if it contains the roomId, if it does, push it to new roomNameArr; second conditional to check for 'incorrect-id' and return error
+  // Loop to cycle through each rooms object so we can search new roomIDArr to see if it contains the roomId, if it does, push it to new roomNameArr; second conditional to check for 'incorrect-id' and return error
   for (let r = 0; r < rooms.length; r++) {
     if (roomIdArr.includes(rooms[r].roomId)) {
       roomNameArr.push(rooms[r].name);

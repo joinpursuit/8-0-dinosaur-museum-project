@@ -188,7 +188,72 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) { }
+function purchaseTickets(ticketData, purchases) {
+  // Several variables to use, call and manipulate as we loop
+  let purchaseTotal = 0;
+  let lineTotal = 0;
+  let lineFormat = '';
+  let extraFormat = '';
+  let receipt = ['Thank you for visiting the Dinosaur Museum!\n-------------------------------------------'];
+  let i = 0;
+  let errorEnt = `Entrant type '${purchases[i].entrantType}' cannot be found.`;
+  let errorTik = `Ticket type '${purchases[i].ticketType}' cannot be found.`;
+  let errorExt = `Extra type 'incorrect-extra' cannot be found.`;
+
+  // Loop to comb through purchases param and look at each individual ticket+ any extras.  Will take values found and add to lineTotal var in order to keep track of total and each lap of loop will push that to receipt array
+  for (i = 0; i < purchases.length; i++) {
+    // 3 escapes for errors
+    if (purchases[i].entrantType !== 'child' && purchases[i].entrantType !== 'adult' && purchases[i].entrantType !== 'senior') {
+      return errorEnt;
+    }
+    if (purchases[i].ticketType !== 'general' && purchases[i].ticketType !== 'membership') {
+      return errorTik;
+    }
+    if (purchases[i].extras.includes('incorrect-extra')) {
+      return errorExt;
+    }
+
+    // Conditionals to check entrant type, and then within that chec ticket type and any extras
+    if (purchases[i].entrantType === 'child') {
+      if (purchases[i].ticketType === 'general') {
+        lineTotal = ticketData.general.priceInCents.child / 100;
+      } else if (purchases[i].ticketType === 'membership') {
+        lineTotal = ticketData.membership.priceInCents.child / 100;
+      }
+    } else if (purchases[i].entrantType === 'adult') {
+      if (purchases[i].ticketType === 'general') {
+        lineTotal = ticketData.general.priceInCents.adult / 100;
+      } else if (purchases[i].ticketType === 'membership') {
+        lineTotal = ticketData.membership.priceInCents.adult / 100;
+      }
+    } else if (purchases[i].entrantType === 'senior') {
+      if (purchases[i].ticketType === 'general') {
+        lineTotal = ticketData.general.priceInCents.senior / 100;
+      } else if (purchases[i].ticketType === 'membership') {
+        lineTotal = ticketData.membership.priceInCents.senior / 100;
+      }
+    }
+
+    for (let e = 0; e < purchases[i].extras.length; e++) {
+      // checking extras chosen
+      if (purchases[i].extras[e] === 'movie') {
+        lineTotal += ticketData.extras.movie.priceInCents.child / 100;
+        receipt.push(`(${extraFormat})`)
+      }
+      if (purchases[i].extras.includes('education')) {
+        lineTotal += ticketData.extras.education.priceInCents.child / 100;
+      }
+      if (purchases[i].extras.includes('terrace')) {
+        lineTotal += ticketData.extras.terrace.priceInCents.child / 100;
+      }
+    }
+    purchaseTotal += lineTotal;
+    lineFormat = (purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.substring(1)) + ' ' + (purchases[i].ticketType[0].toUpperCase() + purchases[i].ticketType.substring(1)) + ' Admission: ' + '$' + (lineTotal) + '.00'
+    receipt.push(lineFormat)
+  }
+  receipt.push(`-------------------------------------------\nTOTAL: $${purchaseTotal}.00`)
+  return receipt.join('\n');
+}
 
 // Do not change anything below this line.
 module.exports = {

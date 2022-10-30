@@ -23,19 +23,21 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getLongestDinosaur(dinosaurs) {
-  //3 new variables that we can manipulate as we go
-  let longDino = {};  //empty object
-  let longName;  //var for name of longest
-  let longLength = 0;  //var for length of longest
-  for (i = 0; i < dinosaurs.length; i++) {  //standard i index for loop
-    if (dinosaurs[i].lengthInMeters > longLength) {  //checking to see if the length is longer than the new var...
-      longLength = dinosaurs[i].lengthInMeters;  //If it is then the var is updated
-      longName = dinosaurs[i].name;  //Then the new name var is updated
+  //3 new variables that we can manipulate as we go; empty object to return; var for name of longest once found; var for length of lognest once found
+  let longDino = {};
+  let longName;
+  let longLength = 0;
+  //Loop checking to see if the length is longer than the new var which is updated as we lap
+  for (i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].lengthInMeters > longLength) {
+      longLength = dinosaurs[i].lengthInMeters;  
+      longName = dinosaurs[i].name;
     }
   }
-  longLength = longLength * 3.281;  //After the loop is done, we do the meter=>feet calc
-  if (longName !== undefined) {  //If check to stop us from putting empty values in our new oject
-    longDino[longName] = longLength;  //The property assignment
+  //After the loop is done, we do the meter=>feet calc; if check to stop us from putting empty values in our new oject
+  longLength = longLength * 3.281;
+  if (longName !== undefined) {  
+    longDino[longName] = longLength;
   }
   // console.log (longLength)
   return longDino;
@@ -97,6 +99,7 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
+  //new empty array for return
   let aliveDino = [];
   for (i = 0; i < dinosaurs.length; i++) {
     if (dinosaurs[i].mya.length === 2) {  //checking mya array length
