@@ -25,8 +25,35 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let id = "";
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].name === dinosaurName) {
+      id = dinosaurs[i].dinosaurId; //string
+    }
+  }
+  for (let i = 0; i < rooms.length; i++) {
+    // each room
+    for (let j = 0; j < rooms[i].dinosaurs.length; j++) {
+      //each dino array at index
+      if (rooms[i].dinosaurs[j] === id) {
+        return rooms[i].name;
+      }
+    }
+  }
+  // if ( id === "" ) {
+  //   return `Dinosaur with name '${dinosaurName}' cannot be found.`
+  // } else {
+  //   return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+  // }
 
+  let result =
+    id === ""
+      ? `Dinosaur with name '${dinosaurName}' cannot be found.`
+      : `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+
+  return result;
+}
 /**
  * getConnectedRoomNamesById()
  * ---------------------
@@ -49,7 +76,29 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let output = [];
+  let outputConnect = [];
+
+  rooms.forEach((room) => {
+    if (room.roomId === id) {
+      output = room.connectsTo;
+    }
+  });
+
+  for (let i = 0; i < output.length; i++) {
+    for (let j = 0; j < rooms.length; j++) {
+      if (output[i] === rooms[j].roomId) {
+        outputConnect.push(rooms[j].name);
+      }
+    }
+  } if (output.length === 0) {
+    return `Room with ID of '${id}' could not be found.`
+  } else if (outputConnect.length !== output.length) {
+    return `Room with ID of 'incorrect-id' could not be found.`
+  }
+  return outputConnect
+}
 
 module.exports = {
   getRoomByDinosaurName,
