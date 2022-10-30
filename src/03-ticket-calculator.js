@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { extras } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,407 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let totalPrice = 0; // this is our accumulator
+  ticketData[ticketInfo.ticketType]; //this is referencing an array first
+
+  if (
+    ticketInfo.ticketType !== "general" &&
+    ticketInfo.ticketType !== "membership"
+  ) {
+    //no valid ticket type is present
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  } else if (
+    ticketInfo.entrantType !== "child" &&
+    ticketInfo.entrantType !== "adult" &&
+    ticketInfo.entrantType !== "senior"
+  ) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  } else if (
+    !ticketInfo.extras.includes("movie") &&
+    !ticketInfo.extras.includes("education") &&
+    !ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.length > 0
+  ) {
+    //check if that array is empty
+    return `Extra type '${ticketInfo.extras}' cannot be found.`;
+  }
+
+  if (
+    ticketInfo.ticketType === "general" &&
+    ticketInfo.entrantType === "child" &&
+    ticketInfo.extras.length === 0
+  ) {
+    return ticketData.general.priceInCents.child;
+  } else if (
+    ticketInfo.ticketType === "general" &&
+    ticketInfo.entrantType === "adult" &&
+    ticketInfo.extras.length === 0
+  ) {
+    return ticketData.general.priceInCents.adult;
+  } else if (
+    ticketInfo.ticketType === "general" &&
+    ticketInfo.entrantType === "senior" &&
+    ticketInfo.extras.length === 0
+  )
+    return ticketData.general.priceInCents.senior;
+
+  if (
+    ticketInfo.ticketType === "membership" &&
+    ticketInfo.entrantType === "child" &&
+    ticketInfo.extras.length === 0
+  ) {
+    return ticketData.membership.priceInCents.child;
+  } else if (
+    ticketInfo.ticketType === "membership" &&
+    ticketInfo.entrantType === "adult" &&
+    ticketInfo.extras.length === 0
+  ) {
+    return ticketData.membership.priceInCents.adult;
+  } else if (
+    ticketInfo.ticketType === "membership" &&
+    ticketInfo.entrantType === "senior" &&
+    ticketInfo.extras.length === 0
+  ) {
+    return ticketData.membership.priceInCents.senior;
+  }
+
+  if (
+    ticketInfo.ticketType === "general" &&
+    ticketInfo.entrantType === "child" &&
+    ticketInfo.extras.includes("movie") &&
+    !ticketInfo.extras.includes("terrace") &&
+    !ticketInfo.extras.includes("education")
+  ) {
+    totalPrice = (
+      ticketData.extras.movie.priceInCents.child +
+      ticketData.general.priceInCents.child);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "general" &&
+    ticketInfo.entrantType === "child" &&
+    ticketInfo.extras.includes("movie") &&
+    !ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.includes("education")
+  ) {
+    totalPrice =(
+      ticketData.extras.movie.priceInCents.child +
+      ticketData.extras.education.priceInCents.child +
+      ticketData.general.priceInCents.child);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "general" &&
+    ticketInfo.entrantType === "child" &&
+    ticketInfo.extras.includes("movie") &&
+    ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.includes("education")
+  ) {
+    totalPrice =(
+      ticketData.extras.movie.priceInCents.child +
+      ticketData.extras.education.priceInCents.child +
+      ticketData.extras.terrace.priceInCents.child +
+      ticketData.general.priceInCents.child);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "general" &&
+    ticketInfo.entrantType === "child" &&
+    !ticketInfo.extras.includes("movie") &&
+    ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.includes("education")
+  ) {
+    totalPrice = (
+      ticketData.extras.education.priceInCents.child +
+      ticketData.extras.terrace.priceInCents.child +
+      ticketData.general.priceInCents.child);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "general" &&
+    ticketInfo.entrantType === "adult" &&
+    ticketInfo.extras.includes("movie") &&
+    !ticketInfo.extras.includes("terrace") &&
+    !ticketInfo.extras.includes("education")
+  ) {
+    totalPrice = (
+      ticketData.extras.movie.priceInCents.adult +
+      ticketData.general.priceInCents.adult);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "general" &&
+    ticketInfo.entrantType === "adult" &&
+    ticketInfo.extras.includes("movie") &&
+    !ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.includes("education")
+  ) {
+    totalPrice =(
+      ticketData.extras.movie.priceInCents.adult +
+      ticketData.extras.education.priceInCents.adult +
+      ticketData.general.priceInCents.adult);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "general" &&
+    ticketInfo.entrantType === "adult" &&
+    ticketInfo.extras.includes("movie") &&
+    ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.includes("education")
+  ) {
+    totalPrice =(
+      ticketData.extras.movie.priceInCents.adult +
+      ticketData.extras.education.priceInCents.adult +
+      ticketData.extras.terrace.priceInCents.adult +
+      ticketData.general.priceInCents.adult);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "general" &&
+    ticketInfo.entrantType === "adult" &&
+    !ticketInfo.extras.includes("movie") &&
+    ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.includes("education")
+  ) {
+    totalPrice = (
+      ticketData.extras.education.priceInCents.adult +
+      ticketData.extras.terrace.priceInCents.adult +
+      ticketData.general.priceInCents.adult);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "general" &&
+    ticketInfo.entrantType === "senior" &&
+    ticketInfo.extras.includes("movie") &&
+    !ticketInfo.extras.includes("terrace") &&
+    !ticketInfo.extras.includes("education")
+  ) {
+    totalPrice = (
+      ticketData.extras.movie.priceInCents.senior +
+      ticketData.general.priceInCents.senior);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "general" &&
+    ticketInfo.entrantType === "senior" &&
+    ticketInfo.extras.includes("movie") &&
+    !ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.includes("education")
+  ) {
+    totalPrice =(
+      ticketData.extras.movie.priceInCents.senior +
+      ticketData.extras.education.priceInCents.senior +
+      ticketData.general.priceInCents.senior);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "general" &&
+    ticketInfo.entrantType === "senior" &&
+    ticketInfo.extras.includes("movie") &&
+    ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.includes("education")
+  ) {
+    totalPrice =(
+      ticketData.extras.movie.priceInCents.senior +
+      ticketData.extras.education.priceInCents.senior +
+      ticketData.extras.terrace.priceInCents.senior +
+      ticketData.general.priceInCents.senior);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "general" &&
+    ticketInfo.entrantType === "senior" &&
+    !ticketInfo.extras.includes("movie") &&
+    ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.includes("education")
+  ) {
+    totalPrice = (
+      ticketData.extras.education.priceInCents.senior +
+      ticketData.extras.terrace.priceInCents.senior +
+      ticketData.general.priceInCents.senior);
+    return totalPrice;
+  } //end of extra gen admission
+
+  if (
+    ticketInfo.ticketType === "membership" &&
+    ticketInfo.entrantType === "child" &&
+    ticketInfo.extras.includes("movie") &&
+    !ticketInfo.extras.includes("terrace") &&
+    !ticketInfo.extras.includes("education")
+  ) {
+    totalPrice = (
+      ticketData.extras.movie.priceInCents.child +
+      ticketData.membership.priceInCents.child);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "membership" &&
+    ticketInfo.entrantType === "child" &&
+    ticketInfo.extras.includes("movie") &&
+    !ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.includes("education")
+  ) {
+    totalPrice =(
+      ticketData.extras.movie.priceInCents.child +
+      ticketData.extras.education.priceInCents.child +
+      ticketData.membership.priceInCents.child);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "membership" &&
+    ticketInfo.entrantType === "child" &&
+    ticketInfo.extras.includes("movie") &&
+    ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.includes("education")
+  ) {
+    totalPrice =(
+      ticketData.extras.movie.priceInCents.child +
+      ticketData.extras.education.priceInCents.child +
+      ticketData.extras.terrace.priceInCents.child +
+      ticketData.membership.priceInCents.child);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "membership" &&
+    ticketInfo.entrantType === "child" &&
+    !ticketInfo.extras.includes("movie") &&
+    ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.includes("education")
+  ) {
+    totalPrice = (
+      ticketData.extras.education.priceInCents.child +
+      ticketData.extras.terrace.priceInCents.child +
+      ticketData.membership.priceInCents.child);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "membership" &&
+    ticketInfo.entrantType === "adult" &&
+    ticketInfo.extras.includes("movie") &&
+    !ticketInfo.extras.includes("terrace") &&
+    !ticketInfo.extras.includes("education")
+  ) {
+    totalPrice = (
+      ticketData.extras.movie.priceInCents.adult +
+      ticketData.membership.priceInCents.adult);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "membership" &&
+    ticketInfo.entrantType === "adult" &&
+    ticketInfo.extras.includes("movie") &&
+    !ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.includes("education")
+  ) {
+    totalPrice =(
+      ticketData.extras.movie.priceInCents.adult +
+      ticketData.extras.education.priceInCents.adult +
+      ticketData.membership.priceInCents.adult);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "membership" &&
+    ticketInfo.entrantType === "adult" &&
+    ticketInfo.extras.includes("movie") &&
+    ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.includes("education")
+  ) {
+    totalPrice =(
+      ticketData.extras.movie.priceInCents.adult +
+      ticketData.extras.education.priceInCents.adult +
+      ticketData.extras.terrace.priceInCents.adult +
+      ticketData.membership.priceInCents.adult);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "membership" &&
+    ticketInfo.entrantType === "adult" &&
+    !ticketInfo.extras.includes("movie") &&
+    ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.includes("education")
+  ) {
+    totalPrice = (
+      ticketData.extras.education.priceInCents.adult +
+      ticketData.extras.terrace.priceInCents.adult +
+      ticketData.membership.priceInCents.adult);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "membership" &&
+    ticketInfo.entrantType === "senior" &&
+    ticketInfo.extras.includes("movie") &&
+    !ticketInfo.extras.includes("terrace") &&
+    !ticketInfo.extras.includes("education")
+  ) {
+    totalPrice = (
+      ticketData.extras.movie.priceInCents.senior +
+      ticketData.membership.priceInCents.senior);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "membership" &&
+    ticketInfo.entrantType === "senior" &&
+    ticketInfo.extras.includes("movie") &&
+    !ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.includes("education")
+  ) {
+    totalPrice =(
+      ticketData.extras.movie.priceInCents.senior +
+      ticketData.extras.education.priceInCents.senior +
+      ticketData.membership.priceInCents.senior);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "membership" &&
+    ticketInfo.entrantType === "senior" &&
+    ticketInfo.extras.includes("movie") &&
+    ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.includes("education")
+  ) {
+    totalPrice =(
+      ticketData.extras.movie.priceInCents.senior +
+      ticketData.extras.education.priceInCents.senior +
+      ticketData.extras.terrace.priceInCents.senior +
+      ticketData.membership.priceInCents.senior);
+    return totalPrice;
+  }
+
+  if (
+    ticketInfo.ticketType === "membership" &&
+    ticketInfo.entrantType === "senior" &&
+    !ticketInfo.extras.includes("movie") &&
+    ticketInfo.extras.includes("terrace") &&
+    ticketInfo.extras.includes("education")
+  ) {
+    totalPrice = (
+      ticketData.extras.education.priceInCents.senior +
+      ticketData.extras.terrace.priceInCents.senior +
+      ticketData.membership.priceInCents.senior);
+    return totalPrice;
+  }
+}
 
 /**
  * purchaseTickets()
