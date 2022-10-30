@@ -56,36 +56,38 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  //a variable to track the total price
-  let total = 0;
-  //created the variables for easy access
+  //created the variables for easy access.
   const inputTicket = ticketInfo.ticketType;
   const inputEntrant = ticketInfo.entrantType;
   const inputExtra = ticketInfo.extras;
+  //a variable to track the total price.
+  let total = 0;
   
-  if (!ticketData[inputTicket]) { //if @ticketType doesn't exist, return an error message.
+  if (!ticketData[inputTicket]) {
+    //if @ticketType doesn't exist, return an error message.
     return `Ticket type '${inputTicket}' cannot be found.`;
   } else { //if @ticketType exists
-    if (!ticketData[inputTicket].priceInCents[inputEntrant]) { //if @entrantType doesn't exist, return an error message.
+    if (!ticketData[inputTicket].priceInCents[inputEntrant]) {
+      //if @entrantType doesn't exist, return an error message.
       return `Entrant type '${inputEntrant}' cannot be found.`; 
     } else { //if @entrantType exists
-      if (inputExtra[0] === 'incorrect-extra') { //if @extras doesn't exist, return an error message.
-        return `Extra type '${inputExtra}' cannot be found.`;
-      } else { //if @extras exists
-        //add the value of the "total" with @ticketType and @entrantType info provided.
-        total += ticketData[inputTicket].priceInCents[inputEntrant];
-        for (let extra of inputExtra) { //loop through @extras array
-          if (ticketData.extras.hasOwnProperty(extra)) { //if @extras array value(s) exists
-            //add the value of the "total" with @extras info provided.
-            total += ticketData.extras[extra].priceInCents[inputEntrant];
-          }
+      //add the value of the "total" with @ticketType and @entrantType info provided.
+      total += ticketData[inputTicket].priceInCents[inputEntrant];
+
+      //loop through @extras array
+      for (let extra of inputExtra) { 
+        if (ticketData.extras.hasOwnProperty(extra)) {
+          //if @extras array value(s) exist(s), add to the "total" with @extras info provided.
+          total += ticketData.extras[extra].priceInCents[inputEntrant];
+        } else {
+          //if @extras don't exist, return an error message.
+          return `Extra type '${inputExtra}' cannot be found.`;
         }
       }
     }
   }
   return total;
 }
-
 
 /**
  * purchaseTickets()
