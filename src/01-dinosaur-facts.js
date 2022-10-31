@@ -8,6 +8,13 @@
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
+/* LOGIC: While refractoring I prioritized readability and simplicity. Some of the code could be writen in fewer lines/pieces, but it also would have made the code harder to read (at least to me 🤷🏽‍♂️) .
+Each of the functions below has a similar structure.
+They each start with the ACCUMULATOR variable(s) which track pieces of the final result,
+that's followed by a FUNCTION that will be executed on the dinosaurs array during a loop,
+(using helper functions helps avoid nested if statments, improving readability)
+followed by the LOOP, if neccessary code to account for ERRORS, and the return statment */
+
 /**
  * getLongestDinosaur()
  * ---------------------
@@ -23,24 +30,23 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getLongestDinosaur(dinosaurs) {
-  //creates variable to hold final result (an object) and to accumulator var for longest dinosaurs name and length
+  //ACCUMULATORS
   let result = {};
   let name = ""
-  let count = 0
+  let length = 0
 
-  //loops through the array, if the current dinosaur has a longer length than the count accumulator, that dino's name and length are saved as the accumulators new value
-  dinosaurs.forEach(dino => {
-    if(dino.lengthInMeters > count){
-      name = dino.name
-      count = dino.lengthInMeters;
-    }
-  })
+  //FUNCTION
+  const getLongestInfo = (dinoObject) => {
+    if (dinoObject.lengthInMeters > length) ({lengthInMeters: length, name} = dinoObject) ;
+  };
+
+  //LOOP
+  dinosaurs.forEach(dino => getLongestInfo(dino))
   
-  //adds name key to result object with the length of the dino converted to feet as the value if there was a longest dino found in the for loop. 
- if(name != ""){
-  result[name] = count*3.281
-  }
+  //ERROR: Ensures that name & length are only passed into object if they have values
+  if(length > 0) {result[name] = length * 3.281}
 
+  //RETURN
   return result
 }
 
@@ -65,27 +71,24 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  //declares valiables that will need to be changed per dinosuar in the result string
-  let name, pronounciation, info, period, mya;
+  //ACCUMULATORS
+  let name, pronunciation, info, period, mya;
 
-  //loops through dinosaure array, if the current dinosuar's id matches id param, the loop assigns each variable to its respective key
-  dinosaurs.forEach (dino => {
-    if(dino.dinosaurId == id){
-      name = dino.name
-      pronounciation = dino.pronunciation
-      info = dino.info
-      period = dino.period
-      mya = dino.mya[dino.mya.length-1] //this grabs the last number in the mya array since some dinosaurs have one year and others have two
-    }
-  })
+  //FUNCTION
+  const getInfoById = (dinoObject) => {if(dinoObject.dinosaurId == id) ({name, pronunciation, info, period, mya} = dinoObject)} ;
 
-  //if a dino could not be found and nothing was saved to the name varaible returns error
+  //LOOP
+  dinosaurs.forEach (dino => getInfoById(dino))
+
+  //ERROR
   if(!name){
     return `A dinosaur with an ID of '${id}' cannot be found.`
   }
 
-  return `${name} (${pronounciation})\n${info} It lived in the ${period} period, over ${mya} million years ago.`
+  //RETURN
+  return `${name} (${pronunciation})\n${info} It lived in the ${period} period, over ${mya[mya.length-1]} million years ago.`
 }
+//console.log(getDinosaurDescription(exampleDinosaurData, "U9vuZmgKwUr"))
 
 /**
  * getDinosaursAliveMya()
@@ -112,33 +115,28 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
- 
 function getDinosaursAliveMya(dinosaurs, mya, key) {
+  //ACCUMULATOR
   let result = []
-
-  //function that takes in a dinosuar object as well as the end of their mya range, 
-  //and pushes the dinosaurs id to the result array if mya parm is within the dinosaurs range created by the first mya value in the dinos mya arryay. 
-  //**all dinosaurs have at least one mya value. Dinos that only have one value are accounted for later
-  //If a key was proveded and the key exsists in the dinosaurs object it will push the information from only that key
-  const loopFilterbyMIA = (currentDino, myaEnd) => {
-  if (dino.mya[0] >= mya && myaEnd <= mya ) {
-      if (dinosaurs[0].hasOwnProperty(key)){
-          result.push(dinoObject[key])
-      } else {
-        result.push(dinoObject['dinosaurId'])
+  
+  /*FUNCTION: Takes a dinosuar object as well as the end of their mya range (myaEnd) as param.
+  All dinosaurs have at least one mya value. Dinos that only have one value are accounted for with the myaEnd param.
+  If the mya is within range, the program will pushes either a key if one is provded and exsist within any dinosaur object or the dinosaur's ID */
+  const pushToResult = (currentDino, myaEnd) => {
+  if (currentDino.mya[0] >= mya && myaEnd <= mya ) {
+    result.push(dinosaurs[0].hasOwnProperty(key) ? currentDino[key] : currentDino.dinosaurId)
       } 
     }
-  }
 
-  //loops through array. if dino hace two mya value the filter funtion will run with that dinos second value otherwise it will run with one year less
-  dinosaursdino.forEach(dino => {
-    if (dino.mya.length == 2){
-      loopFilterbyMIA(dino, dino.mya[1])
-    } else {
-      loopFilterbyMIA(dino, dino.mya[0]-1)
-    }
+  /*LOOP If the current dino had two mya values the myaEnd varibale is sets to that dinos second value
+  otherwise myaEnd will be set to one year less (as per the test/instructions)*/
+  dinosaurs.forEach(dino => {
+    let myaEnd = dino.mya.length == 2 ? dino.mya[1] : dino.mya[0]-1;
+
+    pushToResult(dino, myaEnd);
   })
 
+  //RETURN
   return result
 }
 

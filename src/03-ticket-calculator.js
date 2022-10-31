@@ -8,6 +8,13 @@
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
+/* LOGIC: Becuase these functions take data from an object, the logic will be slightly differnt than in the previous two pages.
+The functions will start with accumulators, same as the first five functions,
+Then there will be a general ticket section and an extras section.
+If the values of the ticketInfo/Purchases param match key names in the ticketData we can access that keys values using bracket notation, without needing a loop
+if we can't and the values dont match, we can throw back the corresponding error message
+The extras section of the ticketData is nested and because multiple extras can be listed per ticket, is best delt with in its own loop */
+
 /**
  * calculateTicketPrice()
  * ---------------------
@@ -54,28 +61,37 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) { 
-  const {ticketType: type, entrantType: age, extras: extraArr} = ticketInfo;
-  let price;
+function calculateTicketPrice(ticketData, ticketInfo) {
+  //ACCUMULATOR VARIABLES = the ticketType, entrantType, and extras of ticket info are saved to variables that will be used access the values in the ticketData object. 
+  const {ticketType: type, entrantType: age, extras: extrasArray} = ticketInfo;
+  let priceInCents;
 
+  //GENERAL TICKET
   if (ticketData.hasOwnProperty(type)){
     if(ticketData[type]['priceInCents'].hasOwnProperty(age)){
-      price = ticketData[type]['priceInCents'][age]
+      priceInCents = ticketData[type]['priceInCents'][age]
     } else return `Entrant type '${age}' cannot be found.`
   } else return `Ticket type '${type}' cannot be found.`
 
-  if(extraArr.length > 0){
-    for (let extraType of extraArr){
+  //EXTRAS
+  if(extrasArray.length > 0){
+    for (let extraType of extrasArray){
       if(ticketData.extras.hasOwnProperty(extraType)){
-        price += ticketData.extras[extraType].priceInCents[age]
+        priceInCents += ticketData.extras[extraType].priceInCents[age]
       } else return `Extra type '${extraType}' cannot be found.`
     }
   }
 
-  return price
+  return priceInCents
 }
 
+/*LOGIC: Because the purchases param is an array of objects each structured the same as the ticketInfo param in calculateTicketPrice,
+the logic of this will take from the logic of the first two pages as well as the logic of the above function
+There are accumulators to track the reciprt and price across all purchases, helper functions and a loop and a return statment (Errors will be handled inside the loop)
+Within that loop there are accumulators for the current purchase, a genreal ticket section and an extras section .
+ */
 /**
+ * 
  * purchaseTickets()
  * ---------------------
  * Returns a receipt based off of a number of purchase. Each "purchase" maintains the shape from `ticketInfo` in the previous function.
@@ -129,48 +145,51 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
-  let total = 0;
+  //ACCUMULATOR
+  let fullReceipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+  let totalPrice = 0;
 
+  //FUNCTION
+  const UpperCase = string => string[0].toUpperCase() + string.slice(1); //Function that will capitalize the first letter of a string
+
+  //LOOP
   for(let purchase of purchases){
-    //creates variables that corrispond to the current purchase object's values, and declares a price and recipt accumulators
-    const {ticketType: type, entrantType: age, extras: extraArr} = purchase;
+    //ACCUMULATOR
+    const {ticketType: type, entrantType: age, extras: extraArr} = purchase; 
     let priceInDollars, purchaseReceipt;
-
-    //creats function that takes a string and returns a copy with the first letter capitalized
-    const UpperCase = string => string[0].toUpperCase() + string.slice(1);
   
-    if (ticketData.hasOwnProperty(type)){
-      if(ticketData[type]['priceInCents'].hasOwnProperty(age)){
+    //GENERAL TICKET
+    if (ticketData.hasOwnProperty(type)){ 
+      if(ticketData[type]['priceInCents'].hasOwnProperty(age)){  
 
         priceInDollars = ticketData[type]['priceInCents'][age]/100;
         purchaseReceipt = `${UpperCase(age)} ${UpperCase(type)} Admission: `;
 
       } else return `Entrant type '${age}' cannot be found.`
     } else return `Ticket type '${type}' cannot be found.`
-
   
+    //EXTRAS
     if(extraArr.length > 0){
-      let captArr = [];
       for (let extra of extraArr){
         if(ticketData.extras.hasOwnProperty(extra)){
-
           priceInDollars += (ticketData.extras[extra].priceInCents[age])/100
-          captArr.push(UpperCase(extra))
-          
         } else {
           return `Extra type '${extra}' cannot be found.`
         }
       }
+      let captArr = extraArr.map(extra => UpperCase(extra)) //This was set to its own variable for readability sake
       purchaseReceipt += `$${priceInDollars.toFixed(2)} (${captArr.join(" Access, ")} Access)\n`
     } else {
-      purchaseReceipt += `$${priceInDollars.toFixed(2)}\n`
+     purchaseReceipt += `$${priceInDollars.toFixed(2)}\n`
     }
-    receipt += purchaseReceipt
-    total += priceInDollars;
-  }
 
-  return receipt + `-------------------------------------------\nTOTAL: $${(total).toFixed(2)}`
+    //(Adds this purchase to total accumulators)
+    fullReceipt += purchaseReceipt
+    totalPrice += priceInDollars;
+  }
+  
+  //return
+  return fullReceipt += `-------------------------------------------\nTOTAL: $${(totalPrice).toFixed(2)}`
 }
 
 // Do not change anything below this line.

@@ -7,6 +7,11 @@ const exampleDinosaurData = require("../data/dinosaurs");
 const exampleRoomData = require("../data/rooms");
 // Do not change the lines above.
 
+/* LOGIC: the structure of the following two functions is similar to those on page 01, however these problems have two LOOP and ERROR sections.
+Both of these start with the ACCUMULATOR variable(s), followed by a FUNCTION if possible,
+Then LOOP1 checks for one piece of data, ERROR1 throws back an error if that data can not be found,
+LOOP2 checks for the final piece of data, and ERROR2 throws back an error if that data can not be found */
+
 /**
  * getRoomByDinosaurName()
  * ---------------------
@@ -26,30 +31,25 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  let roomName, dinoId;
+  //ACCUMULATORS
+  let dinoId,roomName;
+
+  //FUNCTIONS
+  const findDinoId = dinoObject => {if(dinoObject.name == dinosaurName) dinoId = dinoObject.dinosaurId}
+  const findRoomName = roomObject => {if (roomObject.dinosaurs.includes(dinoId)) roomName = roomObject.name;}
   
-  /*loops through the dinosaurs array. If dinosaurName matches the name of current dino,
-  it saves the matched dino's id since rooms only list their dinos by ID*/
+  //LOOP1
+  dinosaurs.forEach(dino => {findDinoId(dino)})
 
-  for(let dino of dinosaurs){
-    if (dino.name == dinosaurName){
-      dinoId = dino.dinosaurId
-    }
-  } 
-
-  //returns error if no dino was found with that name
+  //ERROR1
   if(!dinoId){ 
     return `Dinosaur with name '${dinosaurName}' cannot be found.`
-  }
+  } 
 
-  //loops through rooms array. if that rooms dinosaurs key contained the dino's id as a value,
-  //the room name is saved to the roomName variable
-  for(let rm of rooms){ 
-    if(rm.dinosaurs.includes(dinoId)){
-      roomName = rm.name; 
-    }
-  }
-  //returns error if no value was saved to room name (i.e. the dinosaur was not found in any room during the loop)
+  //LOOP2
+  rooms.forEach(rm => findRoomName(rm))
+
+  //ERROR2
   if(!roomName){
     return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
   }
@@ -80,35 +80,36 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  let tracker = [];
+  //ACCUMULATORS
+  let connectsToList = [];
   let result = [];
 
-  //cycles through rooms and adds correct roomsID's "connects to" key values to tracker variable
-  for (let room of rooms){
-    if (room.roomId == id){
-      tracker = room.connectsTo
+  //FUNCTIONS
+  const addToConnectsToList = roomObj => {if (roomObj.roomId == id) connectsToList = roomObj.connectsTo};
+  const pushToResult = (roomObj, index) => {if (roomObj.roomId == connectsToList[index]) result.push(roomObj.name)}
+
+  //LOOP1
+  rooms.forEach(room => addToConnectsToList(room));
+
+  //ERROR1
+  if(connectsToList.length == 0){
+    return `Room with ID of '${id}' could not be found.`;
+  }
+
+  //LOOP2
+  for (let i = 0; i < connectsToList.length; i++){
+    rooms. forEach(room => pushToResult(room, i))
+    //ERROR2: if no name was pushed for the current connectsToList entry, an error is returned. (This error happens inside the loop so the correct room is put in the error message)
+    if (i != result.length-1){
+      return `Room with ID of '${connectsToList[i]}' could not be found.`;
     }
   }
 
-  if(tracker.length == 0){
-    return `Room with ID of '${id}' could not be found.`
-  }
-
-  //cycles through each entry in tracker varible, and pushes correct room name to result 
-  for (let roomID of tracker){
-    for (let i = 0; i < rooms.length; i++){
-      if (rooms[i].roomId == roomID){
-        result.push(rooms[i].name)
-      }
-    }
-  }
-
-  if(tracker.length !== result.length){
-    return `Room with ID of 'incorrect-id' could not be found.`
-  }
-
+  //RETURN
   return result;
 }
+
+
 
 module.exports = {
   getRoomByDinosaurName,
