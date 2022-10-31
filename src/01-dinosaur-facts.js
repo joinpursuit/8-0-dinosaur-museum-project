@@ -28,9 +28,9 @@ function getTallestDinosaur(dinosaurs) {
   let tallDino = dinosaurs[0]
   if(!dinosaurs.length){
     return {};
-  }
+}
   for(let i = 1; i < dinosaurs.length; i++){
-    if(dinosaurs[i].lengthInMeters > tallDino.lengthInMeters){
+  if(dinosaurs[i].lengthInMeters > tallDino.lengthInMeters){
       tallDino = dinosaurs[i]
 }
 }
@@ -68,7 +68,7 @@ function getDinosaurDescription(dinosaurs, id) {
       return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length - 1]} million years ago.`;
 }
 }
-return `A dinosaur with an ID of '${id}' cannot be found.`;
+      return `A dinosaur with an ID of '${id}' cannot be found.`;
 }
 
 /**
@@ -112,11 +112,11 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
      arrayOfDinos.push(dinoInfo.dinosaurId);
 }
 }
-    } else {
+} else {
     if (mya <= max && mya >= min) {
       if (key in dinoInfo) {
         arrayOfDinos.push(dinoInfo[key])
-      } else {
+} else {
         arrayOfDinos.push(dinoInfo.dinosaurId)
 }
 }
