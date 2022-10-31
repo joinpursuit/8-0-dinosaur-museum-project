@@ -172,17 +172,6 @@ return receipt;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
