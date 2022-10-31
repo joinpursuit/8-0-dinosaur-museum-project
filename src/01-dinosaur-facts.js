@@ -104,7 +104,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   let dinosAliveArray= [];
 
 for (let i = 0; i < dinosaurs.length; i++) {
-  if (dinosaurs[i].mya.length === 2 && dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya) {
+  if (dinosaurs[i].mya.length === 2 && mya <= dinosaurs[i].mya[0] && mya >= dinosaurs[i].mya[1]) {
     if (key) {
       dinosAliveArray.push(dinosaurs[i][key])
     } else {
