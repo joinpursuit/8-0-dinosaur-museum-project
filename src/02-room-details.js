@@ -25,19 +25,39 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
+
+/* 
+User enters name of dinosaur in order to get the room where the dinosaur is. Return options:
+1. Name of room where dino can be found. 
+2.Dino name cannot be found
+3. Dino cannot be found in any of the rooms
+
+The room can be id'd through the dinosaur ID. So, if the user inputs a dino name, the program has to transfer the name to the dino ID and then the ID needs to be checked against the rooms' dino IDs.
+
+*/
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 
-let roomReturned = `Dinosaur with name '${dinosaurName} cannot be found.`;
+  //dinosaurName is a parameter. Do not try to reassign it.
+  
+
+let errorDinoRoom = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+
+let errorRoom=`Room with ID of '${rooms}' could not be found.`;
 let pickedDino = ""
+let roomReturned = "" 
+
+//choosing dino
 for (let i=0; i<dinosaurs.length; i++ ) {
   if (dinosaurs[i].name = dinosaurName) {
     pickedDino = dinosaurs[i];
-  }
-}
+  //} else return `Dinosaur with name '${dinosaurName}' cannot be found.`
+} 
 
+//if (pickedDino.dinosaurid
+//choosing room
 for (let j=0; j<rooms.length; j++) {
-  if (rooms.dinosaurs[j] = pickedDino.id ) {    //includes?
-   roomReturned = rooms.dinosaurs[j];
+  if (rooms[j].dinosaurs.includes = pickedDino.dinosaurid ) {    //includes?
+   roomReturned = rooms[j];
   }
 }
 

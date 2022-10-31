@@ -89,12 +89,11 @@ function goAhead (){
 */
     //find the right dino
 
-    function getDinosaurDescription(dinosaurs, id) {
-
-    let desiredDino = {} //create a new variable   
-for (let i=0; i<dinosaurs.length; i++){
-  if(dinosaurs[i].dinosaurId === id) {
-  desiredDino = dinosaurs[i];
+function getDinosaurDescription(dinosaurs, id) {
+  let desiredDino = {} //create a new variable   
+  for (let i=0; i<dinosaurs.length; i++){
+    if(dinosaurs[i].dinosaurId === id) {
+      desiredDino = dinosaurs[i];
   }
 }
 
@@ -134,33 +133,45 @@ return finalReturn
  *
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
- */
-function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let dinoArray = [];   //create what will be the final array
+*/ 
 
+
+
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinoArray = [];   //create a new array, to be returned
   // create a loop that will examine dinosaurs
   for (let i=0; i<dinosaurs.length; i++){
-    //if the mya key holds 2 numbers, see if the year given is between those two numbers
-    if (dinosaurs[i].mya.length===2){    
-      if ( mya <= dinosaurs[i].mya[0] && mya >= dinosaurs[i].mya[1] && key === "name") {
-        dinoArray.push(dinosaurs[i].name);
-        //do different things depending on the 3rd parameter
+    //if the mya key holds 1 number, see if the year given is that year or one less
+    if (dinosaurs[i].mya.length===1) {
+      if(dinosaurs[i].mya===mya || dinosaurs[i].mya-1===mya && key === "name") {
+        dinoArray = dinosaurs[i]
 
-        } else if ( mya <= dinosaurs[i].mya[0] && mya >= dinosaurs[i].mya[1]) {
-            dinoArray.push(dinosaurs[i].dinosaurId);
-          } 
-      //if the mya key holds 1 number, see if the year given is that year or one less
-             else if (dinosaurs[i].mya.length===1) {
-              if (mya === dinosaurs[i].mya[0] || mya === dinosaurs[i].mya[0]-1 && key === "name") {
-                dinoArray.push(dinosaurs[i].name);
-              } else if (mya === dinosaurs[i].mya[0] || mya === dinosaurs[i].mya[0]-1 && key !== "name") {
+        dinoArray.push(dinosaurs[i].name);
+          } else if (mya === dinosaurs[i].mya[0] || mya === dinosaurs[i].mya[0]-1) {
                 dinoArray.push(dinosaurs[i].dinosaurId)
               } 
     }
+   //if the mya key holds 2 numbers, see if the year given is between those two numbers
+   else if (dinosaurs[i].mya.length===2){    
+    if ( mya <= dinosaurs[i].mya[0] && mya >= dinosaurs[i].mya[1] && key === "name") {
+      dinoArray.push(dinosaurs[i].name);
+      //do different things depending on the 3rd parameter
+
+      } else if ( mya <= dinosaurs[i].mya[0] && mya >= dinosaurs[i].mya[1]) {
+          dinoArray.push(dinosaurs[i].dinosaurId);
+        } 
     return dinoArray
   } 
   }
 }
+
+//Why isn't this working? The less than or equal to and greater then or equal to are facing the right way. Changing push to unshift isn't making a difference. My array is still empty almost every time except for one of the questios. I have it returning name when it should be returning name and code when it should be returning code.
+
+
+
+
+
+
 
 module.exports = {
   getLongestDinosaur,

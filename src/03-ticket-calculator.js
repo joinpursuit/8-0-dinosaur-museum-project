@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,55 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+
+/*
+ticketType = "general" , "membership", 
+entrantType = "child", "adult", "senior"
+extras = "movie", "terrace", 
+      const expected = "Extra type 'incorrect-extra' cannot be found.";
+errors: "Ticket type 'incorrect-type' cannot be found.", "Entrant type 'incorrect-entrant' cannot be found.", 
+
+Can the switch case be used?
+*/
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let subTotal = "";
+   {
+    if (ticketType==="general" && entrantType==="child") {
+      subTotal=2000
+    } else if (ticketType==="general" && entrantType==="adult") {
+      subTotal = 3000
+    } else if (ticketType==="general" && entrantType==="senior") {
+      subTotal = 2500
+    } else if (ticketType==="membership" && entrantType==="child") {
+      subTotal=1500
+    } else if (ticketType==="membership" && entrantType==="adult") {
+      subTotal = 2800
+    } else if (ticketType==="membership" && entrantType==="senior") {
+      subTotal = 2300
+    }
+ 
+    if (ticketInfo.extras.includes("movie")) {
+      subTotal=subTotal+1000
+    } 
+
+    if (ticketInfo.extras.includes("education")) {
+      if (ticketInfo.entrantType === "child") {
+        subTotal = subTotal+1000
+      } else {
+        subTotal = subTotal+1200
+      }
+    }
+
+    if (ticketInfo.extras.includes("terrace")) {
+      if (ticketInfo.entrantType === "child") {
+        subTotal = subTotal + 500
+      } else {
+        subTotal = subTotal + 1000
+      }
+    }
+
+  return subTotal
+}}
 
 /**
  * purchaseTickets()
