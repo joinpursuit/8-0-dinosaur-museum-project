@@ -103,12 +103,24 @@ for (let i = 0; i < dinosaurs.length; i++) {
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   let arr = []
+  let arr2 = []
   for (let i = 0; i < dinosaurs.length; i++) {
+    if ((dinosaurs[i].mya.length === 1) && (dinosaurs[i].mya[0]-1 === mya)) {
 
-    if (key === undefined){
-      arr = `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.`
+     arr2.push(dinosaurs[i].dinosaurId) 
     }
+    if ((mya <= dinosaurs[i].mya[0]) && (mya >= dinosaurs[i].mya[dinosaurs[i].mya.length-1])) {
+    if (key === undefined){
+      arr.push(dinosaurs[i].dinosaurId)
   }
+    else{
+      arr.push(dinosaurs[i][key])
+  }
+}
+}
+    if(arr2.length != 0) {
+      return arr2
+    }
   return arr
 }
 //
