@@ -57,6 +57,7 @@ const tickets = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
+  // Variable used to update the price of the ticket
   let ticketPrice = 0;
  
   // Return an error message if the ticketType does not exist as an object name inside of ticketData
@@ -166,7 +167,7 @@ function purchaseTickets(ticketData, purchases) {
       if (purchases.length > 1 && i <= purchases.length - 2) {receiptDetails += '\n';}
 
     } else {
-      // Count used to determine how to format the extras with spacing and commas 
+      // Accumulator variable used to determine how to format the extras with spacing and commas 
       let extraCount = 0;
      
       // Return an error message if ticketData.extras does not contain any of the elements of the extras array within purchases object otherwise add ticketData.description to extraString variable

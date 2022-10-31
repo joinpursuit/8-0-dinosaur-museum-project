@@ -65,7 +65,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
  */
 function getConnectedRoomNamesById(rooms, id) {
   // Variable that will contain the names of the rooms that are connected
-  let arr = [];
+  let connectedArr = [];
   // Variable that will contain every rooms object's roomId
   let roomIdArr = [];
  
@@ -74,7 +74,7 @@ function getConnectedRoomNamesById(rooms, id) {
     roomIdArr.push(room.roomId);
     // Push the names of the rooms that contain the parameter id in the room.connectsTo array into the arr array
     if (room.connectsTo.includes(id)) {
-      arr.push(room.name);
+      connectedArr.push(room.name);
     }
   }
   // Loop through each room object and then loop through each object's connectsTo array and return an error message if every element in the connects to array exists in the roomIdArr array
@@ -87,7 +87,7 @@ function getConnectedRoomNamesById(rooms, id) {
   }
   
   // Return an error message if arr is empty otherwise return arr
-  return arr.length === 0 ? `Room with ID of '${id}' could not be found.` : arr;
+  return connectedArr.length === 0 ? `Room with ID of '${id}' could not be found.` : arr;
 }
 
 module.exports = {

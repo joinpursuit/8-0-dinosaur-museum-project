@@ -34,7 +34,9 @@ function getLongestDinosaur(dinosaurs) {
   for (let dino of dinosaurs) {
     if (dino.lengthInMeters > longest) {
       longest = dino.lengthInMeters;
-      // Create a new empty object variable for each iteration that will contain the key value pair of the longest dino
+      // Create a new empty object variable for each iteration that will contain the key value pair of the name of the dinosaur 
+      // with the dino.name as a key and its lengthInMeters as a value
+
       let obj = {};
       obj[dino.name] = dino.lengthInMeters * 3.281;
       longestDino = obj;
@@ -129,6 +131,8 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
 
   return arr;
 }
+
+
 
 
 module.exports = {
