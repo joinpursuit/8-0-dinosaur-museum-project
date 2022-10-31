@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -22,7 +23,24 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  let longestOfDino = {}; 
+  let NameOfDinos = ""; 
+  let HeightOfDinos = 0;
+    if (dinosaurs.length != 0) {
+
+  for (let i =0; i < dinosaurs.length; i++) {
+     if (dinosaurs[i].lengthInMeters > HeightOfDinos) {
+          HeightOfDinos = dinosaurs[i].lengthInMeters
+          NameOfDinos = dinosaurs[i].name 
+    }
+  }
+  HeightOfDinos = HeightOfDinos * 3.281
+  longestOfDino[NameOfDinos] = HeightOfDinos
+  }
+    return longestOfDino  
+}
+
 
 /**
  * getDinosaurDescription()
@@ -44,8 +62,20 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
-
+function getDinosaurDescription(dinosaurs, id) {
+//BrainStoriming Test runs
+//let arr = []
+//let dinosaurs = {}                                               
+//let id = ""                                                         
+let fakeDinos = `A dinosaur with an ID of '${id}' cannot be found.`
+for (let i = 0; i < dinosaurs.length; i++) {
+  
+  if (dinosaurs[i].dinosaurId === id){
+       fakeDinos =`${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.`
+    } 
+    }
+  return fakeDinos
+}
 /**
  * getDinosaursAliveMya()
  * ---------------------
@@ -71,7 +101,18 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let arr = []
+  for (let i = 0; i < dinosaurs.length; i++) {
+
+    if (key === undefined){
+      arr = `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.`
+    }
+  }
+  return arr
+}
+//
+
 
 module.exports = {
   getLongestDinosaur,
