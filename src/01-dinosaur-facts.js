@@ -107,7 +107,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
 // Declaration
 let dinosaursAliveArray = []
 
-// Main code
+// Main code - method 1 - long if but no repeat 
 for(let i = 0; i < dinosaurs.length; i++){
   if((dinosaurs[i].mya.length > 1 && mya <= dinosaurs[i].mya[0] && mya >= dinosaurs[i].mya[dinosaurs[i].mya.length-1]) || (dinosaurs[i].mya.length === 1 && dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] - 1 === mya)){
     if(!key){
@@ -117,6 +117,29 @@ for(let i = 0; i < dinosaurs.length; i++){
     }
   }
 } // End of for loop
+
+/* ***** Main code - method 2 - broken down to make it more clear but inner if condition is repeated
+
+for(let i = 0; i < dinosaurs.length; i++){
+if(dinosaurs[i].mya.length > 1){
+  if (mya <= dinosaurs[i].mya[0] && mya >= dinosaurs[i].mya[dinosaurs[i].mya.length-1]){
+    if(!key){
+      dinosaursAliveArray.push(dinosaurs[i].dinosaurId)
+    } else {
+      dinosaursAliveArray.push(dinosaurs[i][key])
+    } 
+  }
+}
+else if(dinosaurs[i].mya.length === 1){
+  if (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] - 1 === mya){
+    if(!key){
+      dinosaursAliveArray.push(dinosaurs[i].dinosaurId)
+    } else {
+      dinosaursAliveArray.push(dinosaurs[i][key])
+    }  
+  }
+}
+} ***** */
 
 // Final - return
   return dinosaursAliveArray
