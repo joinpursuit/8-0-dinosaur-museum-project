@@ -23,14 +23,17 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getLongestDinosaur(dinosaurs) {
+  // initialize variables
   let tallestDino = {}
   let name = ""
   let height = 0
 
+  // get the tallest dinosaur
   if (!dinosaurs.length){
     return tallestDino
   }
 
+  // for loop: find heights and then get names
   for (let i = 0; i < dinosaurs.length; i++) {
     if (dinosaurs[i].lengthInMeters > height){
       height = dinosaurs[i].lengthInMeters
@@ -38,6 +41,7 @@ function getLongestDinosaur(dinosaurs) {
     }
     
   }// end of for loop
+  // math time
   tallestDino[name] = height * 3.281
   return tallestDino
 }
@@ -64,12 +68,15 @@ function getLongestDinosaur(dinosaurs) {
  */
 function getDinosaurDescription(dinosaurs, id) {
   
+  //for loop to get IDs then get return the description
   for (let i = 0; i < dinosaurs.length; i++) {
     if (dinosaurs[i].dinosaurId === id){
+      //template literal for the whole description
       return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.`
     }
     
   }// end of for loop
+  // if ID can't be found, return error message
   return "A dinosaur with an ID of 'incorrect-id' cannot be found."
 }
 
@@ -105,19 +112,18 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
     // key provided? Give key
     if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya){
     // if(dinosaurs[i].mya.includes(mya) || dinosaurs[i].mya[0] > mya && dinosaurs[i].mya[1] < mya || dinosaurs[i].mya[0] && dinosaurs[i].mya -1 === mya){
-      if (!key){
+    if (!key){
         value.push(dinosaurs[i].dinosaurId)
       } else {
       value.push(dinosaurs[i][key])
       }
-      // console.log(value)
+      // 
       }else if (dinosaurs[i].mya.length === 1 && dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] -1 === mya){
          if (!key){
         value.push(dinosaurs[i].dinosaurId)
       }  else {
       value.push(dinosaurs[i][key])
       }
-      //
     }
   }  // end of for loop
   return value

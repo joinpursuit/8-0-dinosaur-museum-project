@@ -54,8 +54,30 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
-
+function calculateTicketPrice(ticketData, ticketInfo) {
+let total = 0
+//ticket type error
+if (!(ticketInfo.ticketType in ticketData )) {
+  return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+}
+// entrant type error
+if (!(ticketInfo.entrantType in ticketData[ticketInfo.ticketType].priceInCents)){
+  return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+}
+//extra type error
+let extraPrice = 0
+for (let extra of ticketInfo.extras) {
+  if (!(extra in ticketData.extras)) {
+    return `Extra type '${ticketInfo.extras}' cannot be found.`
+  } else {
+   extraPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+  }
+ } // end of for loop
+ //math time
+ total = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+ total += extraPrice
+ return total
+}// end of function
 /**
  * purchaseTickets()
  * ---------------------
@@ -109,7 +131,35 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let fullPrice = 0
+  // general receipt
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
+  for (let purchase of purchases) {
+    let price = calculateTicketPrice(ticketData, purchase)
+    //error message
+    if (typeof price === "string"){
+      return price
+    } // check scope!!
+  let extraArr = []
+  let extras = ""
+    // nested loop
+    for (let extra of purchase.extras) {
+      extraArr.push(ticketData.extras[extra].description)
+    }
+    if (purchase.extras.length){
+      extras = ` (${extraArr.join(", ")})`
+    }// end of for loop
+    fullPrice += price
+    // price = (price/100).toFixed(2)
+    //receipt format
+    receipt += `${purchase.entrantType[0].toUpperCase()+(purchase.entrantType.slice(1))} ${ticketData[purchase.ticketType].description}: $${(price/100).toFixed(2)}${extras}\n`
+    //accumulate the full price
+    // GA + extras for receipt to fixed 2
+  }// end of for loop
+    receipt += `-------------------------------------------\nTOTAL: $${(fullPrice/100).toFixed(2)}`
+  return receipt
+}// end of function
 
 // Do not change anything below this line.
 module.exports = {
