@@ -34,9 +34,9 @@ function getLongestDinosaur(dinosaurs) {
 
   //Main code
 
-  for(let i = 1; i < dinosaurs.length; i++){
+  for(let i = 1; i < dinosaurs.length; i++){    // checking for longest dinosaur
       if(longestDino < dinosaurs[i].lengthInMeters){
-          longestDino = dinosaurs[i].lengthInMeters
+          longestDino = dinosaurs[i].lengthInMeters // push the length and name
           longestDinoName = dinosaurs[i].name
       }
   } // End of for loop
@@ -69,7 +69,7 @@ function getLongestDinosaur(dinosaurs) {
 function getDinosaurDescription(dinosaurs, id) {
   //Main code
   for(let i = 0; i < dinosaurs.length; i++){
-    if(dinosaurs[i].dinosaurId === id){
+    if(dinosaurs[i].dinosaurId === id){   // checking if id's matcg
         return`${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.` 
     }
   } // End of for loop

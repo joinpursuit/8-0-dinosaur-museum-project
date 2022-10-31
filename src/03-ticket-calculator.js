@@ -11,7 +11,7 @@ const exampleTicketData = require("../data/tickets");
 /**
  * calculateTicketPrice()
  * ---------------------
- * Returns the ticket price based on the ticket information supplied to the function. The `ticketInfo` will be in the following shape. See below for more details on each key.
+ * Returns the ticket singleTicketPrice based on the ticket information supplied to the function. The `ticketInfo` will be in the following shape. See below for more details on each key.
  * const ticketInfo = {
     ticketType: "general",
     entrantType: "child",
@@ -54,7 +54,32 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+
+function calculateTicketPrice(ticketData, ticketInfo) {
+// Declaration 
+
+  let ticketType = ticketInfo.ticketType;
+  let entrantType = ticketInfo.entrantType;
+
+// Main code
+  if(ticketType in ticketData && entrantType in ticketData[ticketType].priceInCents){ // checking if ticket type and entrant type in ticketdata
+    let ticketPrice = ticketData[ticketType].priceInCents[entrantType];               // assigning value of entrant type
+    let extrasPrice = 0;                                                              // block variable
+    for( let i = 0; i < ticketInfo.extras.length; i++ ){
+      if( ticketInfo.extras[i] in ticketData.extras){                                     // checking for extras
+        extrasPrice += ticketData.extras[ticketInfo.extras[i]].priceInCents[entrantType]  // calculating extras
+      }else{
+        return `Extra type '${ticketInfo.extras}' cannot be found.`
+      }
+    }
+    return ticketPrice + extrasPrice                                            // add the total values
+    
+  }else if(!(ticketType in ticketData)){
+    return `Ticket type '${ticketType}' cannot be found.`
+  }else if(!(entrantType in ticketData[ticketType].priceInCents)){
+    return `Entrant type '${entrantType}' cannot be found.`
+  }
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +134,40 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+// Declaration
+
+  let totalBillPrice = 0
+
+  // Receipt template
+  let finalReceipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
+
+  for (let singlePurchase of purchases) {
+    let singleTicketPrice = calculateTicketPrice(ticketData, singlePurchase) // using the previous function calculate Price
+    if (typeof singleTicketPrice === "string"){                       // checking for error handling
+        return singleTicketPrice
+    }
+    let extraArr = []                                 // local scope variable declaration
+    let extras = ""
+      
+    for (let extra of singlePurchase.extras) {
+      extraArr.push(ticketData.extras[extra].description)   // push the extra description such as movie,terrace, education
+    }
+    if (singlePurchase.extras.length){                      // add the extras
+      extras = ` (${extraArr.join(", ")})`
+    }// end of for loop
+    totalBillPrice += singleTicketPrice
+    
+    finalReceipt += `${singlePurchase.entrantType[0].toUpperCase()+(singlePurchase.entrantType.slice(1))} ${ticketData[singlePurchase.ticketType].description}: $${(singleTicketPrice/100).toFixed(2)}${extras}\n`
+      //accumulate the full singleTicketPrice
+      
+  }// end of for loop
+  // print the total bill
+  finalReceipt += `-------------------------------------------\nTOTAL: $${(totalBillPrice/100).toFixed(2)}`
+  return finalReceipt
+}// end of function
+
+
 
 // Do not change anything below this line.
 module.exports = {
