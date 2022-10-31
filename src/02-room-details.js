@@ -87,7 +87,7 @@ function getConnectedRoomNamesById(rooms, id) {
   }
   
   // Return an error message if arr is empty otherwise return arr
-  return connectedArr.length === 0 ? `Room with ID of '${id}' could not be found.` : arr;
+  return connectedArr.length === 0 ? `Room with ID of '${id}' could not be found.` : ConnectedArr;
 }
 
 module.exports = {
