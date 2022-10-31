@@ -5,6 +5,7 @@
 */
 const exampleDinosaurData = require("../data/dinosaurs");
 const exampleRoomData = require("../data/rooms");
+const { getDinosaurDescription } = require("./01-dinosaur-facts");
 // Do not change the lines above.
 
 /**
@@ -25,7 +26,35 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let newRoomId = "";
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].name === dinosaurName) {
+      newRoomId = dinosaurs[i].dinosaurId//this loop first in order to loop through and recieve room info in second loop--V
+      for (let j = 0; j < rooms.length; j++) {
+        if (rooms[j].dinosaurs.includes(newRoomId)) {
+          return rooms[j].name
+        }
+      }
+    }
+  }
+//line 35->The .includes() method dete // rmines whether an array includes a certain value among its entries, returning true or false as appropriate.
+//making two for loops, one to run through dinosaurs array to get dinosaur name & other to run through room array to get room name
+//if no infopr matches the two above loops theu will return the following below ---V
+
+  if (rooms.length === 1) {
+    return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+
+  }
+  return `Dinosaur with name '${dinosaurName}' cannot be found.`
+}
+
+
+
+
+
+
+
 
 /**
  * getConnectedRoomNamesById()
@@ -48,8 +77,53 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Ellis Family Hall",
       "Kit Hopkins Education Wing"
     ]
+    
+    // roomId: "zwfsfPU5u", // 1
+//     name: "Entrance Room",
+//     requiredTicketPermissions: [],
+//     dinosaurs: [],
+//     connectsTo: [
+//       "A6QaYdyKra", // Ticket Center
+//     ],
+
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let firstArr = []
+  let secondArr = []
+  let finalDoneArr = false
+  for(let i = 0; i < rooms.length; i++) {
+    if(rooms[i].roomId === id){
+      secondArr = rooms[i].connectsTo//pieces together this loop return and information into the next two loops needed below --V
+    }
+  }
+if (secondArr.length === 0) {
+  return `Room with ID of '${id}' could not be found.`
+}
+for (let j = 0; j < secondArr.length; j++){
+  for (let k = 0; k < rooms.length; k++){
+    if(secondArr[j] === rooms[k].roomId) {
+      firstArr.push(rooms[k].name)
+      finalDoneArr = true
+    }
+  }
+  if (finalDoneArr === false) {
+      return `Room with ID of 'incorrect-id' could not be found.`
+}
+finalDoneArr = false
+
+  
+    }
+    return firstArr
+    
+    
+  }
+  
+
+
+
+
+
+
 
 module.exports = {
   getRoomByDinosaurName,
