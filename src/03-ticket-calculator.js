@@ -55,6 +55,21 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
+let total = 0
+if (!ticketData.hasOwnProperty(ticketInfo.ticketType)) {
+  return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+}
+if (!ticketData[ticketInfo.ticketType].priceInCents.hasOwnProperty(ticketInfo.entrantType)) {
+  return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+}
+for (let i = 0; i < ticketInfo.extras.length; i++) {
+  if (!ticketData.extras.hasOwnProperty(ticketInfo.extras[i])) {
+    return `Extra type '${ticketInfo.extras[i]}' cannot be found.`
+  }
+   total += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType]
+}
+  total += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+  return total
 
 }
 
@@ -65,7 +80,14 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 // -- extra
 // 'general', entrant 'adult', extra['incorrect-extra']
 
-//       --NO EXTRAS
+//ticketData = $$
+//ticketType = general/membership; 
+//            entrant type; extras - movie, education, terrace
+//ticketInfo.ticketType = general, membership
+//ticketInfo.entrantType = child, adult, senior
+//ticketInfo.extras = movie, education, terrace
+
+//--NO EXTRAS
 // child--'general', entrant 'child', extras [] 2000
 // adult--'general', entrant 'adult', extras [] 3000
 // senior--'general', entrant 'senior', extras [] 2500
@@ -128,9 +150,20 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+// price = calculateTicketPrice(ticketData, purchases)
+// for (let ticket in tickets) {
 
-// Do not change anything below this line.
+//   if (Object.hasOwnProperty.call(object, key)) {
+//    const element = object[key];
+    
+//   }
+// });
+
+  
+}
+
+//Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
   purchaseTickets,

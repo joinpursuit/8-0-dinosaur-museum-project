@@ -23,35 +23,26 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getLongestDinosaur(dinosaurs) {
+  
+  //start with an empty object, and that will be the accumulator at end other than edgecase. 
   let theeDinosaur = {}
   if (!dinosaurs.length) {
     return theeDinosaur 
-  } 
-  let tallDino = dinosaurs[0].lengthInMeters
+  } //create variables of first dino in length and it's name to shorten code.
+  let tallDino = dinosaurs[0].lengthInMeters 
   let tallDinoName = dinosaurs[0].name
-  for (let i = 1; i < dinosaurs.length; i++) {
+  for (let i = 1; i < dinosaurs.length; i++) { //make for-loop to go through all the dinosaurs and start at dino 1 skipping/singling out first[0] dino. Increment through each dino through the loop. 
     if (dinosaurs[i].lengthInMeters > tallDino) {
       tallDino = dinosaurs[i].lengthInMeters
       tallDinoName = dinosaurs[i].name
-    }
+    } //Go through if statement to go through all dinosaurs' length elements in the array to see if first dino is taller than tall dino. Also do the same with the tall Dino name will change with it. If there is a taller dino in the array, it will take over.
   }
   theeDinosaur[tallDinoName] = tallDino * 3.281
+  // After loop has finished, declare key and value in theeDinosaur object to the overtaken tall dino name. Multiply height by 3.281 to get feet from meters. return the accumulator, theeDinosaur.
   return theeDinosaur
 
 }
- // return `{ ${dinosaurs[3].name}: ${dinosaurs.[3].lengthInMeters * 3.281} feet }`
-  
-    
-    //return `{${tallDino.name}: ${tallDino.lengthinMeters}}`
-  //   dinosaurs[.lengthInMeters] =  .lengthInMeters * 3.281
-
- // {[tallDinoName] :tallDino * 3.281}
-// let firstDino = dinosaurs[0].lengthInMeters
-  // for (let i = 0; i < dinosaurs.length-1; i++) {
-  // accessHeight = dinosaurs[i].lengthInMeters
-  // accessHeight > firstDino
-  // } return 
-
+ 
   //   dinosaurs.forEach((element) => {
 // return element.name
 //   });
@@ -82,55 +73,24 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {  
+//create for loop to go through each dinosaur in the array. execute by going through each dinosaur id in the array and equal to parameter `id` so it knows the dinosaurs' id exists in the array. 
+
   for(let i = 0; i < dinosaurs.length; i++) {
     if (dinosaurs[i].dinosaurId == id) {
       return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.`
-    }
+    } //if the dinosaurId exists, it will return the dinosaur name, the pronunciation in parenthesis, \n (creates break in line), and dinosaur description. Add line `It lived in the {dino.period} and {millions of years ago/mya}.
     }
 return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
-  }
+  } //return error at end if there is no matching id.
+
 //let dinoDescribe = `A dinosaur with an ID of '${id}' cannot be found.`
   
  //`${dNames} + (${dSound}) + \n${description}`
 // const _ = require(`underscore`)
-  // let dNames = _.pluck(dinosaurs, `name`)
-  // let dSound = _.pluck(dinosaurs, `pronunciation`)
-  // let description = _.pluck(dinosaurs, `info`)
-  //`${dinosaurs[i].id}`
-  // } else if (!dinosaurs.id) {
-    //   return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
-    //  for (let i = 0; i < dinosaurs.length; i++) {
-    //   let dNames = dinosaurs[i].name
-    //   let dSound = dinosaurs[i].pronunciation
-    //   let description = dinosaurs[i].info
-    //   let dinoId = dinosaurs[i].id
-    //   Object.keys(dinosaurs[i].mya).length = milYears
-    //   console.log(milYears)
-// Object.keys(dinosaurs[i].mya).length >= 1)
-  // for (let i = 0; i < dinosaurs.length; i++) {
-  //   let dNames = dinosaurs[i].name
-  //   let dSound = dinosaurs[i].pronunciation
-  //   let description = dinosaurs[i].info
-  // let compact = dNames + dSound + description
-  // arr.push(compact) 
-  // console.log(dNames)
-  // return compact
   
-  //   console.log(dNames, dSound, description)
   //  } return `${dNames} + (${dSound}) + \n${description}`
   // const pluck = (arr, key) => arr.map(i => i[key]);
   // return pluck(dinosaurs, `name`)
-  
- //(dinosaurs[d].name + dinosaurs[d][(`${pronunciation}`)] + dinosaurs[d].info)
-
-// dinosaurs.reduce((accumulator, dinosaurs) => {
-// accumulator[dinosaurs.name] 
-// console.log(accumulator)
-// ;
-//   return accumulator;
-// }, {})
-// }
-
 
 // use id to get -> .name (.pronunciation) `\n` .info 
 // --1 value of mya
@@ -167,18 +127,22 @@ return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
+//create two arrays, one is empty as accumulator. 
 let dinoDataArr = []
+//create for loop to go through each dinosaur
 for (let j = 0; j < dinosaurs.length; j++) {
+  //create variable for dinosaur id and another for max year for first dino year, and second dino year for min
   let dinoId = dinosaurs[j].dinosaurId
   let max = dinosaurs[j].mya[0] //156 is an example of the highest mya in the dino data
   let min = dinosaurs[j].mya[1] //144
+//another array created and while loop made to decrease from max to min year. execute by pushing in max years to second array
   let firstArr = []
   while(min <= max) {
     firstArr.push(max--)
-  }
+  } //take the object keys of each dinosaur. then change the variable of the dinoId to each dinosaur's key from dino array
 if (Object.keys(dinosaurs[j]).includes(key)) {
   dinoId = dinosaurs[j][key]
-}
+} //take  the max years in array with mya, and execute with dinoData array to push in the dino Id's
 if (firstArr.includes(mya)) {
   dinoDataArr.push(dinoId)
 } else if (dinosaurs[j].mya[0] === mya || dinosaurs[j].mya[0] - 1 === mya) {
@@ -188,7 +152,6 @@ if (firstArr.includes(mya)) {
 return dinoDataArr
 }
 
-//for (let j = 0; j < dinosaurs.length; i++)
 module.exports = {
   getLongestDinosaur,
   getDinosaurDescription,
