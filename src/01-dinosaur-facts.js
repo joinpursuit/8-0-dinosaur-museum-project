@@ -17,12 +17,45 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *
  * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file for an example of the input.
  * @returns {Object} An object where the key is the name of the dinosaur and the value is the height of the dinosaur in feet.
- *
+ * 
  * EXAMPLE:
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+
+
+// returns an object (key - name of dinosaur & value - height in feet)
+// object must contain the longest dinosaur (comparison operator)
+// the greatest length must be converted from meters to feet (* 3.281)
+// we need an accumulator to hold the value of "longest dino" while we compare
+
+function getLongestDinosaur(dinosaurs) {
+  if (dinosaurs.length === 0){return {}}
+
+  let longDino // create a variable that will hold values we will later assign to an object
+  
+  let longestLengthMeters = 0 // create longestDino to hold the value of the greatest dinosaur length
+
+for (let i = 0; i < dinosaurs.length; i ++){
+  // loop through the dinosaurs array
+  if (dinosaurs[i].lengthInMeters > longestLengthMeters){
+    // check if there is a length in meters value that is greater than longestLengthInMeters(currently valued at 0)
+    longestLengthMeters = dinosaurs[i].lengthInMeters
+    // longestLengthMeters will hold the value of the largest number in .lengthInMeters
+    let obj = {}
+    // create an empty object 
+    obj[dinosaurs[i].name]=(dinosaurs[i].lengthInMeters * 3.281)
+    // assigned key & values to our object 
+    // the key should be the dinosaur name 
+    // the returned value should be the dinosaurs lengthInMeters converted to feet 
+    longDino = (obj);
+    // assigns creted object to longDino variable
+  }
+} 
+
+
+return longDino; 
+}
 
 /**
  * getDinosaurDescription()
@@ -36,6 +69,10 @@ function getLongestDinosaur(dinosaurs) {}
  * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file for an example of the input.
  * @param {string} id - The unique identifier for the dinosaur.
  * @returns {string} A detailed description of the dinosaur.
+ * 
+ * // returns a string containing : the dinosaur name & info
+ * // if the dinosaur cannot be found, returns an error message. 
+ * // error message should be "A dinosaur with an ID of 'incorrect-id' cannot be found."
  *
  * EXAMPLE:
  *  getDinosaurDescription(dinosaurs, "U9vuZmgKwUr");
@@ -44,7 +81,18 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  for (let i = 0; i < dinosaurs.length; i ++){
+    // loop through dinosars array
+    if (dinosaurs[i].dinosaurId === id){
+    // check if anything in the dinosaurs list matches the requested id 
+    return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.`
+    } 
+    // return the dinosaurs name, pronunciation & info with the requested format.
+  } 
+ return "A dinosaur with an ID of 'incorrect-id' cannot be found."
+    // if nothing matches the requested id, return this error message
+}
 
 /**
  * getDinosaursAliveMya()
@@ -70,8 +118,20 @@ function getDinosaurDescription(dinosaurs, id) {}
  *
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
+ * 
+ * // returns an array of dinos alive at the mya value 
+ * // if key already provided - return the value otherwise, return dino id
+ * // if dino has only one value for mya, allows mya value to be equal to the given value or one less
+ * 
+ * 
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+
+// i really struggled to understand what this function was asking me to do  & didn't want to waste time so i moved to the next page. 
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+
+
+
+}
 
 module.exports = {
   getLongestDinosaur,

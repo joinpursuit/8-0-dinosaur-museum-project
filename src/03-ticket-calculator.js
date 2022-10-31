@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -26,7 +27,7 @@ const exampleTicketData = require("../data/tickets");
  * @param {string} ticketInfo.entrantType - Represents the type of entrant. Prices change depending on the entrant.
  * @param {string[]} ticketInfo.extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
  * @returns {number} The cost of the ticket in cents.
- *
+ * 
  * EXAMPLE:
  *  const ticketInfo = {
       ticketType: "general",
@@ -54,7 +55,16 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+
+// check ticket type - Ga or MP
+// check enterant type - child, adult or senior
+// check extras - terrace, education or movie access
+// if ticket type, enterant type or any value in extras is incorrect, give error message
+
+
+
+
+
 
 /**
  * purchaseTickets()
