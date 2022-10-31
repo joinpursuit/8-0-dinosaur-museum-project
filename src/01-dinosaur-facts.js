@@ -82,7 +82,8 @@ function getDinosaurDescription(dinosaurs, id) {
 
     }
 
-  }
+  } 
+  // if dinosaur id doesn't exist 
 return `A dinosaur with an ID of '${id}' cannot be found.`
 
 }
@@ -113,8 +114,9 @@ return `A dinosaur with an ID of '${id}' cannot be found.`
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-   let dinoAliveMya = []
-
+   let dinoAliveMya = [] // declare empty array
+  // iterate through the dinosaurs array to find keys that matches "mya" values given then check if they exist .
+  // if key exists add it to the array otherwise add  id 
     
    dinosaurs.forEach(dinosaur => {
     if (dinosaur.mya[0] === mya || dinosaur.mya[0] -1 === mya){
