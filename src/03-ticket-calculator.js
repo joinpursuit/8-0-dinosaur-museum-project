@@ -54,7 +54,56 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+
+// let ticketPrice = 0;
+
+// if (!ticketData(ticketInfo.ticketType)) {
+//    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+
+// } else if (!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]) {
+//   return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+// }
+
+// if (ticketInfo.extras.every(extra => infoArr.includes(extra))) {
+//   ticketInfo.extras.forEach(ele => ticketPrice += ticketData.extras[ele].priceInCents[ticketInfo.entrantType]);
+// } else {
+//   return `Extra type '${ticketInfo.extras[0]}' cannot be found.`;
+
+//   return ticketPrice += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+// }
+
+let ticketPrice = 0;
+
+if(!ticketData[ticketInfo.ticketType]) {
+  return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+}
+if (!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]) {
+  return 'Entrant type \'incorrect-entrant\' cannot be found.'
+}
+ 
+  for (let i = 0; i < ticketInfo.extras.length; i++) {
+  let extra = ticketInfo.extras[i];  
+   if (ticketData.extras[extra]) {
+  ticketPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+  
+ } else {
+  return 'Extra type \'incorrect-extra\' cannot be found'
+
+   } 
+
+  }
+
+
+return ticketPrice += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+}
+
+
+
+
+
+
+
 
 /**
  * purchaseTickets()
