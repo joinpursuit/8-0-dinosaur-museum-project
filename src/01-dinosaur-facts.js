@@ -23,27 +23,34 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getLongestDinosaur(dinosaurs) {
+  // declaring a variable to represent the value of the largest length for a dinosaur
   let maxLength = 0;
+  // declairng a variable to represent the name of the longest dinosaur 
   let dinoName = '';
+  // declaring a variable as an empty object to return at the output of the function
   let longestDino = {};
 
+  // using an if statement to determine if the length of the inputted dinosaur array is equal to 0
   if (dinosaurs.length === 0) {
+    // returning longestDino variable inside if statement
     return longestDino
   }
   
+  // created a for loop to iterate through dinosaurs array 
   for (let i = 0; i < dinosaurs.length; i++) {
+    // using an if statement to determine if the lengthInMeters property at the current index is greater than the maxLength variable 
     if (dinosaurs[i].lengthInMeters > maxLength) {
+      // assigning lengthInMeters property of the current index to the maxLength variable
       maxLength = dinosaurs[i].lengthInMeters 
+      // assigning name property of the current index to the dinoName variable
       dinoName = dinosaurs[i].name
     }
   }
- 
+  // creating a key in the longestDino object with bracket notation and using the dinoName variable to title the new key
+  // assigning the value of the maxLength variable multiplied by 3.281 to the dinoName key
   longestDino[dinoName] = maxLength * 3.281;
-  // console.log(longestDino);
+  // returning the longestDino object 
   return longestDino
- 
-  // console.log(maxLength);
-  // console.log(dinoName);
 }
 
 /**
@@ -67,11 +74,15 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
+  // using a for loop to iterate through dinosaurs array 
   for (let i = 0; i < dinosaurs.length; i++) {
+    // using an if statement to determine if the dinosaur id at index [i] is equal to the value of the id parameter
     if (dinosaurs[i].dinosaurId === id) {
+      // returning a template literal  with a detailed description of the dinosaur with the matching id inside if statement
       return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.`
     }
   }
+  // returning an error message if the provided id is has not matched with any of the dinosaurId properties
   return `A dinosaur with an ID of '${id}' cannot be found.`
 }
 
@@ -101,23 +112,37 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
+  // declaring an array as a variable to return as the output of the function 
   let dinosAliveArray= [];
 
+  // using a for loop to iterate through the dinosaurs array
 for (let i = 0; i < dinosaurs.length; i++) {
-  if (dinosaurs[i].mya.length === 2 && mya <= dinosaurs[i].mya[0] && mya >= dinosaurs[i].mya[1]) {
+  // using an if statement to determine if the mya parameter is less tham or equal to the value of the first element in the mya array at the current index
+  // AND if the mya parameter is greater than or equal to the value of the second element in the mya array at the current index
+  if (mya <= dinosaurs[i].mya[0] && mya >= dinosaurs[i].mya[1]) {
+    // nested if statement to determine if the key parameter is truthy
     if (key) {
+      // pushes value of key parameter at current index into dinosAliveArray
       dinosAliveArray.push(dinosaurs[i][key])
+      // else statement to run if key parameter is falsy
     } else {
+      // pushes value of dinosaurId key at the current index into dinosAliveArray
       dinosAliveArray.push(dinosaurs[i].dinosaurId)
     }
-  } else if (dinosaurs[i].mya[0] === mya ||dinosaurs[i].mya[0] - 1 === mya  ) {
+    // else if statement to determine if the value of the first element in the mya array at the current index is equal to mya parameter
+    // OR if else if statement to determine ifthe value of the first element in the mya array at the current index is equal to mya parameter minus 1
+  } else if (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] - 1 === mya  ) {
+    // nested if statement to determine if the key parameter is truthy
     if (key) {
+      // pushes value of key parameter at current index into dinosAliveArray
       dinosAliveArray.push(dinosaurs[i][key])
     } else {
+      // pushes value of dinosaurId key at the current index into dinosAliveArray
       dinosAliveArray.push(dinosaurs[i].dinosaurId)
   }
   }
  }
+//  returns dinosAliveArray variable 
  return dinosAliveArray
 }
 module.exports = {

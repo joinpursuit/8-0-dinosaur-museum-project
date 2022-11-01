@@ -55,29 +55,43 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
+  // declaring variable to represent the value of the ticketType key in the ticketInfo parameter
   let ticketType = ticketInfo.ticketType;
+  // declaring variable to represent the value of the entrantType key in the ticketInfo parameter
   let entrantType = ticketInfo.entrantType;
+  // declaring variable to represent the basic ticket price to use as output for the function
   let ticketPrice = 0;
+  // declaring variable to represent the added price with extras to use as output for the function 
   let extrasPrice = 0;
-
+  // using an if/in statement and bang operator to determine if the value of the ticketType variable is not in the ticketData parameter
   if (!(ticketType in ticketData)) {
+    // returning an error message as a template literal to reference the value of the ticketType variable 
     return `Ticket type '${ticketType}' cannot be found.`
   } 
-    
-
+  // if/in statement with bang operator to determine if the value of the entrantType variable cannot be found in the priceInCents key in the ticketData parameter
+  // the value of the ticketType variable is being used to access a key within the ticketData parameter
   if (!(entrantType in ticketData[ticketType].priceInCents)) {
+    // returning an error message as a template literal to reference the value of the entrantType variable has not been found
     return `Entrant type '${entrantType}' cannot be found.`
   }
-
+  // using the value of the ticketType variable to reference a key within the ticketData parameter
+  // using the value of the entrantType variable to reference a value of a the key priceIncents in the ticketData parameter
   ticketPrice = ticketData[ticketType].priceInCents[entrantType];
-  
+  // using for of loop to iterate through all the elements of the array in the extras key in the ticket info parameter
   for (let extra of ticketInfo.extras) {
+    // if statement with bang operator inside of for loop to determine if the value of the extra variable is not found in the array inside of the extras key in the ticketData parameter
     if (!(extra in ticketData.extras)) {
+      // returning an error message as a template literal to reference value of the extra variable
       return `Extra type '${extra}' cannot be found.`
+      // else statement
     } else {
+      // using value of entrantType variable to reference value of the priceInCents key
+      // using value of extra variable to reference value of extras key in the ticketData parameter
+      // adding the value of priceInCents key to extrasPrice variable
       extrasPrice += ticketData.extras[extra].priceInCents[entrantType]
     }
   }
+  // returning value of ticketPrice variable plus the extrasPrice variable
   return ticketPrice + extrasPrice
 }
 
