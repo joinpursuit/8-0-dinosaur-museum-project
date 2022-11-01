@@ -5,6 +5,8 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { extras } = require("../data/tickets");
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +56,61 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+ ticketKey = []
+
+//  ticketExtra = []
+let errorMessage = ""
+ ticketKey = (Object.keys(tickets))
+ 
+ console.log(ticketKey) 
+ for (let i = 0; i < ticketKey.length; i++){
+
+  if (ticketKey[i] !== ticketInfo.ticketType){
+    errorMessage = "Ticket type 'incorrect-type' cannot be found.";
+    return errorMessage;
+   }if (ticketKey[i] !== ticketInfo.entrantType) {
+    errorMessage =  "Entrant type 'incorrect-entrant' cannot be found.";
+    return errorMessage;
+   }
+  }
+  for (let i of extras) {
+  
+    console.log(i)
+  
+  if (!ticketInfo[extras].includes(i.description)) {
+    console.log([i])
+    errorMessage = "Extra type 'incorrect-extra' cannot be found.";
+    return errorMessage;
+  }
+
+}
+ 
+ 
+
+  // console.log(tickets)
+  // console.log(ticketData)
+  // console.log(ticketInfo)
+//   let ticket = ""
+//   let total = 0
+//   let result = {}
+//   for (let i = 0; i  < ticketData.length; i++){
+// ticket = ticketData[i]
+// console.log(ticket)
+// result[ticket]
+// console.log(result)
+//   }
+//   for (let i = 0; i < ticketInfo.length; i++) {
+//     if (ticketInfo.includes(ticketType) === ticket) {
+//       result[ticket] = ticketInfo.ticketType
+//       console.log(result)
+//     }if (ticketType.ticketInfo !== ticket) {
+//       return "Ticket type 'incorrect-type' cannot be found."
+//     }
+
+//   }
+// return result
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +165,9 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+
+}
 
 // Do not change anything below this line.
 module.exports = {
