@@ -126,7 +126,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  let result = "";
+  let result = "";// result accumulator 
   let totalCost = 0;
   let extrasCost = 0;
   let entrantType = "";
