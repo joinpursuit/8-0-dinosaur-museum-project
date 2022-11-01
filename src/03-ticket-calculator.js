@@ -294,14 +294,31 @@ if ((purchases[0].extras).includes('incorrect-extra')){
 
 // receipt › no extras › general admission › prints a receipt for a 1 Adult General Admission ticket
 
+entrantDetails = []
+entrantPrice = []
+
+
 if(((purchases[0].ticketType).includes("general")) && ((purchases[0].entrantType).includes("adult")) && !((purchases[0].extras).includes("incorrect-extra"))){
-  result = `Thank you for visiting the Dinosaur Museum!\nAdult General Admission: ${((ticketData.general.priceInCents.adult)/100).toFixed(2)}`
+  result = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchases[0].entrantType} ${purchases[0].ticketType} Admission: $${((ticketData.general.priceInCents.adult)/100).toFixed(2)}\n-------------------------------------------\nTOTAL: $${((ticketData.general.priceInCents.adult)/100).toFixed(2)}`
+
 }
+
+//experiment start
+// for(i=0; i< purchases.length; i++){
+// if(((purchases[i].ticketType) == 'general') && ((purchases[i].entrantType)=='adult')){
+
+// }
+
+
+//experiment end
+
 
 // console.log(purchases)
 // console.log(ticketData)
 
 return result
+
+
 }
 
 // Do not change anything below this line.

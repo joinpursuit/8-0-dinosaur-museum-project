@@ -106,9 +106,15 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
    
   for(i=0; i <dinosaurs.length; i++){
    
-    if(((dinosaurs[i].mya.length) <=2 ) && (((dinosaurs[i].mya[0]) - (Math.floor(mya/10)*10)) <=9 ) &&  (((dinosaurs[i].mya[0]) - (Math.floor(mya/10)*10)) >=0 )) {
+    if(((dinosaurs[i].mya.length) ==2 ) && (((dinosaurs[i].mya[0]) - (Math.floor(mya/10)*10)) <=10 ) &&  (((dinosaurs[i].mya[0]) - (Math.floor(mya/10)*10)) >=0 )) {
       isAlive.push(dinosaurs[i].dinosaurId)
-      return (isAlive)
+      result = isAlive}
+
+    if(((dinosaurs[i].mya.length) <2 ) && ((((dinosaurs[i].mya[0]) - (Math.floor(mya/10)*10)) <=10 ) || ((((dinosaurs[i].mya[0])-1) - (Math.floor(mya/10)*10)) <=10 )) &&  (((dinosaurs[i].mya[0]) - (Math.floor(mya/10)*10)) >=0 )) {
+      isAlive.push(dinosaurs[i].dinosaurId)
+      result = isAlive}
+
+    
 
     // if(((dinosaurs[i].mya.length) ==2 ) && (((dinosaurs[i].mya[0])- mya) <9)){
     //   isAlive.push(dinosaurs[i].dinosaurId)
@@ -118,9 +124,9 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
     // }
     // else 
       // return isAlive
-    }
+    
   }
-  return (isAlive)
+  return result
   
   // if(((dinosaurs[i].mya.length) == 2) && ((dinosaurs[i].mya.length[0]) % mya <=9))
   // console.log(dinosaurs[4].mya[0])

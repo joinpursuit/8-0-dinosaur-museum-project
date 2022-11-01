@@ -15,7 +15,7 @@ describe("getRoomByDinosaurName()", () => {
     expect(actual).toEqual(expected);
   });
 
-  test.only("should work for other dinosaurs", () => {
+  test("should work for other dinosaurs", () => {
     expect(getRoomByDinosaurName(dinosaurs, rooms, "Parasaurolophus")).toEqual(
       "Reyes Hall"
     );
@@ -75,7 +75,7 @@ describe("getConnectedRoomNamesById()", () => {
     ).toEqual(["Reyes Hall"]);
   });
 
-  test"if initial room ID is incorrect, should return an error message", () => {
+  test("if initial room ID is incorrect, should return an error message", () => {
     const id = "incorrect-id";
     const actual = getConnectedRoomNamesById(rooms, id);
     const expected = `Room with ID of '${id}' could not be found.`;
