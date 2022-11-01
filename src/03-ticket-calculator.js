@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,17 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let cost = 0;
+  cost = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+
+  //for (let i = 0; i < ticketInfo.extras.length) {
+    
+  }
+
+
+ // return cost
+
 
 /**
  * purchaseTickets()
@@ -109,7 +120,22 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let subTotal = 0
+  
+  for (let i = 0; i < purchases.length; i++) {
+    let ticketInfo = purchases[i]
+    let finalReceipt = calculateTicketPrice(ticketData, ticketInfo)
+
+    if (typeof price === 'string') {return finalReceipt}
+
+    subTotal += finalReceipt
+ }
+
+  
+  
+ 
+}
 
 // Do not change anything below this line.
 module.exports = {
