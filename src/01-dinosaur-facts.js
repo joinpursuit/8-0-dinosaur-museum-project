@@ -23,20 +23,20 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
  function getLongestDinosaur(dinosaurs) {
-  let obj = {}
-  let longest = 0
-  let name = 0
-  for (let i = 0; i < dinosaurs.length; i++){
-    if (dinosaurs[i].lengthInMeters > longest){
-      longest = dinosaurs[i].lengthInMeters
-      name = dinosaurs[i].name
+  let obj = {}; //A place holder for the answer
+  let longest = 0; //Holds the vaule of the longets dinosaur
+  let name = 0; //Holds the name of the dinosaur that corresponds to the longest length
+  for (let i = 0; i < dinosaurs.length; i++){ //Loop that goes through the dinosaurs array.
+    if (dinosaurs[i].lengthInMeters > longest){ //Checks if given dinosaur in array has a length longer then the value held by longest
+      longest = dinosaurs[i].lengthInMeters; //Replaces longest value with new vaule if given dinosaur length is larger then value held by longest
+      name = dinosaurs[i].name; //Replaces name values with the name of the dinosaur that corresponds to the longest length
     }
   }
-    obj[name] = longest * 3.281
-  if(dinosaurs.length === 0){
-    return {}
+    obj[name] = longest * 3.281; //Formats the name and length(in meters) of the largest dinosaur in to an object 
+  if(dinosaurs.length === 0){ //Checks if dinosaurs array is empty
+    obj = {}; //Gives back empty object for error message
   } 
-    return obj
+    return obj; //Returns the obj that was formated
 } 
 
 
@@ -61,16 +61,16 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  let description = ""
-  for (let i = 0; i < dinosaurs.length; i++){
-    if (dinosaurs[i].dinosaurId === id){
-    description = `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.` 
-    return description
-    } else {
-    description = `A dinosaur with an ID of '${id}' cannot be found.`
+  let description = ""; //Hold the answer
+  for (let i = 0; i < dinosaurs.length; i++){ //Loop that goes through dinosaurs array
+    if (dinosaurs[i].dinosaurId === id){ //Checks if id is inside of the array of dinosaurs
+    description = `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.`; //Formats all required information 
+    return description; //Returns answer
+    } else { //Used for error messages
+    description = `A dinosaur with an ID of '${id}' cannot be found.` //Correct format of error message
   }
   } 
-  return description
+  return description //Used to return error message
 }
 
 /**
@@ -99,23 +99,23 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
  function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let result = [];
-  for (i = 0 ; i < dinosaurs.length ; i++) {
-  if (dinosaurs[i].mya.length === 2 && dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya){
-    if (Object.keys(dinosaurs[i]).includes(key)){
-      result.push(dinosaurs[i][key])
-    } else {
-      result.push(dinosaurs[i].dinosaurId)
+  let result = []; //Holds answer
+  for (i = 0 ; i < dinosaurs.length ; i++) { //Loop that goes through dinosaurs array
+  if (dinosaurs[i].mya.length === 2 && dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya){ //Checks if dinosaurs[i].mya.length is = 2 and if the first vlaues is greater then or equal to mya and if the second value is less then or equal to mya 
+    if (Object.keys(dinosaurs[i]).includes(key)){ //Checks if any keys inside of an element of the dinosaurs array matches to key
+      result.push(dinosaurs[i][key]) //Pushes the value related to that key into reult
+    } else { //If the Key does not match 
+      result.push(dinosaurs[i].dinosaurId) //Pushes the id of the dinosaurs that lived in the given mya
       }
-    } else if (dinosaurs[i].mya.length === 1 && (dinosaurs[i].mya[0] - 1 === mya || dinosaurs[i].mya[0] === mya)){
-        if (Object.keys(dinosaurs[i]).includes(key)){
-      result.push(dinosaurs[i][key])
-        } else {
-      result.push(dinosaurs[i].dinosaurId)
+    } else if (dinosaurs[i].mya.length === 1 && (dinosaurs[i].mya[0] - 1 === mya || dinosaurs[i].mya[0] === mya)){ //Checks ifany dinosaurs in dinosaurs array lived in the given mya. also if the mya they exsited in -1  = mya
+        if (Object.keys(dinosaurs[i]).includes(key)){ //Checks if any keys inside of an element of the dinosaurs array matches to key
+      result.push(dinosaurs[i][key]) //Pushes the value related to that key into reult
+        } else { //If the Key does not match 
+      result.push(dinosaurs[i].dinosaurId) //Pushes the id of the dinosaurs that lived in the given mya
       }
     }
   }
-  return result
+  return result //Returns the answer
 }
 
 module.exports = {

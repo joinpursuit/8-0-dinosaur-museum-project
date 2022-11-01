@@ -81,7 +81,7 @@ function getConnectedRoomNamesById(rooms, id) {
       correctId = id
       for (let j = 0; j < rooms[i].connectsTo.length; j++){
         for (let k = 0; k < rooms.length; k++){
-          if (rooms[i].connectsTo[j] === rooms[k].roomId){
+          if (rooms[i].connectsTo[j] === rooms[k].roomId){            
             results.push(rooms[k].name)
           } else if (rooms[i].connectsTo[j] === 'incorrect-id'){
             incorrectIdFound = true
