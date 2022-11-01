@@ -8,7 +8,7 @@ const tickets = require("../data/tickets");
 
 describe("calculateTicketPrice()", () => {
   describe("errors", () => {
-    test("ticket type does not match an existing ticket type", () => {
+    test.only("ticket type does not match an existing ticket type", () => {
       const ticketInfo = {
         ticketType: "incorrect-type",
         entrantType: "child",
@@ -19,7 +19,7 @@ describe("calculateTicketPrice()", () => {
       expect(actual).toEqual(expected);
     });
 
-    test("entrant type does not match an existing entrant type", () => {
+    test.only("entrant type does not match an existing entrant type", () => {
       const ticketInfo = {
         ticketType: "general",
         entrantType: "incorrect-entrant",
@@ -30,7 +30,7 @@ describe("calculateTicketPrice()", () => {
       expect(actual).toEqual(expected);
     });
 
-    test("extra type does not match an existing extra type", () => {
+    test.only("extra type does not match an existing extra type", () => {
       const ticketInfo = {
         ticketType: "general",
         entrantType: "adult",
@@ -44,7 +44,7 @@ describe("calculateTicketPrice()", () => {
 
   describe("no extras", () => {
     describe("general admission", () => {
-      test("should calculate a child general admission ticket without any addons", () => {
+      test.only("should calculate a child general admission ticket without any addons", () => {
         const ticketInfo = {
           ticketType: "general",
           entrantType: "child",
@@ -55,7 +55,7 @@ describe("calculateTicketPrice()", () => {
         expect(actual).toEqual(expected);
       });
 
-      test("should calculate an adult general admission ticket without any addons", () => {
+      test.only("should calculate an adult general admission ticket without any addons", () => {
         const ticketInfo = {
           ticketType: "general",
           entrantType: "adult",
@@ -66,7 +66,7 @@ describe("calculateTicketPrice()", () => {
         expect(actual).toEqual(expected);
       });
 
-      test("should calculate a senior general admission ticket without any addons", () => {
+      test.only("should calculate a senior general admission ticket without any addons", () => {
         const ticketInfo = {
           ticketType: "general",
           entrantType: "senior",
@@ -79,7 +79,7 @@ describe("calculateTicketPrice()", () => {
     });
 
     describe("membership admission", () => {
-      test("should calculate a child membership admission ticket without any addons", () => {
+      test.only("should calculate a child membership admission ticket without any addons", () => {
         const ticketInfo = {
           ticketType: "membership",
           entrantType: "child",
@@ -90,7 +90,7 @@ describe("calculateTicketPrice()", () => {
         expect(actual).toEqual(expected);
       });
 
-      test("should calculate an adult membership admission ticket without any addons", () => {
+      test.only("should calculate an adult membership admission ticket without any addons", () => {
         const ticketInfo = {
           ticketType: "membership",
           entrantType: "adult",
@@ -101,7 +101,7 @@ describe("calculateTicketPrice()", () => {
         expect(actual).toEqual(expected);
       });
 
-      test("should calculate a senior membership admission ticket without any addons", () => {
+      test.only("should calculate a senior membership admission ticket without any addons", () => {
         const ticketInfo = {
           ticketType: "membership",
           entrantType: "senior",
@@ -116,7 +116,7 @@ describe("calculateTicketPrice()", () => {
 
   describe("with extras", () => {
     describe("general admission", () => {
-      test("should calculate a general admission ticket with the movie extra", () => {
+      test.only("should calculate a general admission ticket with the movie extra", () => {
         // Child General Admission Ticket
         const childTicketInfo = {
           ticketType: "general",
@@ -142,7 +142,7 @@ describe("calculateTicketPrice()", () => {
         expect(calculateTicketPrice(tickets, seniorTicketInfo)).toEqual(3500);
       });
 
-      test("should calculate a general admission ticket with the movie and education extra", () => {
+      test.only("should calculate a general admission ticket with the movie and education extra", () => {
         // Child General Admission Ticket
         const childTicketInfo = {
           ticketType: "general",
@@ -168,7 +168,7 @@ describe("calculateTicketPrice()", () => {
         expect(calculateTicketPrice(tickets, seniorTicketInfo)).toEqual(4700);
       });
 
-      test("should calculate a general admission ticket with the terrace and education extra", () => {
+      test.only("should calculate a general admission ticket with the terrace and education extra", () => {
         // Child General Admission Ticket
         const childTicketInfo = {
           ticketType: "general",
@@ -194,7 +194,7 @@ describe("calculateTicketPrice()", () => {
         expect(calculateTicketPrice(tickets, seniorTicketInfo)).toEqual(4700);
       });
 
-      test("should calculate a general admission ticket with all of the extras", () => {
+      test.only("should calculate a general admission ticket with all of the extras", () => {
         // Child General Admission Ticket
         const childTicketInfo = {
           ticketType: "general",
@@ -222,7 +222,7 @@ describe("calculateTicketPrice()", () => {
     });
 
     describe("membership admission", () => {
-      test("should calculate a membership admission ticket with the movie extra", () => {
+      test.only("should calculate a membership admission ticket with the movie extra", () => {
         // Child Membership Admission Ticket
         const childTicketInfo = {
           ticketType: "membership",
@@ -248,7 +248,7 @@ describe("calculateTicketPrice()", () => {
         expect(calculateTicketPrice(tickets, seniorTicketInfo)).toEqual(3300);
       });
 
-      test("should calculate a membership admission ticket with the movie and education extra", () => {
+      test.only("should calculate a membership admission ticket with the movie and education extra", () => {
         // Child Membership Admission Ticket
         const childTicketInfo = {
           ticketType: "membership",
@@ -274,7 +274,7 @@ describe("calculateTicketPrice()", () => {
         expect(calculateTicketPrice(tickets, seniorTicketInfo)).toEqual(4500);
       });
 
-      test("should calculate a membership admission ticket with the terrace and education extra", () => {
+      test.only("should calculate a membership admission ticket with the terrace and education extra", () => {
         // Child Membership Admission Ticket
         const childTicketInfo = {
           ticketType: "membership",
@@ -300,7 +300,7 @@ describe("calculateTicketPrice()", () => {
         expect(calculateTicketPrice(tickets, seniorTicketInfo)).toEqual(4500);
       });
 
-      test("should calculate a membership admission ticket with all of the extras", () => {
+      test.only("should calculate a membership admission ticket with all of the extras", () => {
         // Child Membership Admission Ticket
         const childTicketInfo = {
           ticketType: "membership",
@@ -331,7 +331,7 @@ describe("calculateTicketPrice()", () => {
 
 describe("purchaseTickets()", () => {
   describe("errors", () => {
-    test("should surface errors from calculateTicketPrice()", () => {
+    test.only("should surface errors from calculateTicketPrice()", () => {
       // Incorrect ticket type
       const incorrectTicketType = {
         ticketType: "incorrect-type",
@@ -366,7 +366,7 @@ describe("purchaseTickets()", () => {
 
   describe("no extras", () => {
     describe("general admission", () => {
-      test("prints a receipt for a 1 Adult General Admission ticket", () => {
+      test.only("prints a receipt for a 1 Adult General Admission ticket", () => {
         const ticketInfo = [
           {
             ticketType: "general",
@@ -380,7 +380,7 @@ describe("purchaseTickets()", () => {
         expect(actual).toEqual(expected);
       });
 
-      test("prints a receipt for a 2 Adult General Admission tickets", () => {
+      test.only("prints a receipt for a 2 Adult General Admission tickets", () => {
         const ticketInfo = [
           {
             ticketType: "general",
@@ -399,7 +399,7 @@ describe("purchaseTickets()", () => {
         expect(actual).toEqual(expected);
       });
 
-      test("prints a receipt for multiple general admission tickets", () => {
+      test.only("prints a receipt for multiple general admission tickets", () => {
         const ticketInfo = [
           {
             ticketType: "general",
