@@ -116,7 +116,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
         } else {
           dino.push(dinosaurs[i].dinosaurId);
         }
-      } // 2nd
+      } // 2nd condition
     } else if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya) {
       // comparitive range --
       if (key) {

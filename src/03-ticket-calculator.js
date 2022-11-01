@@ -127,9 +127,9 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     !ticketInfo.extras.includes("terrace") &&
     !ticketInfo.extras.includes("education")
   ) {
-    totalPrice = (
+    totalPrice =
       ticketData.extras.movie.priceInCents.child +
-      ticketData.general.priceInCents.child);
+      ticketData.general.priceInCents.child;
     return totalPrice;
   }
 
@@ -140,10 +140,10 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     !ticketInfo.extras.includes("terrace") &&
     ticketInfo.extras.includes("education")
   ) {
-    totalPrice =(
+    totalPrice =
       ticketData.extras.movie.priceInCents.child +
       ticketData.extras.education.priceInCents.child +
-      ticketData.general.priceInCents.child);
+      ticketData.general.priceInCents.child;
     return totalPrice;
   }
 
@@ -154,11 +154,11 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     ticketInfo.extras.includes("terrace") &&
     ticketInfo.extras.includes("education")
   ) {
-    totalPrice =(
+    totalPrice =
       ticketData.extras.movie.priceInCents.child +
       ticketData.extras.education.priceInCents.child +
       ticketData.extras.terrace.priceInCents.child +
-      ticketData.general.priceInCents.child);
+      ticketData.general.priceInCents.child;
     return totalPrice;
   }
 
@@ -169,10 +169,10 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     ticketInfo.extras.includes("terrace") &&
     ticketInfo.extras.includes("education")
   ) {
-    totalPrice = (
+    totalPrice =
       ticketData.extras.education.priceInCents.child +
       ticketData.extras.terrace.priceInCents.child +
-      ticketData.general.priceInCents.child);
+      ticketData.general.priceInCents.child;
     return totalPrice;
   }
 
@@ -183,9 +183,9 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     !ticketInfo.extras.includes("terrace") &&
     !ticketInfo.extras.includes("education")
   ) {
-    totalPrice = (
+    totalPrice =
       ticketData.extras.movie.priceInCents.adult +
-      ticketData.general.priceInCents.adult);
+      ticketData.general.priceInCents.adult;
     return totalPrice;
   }
 
@@ -196,10 +196,10 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     !ticketInfo.extras.includes("terrace") &&
     ticketInfo.extras.includes("education")
   ) {
-    totalPrice =(
+    totalPrice =
       ticketData.extras.movie.priceInCents.adult +
       ticketData.extras.education.priceInCents.adult +
-      ticketData.general.priceInCents.adult);
+      ticketData.general.priceInCents.adult;
     return totalPrice;
   }
 
@@ -210,11 +210,11 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     ticketInfo.extras.includes("terrace") &&
     ticketInfo.extras.includes("education")
   ) {
-    totalPrice =(
+    totalPrice =
       ticketData.extras.movie.priceInCents.adult +
       ticketData.extras.education.priceInCents.adult +
       ticketData.extras.terrace.priceInCents.adult +
-      ticketData.general.priceInCents.adult);
+      ticketData.general.priceInCents.adult;
     return totalPrice;
   }
 
@@ -225,10 +225,10 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     ticketInfo.extras.includes("terrace") &&
     ticketInfo.extras.includes("education")
   ) {
-    totalPrice = (
+    totalPrice =
       ticketData.extras.education.priceInCents.adult +
       ticketData.extras.terrace.priceInCents.adult +
-      ticketData.general.priceInCents.adult);
+      ticketData.general.priceInCents.adult;
     return totalPrice;
   }
 
@@ -239,9 +239,9 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     !ticketInfo.extras.includes("terrace") &&
     !ticketInfo.extras.includes("education")
   ) {
-    totalPrice = (
+    totalPrice =
       ticketData.extras.movie.priceInCents.senior +
-      ticketData.general.priceInCents.senior);
+      ticketData.general.priceInCents.senior;
     return totalPrice;
   }
 
@@ -252,10 +252,10 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     !ticketInfo.extras.includes("terrace") &&
     ticketInfo.extras.includes("education")
   ) {
-    totalPrice =(
+    totalPrice =
       ticketData.extras.movie.priceInCents.senior +
       ticketData.extras.education.priceInCents.senior +
-      ticketData.general.priceInCents.senior);
+      ticketData.general.priceInCents.senior;
     return totalPrice;
   }
 
@@ -266,11 +266,11 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     ticketInfo.extras.includes("terrace") &&
     ticketInfo.extras.includes("education")
   ) {
-    totalPrice =(
+    totalPrice =
       ticketData.extras.movie.priceInCents.senior +
       ticketData.extras.education.priceInCents.senior +
       ticketData.extras.terrace.priceInCents.senior +
-      ticketData.general.priceInCents.senior);
+      ticketData.general.priceInCents.senior;
     return totalPrice;
   }
 
@@ -281,10 +281,10 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     ticketInfo.extras.includes("terrace") &&
     ticketInfo.extras.includes("education")
   ) {
-    totalPrice = (
+    totalPrice =
       ticketData.extras.education.priceInCents.senior +
       ticketData.extras.terrace.priceInCents.senior +
-      ticketData.general.priceInCents.senior);
+      ticketData.general.priceInCents.senior;
     return totalPrice;
   } //end of extra gen admission
 
@@ -295,9 +295,9 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     !ticketInfo.extras.includes("terrace") &&
     !ticketInfo.extras.includes("education")
   ) {
-    totalPrice = (
+    totalPrice =
       ticketData.extras.movie.priceInCents.child +
-      ticketData.membership.priceInCents.child);
+      ticketData.membership.priceInCents.child;
     return totalPrice;
   }
 
@@ -308,10 +308,10 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     !ticketInfo.extras.includes("terrace") &&
     ticketInfo.extras.includes("education")
   ) {
-    totalPrice =(
+    totalPrice =
       ticketData.extras.movie.priceInCents.child +
       ticketData.extras.education.priceInCents.child +
-      ticketData.membership.priceInCents.child);
+      ticketData.membership.priceInCents.child;
     return totalPrice;
   }
 
@@ -322,11 +322,11 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     ticketInfo.extras.includes("terrace") &&
     ticketInfo.extras.includes("education")
   ) {
-    totalPrice =(
+    totalPrice =
       ticketData.extras.movie.priceInCents.child +
       ticketData.extras.education.priceInCents.child +
       ticketData.extras.terrace.priceInCents.child +
-      ticketData.membership.priceInCents.child);
+      ticketData.membership.priceInCents.child;
     return totalPrice;
   }
 
@@ -337,10 +337,10 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     ticketInfo.extras.includes("terrace") &&
     ticketInfo.extras.includes("education")
   ) {
-    totalPrice = (
+    totalPrice =
       ticketData.extras.education.priceInCents.child +
       ticketData.extras.terrace.priceInCents.child +
-      ticketData.membership.priceInCents.child);
+      ticketData.membership.priceInCents.child;
     return totalPrice;
   }
 
@@ -351,9 +351,9 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     !ticketInfo.extras.includes("terrace") &&
     !ticketInfo.extras.includes("education")
   ) {
-    totalPrice = (
+    totalPrice =
       ticketData.extras.movie.priceInCents.adult +
-      ticketData.membership.priceInCents.adult);
+      ticketData.membership.priceInCents.adult;
     return totalPrice;
   }
 
@@ -364,10 +364,10 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     !ticketInfo.extras.includes("terrace") &&
     ticketInfo.extras.includes("education")
   ) {
-    totalPrice =(
+    totalPrice =
       ticketData.extras.movie.priceInCents.adult +
       ticketData.extras.education.priceInCents.adult +
-      ticketData.membership.priceInCents.adult);
+      ticketData.membership.priceInCents.adult;
     return totalPrice;
   }
 
@@ -378,11 +378,11 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     ticketInfo.extras.includes("terrace") &&
     ticketInfo.extras.includes("education")
   ) {
-    totalPrice =(
+    totalPrice =
       ticketData.extras.movie.priceInCents.adult +
       ticketData.extras.education.priceInCents.adult +
       ticketData.extras.terrace.priceInCents.adult +
-      ticketData.membership.priceInCents.adult);
+      ticketData.membership.priceInCents.adult;
     return totalPrice;
   }
 
@@ -393,10 +393,10 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     ticketInfo.extras.includes("terrace") &&
     ticketInfo.extras.includes("education")
   ) {
-    totalPrice = (
+    totalPrice =
       ticketData.extras.education.priceInCents.adult +
       ticketData.extras.terrace.priceInCents.adult +
-      ticketData.membership.priceInCents.adult);
+      ticketData.membership.priceInCents.adult;
     return totalPrice;
   }
 
@@ -407,9 +407,9 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     !ticketInfo.extras.includes("terrace") &&
     !ticketInfo.extras.includes("education")
   ) {
-    totalPrice = (
+    totalPrice =
       ticketData.extras.movie.priceInCents.senior +
-      ticketData.membership.priceInCents.senior);
+      ticketData.membership.priceInCents.senior;
     return totalPrice;
   }
 
@@ -420,10 +420,10 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     !ticketInfo.extras.includes("terrace") &&
     ticketInfo.extras.includes("education")
   ) {
-    totalPrice =(
+    totalPrice =
       ticketData.extras.movie.priceInCents.senior +
       ticketData.extras.education.priceInCents.senior +
-      ticketData.membership.priceInCents.senior);
+      ticketData.membership.priceInCents.senior;
     return totalPrice;
   }
 
@@ -434,11 +434,11 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     ticketInfo.extras.includes("terrace") &&
     ticketInfo.extras.includes("education")
   ) {
-    totalPrice =(
+    totalPrice =
       ticketData.extras.movie.priceInCents.senior +
       ticketData.extras.education.priceInCents.senior +
       ticketData.extras.terrace.priceInCents.senior +
-      ticketData.membership.priceInCents.senior);
+      ticketData.membership.priceInCents.senior;
     return totalPrice;
   }
 
@@ -449,10 +449,10 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     ticketInfo.extras.includes("terrace") &&
     ticketInfo.extras.includes("education")
   ) {
-    totalPrice = (
+    totalPrice =
       ticketData.extras.education.priceInCents.senior +
       ticketData.extras.terrace.priceInCents.senior +
-      ticketData.membership.priceInCents.senior);
+      ticketData.membership.priceInCents.senior;
     return totalPrice;
   }
 }
@@ -510,8 +510,52 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
-
+function purchaseTickets(ticketData, purchases) {
+      let finalPrice = 0
+      let receipt = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------' //start of receipt
+      for(let i = 0; i< purchases.length; i++){
+        let swag = []
+        if(!(ticketData.hasOwnProperty(purchases[i].ticketType))){
+          //setting up a guard clause for handling the error first this checks our purchase type
+          return `Ticket type '${purchases[i].ticketType}' cannot be found.`
+      }   //if purchase type cannot be found it returns this
+          if(!(ticketData[purchases[i].ticketType].priceInCents.hasOwnProperty(purchases[i].entrantType))){
+            // error handling. Checking if the entrant type is incorrect
+            return `Entrant type '${purchases[i].entrantType}' cannot be found.`
+          }
+          let price = calculateTicketPrice(ticketData, purchases[i])/100 
+          console.log(price, 'this is the current price')
+          //calculate price of ticket using our previous function
+          if(typeof price === 'string'){
+            return price
+          }
+          let ticketType = purchases[i].ticketType; 
+          //this is ^ type of ticket general 
+          let entrantType = purchases[i].entrantType; 
+          // this will determine if its an adult, senior or child
+          receipt += `\n${entrantType[0].toUpperCase()}${entrantType.slice(1)} ${ticketType[0].toUpperCase()}${ticketType.slice(1)} Admission: $${price.toFixed(2)}`
+          // formatting receipt
+          for (let j = 0; j < purchases[i].extras.length; j++){
+            //decided we would use a J loop for extras since its within a loop to iterate throgh the extras
+              if(ticketData.extras.hasOwnProperty(purchases[i].extras[j])){ 
+                //Checking for purchase extras
+                  swag.push(ticketData.extras[purchases[i].extras[j]].description)
+                  //pushing the description in array if extra exists
+              } else {
+                return `Extra type '${purchases[i].extras[j]}' cannot be found.` 
+                //if incorrect extras
+              }
+          }// ending of [j] for loop
+          if(swag.length !== 0){
+            receipt += ` (${swag.join(', ')})`
+            //if there are no extras this will accumulate the properties into a new array
+          }
+          finalPrice += price // accumulating to determine final price
+      }//ending of [i] for loop
+      receipt += `\n-------------------------------------------\nTOTAL: $${finalPrice.toFixed(2)}`//Adding final costs to receipt with a fixed 2 decimals
+      return receipt
+      }// end of function
+  
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
