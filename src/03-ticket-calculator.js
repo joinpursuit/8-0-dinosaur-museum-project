@@ -55,7 +55,26 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {
+    function calculateTicketPrice(ticketData, ticketInfo) {
+      let result;
+      let entrant = ticketInfo.entrantType
+      let type = ticketInfo.ticketType
+      let extra = ticketInfo.extras
+      let extraData = ticketData.extras
+    if (!ticketData[type]){
+      return `Ticket type '${type}' cannot be found.`
+    } else if (!(ticketData[type].priceInCents[entrant]) ){
+      return `Entrant type '${entrant}' cannot be found.`
+    } result = ticketData[type].priceInCents[entrant]
+    for (let x of extra){
+      if (!(extraData[x])){
+        return `Extra type '${extra}' cannot be found.`
+      } else {
+        result += extraData[x].priceInCents[entrant]
+      }
+    }
+      return result
+    
 
   let nothingWrong = false
 
@@ -159,8 +178,62 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {
-}
+    function purchaseTickets(ticketData, purchases) {
+
+      let receiptMessage = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+      let total;
+      let extraData = ticketData.extras
+      let addOnMessage1;
+      let addOnMessage2;
+      let finalTotal=0;
+      let extraAddOn;
+      
+      //let altMessage;
+
+    for (let x of purchases){
+      let entrant = x.entrantType
+      let type = x.ticketType
+      let extra = x.extras
+      if (!ticketData[type]){
+        return `Ticket type '${type}' cannot be found.`
+      } else if (!ticketData[type].priceInCents[entrant]){
+        return `Entrant type '${entrant}' cannot be found.`
+      } total = calculateTicketPrice(ticketData, x)
+      console.log(total)
+      finalTotal += total
+      addOnMessage1 = entrant.charAt(0).toUpperCase() + entrant.slice(1)
+      addOnMessage2 = type.charAt(0).toUpperCase() + type.slice(1)
+      receiptMessage += `${addOnMessage1} ${addOnMessage2} Admission: $${(total/100).toFixed(2)}`
+       if (extra.length > 0){
+       //console.log(receiptMessage) 
+        receiptMessage += ` (`
+      for (let i of extra){
+       
+        //console.log(total, `hii`)
+        if (!(extraData[i])){
+          return `Extra type '${extra}' cannot be found.`
+        } 
+        //console.log(extraData[i].priceInCents[entrant],` ent`)
+       // total += extraData[i].priceInCents[entrant]
+        //console.log(total, `totall`)
+        extraAddOn = i.charAt(0).toUpperCase() + i.slice(1)
+        receiptMessage += `${extraAddOn} Access, `
+        
+      //console.log(receiptMessage, `test`)
+      } 
+      receiptMessage = receiptMessage.slice(0, (receiptMessage.length - 2))
+      receiptMessage += `)\n`
+      //receiptMessage += `${addOnMessage1} ${addOnMessage2} Admission: $${(total/100).toFixed(2)}`
+      } else {
+        receiptMessage += `\n`
+      } 
+      //receiptMessage += `${addOnMessage1} ${addOnMessage2} Admission: $${(total/100).toFixed(2)}`
+      } //console.log(newArr.join(' Access, ')) 
+      receiptMessage += `-------------------------------------------\nTOTAL: $${(finalTotal/100).toFixed(2)}`
+      return receiptMessage
+    
+    }
+
 
 // Do not change anything below this line.
 module.exports = {
