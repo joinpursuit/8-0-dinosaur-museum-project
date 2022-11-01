@@ -54,7 +54,85 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let totalCost = 0
+
+  if (ticketInfo.ticketType !== 'general' && ticketInfo.ticketType !== 'membership' ) {
+    return `Ticket type 'incorrect-type' cannot be found.`
+  }
+  
+   if (ticketInfo.entrantType !== 'child' && ticketInfo.entrantType !== 'adult' && ticketInfo.entrantType !== 'senior' ) {
+    return  `Entrant type 'incorrect-entrant' cannot be found.`
+  }
+  if (ticketInfo.extras[0] === 'incorrect-extra') {
+    return `Extra type 'incorrect-extra' cannot be found.`
+  }
+  
+    if(ticketInfo.ticketType === 'general'){
+      switch(ticketInfo.entrantType) {
+        case 'child':
+          totalCost += 2000
+          break;
+        case 'adult':
+          totalCost += 3000
+          break;
+        case 'senior':
+          totalCost += 2500
+          break;
+        default:
+           `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+      }
+    }else if(ticketInfo.ticketType === 'membership') {
+      switch(ticketInfo.entrantType) {
+        case 'child':
+          totalCost += 1500
+          break;
+        case 'adult':
+          totalCost += 2800
+          break;
+        case 'senior':
+          totalCost += 2300
+          break;
+        default:
+           `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+      }
+  }
+  for (let i = 0; i < ticketInfo.extras.length; i++) {
+    if (ticketInfo.extras[i] === 'movie') {
+      totalCost += 1000
+    }else if (ticketInfo.extras[i] === 'education') {
+      switch(ticketInfo.entrantType) {
+        case 'child':
+          totalCost += 1000
+          break;
+        case 'adult':
+          totalCost += 1200
+          break;
+        case 'senior':
+          totalCost += 1200
+          break;
+        default:
+           `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+      }
+      
+    } if(ticketInfo.extras[i] === 'terrace'){
+      switch(ticketInfo.entrantType) {
+        case 'child':
+          totalCost += 500
+          break;
+        case 'adult':
+          totalCost += 1000
+          break;
+        case 'senior':
+          totalCost += 1000
+          break;
+        default:
+           `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+      }
+    }
+  }
+  return totalCost
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +187,40 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let response = ''
+  let totalCost = 0
+
+   
+  for (let i = 0; i < purchases.length; i++) {
+    const costOfPurchase = calculateTicketPrice(ticketData, purchases[i]);
+    let extras = purchases[i].extras.slice(0)
+    let arr = []
+    if(typeof costOfPurchase === "string"){
+      return costOfPurchase
+    }
+    totalCost += costOfPurchase
+
+
+
+    for (let extra of extras){
+      if(extras.length > 0){
+        arr.push(ticketData.extras[extra].description)
+      }
+    }
+
+    
+
+    if(purchases[i].extras.length > 0){
+      response += `${purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)} ${purchases[i].ticketType[0].toUpperCase() + purchases[i].ticketType.slice(1)} Admission: $${(costOfPurchase/100).toFixed(2)} (${arr.join(", ")})\n`
+    }else{
+      response += `${purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.slice(1)} ${purchases[i].ticketType[0].toUpperCase() + purchases[i].ticketType.slice(1)} Admission: $${(costOfPurchase/100).toFixed(2)}\n`
+    }
+
+
+  }
+  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${response}-------------------------------------------\nTOTAL: $${(totalCost / 100).toFixed(2)}`
+}
 
 // Do not change anything below this line.
 module.exports = {
