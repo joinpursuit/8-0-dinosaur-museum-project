@@ -54,7 +54,28 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let total = 0;
+  if (!ticketData[ticketInfo.ticketType]) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  } else if (
+    !ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+  ) {
+       return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+    }
+    total +=
+      ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+  if (ticketInfo.extras) {
+for (let i = 0; i < ticketInfo.extras.length; i++) {
+  if (!ticketData.extras[ticketInfo.extras[i]]) {
+    return `Extra type '${ticketInfo.extras[i]}' cannot be found.`;
+  }
+    total +=
+    ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType];
+    }
+  }
+  return total;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +130,44 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+ 
+  let totalPrice = 0;
+  let receiptMessage =
+    "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  for (let purchase of purchases) {
+    let ticketPrice = calculateTicketPrice(ticketData, purchase)
+   if (typeof ticketPrice === "number") {
+    if (purchase.extras.length > 0) {
+     receiptMessage += `${purchase.entrantType.charAt(0).toUpperCase()}${purchase.entrantType.slice(1)} ${
+    ticketData[purchase.ticketType].description}: $${(ticketPrice / 100).toFixed(2)}${addParenthesis( purchase,ticketData )}\n`
+   } 
+  else {
+     receiptMessage += `${purchase.entrantType.charAt(0).toUpperCase()}${purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(ticketPrice/100).toFixed(2)}\n`;
+      }
+    } else {
+      return ticketPrice
+    }
+    totalPrice += ticketPrice
+  }
+  function addParenthesis(purchase, ticketData) {
+    let parenthesis = " (";
+    let purchaseExtraArray = purchase.extras;
+
+    for (let i = 0; i < purchaseExtraArray.length; i++) {
+      if (i === purchaseExtraArray.length - 1) {
+        parenthesis += `${ticketData.extras[purchaseExtraArray[i]].description})`;
+      } 
+      else {
+        parenthesis += `${ticketData.extras[purchaseExtraArray[i]].description}, `;
+      }
+    }
+    return parenthesis;
+  }
+  receiptMessage += `-------------------------------------------\nTOTAL: $${(totalPrice/100).toFixed(2)}`;
+  return receiptMessage;
+
+}
 
 // Do not change anything below this line.
 module.exports = {
