@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { extras } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,44 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  // initialize the total price in cents
+  let totalPrice = 0
+  // type of ticket in data 
+  if(ticketInfo.ticketType in ticketData){
+    // entrant type in data 
+
+    if(ticketInfo.entrantType in ticketData[ticketInfo.ticketType]["priceInCents"]){
+
+      totalPrice = ticketData[ticketInfo.ticketType]["priceInCents"][ticketInfo.entrantType];
+      // find the match extra through extras to add it to the total price 
+    
+    for(let extra of ticketInfo.extras){
+       if(!(extra in ticketData.extras)){
+         return `Extra type '${extra}' cannot be found.`
+       } else {
+        totalPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+       }
+    }
+      
+    }
+    // entrance type is invalid 
+    else {
+      return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+    }
+  }
+  // ticket type is invalid 
+  else {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+  }
+  return totalPrice;
+
+
+      
+    }
+    
+  
+
 
 /**
  * purchaseTickets()
@@ -109,7 +147,40 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let totalPrice = 0
+  
+  let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+    for(let  purchase of purchases){
+      let ticketPrice = calculateTicketPrice(ticketData, purchase)
+      let entrantStr = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
+      let ticketTypeStr = purchase.ticketType[0].toUpperCase() + purchase.ticketType.slice(1);
+      if (typeof ticketPrice === "string"){
+        return ticketPrice;
+      }
+      ticketPrice /= 100;
+       let extraDescriptionArr = []
+       let extraStr = "";
+       if (purchase.extras.length >= 1){
+       for (let extra of purchase.extras){
+        extraDescriptionArr.push(ticketData.extras[extra].description)
+       }
+       extraStr += " (" + extraDescriptionArr.join(", ") + ")"
+    
+      
+      totalPrice += ticketPrice;
+      }
+      receipt += `${entrantStr} ${ticketTypeStr} Admission: $${ticketPrice.toFixed(2)}` + extraStr + "\n"
+       
+    
+    }
+    receipt +=  `--------------------------------------\nTOTAL: $${totalPrice.toFixed(2)}`;
+    return receipt;
+  }
+    
+    
+
+
 
 // Do not change anything below this line.
 module.exports = {
