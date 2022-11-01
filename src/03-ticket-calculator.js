@@ -55,53 +55,27 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  let price = 0;
-  let incorrectType = '';
-  let incorrectEntry = '';
-  let extraErrors = '';
+  
+  const { ticketType, entrantType, extras } = ticketInfo;
 
-  function ticketDetails(info) {
-    if (
-      info.entrantType === 'adult' ||
-      info.entrantType === 'child' ||
-      info.entrantType === 'senior'
-    ) {
-      price =
-        ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
-    } else {
-      incorrectEntry = `Entrant type 'incorrect-entrant' cannot be found.`;
-      return incorrectEntry;
-    }
+  const admission = ticketData[ticketType];
+  if (typeof admission !== 'object') return `Ticket type 'incorrect-type' cannot be found.`;
+  const admissionPrice = admission.priceInCents[entrantType];
+  if (typeof admissionPrice !== 'number')
+    return `Entrant type 'incorrect-entrant' cannot be found.`;
+
+  let extrasPrice = 0;
+  for (const extra of extras) {
+    //optional chaining - in the case there is no key
+    const extraPrice = ticketData.extras[extra]?.priceInCents[entrantType];
+    if (typeof extraPrice !== 'number') return `Extra type 'incorrect-extra' cannot be found.`;
+    extrasPrice += extraPrice;
   }
-  if (
-    ticketInfo.ticketType === 'general' ||
-    ticketInfo.ticketType === 'membership'
-  ) {
-    ticketDetails(ticketInfo);
-  } else {
-    incorrectType = `Ticket type 'incorrect-type' cannot be found.`;
-    return incorrectType;
-  }
-  for (let extra of ticketInfo.extras) {
-    if (extra in ticketData.extras) {
-      price += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
-    } else {
-      extraErrors = `Extra type 'incorrect-extra' cannot be found.`;
-      return extraErrors;
-    }
-  }
-  if (price > 0) {
-    return price;
-  } else {
-    if (incorrectType !== '') {
-      return incorrectType;
-    } else if (incorrectEntry !== '') {
-      return incorrectEntry;
-    } else if (additionalError !== '') {
-      return additionalError;
-    }
-  }
+  return admissionPrice + extrasPrice;
 }
+
+
+
 
 /**
  * purchaseTickets()
@@ -156,51 +130,73 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {
-    let totalPrice = 0;
-    let finalReceipt = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n';
-    for (let purchase of purchases) {
-      let ticketPrice = calculateTicketPrice(ticketData, purchase);
-      if (typeof ticketPrice === 'number') {
-        if (purchase.extras.length > 0) {
-          finalReceipt += `${purchase.entrantType
-            .charAt(0)
-            .toUpperCase()}${purchase.entrantType.slice(1)} ${
-            ticketData[purchase.ticketType].description
-          }: $${(ticketPrice / 100).toFixed(2)}${newTicket(
-            purchase,
-            ticketData,
-          )}\n`;
-        } else {
-          receipt += `${purchase.entrantType
-            .charAt(0)
-            .toUpperCase()}${purchase.entrantType.slice(1)} ${
-            ticketData[purchase.ticketType].description
-          }: $${(ticketPrice / 100).toFixed(2)}\n`;
-        }
-      } else {
-        return ticketPrice;
-      }
-      price += ticketPrice;
-    }
-    function newTicket(purchase, ticketData) {
-      let newString = '';
-      let newArray = purchase.extras;
-      for (let i = 0; i < newArray.length; i++) {
-        if (i === newArray.length - 1) {
-          newString += `${ticketData.extras[newArray[i]].description})`;
-        } else {
-          newString += `${ticketData.extras[newArray[i]].description}, `;
-        }
-      }
-      return newString;
-    }
-    finalReceipt += `-------------------------------------------\nTOTAL: $${(
-      totalPrice / 100
-    ).toFixed(2)}`;
-
-    return finalReceipt;
+//capatilize first letter.
+function capitalize(str) {
+  return str[0].toUpperCase() + str.slice(1);
+}
+// format price in cents into price in dollars with double digits
+function priceToStr(price) {
+  return `$${(price / 100).toFixed(2)}`;
+}
+// get purchase price and purchase description string from ticketInfo object
+// if invalid purchase returns null and error string correspondingly
+function getPurchaseDescription(ticketData, ticketInfo) {
+  // convert extras array of strings into string of extras descriptions
+  function extrasToStr(extras) {
+    return extras.length
+      ? ` (${extras
+          .map((extra) => ticketData.extras[extra].description)
+          .join(', ')})`
+      : '';
   }
+  // pull out useful constants from ticketInfo object
+  const { ticketType, entrantType, extras } = ticketInfo;
+
+  // get the purchase "price", which can suddenly become an error string
+  const price = calculateTicketPrice(ticketData, ticketInfo);
+  // check that strange behavior of 'calculateTicketPrice' function
+  const isValidPurchase = typeof price === 'number';
+  // if the purchase is invalid set the actual price to null
+  const purchasePrice = isValidPurchase ? price : null;
+  // if the purchase is valid - format purchase string as required
+  // otherwise it becomes the error message
+  const purchaseString = isValidPurchase
+    ? `\n${capitalize(entrantType)} ${
+        ticketData[ticketType].description
+      }: ${priceToStr(price)}${extrasToStr(extras)}`
+    : price;
+  // return an array containing the purchase price (null if the purchase is invalid)
+  // and purchase description string (or error message)
+  return [purchasePrice, purchaseString];
+}
+    
+function purchaseTickets(ticketData, purchases) {
+   let totalPrice = 0;
+   let purchasesStr = '';
+
+   for (const purchase of purchases){
+      const [purchasePrice, purchaseString] = getPurchaseDescription(ticketData,purchase,);
+      if (purchasePrice === null){
+        //invalid purchase
+        totalPrice = null
+        purchasesStr = purchaseString;
+      }else{
+        //purchase is valid
+        //add price to total and concat purchase descript strings
+        totalPrice += purchasePrice;
+        purchasesStr += purchaseString;
+      }
+   }
+   //if there is an invalid purchase return the error message if not then return receipt string
+   return totalPrice = null
+   ? purchasesStr :`Thank you for visiting the Dinosaur Museum!
+-------------------------------------------${purchasesStr}
+-------------------------------------------
+TOTAL: ${priceToStr(totalPrice)}`;
+}
+
+   
+      
 
 
 // Do not change anything below this line.
