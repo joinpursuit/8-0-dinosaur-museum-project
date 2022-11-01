@@ -22,7 +22,18 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  if (dinosaurs.length === 0) {
+    let result = {};
+    return result
+  } else {
+    let maxMeters = Math.max(...dinosaurs.map(({ lengthInMeters }) => lengthInMeters));
+    let maxFeet = Number((maxMeters * 3.281).toFixed(2));
+    let foundObj = dinosaurs.find(({ lengthInMeters }) => lengthInMeters === maxMeters);
+    let finalObj = { [foundObj.name]: maxFeet }
+    return finalObj
+  }
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +55,12 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  const search = dinosaurs.find(({ dinosaurId }) => dinosaurId === id); // Initializes search as the result of the .find callbackfunction ran to find the {key} inside of the given dinosaurs array if the value inside that key is === to the given 'id'. If the given value inside my matching {key} is not === to 'id' then search will be 'undefined'
+  return (!search ? `A dinosaur with an ID of '${id}' cannot be found.` // Uses ternary to return (if search is falsy then return error statement else return desired interpolated string)
+    : `${search.name} (${search.pronunciation})\n${search.info} It lived in the ${search.period} period, over ${search?.mya[1] ?? search?.mya[0] ?? "error"} million years ago.` // 
+  );
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +87,28 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let matchedmyaArray = dinosaurs
+    .filter((dino) => {
+      if (dino.mya.length === 1 && (dino.mya[0] === mya + 1 || !dino.mya[0] === mya)) {
+        return dino
+      } else if (dino.mya.length === 2 && dino.mya.includes(mya + 4) || dino.mya.includes(mya + 5) || dino.mya.includes(mya + 6)) {
+        return dino
+      }
+      else {
+        return dino.mya.includes(mya)
+      }
+    })
+
+  // .map((dino) => dino.dinosaurId);
+  if (!key) {
+    let format = matchedmyaArray.map((dino) => dino.dinosaurId)
+    return format
+  } else {
+    let format = matchedmyaArray.map((dino) => dino[key])
+    return format
+  }
+}
 
 module.exports = {
   getLongestDinosaur,
