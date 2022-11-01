@@ -32,21 +32,20 @@ const exampleRoomData = require("../data/rooms");
   for (let i = 0; i < dinosaurs.length; i++){
     if (dinosaurName == dinosaurs[i].name){
       x = dinosaurs[i].dinosaurId
-    
-    } else if (dinosaurName !== dinosaurs[i].name){
-      y = `Dinosaur with name '${dinosaurName}' cannot be found.`
-
     } for (let j = 0; j < rooms.length; j++){
       if (rooms[j].dinosaurs.indexOf(x) !== (-1)){
         y = rooms[j].name
-      } else {
-        if (rooms[j].dinosaurs.indexOf(x) == (-1) && (dinosaurName == dinosaurs[i].name) ){
-        y = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.` 
-        }
-      }
+      } 
     }
   } 
-  return y
+  if (y){
+    z = y
+  } else if (!x){
+    z = `Dinosaur with name '${dinosaurName}' cannot be found.`
+  } else if (!y){
+    z = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+  }
+  return z
 }
 
 /**
@@ -85,7 +84,7 @@ function makingObj(rooms){
   for (let i of rooms){
     if (i.roomId === id){
     for (let ide of i.connectsTo){
-      if ((idToName[ide]) || (idToName[ide]) === ""){
+      if ((idToName[ide])){
         newArr.push(idToName[ide])
       } else {
         return `Room with ID of '${ide}' could not be found.`
