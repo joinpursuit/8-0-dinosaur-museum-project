@@ -209,8 +209,8 @@ function purchaseTickets(ticketData, purchases) {
   let lineFormat = '';
   let receipt = ['Thank you for visiting the Dinosaur Museum!\n-------------------------------------------'];
   let i;
-  let errorEnt = `Entrant type '${purchases[i].entrantType}' cannot be found.`;
-  let errorTik = `Ticket type '${purchases[i].ticketType}' cannot be found.`;
+  // let errorEnt = `Entrant type '${purchases[i].entrantType}' cannot be found.`;
+  // let errorTik = `Ticket type '${purchases[i].ticketType}' cannot be found.`;
   let errorExt = `Extra type 'incorrect-extra' cannot be found.`;
 
   /**
@@ -226,10 +226,10 @@ function purchaseTickets(ticketData, purchases) {
     let extraArr = [];
     // 3 escapes for errors.
     if (purchases[i].entrantType !== 'child' && purchases[i].entrantType !== 'adult' && purchases[i].entrantType !== 'senior') {
-      return errorEnt;
+      return `Entrant type '${purchases[i].entrantType}' cannot be found.`;
     }
     if (purchases[i].ticketType !== 'general' && purchases[i].ticketType !== 'membership') {
-      return errorTik;
+      return `Ticket type '${purchases[i].ticketType}' cannot be found.`;
     }
     if (purchases[i].extras.includes('incorrect-extra')) {
       return errorExt;
@@ -309,6 +309,7 @@ function purchaseTickets(ticketData, purchases) {
 
     // Here we add the lineTotal to the purchaseTotal in order to keep track of the entire purchase total.
     purchaseTotal += lineTotal;
+    
   }
   // Here we push the final purchaseTotal to the receipt array along with the necessary line breaks and formatting required by the tests.
   receipt.push(`\n-------------------------------------------\nTOTAL: $${purchaseTotal}.00`)
