@@ -69,31 +69,31 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 function getConnectedRoomNamesById(rooms, id) {
 
   let found = false
-  let error = ""
+  let error = "" // creating an empty string 
   for (let i = 0; i < rooms.length; i++) {
-    if (rooms[i].roomId === id) {
-      found = true
+    if (rooms[i].roomId === id) {  // checking to see if room at index i within room id is equal to id
+      found = true // now we are setting the variable found to true in order to create another if statment where found is not true
     }
   }
-  if (!found) {
+  if (!found) { // here we are checking to see if found is false then return the following statment 
     return `Room with ID of '${id}' could not be found.`
   }
- let isConnectedRoom = []
+ let isConnectedRoom = [] // creating an emtpy array
   for (let i = 0; i < rooms.length; i++) {
-    if (rooms[i].roomId === id){
-      isConnectedRoom.push(rooms[i].connectsTo)
+    if (rooms[i].roomId === id){ 
+      isConnectedRoom.push(rooms[i].connectsTo) // pushing room at index i in connectsTo into the empty arrat
     }
   }
-   isConnectedRoom = [].concat.apply([], isConnectedRoom)
+   isConnectedRoom = [].concat.apply([], isConnectedRoom)  // using the concat method to merge  the two arrays
     for (let i = 0; i < isConnectedRoom.length; i++) {
-      let roomFound = rooms.find(room => isConnectedRoom[i] === room.roomId)
-      if (!roomFound) {
+      let roomFound = rooms.find(room => isConnectedRoom[i] === room.roomId) 
+      if (!roomFound) { // checking if rooms are not found 
         return `Room with ID of '${isConnectedRoom[i]}' could not be found.`
       } else {
-      isConnectedRoom[i] = roomFound
+      isConnectedRoom[i] = roomFound  
       }
     }
-  isConnectedRoom = isConnectedRoom.map(room => room.name)
+  isConnectedRoom = isConnectedRoom.map(room => room.name) 
   return isConnectedRoom
 }
 

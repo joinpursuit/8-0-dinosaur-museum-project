@@ -92,17 +92,17 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let dino = []
-  for (let i = 0; i < dinosaurs.length; i++) {
-    if (dinosaurs[i].mya.length === 1) {
-      if (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] - 1 === mya) {
-        if (key) {
-          dino.push(dinosaurs[i][key])
+  let dino = [] // here i set dino to an empty array since we see that the return is in an array
+  for (let i = 0; i < dinosaurs.length; i++) { // creata a for loop in order to compare the value at index i to the set mya
+    if (dinosaurs[i].mya.length === 1) { // here im checking if the dinosaur only has a single value for `mya`
+      if (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] - 1 === mya) { // i did a nested if statment, where we already determined that there is one  single value. I am checking to see if dino. at the random index of i mya at the first index is equaly to mya or a dino. at index i - 1 is equal to mya
+        if (key) { // another nested if statment to check if the key is included
+          dino.push(dinosaurs[i][key]) // if key is included i pushed using .push() , dino. at index i and the key properitys into empty array of dino 
         } else {
-          dino.push(dinosaurs[i].dinosaurId)
+          dino.push(dinosaurs[i].dinosaurId) // The else statment is doing the same as the code above but put dino. at index i ,dino.id  inside the empty if the is statments above are false
         }
       }// 2nd if statment 
-    } else if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya) { //finding range 
+    } else if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya) { //finding range. checking to see if the dino at index i , mya at the first and second idex is greater than and equal to and less than or equal to mya
       if (key) {
         dino.push(dinosaurs[i][key])
       } else {
@@ -110,7 +110,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
       }
     }
   }//end of loop
-  return dino
+  return dino // returning dino after the for loop
 }//end of function
 
 module.exports = {
