@@ -56,13 +56,34 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  let arr = []
-  for (let i = 0; i < tickets.length; i++){
-    if (ticketsType === false)
-    return  "Ticket type 'incorrect-type' cannot be found." 
-  }
-  
-  //if ()
+  let arr1 = ['general','membership']
+  let arr2 = ['child','adult','senior']
+  let arr3 = ['movie','education','terrace']
+  let price = 0
+
+
+
+  if (!arr1.includes(ticketInfo.ticketType)) {
+    return "Ticket type 'incorrect-type' cannot be found."
+    }
+  if (!arr2.includes(ticketInfo.entrantType)) {
+    return "Entrant type 'incorrect-entrant' cannot be found."
+    }
+  for (let i = 0; i < ticketInfo.extras.length; i++){
+    if (!arr3.includes(ticketInfo.extras[i])) {
+      return "Extra type 'incorrect-extra' cannot be found."
+      }
+    }
+    if (ticketInfo.extras.length === 0) {
+      return ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+    }
+    else {
+      price = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+      for (const extra of ticketInfo.extras) {
+        price += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+      }
+    }
+       return price
 }
 //ticketInfo.ticketType 
 // ticketInfo.entrantType
@@ -120,7 +141,32 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+let arr1 = ['general','membership'] 
+let arr2 = ['child','adult','senior']
+let lastStr = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------'
+let arr3 = ['movie','education','terrace'] 
+let total = 0
+
+  for (let i = 0; i < purchases.length; i++) {
+    if (!arr1.includes(purchases[i].ticketType)) {
+      return "Ticket type 'incorrect-type' cannot be found."
+      }
+    if (!arr2.includes(purchases[i].entrantType)) {
+        return "Entrant type 'incorrect-entrant' cannot be found."
+        }
+    for (const extra of purchases[i].extras) {
+          if (!arr3.includes(extra)) {
+            return "Extra type 'incorrect-extra' cannot be found."
+            }
+        }
+        //no extra 
+        lastStr += `\n${purchases[i].entrantType.charAt(0).toUpperCase() + purchases[i].entrantType.slice(1)} ${ticketData[purchases[i].ticketType].description}: $${(ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType]/100).toFixed(2)}`
+        total += ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType]
+  }
+          lastStr += `\n-------------------------------------------\nTOTAL: $${(total/100).toFixed(2)}`
+            return lastStr
+}
 
 // Do not change anything below this line.
 module.exports = {
