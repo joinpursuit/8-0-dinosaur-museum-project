@@ -26,27 +26,28 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  let roomMessage = ""
-  let dinosaurNameId = ""
-  let dinoName = ""
-  for (i = 0; i < dinosaurs.length; i++){
-    if (dinosaurs[i].name === dinosaurName){
-      dinosaurNameId = dinosaurs[i].dinosaurId
-      dinoName = dinosaurName
+  let roomMessage = "" //Holds the answer
+  let error = "" //Holds 1 error message
+  let dinosaurNameId = "" //Holds the id of the dinosaur
+  let dinoName = "" //Holds the name of the dinosaur
+  for (i = 0; i < dinosaurs.length; i++){ //Loop through dinosaurs array
+    if (dinosaurs[i].name === dinosaurName){ //Checks if any Dinosaur name in the array matches to the given dinosaurName
+      dinosaurNameId = dinosaurs[i].dinosaurId //Updates the vaule of dinosaurNameId to the corresponding dinosaur id 
+      dinoName = dinosaurName //Used to Check if the if statement passed
     } 
   }
-  for (i = 0; i < rooms.length; i++){
-    if(rooms[i].dinosaurs.includes(dinosaurNameId)){
-      roomMessage = rooms[i].name
-      return roomMessage
-    } else {
-      roomMessage = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+  for (i = 0; i < rooms.length; i++){ //Loops through rooms array
+    if(rooms[i].dinosaurs.includes(dinosaurNameId)){ //Checks if dinosaurNameId is included in side of rooms array[i].dinosaurs
+      roomMessage = rooms[i].name //Sets roomMessage to be the name of room with given id
+      return roomMessage //returns answer
+    } else { //If the id is not located in any of the rooms
+      error = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.` //Updates rommMessage to the error message if dinosaurs name is not found in any room
     }
   }
-  if (dinoName !== dinosaurName){
-  return `Dinosaur with name '${dinosaurName}' cannot be found.`
-  } else {
-    return roomMessage
+  if (dinoName !== dinosaurName){ //Checks if dinoName has been updated
+  return `Dinosaur with name '${dinosaurName}' cannot be found.` //Returns error message if dinosaur name is not in the dinosaurs array
+  } else { //If it has
+    return error //Returns other error message
   }
 }
 
@@ -73,29 +74,29 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  let results = []
-  let correctId = ""
-  let incorrectIdFound = false
-  for (let i = 0; i < rooms.length; i++){
-    if(rooms[i].roomId === id){
-      correctId = id
-      for (let j = 0; j < rooms[i].connectsTo.length; j++){
-        for (let k = 0; k < rooms.length; k++){
-          if (rooms[i].connectsTo[j] === rooms[k].roomId){            
-            results.push(rooms[k].name)
-          } else if (rooms[i].connectsTo[j] === 'incorrect-id'){
-            incorrectIdFound = true
+  let results = [] //Holds the answer
+  let correctId = "" //Holds id 
+  let incorrectIdFound = false//Holds false as default
+  for (let i = 0; i < rooms.length; i++){ //Loops through rooms array
+    if(rooms[i].roomId === id){ //Checks if id is found in rooms
+      correctId = id //Used to see if id is found in rooms
+      for (let j = 0; j < rooms[i].connectsTo.length; j++){ //Loops through connectsTo array
+        for (let k = 0; k < rooms.length; k++){ //Loops through rooms array again 
+          if (rooms[i].connectsTo[j] === rooms[k].roomId){ //Checks if any connectsTo id in rooms is matching any id in rooms     
+            results.push(rooms[k].name) //Pushes the name of the room into the answer
+          } else if (rooms[i].connectsTo[j] === 'incorrect-id'){ //Checks if any connectsTo id is labled as "incorrect-id"
+            incorrectIdFound = true //Updates to true so we know it is found
           }
         }
       }
     }
   }
-  if (correctId !== id){
-    return `Room with ID of '${id}' could not be found.`
-  } else if (incorrectIdFound === true){
-    return `Room with ID of 'incorrect-id' could not be found.`
+  if (correctId !== id){ // Checsk if correctId was updated
+    return `Room with ID of '${id}' could not be found.` //Returns error message if the id was not found in the array of rooms
+  } else if (incorrectIdFound === true){ //Checks if incorrectIdFound was updated
+    return `Room with ID of 'incorrect-id' could not be found.` //Returns error message if the id in connectsTo is incorrect
   }
-  return results
+  return results //Returns answer
 }
 
 module.exports = {

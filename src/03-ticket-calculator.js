@@ -55,27 +55,20 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  let totalCost = 0;
-  if (ticketData[ticketInfo.ticketType] === undefined){
-    return "Ticket type 'incorrect-type' cannot be found."
-    } else if (ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType] === undefined){
-      return "Entrant type 'incorrect-entrant' cannot be found."
-    } else if (ticketInfo.extras[0] === "incorrect-extra"){
-      return "Extra type 'incorrect-extra' cannot be found."
+  let totalCost = 0; //Holds total cost of ticket
+  if (ticketData[ticketInfo.ticketType] === undefined){ //Checks if ticket type of ticketData is undefined
+    return "Ticket type 'incorrect-type' cannot be found." //Return error message related to incorrect ticket type
+    } else if (ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType] === undefined){ //Checks if entrant type of ticketData is undefined
+      return "Entrant type 'incorrect-entrant' cannot be found." //Return error message related to incorrect entrant type
+    } else if (ticketInfo.extras[0] === "incorrect-extra"){ //checks if the given extra is equal to "incorrect-extra"
+      return "Extra type 'incorrect-extra' cannot be found." //Returns error message related to incorrect extra type
     }
-  totalCost = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
-  for (let i = 0; i < ticketInfo.extras.length; i++){
-
-    if (i === 0){
-      totalCost += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType]
-      } else if (i > 0) {
-        totalCost += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType] 
-      }
+  totalCost = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType] //sets totalCost = to the value based on the ticket type and entrant type
+  for (let i = 0; i < ticketInfo.extras.length; i++){ //Loop that goes through extras array
+    totalCost += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType] //Adds the cost of each additonal extras on to totalCost 
   }
-   return totalCost
-   
+   return totalCost //Returns totalCost
 }
-
 /**
  * purchaseTickets()
  * ---------------------
@@ -130,49 +123,39 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  let result = ""
-  let totalCost = 0;
-  let personCost = 0
-  let entrantType = ""
-  let error = "";
-  let extras = ""
+  let result = ""; //Holds answer
+  let totalCost = 0; //Holds total cost
+  let personCost = 0; //Holds the cost of each person
+  let entrantType = "" //Holds the entrat type
+  let extras = "" //holds the description 
  
- for (let i = 0; i < purchases.length; i++){
-  if (ticketData[purchases[i].ticketType] === undefined){
-    return "Ticket type 'incorrect-type' cannot be found."
-    } else if (ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType] === undefined){
-      return "Entrant type 'incorrect-entrant' cannot be found."
-    } else if (purchases[i].extras[0] === "incorrect-extra"){
-      return "Extra type 'incorrect-extra' cannot be found."
+ for (let i = 0; i < purchases.length; i++){ //Loops through purchases array
+  if (ticketData[purchases[i].ticketType] === undefined){ //Checks if ticket type of ticketData is undefined 
+    return "Ticket type 'incorrect-type' cannot be found."; //Returns the error message for the incorrect ticket type
+    } else if (ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType] === undefined){ //Checks if entrant type of ticketData is undefined
+      return "Entrant type 'incorrect-entrant' cannot be found."; //Returns the error message for the incorrect entrant type
+    } else if (purchases[i].extras[0] === "incorrect-extra"){ //checks if the given extra is equal to "incorrect-extra"
+      return "Extra type 'incorrect-extra' cannot be found."; //Returns the error message for the incorrect extra
     }
-  totalCost += ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType]
-  personCost = ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType]
-  entrantType = purchases[i].entrantType.charAt(0).toUpperCase() + purchases[i].entrantType.slice(1)
-  for (let j = 0; j < purchases[i].extras.length; j++){
-    if (j === 0){
-      extras = ticketData.extras[purchases[i].extras[j]].description
-    } else if (j > 0) {
-      extras += ", " + ticketData.extras[purchases[i].extras[j]].description
+  totalCost += ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType]; // set totalCost = to the value based on the ticket type and entrant type and adds onto it when loops  
+  personCost = ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType]; // set personCost = to the value based on the ticket type and entrant type
+  entrantType = purchases[i].entrantType.charAt(0).toUpperCase() + purchases[i].entrantType.slice(1); //Variable holds the entrant type but formated correctly
+  for (let j = 0; j < purchases[i].extras.length; j++){ //Loops through extras array
+    if (j === 0){ //For the first value of j
+      extras = ticketData.extras[purchases[i].extras[j]].description; //extras = the description of the given extra 
+    } else if (j > 0) { //For every other j value
+      extras += ", " + ticketData.extras[purchases[i].extras[j]].description; ////extras = the description of the given extra and formats it correctly
     }
-    totalCost += ticketData.extras[purchases[i].extras[j]].priceInCents[purchases[i].entrantType]
-    personCost += ticketData.extras[purchases[i].extras[j]].priceInCents[purchases[i].entrantType]
+    totalCost += ticketData.extras[purchases[i].extras[j]].priceInCents[purchases[i].entrantType]; //The cost of extra is added to total cost for each extra given in purchases for the total cost
+    personCost += ticketData.extras[purchases[i].extras[j]].priceInCents[purchases[i].entrantType]; //The cost of extra is added to total cost for each extra given in purchases for each persons cost
   }
-    if (extras){
-    if (i === 0){
-      result = `\n${entrantType} ${ticketData[purchases[i].ticketType].description}: $${(personCost / 100).toFixed(2)} (${extras})`
-      } else {
-       result += `\n${entrantType} ${ticketData[purchases[i].ticketType].description}: $${(personCost / 100).toFixed(2)} (${extras})`
-      } 
-    } else if (!extras){
-      if(i === 0){
-        result = `\n${entrantType} ${ticketData[purchases[i].ticketType].description}: $${(ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType] / 100).toFixed(2)}`
-        } else {
-         result += `\n${entrantType} ${ticketData[purchases[i].ticketType].description}: $${(ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType] / 100).toFixed(2)}`
-        }
+    if (extras){ //Checks if extras is a truthy value
+      result += `\n${entrantType} ${ticketData[purchases[i].ticketType].description}: $${(personCost / 100).toFixed(2)} (${extras})`; //Sets result = to the required information and formatted correctly (with extras included)
+    } else if (!extras){ //Checks if extras is falthy
+      result += `\n${entrantType} ${ticketData[purchases[i].ticketType].description}: $${(personCost / 100).toFixed(2)}`; //Sets result = to the required information and formatted correctly (extras not included)
     }
  }
-  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------${result}\n-------------------------------------------\nTOTAL: $${(totalCost / 100).toFixed(2)}`
-
+  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------${result}\n-------------------------------------------\nTOTAL: $${(totalCost / 100).toFixed(2)}`; //Returns result in correct format
 }
 
 // Do not change anything below this line.
