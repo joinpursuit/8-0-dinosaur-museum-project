@@ -116,11 +116,8 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
       arr.push(dinosaurs[i][key])
     } else if (!Object.keys(dinosaurs[i]).includes(key)){
       arr.push(dinosaurs[i].dinosaurId)
-      }
-    
     }
-    
-    
+  }
   }
   return arr
 }

@@ -52,7 +52,7 @@ describe("getRoomByDinosaurName()", () => {
   });
 });
 
-describe.only("getConnectedRoomNamesById()", () => {
+describe("getConnectedRoomNamesById()", () => {
   test("should return the names of all rooms connected to the given room by ID", () => {
     const id = "A6QaYdyKra"; // Ticket Center
     const actual = getConnectedRoomNamesById(rooms, id);

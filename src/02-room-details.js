@@ -73,7 +73,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  let arr = [];
+ let arr = [];
   let correctId = '';
   let incorrectId = false;
   for (i = 0; i < rooms.length; i++) {
