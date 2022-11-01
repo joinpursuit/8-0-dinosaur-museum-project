@@ -54,7 +54,26 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+    let ticketPrice =0
+    //error handling
+    if (!ticketData.hasOwnProperty(ticketInfo.ticketType)){
+      return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+    }
+    if (!ticketData[ticketInfo.ticketType].priceInCents.hasOwnProperty(ticketInfo.entrantType)){
+      return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+    }
+    //error handling for extras
+    for (let i = 0; i < ticketInfo.extras.length; i++){
+      if (!ticketData.extras.hasOwnProperty(ticketInfo.extras[i])){
+        return `Extra type '${ticketInfo.extras[i]}' cannot be found.`
+      }
+      //at this point we can assume the values we have in our ticket are valid, so use them to access the data. 
+      ticketPrice += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType]
+    }
+    ticketPrice += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+    return ticketPrice 
+    }
 
 /**
  * purchaseTickets()
@@ -109,7 +128,32 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let totalPrice = 0 //total acculumate
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
+  // Receipt to be accumulated
+//each purchase in array in purchases
+ for (const purchase of purchases){
+  let extrasArr = [] //array to store extras of given purchase
+  let extraReceipt = "" // join array after into string 
+ price = calculateTicketPrice(ticketData, purchase) //use previous function for error handling and price
+ if (typeof price !== "number") { // if its not number we can assume its an error
+  return price 
+ }
+ for (const nameOfExtra of purchase.extras){
+  extrasArr.push(ticketData.extras[nameOfExtra].description) // push descriptions for each extra in purchase
+ }
+extraReceipt = ` (${extrasArr.join(", ")})` // join and seperate each index with ", "
+if (extrasArr.length) { // we have extras put descriptions in if not dont include it
+receipt += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(price/100).toFixed(2)}${extraReceipt}\n`
+} else {
+  receipt += `${purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)} ${ticketData[purchase.ticketType].description}: $${(price/100).toFixed(2)}\n`
+}
+totalPrice += price //accumulate price
+ }
+ receipt += `-------------------------------------------\nTOTAL: $${(totalPrice/100).toFixed(2)}`
+return receipt
+}
 
 // Do not change anything below this line.
 module.exports = {
