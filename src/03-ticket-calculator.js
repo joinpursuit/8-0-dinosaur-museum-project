@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { membership } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,34 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let ticketPrice = 0
+  // return meddage if ticket type is not found run false
+  if (!ticketData[ticketInfo.ticketType]) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+  // return message if if ticket entrant type does not exist in the price in cennts
+  if (!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]) {
+    return "Entrant type 'incorrect-entrant' cannot be found."
+  }
+  
+  // the entrance ticket is checking for every extra 
+  for (let i = 0; i < ticketInfo.extras.length; i++){
+    // extra will include the ticket information
+    let extra = ticketInfo.extras[i]
+    //ticketPrice should be added to the ticket information i.e. genral and membership 
+    if (ticketData.extras[extra]) {
+      ticketPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+    
+    } else {
+
+      return "Extra type 'incorrect-extra' cannot be found."
+  
+    } 
+  }
+ 
+  return ticketPrice += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +137,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) { }
 
 // Do not change anything below this line.
 module.exports = {
