@@ -26,7 +26,7 @@ function getLongestDinosaur(dinosaurs) {
   // Declaration && error message
 
   let finalObject = {}
-  if(!dinosaurs.length){
+  if(!dinosaurs.length){  // if dino array is empty return final object
     return finalObject
   }
   let longestDinoName = ""
@@ -35,14 +35,15 @@ function getLongestDinosaur(dinosaurs) {
   //Main code
 
   for(let i = 1; i < dinosaurs.length; i++){    // checking for longest dinosaur
-      if(longestDino < dinosaurs[i].lengthInMeters){
+      if(longestDino < dinosaurs[i].lengthInMeters){  // updating longestDino to current tallest dinosaur
           longestDino = dinosaurs[i].lengthInMeters // push the length and name
           longestDinoName = dinosaurs[i].name
       }
   } // End of for loop
-  finalObject[`${longestDinoName}`] = longestDino * 3.281
-
+  
   //Final - Return
+
+  finalObject[`${longestDinoName}`] = longestDino * 3.281 // converting from meter to feet
   return finalObject
 } // End of function
 
@@ -69,12 +70,12 @@ function getLongestDinosaur(dinosaurs) {
 function getDinosaurDescription(dinosaurs, id) {
   //Main code
   for(let i = 0; i < dinosaurs.length; i++){
-    if(dinosaurs[i].dinosaurId === id){   // checking if id's matcg
+    if(dinosaurs[i].dinosaurId === id){   // checking if id's match 
         return`${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length-1]} million years ago.` 
     }
   } // End of for loop
 
-  // Error Message
+  // Error Message if no id can be found
   return `A dinosaur with an ID of '${id}' cannot be found.` 
 } // End of function
 
@@ -105,18 +106,24 @@ function getDinosaurDescription(dinosaurs, id) {
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
 // Declaration
-let dinosaursAliveArray = []
+  let dinosaursAliveArray = []
 
 // Main code - method 1 - long if but no repeat 
-for(let i = 0; i < dinosaurs.length; i++){
-  if((dinosaurs[i].mya.length > 1 && mya <= dinosaurs[i].mya[0] && mya >= dinosaurs[i].mya[dinosaurs[i].mya.length-1]) || (dinosaurs[i].mya.length === 1 && dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] - 1 === mya)){
-    if(!key){
-      dinosaursAliveArray.push(dinosaurs[i].dinosaurId)
-    } else {
-      dinosaursAliveArray.push(dinosaurs[i][key])
+  for(let i = 0; i < dinosaurs.length; i++){
+    if((dinosaurs[i].mya.length > 1 && mya <= dinosaurs[i].mya[0] && mya >= dinosaurs[i].mya[dinosaurs[i].mya.length-1]) || (dinosaurs[i].mya.length === 1 && dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] - 1 === mya)){
+      // check mya length and if greater than 1 or equal to 1. and check mya value between the mya array
+        if(!key){                                           
+          dinosaursAliveArray.push(dinosaurs[i].dinosaurId)
+        } else {                                       // if key is provided in the parameter then push key else id.
+          dinosaursAliveArray.push(dinosaurs[i][key])
+        }
     }
-  }
-} // End of for loop
+  } // End of for loop
+// Final - return
+  return dinosaursAliveArray
+
+} // End of function
+
 
 /* ***** Main code - method 2 - broken down to make it more clear but inner if condition is repeated
 
@@ -140,11 +147,6 @@ else if(dinosaurs[i].mya.length === 1){
   }
 }
 } ***** */
-
-// Final - return
-  return dinosaursAliveArray
-
-} // End of function
 
 module.exports = {
   getLongestDinosaur,
