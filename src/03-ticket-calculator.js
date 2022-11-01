@@ -54,8 +54,31 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
 
+function calculateTicketPrice(ticketData, ticketInfo) {
+let ticketCost = 0
+//! ->The NOT (!) operator returns true for a false expression and false for a true expression, will run through the data both times to see if true or false and return matching info for the ticket price
+//without the NOT operator, it does not run the test
+if (!ticketData[ticketInfo.ticketType]) {
+  return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+}
+if (!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]) {
+  return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+}//.forEach()->is used to iterate(just like a loop would) over every element of the array and perform a desired operation with it.
+
+if (!ticketInfo.extras.forEach(extra => ticketData.extras[extra])) {
+  ticketInfo.extras.forEach(newTicket => ticketCost += ticketData.extras[newTicket].priceInCents[ticketInfo.entrantType]) //newTicket represents the string you are trying to return
+  
+} else {
+  return `Extra type '${ticketInfo.extras === 0}' cannot be found `//if theres no extra info for ticket return ticket not found
+
+}
+
+ return ticketCost+= ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+
+}
+
+//^--- each dot notation digs into array for the value, opens up the array to be read through for whatever desired information applies
 /**
  * purchaseTickets()
  * ---------------------
@@ -97,7 +120,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     ];
     purchaseTickets(tickets, purchases);
     //> "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
-
+ 
  * EXAMPLE:
     const purchases = [
       {
@@ -109,7 +132,18 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+//   let fullReceipt = ""
+
+
+// Brainstorming---v
+//Possibly differerent returns => return fullReceipt 
+// return  "Ticket type 'incorrect-type' cannot be found."
+//return "Entrant type 'incorrect-entrant' cannot be found."
+//return  "Extra type 'incorrect-extra' cannot be found."
+
+
+ }
 
 // Do not change anything below this line.
 module.exports = {
