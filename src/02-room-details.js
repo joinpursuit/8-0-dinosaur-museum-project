@@ -67,13 +67,13 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  let found = false
-  let errorMessage = ""
-  for (let i = 0; i < rooms.length; i++)
-  if (rooms[i].roomID === id){
+  let found = false //declare variable 
+  let errorMessage = "" //declare variable
+  for (let i = 0; i < rooms.length; i++) // start of for loop
+  if (rooms[i].roomID === id){ // looping through the index of rooms to match/see if it's true to ID
     found = true
 
-  }
+  } //end of for loop 
 
   }
   let isConnectedRoom = [] //set isConnectedRoom as an empty array
@@ -83,7 +83,7 @@ function getConnectedRoomNamesById(rooms, id) {
     }
   }return isConnectedRoom 
   if (!found) {
-}return `Room with ID of '${id}' could not be found.`
+}return `Room with ID of '${id}' could not be found.` //end of function
 
 module.exports = {
   getRoomByDinosaurName,
