@@ -122,19 +122,38 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  */
 function purchaseTickets(ticketData, purchases) {
   let subTotal = 0
-  
-  for (let i = 0; i < purchases.length; i++) {
-    let ticketInfo = purchases[i]
-    let finalReceipt = calculateTicketPrice(ticketData, ticketInfo)
+  let ticketInfo = 0
+  let printReceipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------";
+   for (let i = 0; i < purchases.length; i++){
+    //check with your Guard Clause to generate your error message
+   if (!purchases[i].ticketType in ticketData){
+    //error message
+      return `Ticket type '${purchases[i].ticketType}' cannot be found.`
+   }
+   if (!purchases[i].entrantType in ticketData[purchases[i].ticketType].priceInCents){
+      return `Entrant type '${purchases[i].entrantType}' cannot be found.`
+   } //FORMATTING IS FUN! ... FOR STRINGS...
+   let ticketPrice = calculateTicketPrice(ticketData, purchases[i])/100
+   printReceipt += `\n${purchases[i].entrantType.charAt(0).toUpperCase()}${purchases[i].entrantType.slice(1)} ${purchases[i].ticketType.charAt(0).toUpperCase()}${purchases[i].ticketType.slice(1)} Admission: `
+   printReceipt += `$${(ticketPrice).toFixed(2)}`
 
-    if (typeof price === 'string') {return finalReceipt}
+   
 
-    subTotal += finalReceipt
- }
 
+   
+    //
+    // redefine params now that you invoke the previous function ---> HELPER FUNCTIONS 
+    //ticketInfo = purchases[i]
+    
+
+   // if (typeof price === 'string') 
+    //return ticketPrice
+    subTotal += ticketPrice
+  }//end of for loop
+
+   printReceipt += `\n-------------------------------------------\nTOTAL: $${(subTotal).toFixed(2)}`
+  return printReceipt
   
-  
- 
 }
 
 // Do not change anything below this line.
