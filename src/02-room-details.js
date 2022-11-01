@@ -27,9 +27,9 @@ const exampleRoomData = require("../data/rooms");
  */
 
 /* 
-User enters name of dinosaur in order to get the room where the dinosaur is. Return options:
+User can enter name of dinosaur in order to get the room where the dinosaur is. Return options:
 1. Name of room where dino can be found. 
-2.Dino name cannot be found
+2. Dino name cannot be found
 3. Dino cannot be found in any of the rooms
 
 The room can be id'd through the dinosaur ID. So, if the user inputs a dino name, the program has to transfer the name to the dino ID and then the ID needs to be checked against the rooms' dino IDs.
@@ -39,31 +39,44 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 
   //dinosaurName is a parameter. Do not try to reassign it.
   
+//guard clause(s)
+if (!pickedId) {return noSuchDino};
 
-let errorDinoRoom = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
 
-let errorRoom=`Room with ID of '${rooms}' could not be found.`;
-let pickedDino = ""
-let roomReturned = "" 
+let errorDinoRoom = `Dinosaur with name '${dinosaurName}' cannot be found in any room.`;
+let noSuchDino=`Dinosaur with name '${dinosaurName}' cannot be found.`;
+let roomReturned = ""; 
 
-//choosing dino
+//If user inputs name of a dinosaur, the name must be turned into the dino ID.
 for (let i=0; i<dinosaurs.length; i++ ) {
-  if (dinosaurs[i].name = dinosaurName) {
-    pickedDino = dinosaurs[i];
-  //} else return `Dinosaur with name '${dinosaurName}' cannot be found.`
-} 
+    if (dinosaurs[i].name === dinosaurName); {
+      let pickedId = dinosaurs[i].dinosaurId;
+    }
 
-//if (pickedDino.dinosaurid
-//choosing room
-for (let j=0; j<rooms.length; j++) {
-  if (rooms[j].dinosaurs.includes = pickedDino.dinosaurid ) {    //includes?
-   roomReturned = rooms[j];
-  }
+
+    
+//    } else return errorDinoRoom;   //what is wrong here?
+if(!pickedId){
+  return noSuchDino;
 }
 
-return roomReturned
+/* also check
+for (const room of rooms)
+  if (room.dinosaurs.includes(pickedId)){
+    return room.name;
+  }
+*/
 
 
+
+//choosing room
+for (let j=0; j<rooms.length; j++) {
+  if (rooms[j].dinosaurs.includes(pickedId)) {    
+   return(rooms[j].name);
+  } else return errorRoom;
+}
+}
+return rooms.name
 }
 
 /**
@@ -88,7 +101,38 @@ return roomReturned
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+
+
+
+
+
+function getConnectedRoomNamesById(rooms, id) {
+  for ( let i = 0; i<rooms.length; i++ ) {
+ let roomArray=[]  //variable to hold all the rooms found
+ let holdingArr=[]  // variable to hold room IDs
+
+ for (const room of rooms)
+ if (room.roomId === id){
+  for (const connectorID in room.connectsTo){
+    return room.name;  
+  } 
+ 
+
+
+
+    //if there isn't a room with the given ID, return error message
+    //if there is a room with the given ID, return the connected rooms 
+    if (rooms[i].roomId === id){
+     holdingArr.push(rooms[i].connectsTo)
+
+     //once this is done, we have to switch the connects to IDs into names.
+  } else {
+    return "Room with ID of 'incorrect-id' could not be found."
+  }
+}
+// or if length of rooms = o, give the return
+}
+
 
 module.exports = {
   getRoomByDinosaurName,

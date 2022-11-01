@@ -63,25 +63,37 @@ extras = "movie", "terrace",
       const expected = "Extra type 'incorrect-extra' cannot be found.";
 errors: "Ticket type 'incorrect-type' cannot be found.", "Entrant type 'incorrect-entrant' cannot be found.", 
 
-Can the switch case be used?
 */
 function calculateTicketPrice(ticketData, ticketInfo) {
+//guard clauses
+
+if (ticketInfo.ticketType != "general" && ticketInfo.ticketType != "membership") {
+  return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+}
+
+if (ticketInfo.entrantType != "child" && ticketInfo.entrantType != "adult" && ticketInfo.entrantType != "senior"){
+  return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+}
+
+
   let subTotal = "";
    {
-    if (ticketType==="general" && entrantType==="child") {
+    if (ticketInfo.ticketType==="general" && ticketInfo.entrantType==="child") {
       subTotal=2000
-    } else if (ticketType==="general" && entrantType==="adult") {
+    } else if (ticketInfo.ticketType==="general" && ticketInfo.entrantType==="adult") {
       subTotal = 3000
-    } else if (ticketType==="general" && entrantType==="senior") {
+    } else if (ticketInfo.ticketType==="general" && ticketInfo.entrantType==="senior") {
       subTotal = 2500
-    } else if (ticketType==="membership" && entrantType==="child") {
+    } else if (ticketInfo.ticketType==="membership" && ticketInfo.entrantType==="child") {
       subTotal=1500
-    } else if (ticketType==="membership" && entrantType==="adult") {
+    } else if (ticketInfo.ticketType==="membership" && ticketInfo.entrantType==="adult") {
       subTotal = 2800
-    } else if (ticketType==="membership" && entrantType==="senior") {
+    } else if (ticketInfo.ticketType==="membership" && ticketInfo.entrantType==="senior") {
       subTotal = 2300
     }
  
+
+    
     if (ticketInfo.extras.includes("movie")) {
       subTotal=subTotal+1000
     } 
@@ -99,11 +111,13 @@ function calculateTicketPrice(ticketData, ticketInfo) {
         subTotal = subTotal + 500
       } else {
         subTotal = subTotal + 1000
-      }
+      } return subTotal;
     }
 
+    //need to include something that says if there is an incorrect extra, it is incorrect
+  }
   return subTotal
-}}
+}
 
 /**
  * purchaseTickets()
@@ -158,7 +172,23 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+let purchasesArray=[]
+let total=0
+for (let i = 0; i < purchases.length; i++) {
+  total=total+calculateTicketPrice[i]
+}
+
+
+
+  return  `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${entrantType[0].toUpper} ${ticketType.toUpper[0]} Admission: $${subTotal.toFixed(2)*.01} (${extra[0]})\n`
+  
+  
+  //Adult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
+
+
+  
+}
 
 // Do not change anything below this line.
 module.exports = {
