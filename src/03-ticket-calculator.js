@@ -57,11 +57,9 @@ const exampleTicketData = require("../data/tickets");
 function calculateTicketPrice(ticketData, ticketInfo) {
   const { ticketType, entrantType, extras } = ticketInfo;
 
-  console.log('ticketInfo:', ticketInfo);
 
   const admission = ticketData[ticketType];
   if (typeof admission !== 'object') return `Ticket type 'incorrect-type' cannot be found.`;
-  console.log('admission:', admission);
   const admissionPrice = admission.priceInCents[entrantType];
   if (typeof admissionPrice !== 'number')
     return `Entrant type 'incorrect-entrant' cannot be found.`;
