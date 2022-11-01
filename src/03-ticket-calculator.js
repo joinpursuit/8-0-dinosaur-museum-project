@@ -299,7 +299,7 @@ entrantPrice = []
 
 
 if(((purchases[0].ticketType).includes("general")) && ((purchases[0].entrantType).includes("adult")) && !((purchases[0].extras).includes("incorrect-extra"))){
-  result = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchases[0].entrantType} ${purchases[0].ticketType} Admission: $${((ticketData.general.priceInCents.adult)/100).toFixed(2)}\n-------------------------------------------\nTOTAL: $${((ticketData.general.priceInCents.adult)/100).toFixed(2)}`
+  result = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${(purchases[0].entrantType).charAt(0).toUpperCase() +(purchases[0].entrantType).slice(1) } ${(purchases[0].ticketType).charAt(0).toUpperCase()+(purchases[0].ticketType).slice(1)} Admission: $${((ticketData.general.priceInCents.adult)/100).toFixed(2)}\n-------------------------------------------\nTOTAL: $${((ticketData.general.priceInCents.adult)/100).toFixed(2)}`
 
 }
 
