@@ -3,6 +3,7 @@
 
   You may use this data to test your functions. You may assume the shape of the data remains the same but that the values may change.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 const exampleRoomData = require("../data/rooms");
 // Do not change the lines above.
@@ -25,7 +26,20 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  // 
+  let dinoFound = dinosaurs.find( dino => dino.name === dinosaurName)
+  //if undefined , no dinosaur was found under that name 
+  if (!dinoFound){
+  return `Dinosaur with name '${dinosaurName}' cannot be found.`}
+    //looping through rooms array to get the proper name of the broom 
+  for (let i = 0 ;i < rooms.length; i ++){
+    if(rooms[i].dinosaurs.includes(dinoFound.dinosaurId)){
+      return rooms[i].name
+    }
+  }
+  return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +63,27 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let roomById = rooms.filter(room => room.roomId === id);
+  if(!roomById.length){
+    return `Room with ID of '${id}' could not be found.`
+  }
+  let connectedRoom = roomById.map(room => room.connectsTo)
+  let spreadConnectedRoom = [].concat.apply([],connectedRoom)
+   for(let i = 0 ; i < spreadConnectedRoom.length ; i++){
+    
+      let found = rooms.find(room => spreadConnectedRoom[i] === room.roomId)
+      if(found){
+      spreadConnectedRoom[i] = found
+    }else {
+      return `Room with ID of '${spreadConnectedRoom[i]}' could not be found.`
+    }
+   }
+   let result = spreadConnectedRoom.map(roomName => roomName.name)
+   return result;
+  
+
+}
 
 module.exports = {
   getRoomByDinosaurName,

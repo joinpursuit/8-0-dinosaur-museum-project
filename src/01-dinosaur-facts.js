@@ -5,8 +5,9 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
-const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
+
+const dinosaurs = require("../data/dinosaurs");
 
 /**
  * getLongestDinosaur()
@@ -22,7 +23,36 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+
+  let longestDino = {}
+
+  if (dinosaurs.length === 0){
+    return longestDino;
+  }
+  else {
+    //find the first longest dinosaur and return it 
+    let result = Math.max.apply(Math, dinosaurs.map(dino => dino.lengthInMeters))
+    let dino =dinosaurs.find(dino => dino.lengthInMeters === result)
+    longestDino[`${dino.name}`] = dino.lengthInMeters * 3.281// format it to length in feet
+
+  }
+  
+
+  
+  
+  return longestDino;
+}
+  
+
+   
+    
+  
+   
+    
+  
+  
+
 
 /**
  * getDinosaurDescription()
@@ -44,7 +74,19 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+
+  for( let dino of dinosaurs){
+    if(dino.dinosaurId === id){
+      return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`;
+
+    }
+
+  } 
+  // if dinosaur id doesn't exist 
+return `A dinosaur with an ID of '${id}' cannot be found.`
+
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +113,25 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+   let dinoAliveMya = [] // declare empty array
+  // iterate through the dinosaurs array to find keys that matches "mya" values given then check if they exist .
+  // if key exists add it to the array otherwise add  id 
+    
+   dinosaurs.forEach(dinosaur => {
+    if (dinosaur.mya[0] === mya || dinosaur.mya[0] -1 === mya){
+      dinosaur[key] ? dinoAliveMya.push(dinosaur[key]) : dinoAliveMya.push(dinosaur.dinosaurId);
+
+    }else if(dinosaur.mya[0] >= mya && mya >= dinosaur.mya[1]){
+      dinosaur[key] ? dinoAliveMya.push(dinosaur[key]) : dinoAliveMya.push(dinosaur.dinosaurId)
+    }
+   })
+    
+    
+    return dinoAliveMya;
+   }
+
+
 
 module.exports = {
   getLongestDinosaur,
