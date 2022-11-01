@@ -72,7 +72,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 function getConnectedRoomNamesById(rooms, id) {
   let found = false
   let errorMessage = ""
-  for (let i = 0; i < rooms.length; i++) {
+  for (let i = 0; i < rooms.length; i++) {  // looping through the rooms 
     if (rooms[i].roomId === id){
       found = true
     }
