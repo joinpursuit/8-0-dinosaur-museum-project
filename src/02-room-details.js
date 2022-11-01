@@ -82,8 +82,6 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 
       if(connectsTo.length === 0){
         return `Room with ID of '${id}' could not be found.`
-      } else {
-        return `Room with ID of ${id} could not be found.`
       }
     
       for(room of rooms){
