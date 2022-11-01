@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { general } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,45 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let grandTotal = 0; // the final ticket price
+
+  if (!ticketData.hasOwnProperty(ticketInfo.ticketType)) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+  if (!ticketData.general.priceInCents.hasOwnProperty(ticketInfo.entrantType)) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+  for (const extra of ticketInfo.extras) {
+    if (!ticketData.extras.hasOwnProperty(extra)) {
+      return `Extra type '${extra}' cannot be found.`
+    }
+  }
+
+  if (ticketInfo.ticketType === "general") {
+    if (ticketInfo.entrantType === "child") {
+      grandTotal += ticketData.general.priceInCents.child;
+    } else if (ticketInfo.entrantType === "adult") {
+      grandTotal += ticketData.general.priceInCents.adult;
+    } else if (ticketInfo.entrantType === "senior") {
+      grandTotal += ticketData.general.priceInCents.senior;
+    }
+  } else if (ticketInfo.ticketType === "membership") {
+    if (ticketInfo.entrantType === "child") {
+      grandTotal += ticketData.membership.priceInCents.child;
+    } else if (ticketInfo.entrantType === "adult") {
+      grandTotal += ticketData.membership.priceInCents.adult;
+    } else if (ticketInfo.entrantType === "senior") {
+      grandTotal += ticketData.membership.priceInCents.senior;
+    }
+  }
+
+  if (ticketInfo.extras.length) {
+    
+  }
+
+  return grandTotal;
+}
 
 /**
  * purchaseTickets()
