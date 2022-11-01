@@ -7,7 +7,8 @@ const exampleDinosaurData = require("../data/dinosaurs");
 const exampleRoomData = require("../data/rooms");
 // Do not change the lines above.
 
-/* LOGIC: the structure of the following two functions is similar to those on page 01, however these problems have two LOOP and ERROR sections.
+/* LOGIC: the structure of the following two functions is similar to those on page 01,
+however these problems have two LOOP and ERROR sections.
 Both of these start with the ACCUMULATOR variable(s), followed by a FUNCTION if possible,
 Then LOOP1 checks for one piece of data, ERROR1 throws back an error if that data can not be found,
 LOOP2 checks for the final piece of data, and ERROR2 throws back an error if that data can not be found */

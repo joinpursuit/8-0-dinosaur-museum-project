@@ -8,12 +8,15 @@
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
-/* LOGIC: While refractoring I prioritized readability and simplicity. Some of the code could be writen in fewer lines/pieces, but it also would have made the code harder to read (at least to me 🤷🏽‍♂️) .
-Each of the functions below has a similar structure.
+/* Note: While refractoring I prioritized readability and simplicity.
+I could write this code in fewer lines/pieces,
+but it also would have made the code harder to read (at least to me 🤷🏽‍♂️).*/
+
+/*LOGIC: Each of the functions below has a similar structure.
 They each start with the ACCUMULATOR variable(s) which track pieces of the final result,
-that's followed by a FUNCTION that will be executed on the dinosaurs array during a loop,
-(using helper functions helps avoid nested if statments, improving readability)
-followed by the LOOP, if neccessary code to account for ERRORS, and the return statment */
+the FUNCTION(s) that will be executed on the dinosaurs array during a loop,
+(using functions helps avoid nested if statments, improving readability)
+followed by the LOOP, code for ERRORS if neccessary, and the RETURN statment */
 
 /**
  * getLongestDinosaur()
@@ -88,7 +91,6 @@ function getDinosaurDescription(dinosaurs, id) {
   //RETURN
   return `${name} (${pronunciation})\n${info} It lived in the ${period} period, over ${mya[mya.length-1]} million years ago.`
 }
-//console.log(getDinosaurDescription(exampleDinosaurData, "U9vuZmgKwUr"))
 
 /**
  * getDinosaursAliveMya()
@@ -128,7 +130,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
       } 
     }
 
-  /*LOOP If the current dino had two mya values the myaEnd varibale is sets to that dinos second value
+  /*LOOP: If the current dino had two mya values the myaEnd varibale is sets to that dinos second value
   otherwise myaEnd will be set to one year less (as per the test/instructions)*/
   dinosaurs.forEach(dino => {
     let myaEnd = dino.mya.length == 2 ? dino.mya[1] : dino.mya[0]-1;

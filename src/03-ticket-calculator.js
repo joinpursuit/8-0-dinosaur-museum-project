@@ -14,7 +14,6 @@ Then there will be a general ticket section and an extras section.
 If the values of the ticketInfo/Purchases param match key names in the ticketData we can access that keys values using bracket notation, without needing a loop
 if we can't and the values dont match, we can throw back the corresponding error message
 The extras section of the ticketData is nested and because multiple extras can be listed per ticket, is best delt with in its own loop */
-
 /**
  * calculateTicketPrice()
  * ---------------------
