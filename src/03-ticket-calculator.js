@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,14 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+ let results = ""
+ for(let i = 0; i < tickets.length;i++)
+  if (ticketInfo.ticketType  or ticketInfo.entrantType or ticketInfo.extras !== true){
+    results = `Entrant type '${ticketData}' cannot be found.`
+  }
+  return results
+}
 
 /**
  * purchaseTickets()
