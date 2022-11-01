@@ -253,11 +253,42 @@ if (ticketInfo.entrantType !== 'child' && ticketInfo.entrantType !== 'adult' && 
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  /*error handling */
-  if (purchases.extras.length >= 1 && !purchases.extras.includes(m) && !purchases.extras.includes(e) && !purchases.extras.includes(t)){
-    return `Extra type '${purchases.extras} cannot be found.'`
+let ticketsArr = [];
+ const heading = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+ const footer = '-------------------------------------------\nTOTAL: '
+ let totalCost = 0; //must convert to dollar cents value
+ let errMsg = ''
+ let ticketsStr = ``
+ let admissionStr = ``
+ //let entrantFormatted;
+ //let ticketTypeFormatted = `${purchases.ticketType[0].toUpperCase()}${purchases.ticketType.substring(1)}`; // 'Membership'
+
+
+//extrasFormatted = purchases.extras.replace(/m/g, extras.movie.description) ;purchases.extras.replace(e, extras.education.description); purchases.extras.replace(t, extras.terrace.description)
+// 'movie' is now "Movie Access", 'education' is now "Education Access", 'terrace' is now "Terrace Access"
+
+/* 3: "Admission:" +
++ */
+/*error handling */
+for (let purchase of purchases) {
+  let errMsg = calculateTicketPrice(ticketData, purchase);
+  if(typeof errMsg === 'string'){
+    return errMsg
+    /*end of error handling */
+  } else { 
+totalCost += calculateTicketPrice(ticketData, purchase); //totalCost is accumulated sum of ticket purchases (and extras if any) 
+admissionStr = `Admission: $${(calculateTicketPrice(ticketData, purchase)/100).toFixed(2)}`;
+ticketsArr.push(`${purchase.entrantType[0].toUpperCase()}${purchase.entrantType.substring(1)} ${purchase.ticketType[0].toUpperCase()}${purchase.ticketType.substring(1)} ${admissionStr} (${purchase.extras})`)
   }
+} //end of For Loop 
+for (let ticket of ticketsArr){
+  ticket = ticket.replaceAll('movie', tickets.extras.movie.description).replaceAll('education', tickets.extras.education.description).replaceAll('terrace', tickets.extras.terrace.description).replaceAll(` ()`,``).replaceAll(`s,`, `s, `);
+  ticketsStr += `${ticket}\n`;
+} return `${heading}${ticketsStr}${footer}$${(totalCost/100).toFixed(2)}`
 }
+
+
+//console.log(ticketsArr); //> 'Senior Membership Admission: $45.00 () (terrace,education)'. We want 'entrant.type ticket.type Admission: ticketPrice.00 (Terrace, Education)
 
 
 // Do not change anything below this line.
