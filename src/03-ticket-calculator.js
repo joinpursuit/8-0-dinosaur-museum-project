@@ -54,8 +54,34 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let cost = 0;
+  if (!ticketData[ticketInfo.ticketType]) {
+    return "Ticket type 'incorrect-type' cannot be found."//if incorrect ticket type, it will return 'incorrect type'
+  } else if (!ticketData['general'].priceInCents[ticketInfo.entrantType]) {
+    return "Entrant type 'incorrect-entrant' cannot be found." //if incorrect entrant type, it will return 'entrant type'
+  } else {
+    cost = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]//else the cost will equal the ticket
+  }
 
+  for (let i = 0; i < ticketInfo.extras.length; i++) {//start of for loop
+    switch (ticketInfo.extras[i]) {//switch to evaluate from ticketInfo.extras[i]<- specific element that will continue 
+      case "movie":
+        cost += ticketData.extras.movie.priceInCents[ticketInfo.entrantType]
+        break;
+      case "education":
+        cost += ticketData.extras.education.priceInCents[ticketInfo.entrantType]
+        break;
+      case "terrace":
+        cost += ticketData.extras.terrace.priceInCents[ticketInfo.entrantType]
+        break;
+      //cost will go through movie, education, terrace to match and check the cost. It will go through each one by one, break when there's a match and move on until the break.
+      default:
+        return `Extra type '${ticketInfo.extras[i]}' cannot be found.`
+    } // default after break will return Extra type (specific value) cannot be found.
+  }//end of for loop
+  return cost
+}//end of function
 /**
  * purchaseTickets()
  * ---------------------
@@ -109,7 +135,24 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let receipt = ""
+  let receiptData = ""
+  let finalPrice = 0
+  for (let i = 0; i < purchases.length; i ++) {
+    if (!ticketData[purchases[i].ticketType]) {
+      return "Ticket type 'incorrect-type' cannot be found."
+    } else if (!ticketData[purchases[i].extras]) {
+      return "Extra type 'incorrect-extra' cannot be found."
+    } else if (!ticketData[purchases[i].entrantType]) {
+      return "Entrant type 'incorrect-entrant' cannot be found." 
+    } else {
+      receiptData = ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType]
+    }
+    finalPrice += calculateTicketPrice(ticketData,purchases[i])
+  }
+} return receipt
+  
 
 // Do not change anything below this line.
 module.exports = {

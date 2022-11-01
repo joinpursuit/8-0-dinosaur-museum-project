@@ -22,7 +22,20 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  if (dinosaurs.length === 0) { //checking if there are no dinos
+    return {} //if no dinos, return an empty object
+  }
+  let LongestDino = dinosaurs[0] //letting longestDino equal dinos 
+  for (let i = 1; i < dinosaurs.length; i++) { //starting for loop at 0 since we're already at 0
+    if (dinosaurs[i].lengthInMeters > LongestDino.lengthInMeters) {//testing if dino at position [i] is greater than longestDino at length in meters
+      LongestDino = dinosaurs[i]// setting the longestDino to be equal to Dino at index i
+    }
+  }
+  let finalDino = {} // creating an empty object to be able to return our value in
+  finalDino[LongestDino.name] = LongestDino.lengthInMeters * 3.281 // setting up to find the name of the dino = to the length in meters * 3.381 to convert it to feet
+  return finalDino // return finalDino
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +57,13 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  for (let i = 0; i < dinosaurs.length; i++) {//start of for loop to 
+    if (dinosaurs[i].dinosaurId === id) {//if statement to find out if dino is in dinosaurs.js
+      return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya.length > 1 ? dinosaurs[i].mya[1] : dinosaurs[i].mya[0]} million years ago.`
+    }//return statement with name, pronunciation, \n, info with the string and Jurrassic period. In the same return statement, we use ternary operator to find out if dinosaurs.mya has one or two values and specify to pick the first or second. 
+  } return `A dinosaur with an ID of '${id}' cannot be found.`//when the if statement runs and doesn't find the id, return "A dinosaur with an ID of 'incorrect-id' cannot be found."
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,10 +90,30 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
-
-module.exports = {
-  getLongestDinosaur,
-  getDinosaurDescription,
-  getDinosaursAliveMya,
-};
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinoAge = []
+  for (let i = 0; i < dinosaurs.length; i++) {//start of for loop
+    if (dinosaurs[i].mya.length === 2) {//checking if mya length has two elements
+      if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya) {//checking the range of mya
+        if (dinosaurs[i][key]) {//checking if dinosaur has a key
+          dinoAge.push(dinosaurs[i][key]) //push it to dinoAge array
+          } else {
+            dinoAge.push(dinosaurs[i].dinosaurId)//else push DinosaurId into dinoAge
+          }
+        } 
+      } else if (dinosaurs[i].mya.length === 1) {// checking if mya length has one element
+            if (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] - 1 === mya) {//checking the range of mya and subtracting by one 
+              if (dinosaurs[i][key]) {
+                dinoAge.push(dinosaurs[i][key])
+              } else {
+                dinoAge.push(dinosaurs[i].dinosaurId)//else push DinosaurId into dinoAge
+              }
+            } 
+          }
+        } return dinoAge
+      }
+  module.exports = {
+    getLongestDinosaur,
+    getDinosaurDescription,
+    getDinosaursAliveMya,
+  };
