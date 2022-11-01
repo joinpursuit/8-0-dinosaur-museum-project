@@ -84,16 +84,16 @@ function getConnectedRoomNamesById(rooms, id) {
       isConnectedRoom.push(rooms[i].connectsTo) // pushing room at index i in connectsTo into the empty arrat
     }
   }
-   isConnectedRoom = [].concat.apply([], isConnectedRoom)  // using the concat method to merge  the two arrays
+   isConnectedRoom = [].concat.apply([], isConnectedRoom)  // using the concat method to merge  the two arrays and using .apply to spread the the elements it found and putting it inside it's own index.
     for (let i = 0; i < isConnectedRoom.length; i++) {
-      let roomFound = rooms.find(room => isConnectedRoom[i] === room.roomId) 
+      let roomFound = rooms.find(room => isConnectedRoom[i] === room.roomId)  
       if (!roomFound) { // checking if rooms are not found 
         return `Room with ID of '${isConnectedRoom[i]}' could not be found.`
       } else {
       isConnectedRoom[i] = roomFound  
       }
     }
-  isConnectedRoom = isConnectedRoom.map(room => room.name) 
+  isConnectedRoom = isConnectedRoom.map(room => room.name)  
   return isConnectedRoom
 }
 
