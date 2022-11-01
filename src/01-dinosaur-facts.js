@@ -100,11 +100,12 @@ function getDinosaurDescription(dinosaurs, id) {
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   let livingDinos = [];
-  for(dinosaur of dinosaurs){
+  for(dinosaur[key] of dinosaurs){
     if(dinosaur.mya[0] === mya || dinosaur.mya[1] === mya){
-      if(dinosaur[key] !== undefined){
-        livingDinos.push(dinosaur[key])
-      }else{
+      if(key !== undefined){
+        livingDinos.push(dinosaur.key)
+        console.log(livingDinos)
+      } else{
         livingDinos.push(dinosaur.dinosaurId)
       }
     }
