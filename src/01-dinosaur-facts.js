@@ -23,18 +23,22 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getLongestDinosaur(dinosaurs) {
-  let longest = 0;
-  let largeDino = {};
-  let returnObject = {};
+  let longest = 0; // the length of the longest dinosaur
+  let largeDino = {}; // the object containing the longest dinosaur
+  let returnObject = {}; // the final object we'll return
+
+  // if an empty array is passed in, return an empty object
   if (dinosaurs.length === 0) {
     return returnObject;
   }
+  // go through the array, replacing the dinosaur in largeDino with the longest one so far
   for (let i = 0; i < dinosaurs.length; i++) {
     if (dinosaurs[i].lengthInMeters > longest) {
       longest = dinosaurs[i].lengthInMeters;
       largeDino = dinosaurs[i];
     }
   }
+  // formatting the object we need to return, with length in feet
   returnObject[largeDino.name] = largeDino.lengthInMeters * 3.281;
   return returnObject;
 }
@@ -60,7 +64,9 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
+  // go through the dinosaurs array
   for (const dino of dinosaurs) {
+    // when you find the dino with the given ID, return a properly formatted answer with data pulled from the correct dinosaur
     if (dino.dinosaurId === id) {
       return `${dino.name} (${dino.pronunciation})\n${
         dino.info
@@ -69,6 +75,7 @@ function getDinosaurDescription(dinosaurs, id) {
       } million years ago.`;
     }
   }
+  // if you don't find the given ID, return an error msg
   return `A dinosaur with an ID of '${id}' cannot be found.`;
 }
 
@@ -98,16 +105,15 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let dinoArray = [];
+  let dinoArray = []; // the final array to return
 
   for (let i = 0; i < dinosaurs.length; i++) {
-    let dino = dinosaurs[i];
+    let dino = dinosaurs[i]; // go through the given array
+    // check if there's only one number in the current dino's mya array
     if (dino.mya.length === 1) {
-      if (
-        dino.mya[0] === mya ||
-        dino.mya[0] === mya - 1 ||
-        dino.mya[0] === mya + 1
-      ) {
+      // if there's only one number, check if the given mya is equal to the dino's mya, or one less, or one greater
+      if (dino.mya[0] >= mya - 1 && dino.mya[0] <= mya + 1) {
+        // push the given key value from the current dino into the final array, or else the dino's id (if no key is given)
         if (key) {
           dinoArray.push(dino[key]);
         } else {
@@ -115,7 +121,9 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
         }
       }
     } else {
+      // if there are two numbers in the current dino's mya array, check if the given mya is in the range between those two (inclusive)
       if (mya >= dino.mya[1] && mya <= dino.mya[0]) {
+        // push the given key value from the current dino into the final array, or else the dino's id (if no key is given)
         if (key) {
           dinoArray.push(dino[key]);
         } else {
