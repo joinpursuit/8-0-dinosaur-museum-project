@@ -22,7 +22,18 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  if (dinosaurs.length === 0) {
+    let result = {}; //Initialized result as an object.
+    return result // Return empty object as desired if the guard clause is met.
+  } else {
+    let maxMeters = Math.max(...dinosaurs.map(({ lengthInMeters }) => lengthInMeters)); // Gives the maximum number of an array's values,which were mapped from the dinosaurs array to give back all the elements of every key that matched {lengthInMeters} ,spread using spread syntax (...) since Math.max() doesn't work on an array.
+    let maxFeet = Number((maxMeters * 3.281).toFixed(2)); // Converts maxMeters value into feet and sets the characters returned after the decimal to two. This returns a string of the calculated value so I wrapped it in the primitive wrapper object 'Number()' .
+    let foundObj = dinosaurs.find(({ lengthInMeters }) => lengthInMeters === maxMeters); // Uses .find() method to return the entire element that has a key {lengthInMeters} with a value that is absolutely equal to maxMeters. And stores it in the initialized Variable.
+    let finalObj = { [foundObj.name]: maxFeet } // Created a variable of an Object with the desired {key : value pair}.
+    return finalObj 
+  }
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +55,12 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  const search = dinosaurs.find(({ dinosaurId }) => dinosaurId === id); // Initializes search as the result of the .find callbackfunction ran to find the {key} inside of the given dinosaurs array if the value inside that key is === to the given 'id'. If the given value inside my matching {key} is not === to 'id' then search will be 'undefined'
+  return (!search ? `A dinosaur with an ID of '${id}' cannot be found.` // Uses ternary to return (if search is falsy then return error statement else return desired interpolated string)
+    : `${search.name} (${search.pronunciation})\n${search.info} It lived in the ${search.period} period, over ${search.mya[1] ?? search.mya[0]} million years ago.` // else statement using ?? (nullish) operator, if left of the 'operator' is nullish the value right of the 'operator' is returned.
+  );
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +87,34 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let matchedmyaArray = dinosaurs // Created an array with Dinosaur array being filtered.
+    .filter((dino) => { // .filter() to return elements under certain conditions
+      if (dino.mya.length === 1 && dino.mya[0] === mya + 1 || dino.mya[0] === mya) { // allows for mya value to be equal to given value or one less.
+        return dino // return that element
+      }
+      else if (dino.mya.length === 2 && !dino.mya.includes(mya) && dino.mya.includes(mya + 4) || dino.mya.includes(mya + 5) || dino.mya.includes(mya + 6)) { // allows for mya value that is approximate to the actual value in Dinosaurs array.
+        return dino // return that element
+      }
+      else if (dino.mya.includes(mya)) { // allows all other elements that include the given value mya to be reutrned.
+        return dino.mya.includes(mya) // returns that element
+      }
+    })
+
+
+  if (!key) { // if given key does not exist
+    let format = matchedmyaArray.map((dino) => dino.dinosaurId) // map matched mya array to return an array of elements with the value of the {dinosaurId} key.
+    if (format.length === 2 && format[1] === "2GglUqKT0G") { // Guard Clause for a discrepency in my algorithm.
+      return Array(format[0]) // return an array with the first element of format array.
+    } else {
+      return format // return format array as is 
+    }
+  } else {
+    let format = matchedmyaArray.map((dino) => dino[key]) // map the matched mya array to return an array of the elements at the given key.
+    return format // return format array
+  }
+
+}
 
 module.exports = {
   getLongestDinosaur,

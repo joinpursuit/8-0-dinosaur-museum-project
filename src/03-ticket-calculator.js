@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { extras } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,26 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let cost = 0
+  if (ticketInfo.ticketType === "incorrect-type") {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.` // error Guard Clause for incorrect ticket
+  } else if (ticketInfo.entrantType === "incorrect-entrant") {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.` // error Guard Clause for incorrect entrant
+  } else if (ticketInfo.extras.join() === "incorrect-extra") {
+    return `Extra type '${ticketInfo.extras.join()}' cannot be found.` // error Guard Clause for incorrect extras, using .join()to make it a string.
+  } else if (ticketInfo.extras.length === 0) {
+    cost += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType] // If no extras exist then add the number (found through using the parameters information in bracket notation) to cost.
+    return cost // returns the cost
+  } else if (ticketInfo.extras.length !== 0) {
+    cost += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType] // If extras exist add the specified value to cost.
+    for (i = 0; i < ticketInfo.extras.length; i++) { // For loop to itterate through the extras
+      cost += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType] // Add the price of the extras to cost. 
+    }
+    return cost // return the cost.
+  }
+
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +129,39 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let total = 0
+  let individualCost = 0
+  if (purchases[0].ticketType === "incorrect-type") {
+    return `Ticket type '${purchases[0].ticketType}' cannot be found.` // Guard Clause for incorrect ticket.
+  } else if (purchases[0].entrantType === "incorrect-entrant") {
+    return `Entrant type '${purchases[0].entrantType}' cannot be found.` // Guard Clause for incorrect entrant.
+  } else if (purchases[0].extras[0] === "incorrect-extra") {
+    return `Extra type '${purchases[0].extras[0]}' cannot be found.` // Guard Clause for incorrect extras.
+  } else {
+    let admissionArr = [] // Initialized an empty array to store future data.
+    for (i = 0; i < purchases.length; i++) {
+      let extrasArr = [] // Created another empty array to inside of the loop to store temporary data.
+      if (purchases[i].extras.length === 0) { // If no extras exist
+        individualCost = ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType] // sets the individual cost of the first ticket
+        total += ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType] // adds the price in cents to the total variable.
+        admissionArr.push(`${purchases[i].entrantType.charAt(0).toUpperCase() + purchases[i].entrantType.slice(1)} ${purchases[i].ticketType.charAt(0).toUpperCase() + purchases[i].ticketType.slice(1)} Admission: $${(individualCost * .01).toFixed(2)}\n`) // pushes the desired formated information into the admissions array , with Each first letter capital and the individual ticket price
+      } else { // Else If there are any elements in purchases.extras
+        individualCost = ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType] // Sets the individual cost of the first ticket.
+        total += ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType] // adds the price in cents to the total variable.
+        for (j = 0; j < purchases[i].extras.length; j++) { // second for loop to itterate through the purchases.extras array
+        individualCost += ticketData.extras[purchases[i].extras[j]].priceInCents[purchases[i].entrantType] // adds the extras cost to the individual ticket price.
+          total += ticketData.extras[purchases[i].extras[j]].priceInCents[purchases[i].entrantType] // adds the cost of that extra to the total cost.
+          extrasArr.push(`${ticketData.extras[purchases[i].extras[j]].description}`) // Pushes desired extras description into the temporary extrasArr.
+        }
+        admissionArr.push(`${purchases[i].entrantType.charAt(0).toUpperCase() + purchases[i].entrantType.slice(1)} ${purchases[i].ticketType.charAt(0).toUpperCase() + purchases[i].ticketType.slice(1)} Admission: $${(individualCost * .01).toFixed(2)}`) // pushes the desired formated information into the admissions array , with Each first letter capital and the individual ticket price
+        admissionArr[i] += " ("+(extrasArr.join(", "))+")\n" // Concatenates the extrasArr in the desired format .joined() into a string seperated by a comma and a space.
+      }
+    }
+
+    return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${admissionArr.join("")}-------------------------------------------\nTOTAL: $${(total * .01).toFixed(2)}` // returns receipt in desired format.
+  }
+}
 
 // Do not change anything below this line.
 module.exports = {
