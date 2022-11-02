@@ -54,7 +54,35 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let cost = 0;
+  if (!ticketData[ticketInfo.ticketType]) {
+    return "Ticket type 'incorrect-type' cannot be found.";
+  } else if (!ticketData["general"].priceInCents[ticketInfo.entrantType]) {
+    return "Entrant type 'incorrect-entrant' cannot be found.";
+  } else {
+    cost =
+      ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+  }
+  for (let i = 0; i < ticketInfo.extras.length; i++) {
+    switch (ticketInfo.extras[i]) {
+      case "movie":
+        cost += ticketData.extras.movie.priceInCents[ticketInfo.entrantType];
+        break;
+      case "education":
+        cost +=
+          ticketData.extras.education.priceInCents[ticketInfo.entrantType];
+        break;
+      case "terrace":
+        cost += ticketData.extras.terrace.priceInCents[ticketInfo.entrantType];
+        break;
+
+      default:
+        return `Extra type '${ticketInfo.extras[i]}' cannot be found.`;
+    }
+  }
+  return cost;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +137,42 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+function purchaseTickets(ticketData, purchases) {
+  // (.description?)
+  // (${.priceInCents*.01?})
+  let fullReceipt = "";
+  let recieptData = "";
+  let finalPrice = 0;
+
+  for (let i = 0; i < purchases.length; i++) {
+    if (purchases[i].extras.includes('incorrect-extra')){
+      return "Extra type 'incorrect-extra' cannot be found.";
+    } if (
+      purchases[i].ticketType !== "general" &&
+      purchases[i].ticketType !== "membership"
+    ) {
+      return `Ticket type '${purchases[i].ticketType}' cannot be found.`;
+    } if (
+      purchases[i].entrantType !== "child" &&
+      purchases[i].entrantType !== "adult" &&
+      purchases[i].entrantType !== "senior"
+    ) {
+      return `Entrant type '${purchases[i].entrantType}' cannot be found.`;
+    } else {
+      recieptData = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchases[i].entrantType[0].toUpperCase()}${purchases[i].entrantType.substring(1)} ${purchases[i].ticketType[0].toUpperCase()}${purchases[i].ticketType.substring(1)}Admission: $${finalPrice*.01} \n-------------------------------------------\nTOTAL: $${finalPrice.toFixed(
+        2
+      )}`;
+
+      finalPrice += calculateTicketPrice(ticketData, purchases[i]);
+    }
+  }
+  return finalPrice;
+}
+
+ 
+   
+
 
 // Do not change anything below this line.
 module.exports = {
