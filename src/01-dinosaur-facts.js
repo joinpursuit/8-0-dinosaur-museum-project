@@ -70,7 +70,7 @@ function getDinosaurDescription(dinosaurs, id) {
       } million years ago.`;
     }
   }
-  return `A dinosaur with an ID of "${id}" cannot be found.`;
+  return `A dinosaur with an ID of '${id}' cannot be found.`;
 }
 
 /**

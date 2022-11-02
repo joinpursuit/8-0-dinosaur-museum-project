@@ -97,7 +97,7 @@ describe("getDinosaurDescription()", () => {
   });
 });
 
-describe.only("getDinosaursAliveMya()", () => {
+describe("getDinosaursAliveMya()", () => {
   test("should return the IDs of all dinosaurs that were alive approximately at the given time", () => {
     const mya = 150;
     const actual = getDinosaursAliveMya(dinosaurs, mya);
