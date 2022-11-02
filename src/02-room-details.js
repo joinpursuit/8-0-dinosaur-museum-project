@@ -46,7 +46,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   if (dinoName !== dinosaurName) {
     return `Dinosaur with name '${dinosaurName}' cannot be found.`
   } else {
-    return roomMessage
+    return roomMessage;
   }
 }
 

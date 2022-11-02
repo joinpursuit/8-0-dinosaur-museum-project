@@ -127,47 +127,48 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  */
 function purchaseTickets(ticketData, purchases) {
   let result = "";// result accumulator 
-  let totalCost = 0;
-  let extrasCost = 0;
-  let entrantType = "";
-  let error = "";
-  let extras = "";
+  let totalCost = 0;//total cost accumulator 
+  let extrasCost = 0;//extras cost accumulator 
+  let entrantType = "";//place holder for entrant type 
+  let error = "";//place holder for error message to be returned 
+  let extras = "";//extras strings accumulator 
 
-  for (let i = 0; i < purchases.length; i++) {
-    if (ticketData[purchases[i].ticketType] === undefined) {
-      return "Ticket type 'incorrect-type' cannot be found."
+  for (let i = 0; i < purchases.length; i++) {//loop going through an array of purchases 
+    // first we define all possible error messages in case ticket type, entrant type or extras type are not found within ticketData
+    if (ticketData[purchases[i].ticketType] === undefined) { // when that value is  not found it will return as 'undefined' 
+      return "Ticket type 'incorrect-type' cannot be found.";
     } else if (ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType] === undefined) {
-      return "Entrant type 'incorrect-entrant' cannot be found."
-    } else if (purchases[i].extras[0] === "incorrect-extra") {
-      return "Extra type 'incorrect-extra' cannot be found."
+      return "Entrant type 'incorrect-entrant' cannot be found.";
+    } else if (purchases[i].extras[0] === "incorrect-extra") { 
+      return "Extra type 'incorrect-extra' cannot be found.";
     }
-    totalCost += ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType]
-    extrasCost = ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType]
-    entrantType = purchases[i].entrantType.charAt(0).toUpperCase() + purchases[i].entrantType.slice(1)
-    for (let j = 0; j < purchases[i].extras.length; j++) {
-      if (j === 0) {
-        extras = ticketData.extras[purchases[i].extras[j]].description
-      } else if (j > 0) {
-        extras += ", " + ticketData.extras[purchases[i].extras[j]].description
+    totalCost += ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType]//starting to accumulate value of price  by pulling it from ticketData
+    extrasCost = ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType]// same for extras
+    entrantType = purchases[i].entrantType.charAt(0).toUpperCase() + purchases[i].entrantType.slice(1)// assigning value to entrantType variable, and formatting to first capital letter 
+    for (let j = 0; j < purchases[i].extras.length; j++) {//loop going through an array of extras within purchases 
+      if (j === 0) {// if extras array has only one element 
+        extras = ticketData.extras[purchases[i].extras[j]].description// extras variable is reassigned to new value of a string 
+      } else if (j > 0) {// if array of extras has more than one element 
+        extras += ", " + ticketData.extras[purchases[i].extras[j]].description // strings of extras concatenate in extras variable accumulator 
       }
-      totalCost += ticketData.extras[purchases[i].extras[j]].priceInCents[purchases[i].entrantType]
-      extrasCost += ticketData.extras[purchases[i].extras[j]].priceInCents[purchases[i].entrantType]
+      totalCost += ticketData.extras[purchases[i].extras[j]].priceInCents[purchases[i].entrantType]; // adding up the cost of extras in total cost variable accumulator 
+      extrasCost += ticketData.extras[purchases[i].extras[j]].priceInCents[purchases[i].entrantType]; // accumulating extras cost into extras cost variable 
     }
-    if (extras) {
-      if (i === 0) {
-        result = `\n${entrantType} ${ticketData[purchases[i].ticketType].description}: $${(extrasCost / 100).toFixed(2)} (${extras})`
-      } else {
-        result += `\n${entrantType} ${ticketData[purchases[i].ticketType].description}: $${(extrasCost / 100).toFixed(2)} (${extras})`
+    if (extras) { // if extras is truethy, exsisting value within extras array 
+      if (i === 0) { // and if there is only one purchase within purhases array 
+        result = `\n${entrantType} ${ticketData[purchases[i].ticketType].description}: $${(extrasCost / 100).toFixed(2)} (${extras})`// result will equel to a single line of a string 
+      } else { // if there is more than one purchases within purchases array 
+        result += `\n${entrantType} ${ticketData[purchases[i].ticketType].description}: $${(extrasCost / 100).toFixed(2)} (${extras})`// concatinating multiple lines of strings, each correlating to each purchase within array 
       }
-    } else if (!extras) {
-      if (i === 0) {
-        result = `\n${entrantType} ${ticketData[purchases[i].ticketType].description}: $${(ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType] / 100).toFixed(2)}`
-      } else {
-        result += `\n${entrantType} ${ticketData[purchases[i].ticketType].description}: $${(ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType] / 100).toFixed(2)}`
+    } else if (!extras) {// if extras are falsey or non-existent within purchases 
+      if (i === 0) {// and if there is only one purhase within purchases array 
+        result = `\n${entrantType} ${ticketData[purchases[i].ticketType].description}: $${(ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType] / 100).toFixed(2)}`//result will equel to a single line of a string with no extras 
+      } else {//if there is more than one purchases within purchases array 
+        result += `\n${entrantType} ${ticketData[purchases[i].ticketType].description}: $${(ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType] / 100).toFixed(2)}`//concatinating multiple lines of strings, each correlating to each purchase within array with no extras 
       }
     }
   }
-  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------${result}\n-------------------------------------------\nTOTAL: $${(totalCost / 100).toFixed(2)}`
+  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------${result}\n-------------------------------------------\nTOTAL: $${(totalCost / 100).toFixed(2)}`// insterting result in final format to be returned 
 
 }
 
