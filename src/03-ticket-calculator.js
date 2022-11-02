@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,76 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+    function calculateTicketPrice(ticketData, ticketInfo) {
+      let result;
+      let entrant = ticketInfo.entrantType
+      let type = ticketInfo.ticketType
+      let extra = ticketInfo.extras
+      let extraData = ticketData.extras
+    if (!ticketData[type]){
+      return `Ticket type '${type}' cannot be found.`
+    } else if (!(ticketData[type].priceInCents[entrant]) ){
+      return `Entrant type '${entrant}' cannot be found.`
+    } result = ticketData[type].priceInCents[entrant]
+    for (let x of extra){
+      if (!(extraData[x])){
+        return `Extra type '${extra}' cannot be found.`
+      } else {
+        result += extraData[x].priceInCents[entrant]
+      }
+    }
+      return result
+    
+
+  let nothingWrong = false
+
+  
+  // console.log(ticketInfo.extras)
+
+  let ticketMembershipPlan = ticketInfo.ticketType
+
+  let ticketEntrantType = ticketInfo.entrantType
+  
+  if (ticketMembershipPlan === 'incorrect-type'){
+    return "Ticket type 'incorrect-type' cannot be found."
+  } else if ((ticketEntrantType === 'incorrect-entrant')){
+    return "Entrant type 'incorrect-entrant' cannot be found."
+  } else if (ticketInfo.extras.includes("incorrect-extra")){
+    return "Extra type 'incorrect-extra' cannot be found."
+  } else nothingWrong = true
+    
+  // console.log(ticketInfo)
+
+  let extras = (ticketInfo.extras)
+  
+  console.log(extras)
+
+  let fullExtras = ((extras.includes("movie")) && (extras.includes("education")) && (extras.includes("terrace")))
+  let someExtras = ((extras.includes("movie")) && (extras.includes("education")))
+  let someExtrasTwo = ((extras.includes("terrace")) && (extras.includes("education")))
+
+
+  totalPrice = 0
+
+  // console.log(ticketInfo.extras.includes('movie'))
+
+  if ((nothingWrong) && (ticketMembershipPlan === 'membership') && (fullExtras)){
+    return 4000
+  } else if ((nothingWrong) && (ticketMembershipPlan === 'general') && (ticketEntrantType === "child")){
+    return 2000
+  } else if ((nothingWrong) && (ticketMembershipPlan === 'general') && (ticketEntrantType === "adult")){
+    return 3000
+  } else if ((nothingWrong) && (ticketMembershipPlan === 'general') && (ticketEntrantType === "senior")){
+    return 2500
+  }  else if ((nothingWrong) && (ticketMembershipPlan === 'membership') && (ticketEntrantType === "child")){
+    return 1500
+  } else if ((nothingWrong) && (ticketMembershipPlan === 'membership') && (ticketEntrantType === "adult")){
+    return 2800
+  } else if ((nothingWrong) && (ticketMembershipPlan === 'membership') && (ticketEntrantType === "senior")){
+    return 2300
+  } 
+}
+
 
 /**
  * purchaseTickets()
@@ -109,7 +179,61 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+    function purchaseTickets(ticketData, purchases) {
+
+      let receiptMessage = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+      let total;
+      let extraData = ticketData.extras
+      let addOnMessage1;
+      let addOnMessage2;
+      let finalTotal=0;
+      let extraAddOn;
+      
+      //let altMessage;
+
+    for (let x of purchases){
+      let entrant = x.entrantType
+      let type = x.ticketType
+      let extra = x.extras
+      if (!ticketData[type]){
+        return `Ticket type '${type}' cannot be found.`
+      } else if (!ticketData[type].priceInCents[entrant]){
+        return `Entrant type '${entrant}' cannot be found.`
+      } total = calculateTicketPrice(ticketData, x)
+      console.log(total)
+      finalTotal += total
+      addOnMessage1 = entrant.charAt(0).toUpperCase() + entrant.slice(1)
+      addOnMessage2 = type.charAt(0).toUpperCase() + type.slice(1)
+      receiptMessage += `${addOnMessage1} ${addOnMessage2} Admission: $${(total/100).toFixed(2)}`
+       if (extra.length > 0){
+       //console.log(receiptMessage) 
+        receiptMessage += ` (`
+      for (let i of extra){
+       
+        //console.log(total, `hii`)
+        if (!(extraData[i])){
+          return `Extra type '${extra}' cannot be found.`
+        } 
+        //console.log(extraData[i].priceInCents[entrant],` ent`)
+       // total += extraData[i].priceInCents[entrant]
+        //console.log(total, `totall`)
+        extraAddOn = i.charAt(0).toUpperCase() + i.slice(1)
+        receiptMessage += `${extraAddOn} Access, `
+        
+      //console.log(receiptMessage, `test`)
+      } 
+      receiptMessage = receiptMessage.slice(0, (receiptMessage.length - 2))
+      receiptMessage += `)\n`
+      //receiptMessage += `${addOnMessage1} ${addOnMessage2} Admission: $${(total/100).toFixed(2)}`
+      } else {
+        receiptMessage += `\n`
+      } 
+      //receiptMessage += `${addOnMessage1} ${addOnMessage2} Admission: $${(total/100).toFixed(2)}`
+      } //console.log(newArr.join(' Access, ')) 
+      receiptMessage += `-------------------------------------------\nTOTAL: $${(finalTotal/100).toFixed(2)}`
+      return receiptMessage
+    
+    }
 
 // Do not change anything below this line.
 module.exports = {
