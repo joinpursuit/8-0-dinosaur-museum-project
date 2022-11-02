@@ -23,19 +23,19 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getLongestDinosaur(dinosaurs) {
-  
-if (dinosaurs.length === 0) {
+ //  
+if (dinosaurs.length === 0) { 
   return {}
 }
-let firstDino = dinosaurs[0]
+let firstDino = dinosaurs[0] // making the first index of the dinosaurs array something for the other indexes to compare to 
 
-for (let i = 1; i < dinosaurs.length; i++) { 
-  if (dinosaurs[i].lengthInMeters > firstDino.lengthInMeters) {
-    firstDino = dinosaurs[i]
+for (let i = 1; i < dinosaurs.length; i++) { // loop to continously go through each index of the dinosaurs array
+  if (dinosaurs[i].lengthInMeters > firstDino.lengthInMeters) { //  if i represents random index of the dinosaurs array; & .lengthInMeters specifies that specific key - to be bigger than the lengthInMeters key of the index 0 of dinosaurs Array
+    firstDino = dinosaurs[i] // if above statement is true then firstDino will equal rando index of dinosaurs array... and then it starts all over again until the above if statement is false
   }
 } 
-let theLongestDino = {}
-theLongestDino[firstDino.name] = firstDino.lengthInMeters * 3.281
+let theLongestDino = {} // object creation for longest dino
+theLongestDino[firstDino.name] = firstDino.lengthInMeters * 3.281 
 
 return theLongestDino
   
@@ -63,12 +63,12 @@ return theLongestDino
  */
 function getDinosaurDescription(dinosaurs, id) {
  
-for (let i = 0; i < dinosaurs.length; i++) {
-  if (dinosaurs[i].dinosaurId === id) { 
-    return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.`
+for (let i = 0; i < dinosaurs.length; i++) { // loop to go through entire array of dinosaurs 
+  if (dinosaurs[i].dinosaurId === id) { // if rando index in dinosaurs array, dinosaurId key is strictly equal to the specified Id
+    return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.` 
   } 
 }
-return `A dinosaur with an ID of '${id}' cannot be found.`
+return `A dinosaur with an ID of '${id}' cannot be found.` // if above statement false, this is the error message 
 
 }
 
@@ -98,16 +98,16 @@ return `A dinosaur with an ID of '${id}' cannot be found.`
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let aliveDino = []
+  let aliveDino = [] // creating array for each element to be pushed into 
   
-for (i = 0; i < dinosaurs.length; i++) {
+for (i = 0; i < dinosaurs.length; i++) { // this loop is for function to go through each index of the entire array
     if (dinosaurs[i].mya.length === 1) {
       if (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0]-1 === mya) // if it equals the exact amount or the amount minues - 1 
       {
-        if (key) {
-          aliveDino.push(dinosaurs[i][key])
+        if (key) { // if key provided present 
+          aliveDino.push(dinosaurs[i][key]) // value of such key to be pushed in to array of aliveDino
         } else {
-          aliveDino.push(dinosaurs[i].dinosaurId)
+          aliveDino.push(dinosaurs[i].dinosaurId) // otherwise to push id 
         }
       } 
       } else if (dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[1] <= mya) {
