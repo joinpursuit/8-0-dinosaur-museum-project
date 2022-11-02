@@ -22,7 +22,28 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) { 
+  if (dinosaurs.length === 0) {  //guard clause
+    return {}
+  } 
+  let winnerObject = {}  //create a new object
+  let longLength=0       //figure out which dino is longest
+  for (let i=0; i<dinosaurs.length; i++){
+    if (dinosaurs[i].lengthInMeters > longLength){
+      longLength = dinosaurs[i].lengthInMeters;
+      winnerObject = dinosaurs[i]
+    }
+  }
+
+let final = {} ; //declare object
+final[winnerObject.name] = winnerObject.lengthInMeters*3.281;
+return final;
+}
+
+
+/* I thought that I could use winnerObject as the final object, but I couldn't. I used the winnerObject to hold the information about which dinosaur is the longest and then created a new object for the return. We added the one key pair to final, but apparently don't need a paranthesis to add it to the object. 
+*/   
+
 
 /**
  * getDinosaurDescription()
@@ -43,8 +64,50 @@ function getLongestDinosaur(dinosaurs) {}
  *
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
- */
-function getDinosaurDescription(dinosaurs, id) {}
+
+
+//possible guard clauses
+
+/* if(!dinosaurs.length) { return {}}
+ 
+const searchProp = dinosaurs.dinosaurId;
+ const searchValue = id;
+ const result = dinosaurs.filter((user) => user[searchProp] === searchValue);
+ dinosaurs.find()
+
+  if() {
+   return `A dinosaur with an ID of ${id} cannot be found.`
+ }
+ if (dinosaurs.id === null){
+  return `A dinosaur with an ID of ${id} cannot be found.`
+}
+let workable = "no";
+function yeahDino(){
+    workable === "yes"}
+function goAhead (){
+    if (yeahDino != "yes"){}}
+*/
+    //find the right dino
+
+function getDinosaurDescription(dinosaurs, id) {
+  let desiredDino = {} //create a new variable   
+  for (let i=0; i<dinosaurs.length; i++){
+    if(dinosaurs[i].dinosaurId === id) {
+      desiredDino = dinosaurs[i];
+  }
+}
+
+if (!desiredDino.mya) {
+  return  `A dinosaur with an ID of '${id}' cannot be found.`
+} else if (desiredDino.mya.length===1){
+finalReturn =`${desiredDino.name} (${desiredDino.pronunciation})\n${desiredDino.info} It lived in the ${desiredDino.period} period, over ${desiredDino.mya[0]} million years ago.`
+  } else if (desiredDino.mya.length===2){
+    finalReturn =`${desiredDino.name} (${desiredDino.pronunciation})\n${desiredDino.info} It lived in the ${desiredDino.period} period, over ${desiredDino.mya[1]} million years ago.`
+  }
+
+return finalReturn
+}
+
 
 /**
  * getDinosaursAliveMya()
@@ -70,8 +133,42 @@ function getDinosaurDescription(dinosaurs, id) {}
  *
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
- */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+*/ 
+
+
+
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  let dinoArray = [];   //create a new array, to be returned
+  // create a loop that will examine dinosaurs
+  for (let i=0; i<dinosaurs.length; i++){
+    //if the mya key holds 1 number, see if the year given is that year or one less
+    if (dinosaurs[i].mya.length===1) {
+      if((dinosaurs[i].mya[0]===mya || dinosaurs[i].mya[0]-1===mya) && key) {
+        dinoArray.push(dinosaurs[i][key]);
+          } else if (mya === dinosaurs[i].mya[0] || mya === dinosaurs[i].mya[0]-1) {
+                dinoArray.push(dinosaurs[i].dinosaurId)
+              } 
+    
+   //if the mya key holds 2 numbers, see if the year given is between those two numbers
+            }else if (dinosaurs[i].mya.length===2){    
+              if (( mya <= dinosaurs[i].mya[0] && mya >= dinosaurs[i].mya[1]) && key) {
+              dinoArray.push(dinosaurs[i][key]);
+      //do different things depending on the 3rd parameter
+              } else if ( mya <= dinosaurs[i].mya[0] && mya >= dinosaurs[i].mya[1]) {
+                dinoArray.push(dinosaurs[i].dinosaurId);
+              } 
+   
+  } 
+  } return dinoArray
+}
+
+//Why isn't this working? The less than or equal to and greater then or equal to are facing the right way. Changing push to unshift isn't making a difference. My array is still empty almost every time except for one of the questios. I have it returning name when it should be returning name and code when it should be returning code.
+
+
+
+
+
+
 
 module.exports = {
   getLongestDinosaur,

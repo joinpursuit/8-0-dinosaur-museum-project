@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,72 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+
+
+
+function calculateTicketPrice(ticketData, ticketInfo) {
+//guard clauses
+
+if (ticketInfo.ticketType != "general" && ticketInfo.ticketType != "membership") {
+  return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+}
+
+if (ticketInfo.entrantType != "child" && ticketInfo.entrantType != "adult" && ticketInfo.entrantType != "senior"){
+  return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+}
+
+for (let i=0; i<ticketData.length; i++) {
+  if (ticketInfo.extras != ticketData.extras[ticketInfo.extras[i]] || ticketInfo.extras === "incorrect-extra") {
+    return "Extra type 'incorrect-extra' cannot be found."
+  }
+}
+
+
+//then loop through extras
+// if (ticketInfo.extras != )
+
+    //need to include something that says if there is an incorrect extra, it is incorrect.  This should be someething like in the extras, the name of the extra should be one of the fields under ticket.extras.HERE. But it is okay to have no extras at all. So would that be find?
+
+  let subTotal = "";
+   {
+    if (ticketInfo.ticketType==="general" && ticketInfo.entrantType==="child") {
+      subTotal=2000
+    } else if (ticketInfo.ticketType==="general" && ticketInfo.entrantType==="adult") {
+      subTotal = 3000
+    } else if (ticketInfo.ticketType==="general" && ticketInfo.entrantType==="senior") {
+      subTotal = 2500
+    } else if (ticketInfo.ticketType==="membership" && ticketInfo.entrantType==="child") {
+      subTotal=1500
+    } else if (ticketInfo.ticketType==="membership" && ticketInfo.entrantType==="adult") {
+      subTotal = 2800
+    } else if (ticketInfo.ticketType==="membership" && ticketInfo.entrantType==="senior") {
+      subTotal = 2300
+    }
+
+    
+    if (ticketInfo.extras.includes("movie")) {
+      subTotal=subTotal+1000
+    } 
+
+    if (ticketInfo.extras.includes("education")) {
+      if (ticketInfo.entrantType === "child") {
+        subTotal = subTotal+1000
+      } else {
+        subTotal = subTotal+1200
+      }
+    }
+
+    if (ticketInfo.extras.includes("terrace")) {
+      if (ticketInfo.entrantType === "child") {
+        subTotal = subTotal + 500
+      } else {
+        subTotal = subTotal + 1000
+      } return subTotal;
+    }
+
+  }
+  return subTotal
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +175,57 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+
+  //purchases is already an array. For each ticket purchased, determine the price and then add all of the prices together. Each object should be looped through the above function. In addition, each iteration also has to appear on the receipt.
+
+function purchaseTickets(ticketData, purchases) {
+
+let total = 0;   // total should sum here
+let finalTotal = (total*0.01).toFixed(2) 
+let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"; //build the receipt here
+
+
+
+for (let ticket of purchases){
+  let ticketPrice = calculateTicketPrice(ticketData, ticket);  
+
+
+  //how do we get the picked options to show up on the receipt?
+  let moreFun = [] //an array for the extras
+  let extras = ""
+    //loop-de-loop
+    for (let fun of ticket.extras) {
+      moreFun.push(ticketData.extras[fun].description)
+    }
+
+
+  total = total+ticketPrice
+if(moreFun <=0) {
+  receipt += `${ticket.entrantType.charAt(0).toUpperCase() + ticket.entrantType.slice(1)} ${ticket.ticketType.charAt(0).toUpperCase()+ticket.ticketType.slice(1)} Admission: $${(ticketPrice*0.01).toFixed(2)}\n` ;
+} else {
+  receipt += `${ticket.entrantType.charAt(0).toUpperCase() + ticket.entrantType.slice(1)} ${ticket.ticketType.charAt(0).toUpperCase()+ticket.ticketType.slice(1)} Admission: $${(ticketPrice*0.01).toFixed(2)} (${moreFun.join(", ")})\n` ;
+}
+}
+let receiptEnd = `-------------------------------------------\nTOTAL: $${(total*0.01).toFixed(2)}`  //will use this as part of the receipt
+
+  return receipt+receiptEnd  //RETURN
+  }
+  
+
+
+ // } else if (ticket.extras.length !==0) {
+    let extrasArray = [];
+    // for (let i=0; i<ticket.extras.length; i++){ //list all extras in paranthesis
+    //   let receiptExtras=ticket.extras[i];
+    //   extrasArray.push(receiptExtras);
+    //   receipt += `${ticket.entrantType.charAt(0).toUpperCase() + ticket.entrantType.slice(1)} ${ticket.ticketType.charAt(0).toUpperCase()+ticket.ticketType.slice(1)} Admission: $${ticketPrice} (${ticket.extras} Access) \n` ;
+
+
+/*
+  
+  //Adult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
+ */ 
 
 // Do not change anything below this line.
 module.exports = {
