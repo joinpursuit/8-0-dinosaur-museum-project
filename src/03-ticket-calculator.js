@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,58 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  //let ticketPrice = Number
+  let errorMessageEntrant = `Entrant type ${ticketInfo.entrantType} cannot be found.`
+  let errorMessageTicketType = `Ticket type ${ticketInfo.ticketType} cannot be found.`
+  let errorMessageExtras = `Ticket type ${ticketInfo.extras} cannot be found.`
+  //Movie Access has the same price regardless of the entrantType;go back to fix that
+  for (let i = 0; i < ticketInfo.length; i++) {
+    if (tickets[i].general.description === "General Admission") {
+      if (ticketInfo.entrantType = "adult") {
+        return tickets[i].general.priceInCents.adult
+      } else if (ticketInfo.entrantType = "child") {
+        return tickets[i].general.priceInCents.child
+      } else if (ticketInfo.entrantType = "senior") {
+        return tickets[i].general.priceInCents.senior
+      }
+    } if (tickets[i].membership.description === "Membership Admission") {
+      if (ticketInfo.entrantType = "adult") {
+        return tickets[i].membership.priceInCents.adult
+      } else if (ticketInfo.entrantType = "child") {
+        return tickets[i].membership.priceInCents.child
+      } else if (ticketInfo.entrantType = "senior") {
+        return tickets[i].membership.priceInCents.senior
+      }
+    } if (tickets[i].extras) {
+      if (tickets[i].extras.movie.description = "Movie Access") {
+        return tickets[i].extras.movie.priceInCents[i]//added [i] to priceInCents so it would select whichever entrantType based on the ticketType?
+      } else if (tickets[i].extras.education.description = "Education Access") {
+        if (ticketInfo.entrantType = "adult") {
+          return tickets[i].extras.education.priceInCents.adult
+        } else if (ticketInfo.entrantType = "child") {
+          return tickets[i].extras.education.priceInCents.child
+        } else if (ticketInfo.entrantType = "senior") {
+          return tickets[i].extras.education.priceInCents.senior
+        }
+      } else if (tickets[i].extras.terrace.description = "Terrace Access") {
+        if (ticketInfo.entrantType = "adult") {
+          return tickets[i].extras.terrace.priceInCents.adult
+        } else if (ticketInfo.entrantType = "child") {
+          return tickets[i].extras.terrace.priceInCents.child
+        } else if (ticketInfo.entrantType = "senior") {
+          return tickets[i].extras.terrace.priceInCents.senior
+        }
+      }
+    } else if (ticketInfo.entrantType !== "adult" || ticketInfo.entrantType !== "child" || ticketInfo.entrantType !== "senior") {
+      return errorMessageEntrant 
+    } else if (ticketInfo.ticketType === ["movie"] || ticketInfo.ticketType === ["education"] || ticketInfo.ticketType === ["terrace"]) {
+      return errorMessageTicketType
+    } else if (ticketInfo.extras === ["movie", "education", "terrace"]) {
+      return errorMessageExtras
+    }
+  } return ticketData//how do I get the information inside it? Or is it already inside of the object?
+}
 
 /**
  * purchaseTickets()
