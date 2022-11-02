@@ -24,14 +24,14 @@ const exampleDinosaurData = require("../data/dinosaurs");
  */
 function getLongestDinosaur(dinosaurs) {
   if (dinosaurs.length === 0) {
-    let result = {};
-    return result
+    let result = {}; //Initialized result as an object.
+    return result // Return empty object as desired if the guard clause is met.
   } else {
-    let maxMeters = Math.max(...dinosaurs.map(({ lengthInMeters }) => lengthInMeters));
-    let maxFeet = Number((maxMeters * 3.281).toFixed(2));
-    let foundObj = dinosaurs.find(({ lengthInMeters }) => lengthInMeters === maxMeters);
-    let finalObj = { [foundObj.name]: maxFeet }
-    return finalObj
+    let maxMeters = Math.max(...dinosaurs.map(({ lengthInMeters }) => lengthInMeters)); // Gives the maximum number of an array's values,which were mapped from the dinosaurs array to give back all the elements of every key that matched {lengthInMeters} ,spread using spread syntax (...) since Math.max() doesn't work on an array.
+    let maxFeet = Number((maxMeters * 3.281).toFixed(2)); // Converts maxMeters value into feet and sets the characters returned after the decimal to two. This returns a string of the calculated value so I wrapped it in the primitive wrapper object 'Number()' .
+    let foundObj = dinosaurs.find(({ lengthInMeters }) => lengthInMeters === maxMeters); // Uses .find() method to return the entire element that has a key {lengthInMeters} with a value that is absolutely equal to maxMeters. And stores it in the initialized Variable.
+    let finalObj = { [foundObj.name]: maxFeet } // Created a variable of an Object with the desired {key : value pair}.
+    return finalObj 
   }
 }
 
@@ -58,7 +58,7 @@ function getLongestDinosaur(dinosaurs) {
 function getDinosaurDescription(dinosaurs, id) {
   const search = dinosaurs.find(({ dinosaurId }) => dinosaurId === id); // Initializes search as the result of the .find callbackfunction ran to find the {key} inside of the given dinosaurs array if the value inside that key is === to the given 'id'. If the given value inside my matching {key} is not === to 'id' then search will be 'undefined'
   return (!search ? `A dinosaur with an ID of '${id}' cannot be found.` // Uses ternary to return (if search is falsy then return error statement else return desired interpolated string)
-    : `${search.name} (${search.pronunciation})\n${search.info} It lived in the ${search.period} period, over ${search?.mya[1] ?? search?.mya[0] ?? "error"} million years ago.` // 
+    : `${search.name} (${search.pronunciation})\n${search.info} It lived in the ${search.period} period, over ${search.mya[1] ?? search.mya[0]} million years ago.` // else statement using ?? (nullish) operator, if left of the 'operator' is nullish the value right of the 'operator' is returned.
   );
 }
 
@@ -101,7 +101,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
       }
     })
 
-  // .map((dino) => dino.dinosaurId);
+
   if (!key) {
     let format = matchedmyaArray.map((dino) => dino.dinosaurId)
     if (format.length === 2 && format[1] === "2GglUqKT0G") {
