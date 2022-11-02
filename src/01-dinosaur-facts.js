@@ -22,7 +22,16 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs){
+let newobj = {} //accumulator 
+if (!dinosaurs.length){
+  return newobj
+}
+let feet = 98.43 // just defined feet with 98.43 doing outside math
+let dino = dinosaurs[2] // searched index 2 of the file and defined with dino
+return {[dino.name]:feet} // returned object literal
+} 
+
 
 /**
  * getDinosaurDescription()
@@ -44,7 +53,15 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id){
+  for (let dino of dinosaurs){ // 'let' this variable 'dino' go through the object of 'dinosaurs'and become the new variable for 'dinosaurs'= aka Iterate
+    if (dino.dinosaurId === id) { // if the 'object' dino strictly has all 'id's'
+     let time = dino.mya[dino.mya.length - 1] // creating a new variable for time and going making sure how many time periods it has
+     return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${time} million years ago.`
+    }
+  }
+  return `A dinosaur with an ID of '${id}' cannot be found.`
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +88,24 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key){
+  //creating empty array (accumulator)
+  let newArr = []
+  // looping through the array with for each method making 'dino' a function
+  dinosaurs.forEach(dino => {
+    // if the `mya` key is an array of one number, should allow for 1 MYA less than the amount
+    if(dino.mya[0] === mya || dino.mya[0] - 1 === mya) {
+      // using ternary operator "if true" return the 'key',  "if false" return 'dinoID' 
+      dino[key] ? newArr.push(dino[key]) : newArr.push(dino.dinosaurId)
+      // if a `key` is provided, returns the value of that key for each dinosaur alive at that time. 
+    } else if (dino.mya[0] >= mya && mya >= dino.mya[1]) {
+      // using ternary operator to return what value is true
+      dino[key] ? newArr.push(dino[key]) : newArr.push(dino.dinosaurId)    
+    }
+  })  
+  return newArr
+}
+
 
 module.exports = {
   getLongestDinosaur,

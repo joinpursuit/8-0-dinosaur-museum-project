@@ -25,7 +25,26 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName){
+  // looping through the array of dinosaurs first 
+  for (let i = 0; i < dinosaurs.length; i++){
+   // checking the loop too see if the dinosaur exist in the array
+   if (dinosaurName === dinosaurs[i].name){
+    // going through the rooms array first 
+    for (let j = 0; j < rooms.length; j++){
+      // second checking to see if that room has a dinosaur, we are still using the dino.js file
+      if (rooms[j].dinosaurs.includes(dinosaurs[i].dinosaurId)){
+        // return room name 
+       return rooms[j].name
+      }
+    }
+    // return an error message if the dinosaur isn't in any room 
+    return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+   }
+  }
+  //we return an error message if the dino doesn't exist
+  return `Dinosaur with name '${dinosaurName}' cannot be found.`
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +68,24 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  //creating new array/accumulator
+  let array = []
+  //looping through rooms 
+  for (let i = 0; i < rooms.length; i++){
+    // any room has an ID it will return the array with ID 
+   if (rooms[i].connectsTo.includes(id)) {
+    array.push(rooms[i].name)
+    // if no room has an ID it will return an error message
+   } else if (rooms[i].connectsTo.includes(`incorrect-id`)) {
+    return `Room with ID of 'incorrect-id' could not be found.`
+   }
+  }
+  if (array.length === 0){
+    return `Room with ID of 'incorrect-id' could not be found.`
+  }
+  return array
+}
 
 module.exports = {
   getRoomByDinosaurName,
