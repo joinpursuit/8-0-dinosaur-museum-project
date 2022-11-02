@@ -69,10 +69,14 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName){
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
+  //creating new array/accumulator
   let array = []
+  //looping through rooms 
   for (let i = 0; i < rooms.length; i++){
+    // any room has an ID it will return the array with ID 
    if (rooms[i].connectsTo.includes(id)) {
     array.push(rooms[i].name)
+    // if no room has an ID it will return an error message
    } else if (rooms[i].connectsTo.includes(`incorrect-id`)) {
     return `Room with ID of 'incorrect-id' could not be found.`
    }

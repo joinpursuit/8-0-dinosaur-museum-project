@@ -89,12 +89,18 @@ function getDinosaurDescription(dinosaurs, id){
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key){
+  //creating empty array (accumulator)
   let newArr = []
-  dinosaurs.forEach(dinosaur => {
-    if(dinosaur.mya[0] === mya || dinosaur.mya[0] - 1 === mya) {
-      dinosaur[key] ? newArr.push(dinosaur[key]) : newArr.push(dinosaur.dinosaurId)
-    } else if (dinosaur.mya[0] >= mya && mya >= dinosaur.mya[1]) {
-      dinosaur[key] ? newArr.push(dinosaur[key]) : newArr.push(dinosaur.dinosaurId)    
+  // looping through the array with for each method making 'dino' a function
+  dinosaurs.forEach(dino => {
+    // if the `mya` key is an array of one number, should allow for 1 MYA less than the amount
+    if(dino.mya[0] === mya || dino.mya[0] - 1 === mya) {
+      // using ternary operator "if true" return the 'key',  "if false" return 'dinoID' 
+      dino[key] ? newArr.push(dino[key]) : newArr.push(dino.dinosaurId)
+      // if a `key` is provided, returns the value of that key for each dinosaur alive at that time. 
+    } else if (dino.mya[0] >= mya && mya >= dino.mya[1]) {
+      // using ternary operator to return what value is true
+      dino[key] ? newArr.push(dino[key]) : newArr.push(dino.dinosaurId)    
     }
   })  
   return newArr
