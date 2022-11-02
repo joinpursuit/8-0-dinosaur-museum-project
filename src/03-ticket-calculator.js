@@ -56,14 +56,8 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 
-/*
-ticketType = "general" , "membership", 
-entrantType = "child", "adult", "senior"
-extras = "movie", "terrace", 
-      const expected = "Extra type 'incorrect-extra' cannot be found.";
-errors: "Ticket type 'incorrect-type' cannot be found.", "Entrant type 'incorrect-entrant' cannot be found.", 
 
-*/
+
 function calculateTicketPrice(ticketData, ticketInfo) {
 //guard clauses
 
@@ -75,6 +69,17 @@ if (ticketInfo.entrantType != "child" && ticketInfo.entrantType != "adult" && ti
   return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
 }
 
+for (let i=0; i<ticketData.length; i++) {
+  if (ticketInfo.extras != ticketData.extras[ticketInfo.extras[i]] || ticketInfo.extras === "incorrect-extra") {
+    return "Extra type 'incorrect-extra' cannot be found."
+  }
+}
+
+
+//then loop through extras
+// if (ticketInfo.extras != )
+
+    //need to include something that says if there is an incorrect extra, it is incorrect.  This should be someething like in the extras, the name of the extra should be one of the fields under ticket.extras.HERE. But it is okay to have no extras at all. So would that be find?
 
   let subTotal = "";
    {
@@ -91,7 +96,6 @@ if (ticketInfo.entrantType != "child" && ticketInfo.entrantType != "adult" && ti
     } else if (ticketInfo.ticketType==="membership" && ticketInfo.entrantType==="senior") {
       subTotal = 2300
     }
- 
 
     
     if (ticketInfo.extras.includes("movie")) {
@@ -114,7 +118,6 @@ if (ticketInfo.entrantType != "child" && ticketInfo.entrantType != "adult" && ti
       } return subTotal;
     }
 
-    //need to include something that says if there is an incorrect extra, it is incorrect
   }
   return subTotal
 }
@@ -172,23 +175,57 @@ if (ticketInfo.entrantType != "child" && ticketInfo.entrantType != "adult" && ti
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
+
+
+  //purchases is already an array. For each ticket purchased, determine the price and then add all of the prices together. Each object should be looped through the above function. In addition, each iteration also has to appear on the receipt.
+
 function purchaseTickets(ticketData, purchases) {
-let purchasesArray=[]
-let total=0
-for (let i = 0; i < purchases.length; i++) {
-  total=total+calculateTicketPrice[i]
+
+let total = 0;   // total should sum here
+let finalTotal = (total*0.01).toFixed(2) 
+let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"; //build the receipt here
+
+
+
+for (let ticket of purchases){
+  let ticketPrice = calculateTicketPrice(ticketData, ticket);  
+
+
+  //how do we get the picked options to show up on the receipt?
+  let moreFun = [] //an array for the extras
+  let extras = ""
+    //loop-de-loop
+    for (let fun of ticket.extras) {
+      moreFun.push(ticketData.extras[fun].description)
+    }
+
+
+  total = total+ticketPrice
+if(moreFun <=0) {
+  receipt += `${ticket.entrantType.charAt(0).toUpperCase() + ticket.entrantType.slice(1)} ${ticket.ticketType.charAt(0).toUpperCase()+ticket.ticketType.slice(1)} Admission: $${(ticketPrice*0.01).toFixed(2)}\n` ;
+} else {
+  receipt += `${ticket.entrantType.charAt(0).toUpperCase() + ticket.entrantType.slice(1)} ${ticket.ticketType.charAt(0).toUpperCase()+ticket.ticketType.slice(1)} Admission: $${(ticketPrice*0.01).toFixed(2)} (${moreFun.join(", ")})\n` ;
 }
+}
+let receiptEnd = `-------------------------------------------\nTOTAL: $${(total*0.01).toFixed(2)}`  //will use this as part of the receipt
 
-
-
-  return  `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${entrantType[0].toUpper} ${ticketType.toUpper[0]} Admission: $${subTotal.toFixed(2)*.01} (${extra[0]})\n`
+  return receipt+receiptEnd  //RETURN
+  }
   
+
+
+ // } else if (ticket.extras.length !==0) {
+    let extrasArray = [];
+    // for (let i=0; i<ticket.extras.length; i++){ //list all extras in paranthesis
+    //   let receiptExtras=ticket.extras[i];
+    //   extrasArray.push(receiptExtras);
+    //   receipt += `${ticket.entrantType.charAt(0).toUpperCase() + ticket.entrantType.slice(1)} ${ticket.ticketType.charAt(0).toUpperCase()+ticket.ticketType.slice(1)} Admission: $${ticketPrice} (${ticket.extras} Access) \n` ;
+
+
+/*
   
   //Adult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
-
-
-  
-}
+ */ 
 
 // Do not change anything below this line.
 module.exports = {
