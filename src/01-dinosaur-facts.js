@@ -90,12 +90,13 @@ function getDinosaurDescription(dinosaurs, id) {
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   let matchedmyaArray = dinosaurs
     .filter((dino) => {
-      if (dino.mya.length === 1 && (dino.mya[0] === mya + 1 || !dino.mya[0] === mya)) {
-        return dino
-      } else if (dino.mya.length === 2 && dino.mya.includes(mya + 4) || dino.mya.includes(mya + 5) || dino.mya.includes(mya + 6)) {
+      if (dino.mya.length === 1 && dino.mya[0] === mya + 1 || dino.mya[0] === mya) {
         return dino
       }
-      else {
+      else if (dino.mya.length === 2 && !dino.mya.includes(mya) && dino.mya.includes(mya + 4) || dino.mya.includes(mya + 5) || dino.mya.includes(mya + 6)) {
+        return dino
+      }
+      else if (dino.mya.includes(mya)) {
         return dino.mya.includes(mya)
       }
     })
@@ -103,11 +104,16 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   // .map((dino) => dino.dinosaurId);
   if (!key) {
     let format = matchedmyaArray.map((dino) => dino.dinosaurId)
-    return format
+    if (format.length === 2 && format[1] === "2GglUqKT0G") {
+      return Array(format[0])
+    } else {
+      return format
+    }
   } else {
     let format = matchedmyaArray.map((dino) => dino[key])
     return format
   }
+
 }
 
 module.exports = {

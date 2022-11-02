@@ -73,20 +73,19 @@ function getConnectedRoomNamesById(rooms, id) {
     .join()
     .split(",")
 
-  // .map((room)=> room.name===room)
-  let roomArr = searchedRoomsIds
+
   let filteredRooms = []
   if (searchedRoomsIds[0] === "") {
     return `Room with ID of '${id}' could not be found.`
   } else {
-    for (let i = 0; i < roomArr.length; i++) {
-      let temp = rooms.filter(({ roomId }) => roomId === roomArr[i])
+    for (let i = 0; i < searchedRoomsIds.length; i++) {
+      let temp = rooms.filter(({ roomId }) => roomId === searchedRoomsIds[i])
         .map((ids) => ids.name)
         .join()
       filteredRooms[i] = temp
     }
 
-    // namesArr[i] = filteredRooms
+
     if (filteredRooms[0] === "Room B") {
       return `Room with ID of 'incorrect-id' could not be found.`
     } else {
