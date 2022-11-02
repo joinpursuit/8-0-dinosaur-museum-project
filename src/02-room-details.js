@@ -25,7 +25,20 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  for(i = 0; i < dinosaurs.length; i++){
+    if (dinosaurs[i].name === dinosaurName){
+      let dino = dinosaurs[i].dinosaurId
+      for(let j = 0; j < rooms.length; j++){
+        if(rooms[j].dinosaurs.includes(dino)){
+          return rooms[j].name
+        }
+      }
+      return`Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+    }
+  }
+  return `Dinosaur with name '${dinosaurName}' cannot be found.`
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +62,47 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+// function getConnectedRoomNamesById(rooms, id) {
+//   let roomArray = []
+//   let exist = false
+//   for(let i =0; i < rooms.length; i++){
+//     if(rooms[i].roomId === id){
+//       exist = true
+//     }
+//     // if (!rooms[i].connectsTo.includes(rooms[i].roomId) ){
+//     //    return `Room with ID of '${id}' could not be found.`}
+//      if(rooms[i].connectsTo.includes(id)){
+//       roomArray.push(rooms[i].name)
+//       let realRoomId = rooms[i].roomId
+//       let verifiedRoom= rooms[i].connectsTo
+//       // for(let j=0; j < rooms.length; i++){
+//     if (!(rooms.connectsTo.includes(realRoomId))){
+//       return `Room with ID of '${rooms[i].connectsTo}' could not be found.`
+//     }
+//     //  }
+//     }
+//   }if(exist === true && roomArray.length > 0){
+//     return roomArray
+//   }else if(exist === false){
+//     return `Room with ID of '${id}' could not be found.`
+//   }
+// }
+function getConnectedRoomNamesById(rooms, id) {
+  let roomArray = []
+  let exist = false
+  for(let i =0; i < rooms.length; i++){
+    if(rooms[i].roomId === id){
+      exist = true
+    }
+     if(rooms[i].connectsTo.includes(id)){
+      roomArray.push(rooms[i].name)
+    } 
+  }if(exist === true && roomArray.length > 0){
+    return roomArray
+  }else if(exist === false){
+    return `Room with ID of '${id}' could not be found.`
+  }
+}
 
 module.exports = {
   getRoomByDinosaurName,
