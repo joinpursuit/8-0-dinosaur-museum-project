@@ -105,32 +105,26 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   let isAlive = []
    
   for(i=0; i <dinosaurs.length; i++){
-   
-    if(((dinosaurs[i].mya.length) ==2 ) && (((dinosaurs[i].mya[0]) - (Math.floor(mya/10)*10)) <=10 ) &&  (((dinosaurs[i].mya[0]) - (Math.floor(mya/10)*10)) >=0 )) {
-      isAlive.push(dinosaurs[i].dinosaurId)
-      result = isAlive}
-
-    if(((dinosaurs[i].mya.length) <2 ) && ((((dinosaurs[i].mya[0]) - (Math.floor(mya/10)*10)) <=10 ) || ((((dinosaurs[i].mya[0])-1) - (Math.floor(mya/10)*10)) <=10 )) &&  (((dinosaurs[i].mya[0]) - (Math.floor(mya/10)*10)) >=0 )) {
-      isAlive.push(dinosaurs[i].dinosaurId)
-      result = isAlive}
-
-    
-
-    // if(((dinosaurs[i].mya.length) ==2 ) && (((dinosaurs[i].mya[0])- mya) <9)){
-    //   isAlive.push(dinosaurs[i].dinosaurId)
-
-    // Math.floor(num / 10) * 10
-      
-    // }
-    // else 
-      // return isAlive
+  
+   if (((dinosaurs[i].mya.length) == 2) && (mya <= (dinosaurs[i].mya[0])) && (mya >= (dinosaurs[i].mya[1]))){
+    if(key){
+      isAlive.push(dinosaurs[i][key])
+    }else{
+    isAlive.push(dinosaurs[i].dinosaurId)
+  }
+    result = isAlive
+  } if (((dinosaurs[i].mya.length) == 1) && (mya <= (dinosaurs[i].mya[0])) && (mya >= ((dinosaurs[i].mya[0])-1))){
+    if (key){
+      isAlive.push(dinosaurs[i][key])
+    }else
+    {
+    isAlive.push(dinosaurs[i].dinosaurId)
+    }
+  } result = isAlive
     
   }
   return result
   
-  // if(((dinosaurs[i].mya.length) == 2) && ((dinosaurs[i].mya.length[0]) % mya <=9))
-  // console.log(dinosaurs[4].mya[0])
-  // return (isAlive)
 }
 
 module.exports = {
