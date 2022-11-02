@@ -57,14 +57,37 @@ const exampleTicketData = require("../data/tickets");
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
   let cost = 0;
-  cost = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
 
-  //for (let i = 0; i < ticketInfo.extras.length) {
-    
+  if (ticketInfo.ticketType in ticketData){
+
+    if (ticketInfo.entrantType in ticketData[ticketInfo.ticketType]["priceInCents"]){
+
+      cost += ticketData[ticketInfo.ticketType]["priceInCents"][ticketInfo.entrantType];
+
+      for ( let extra of ticketInfo.extras){
+
+        if (extra in ticketData.extras == false) {
+          return `Extra type '${extra}' cannot be found.`
+        }
+        else {
+
+          cost += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+        }
+      }
+      
+    }
+    else {
+
+      return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+    }
+  }
+  else {
+
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
   }
 
-
- // return cost
+  return cost;
+}
 
 
 /**
@@ -133,7 +156,7 @@ function purchaseTickets(ticketData, purchases) {
    if (!purchases[i].entrantType in ticketData[purchases[i].ticketType].priceInCents){
       return `Entrant type '${purchases[i].entrantType}' cannot be found.`
    } //FORMATTING IS FUN! ... FOR STRINGS...
-   let ticketPrice = calculateTicketPrice(ticketData, purchases[i])/100
+   let ticketPrice = calculateTicketPrice(ticketData, purchases[i]) // /100
    printReceipt += `\n${purchases[i].entrantType.charAt(0).toUpperCase()}${purchases[i].entrantType.slice(1)} ${purchases[i].ticketType.charAt(0).toUpperCase()}${purchases[i].ticketType.slice(1)} Admission: `
    printReceipt += `$${(ticketPrice).toFixed(2)}`
 
@@ -152,6 +175,7 @@ function purchaseTickets(ticketData, purchases) {
   }//end of for loop
 
    printReceipt += `\n-------------------------------------------\nTOTAL: $${(subTotal).toFixed(2)}`
+
   return printReceipt
   
 }
