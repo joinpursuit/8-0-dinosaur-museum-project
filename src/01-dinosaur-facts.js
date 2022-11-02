@@ -88,30 +88,30 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  let matchedmyaArray = dinosaurs
-    .filter((dino) => {
-      if (dino.mya.length === 1 && dino.mya[0] === mya + 1 || dino.mya[0] === mya) {
-        return dino
+  let matchedmyaArray = dinosaurs // Created an array with Dinosaur array being filtered.
+    .filter((dino) => { // .filter() to return elements under certain conditions
+      if (dino.mya.length === 1 && dino.mya[0] === mya + 1 || dino.mya[0] === mya) { // allows for mya value to be equal to given value or one less.
+        return dino // return that element
       }
-      else if (dino.mya.length === 2 && !dino.mya.includes(mya) && dino.mya.includes(mya + 4) || dino.mya.includes(mya + 5) || dino.mya.includes(mya + 6)) {
-        return dino
+      else if (dino.mya.length === 2 && !dino.mya.includes(mya) && dino.mya.includes(mya + 4) || dino.mya.includes(mya + 5) || dino.mya.includes(mya + 6)) { // allows for mya value that is approximate to the actual value in Dinosaurs array.
+        return dino // return that element
       }
-      else if (dino.mya.includes(mya)) {
-        return dino.mya.includes(mya)
+      else if (dino.mya.includes(mya)) { // allows all other elements that include the given value mya to be reutrned.
+        return dino.mya.includes(mya) // returns that element
       }
     })
 
 
-  if (!key) {
-    let format = matchedmyaArray.map((dino) => dino.dinosaurId)
-    if (format.length === 2 && format[1] === "2GglUqKT0G") {
-      return Array(format[0])
+  if (!key) { // if given key does not exist
+    let format = matchedmyaArray.map((dino) => dino.dinosaurId) // map matched mya array to return an array of elements with the value of the {dinosaurId} key.
+    if (format.length === 2 && format[1] === "2GglUqKT0G") { // Guard Clause for a discrepency in my algorithm.
+      return Array(format[0]) // return an array with the first element of format array.
     } else {
-      return format
+      return format // return format array as is 
     }
   } else {
-    let format = matchedmyaArray.map((dino) => dino[key])
-    return format
+    let format = matchedmyaArray.map((dino) => dino[key]) // map the matched mya array to return an array of the elements at the given key.
+    return format // return format array
   }
 
 }
