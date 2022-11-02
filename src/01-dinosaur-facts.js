@@ -22,7 +22,16 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+ let tallest = {}
+ let length = Math.max(...dinosaurs.map(dinosaurs => dinosaurs.lengthInMeters))
+ let target = dinosaurs.find(dinosaurs => dinosaurs.lengthInMeters === length)
+    if (target !== undefined){
+      tallest[target.name] = target.lengthInMeters *3.281
+      return tallest
+    } else 
+    return tallest
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +53,13 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+    let target = dinosaurs.find(dinosaurs => dinosaurs.dinosaurId === id)
+    if(target !== undefined)
+    return `${target.name} (${target.pronunciation})\n${target.info} It lived in the ${target.period} period, over ${target.mya[target.mya.length-1]} million years ago.`
+     else 
+     return `A dinosaur with an ID of '${id}' cannot be found.`
+  }
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +86,29 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+ let alive = []
+ for (let i = 0; i < dinosaurs.length; i++){
+  if(dinosaurs[i].mya.length === 1){
+    if(dinosaurs[i].mya[0] === mya || dinosaurs[i].mya -1 === mya){
+      if(key){
+        alive.push(dinosaurs[i][key])
+      } else {
+        alive.push(dinosaurs[i].dinosaurId)
+      }
+    }
+   }  else {
+      if(dinosaurs[i].mya[0] >= (mya) && dinosaurs[i].mya[1] <= (mya)){
+        if(key){
+          alive.push(dinosaurs[i][key])
+        } else {
+          alive.push(dinosaurs[i].dinosaurId)
+        }
+   }  
+  }
+   }
+   return alive
+   }
 
 module.exports = {
   getLongestDinosaur,

@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { membership } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,8 +55,102 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let price = 0
 
+  if(ticketInfo.ticketType !== "general" && ticketInfo.ticketType !== "membership"){
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+  } else if (ticketInfo.entrantType !== "child" && ticketInfo.entrantType !== "adult" && ticketInfo.entrantType !== "senior"){
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+  } else if (!ticketInfo.extras.includes("movie") && !ticketInfo.extras.includes("education") &&!ticketInfo.extras.includes("terrace") && ticketInfo.extras.length > 0) {
+    return `Extra type '${ticketInfo.extras}' cannot be found.`
+  }
+  else
+  {
+    if (ticketInfo.ticketType === "general" && ticketInfo.extras.length === 0){
+      if (ticketInfo.entrantType === "child"){
+        price += ticketData.general.priceInCents.child
+      } else if (ticketInfo.entrantType === "adult"){
+        price += ticketData.general.priceInCents.adult
+      } else if (ticketInfo.entrantType === "senior"){
+        price += ticketData.general.priceInCents.senior
+      }
+    }
+     else
+    { 
+      if (ticketInfo.ticketType === "membership" && ticketInfo.extras.length === 0){
+      if (ticketInfo.entrantType === "child"){
+        price += ticketData.membership.priceInCents.child
+      } else if (ticketInfo.entrantType === "adult"){
+        price += ticketData.membership.priceInCents.adult
+      } else if (ticketInfo.entrantType === "senior"){
+        price += ticketData.membership.priceInCents.senior
+      }
+    }
+     else 
+    { 
+        if (ticketInfo.ticketType === "general"){
+        if (ticketInfo.entrantType === "child" && ticketInfo.extras.includes("movie") && !ticketInfo.extras.includes("education") &&!ticketInfo.extras.includes("terrace")){
+          price = (ticketData.general.priceInCents.child + ticketData.extras.movie.priceInCents.child)
+         } else if (ticketInfo.entrantType === "child" && ticketInfo.extras.includes("movie") && ticketInfo.extras.includes("education") &&!ticketInfo.extras.includes("terrace")){
+          price = (ticketData.general.priceInCents.child + ticketData.extras.movie.priceInCents.child + ticketData.extras.education.priceInCents.child)
+        } else if (ticketInfo.entrantType === "child" && !ticketInfo.extras.includes("movie") && ticketInfo.extras.includes("education") && ticketInfo.extras.includes("terrace")){
+          price = (ticketData.general.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.terrace.priceInCents.child)
+        } else if (ticketInfo.entrantType === "child" && ticketInfo.extras.includes("movie") && ticketInfo.extras.includes("education") && ticketInfo.extras.includes("terrace")){
+          price = (ticketData.general.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.terrace.priceInCents.child + ticketData.extras.movie.priceInCents.child)
+        } else if (ticketInfo.entrantType === "adult" && ticketInfo.extras.includes("movie") && !ticketInfo.extras.includes("education") &&!ticketInfo.extras.includes("terrace")){
+          price = (ticketData.general.priceInCents.adult + ticketData.extras.movie.priceInCents.adult)
+        } else if (ticketInfo.entrantType === "adult" && ticketInfo.extras.includes("movie") && ticketInfo.extras.includes("education") &&!ticketInfo.extras.includes("terrace")){
+          price = (ticketData.general.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.education.priceInCents.adult)
+        } else if (ticketInfo.entrantType === "adult" && !ticketInfo.extras.includes("movie") && ticketInfo.extras.includes("education") && ticketInfo.extras.includes("terrace")){
+          price = (ticketData.general.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult)
+        } else if (ticketInfo.entrantType === "adult" && ticketInfo.extras.includes("movie") && ticketInfo.extras.includes("education") && ticketInfo.extras.includes("terrace")){
+          price = (ticketData.general.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.movie.priceInCents.adult)
+        } else if (ticketInfo.entrantType === "senior" && ticketInfo.extras.includes("movie") && !ticketInfo.extras.includes("education") &&!ticketInfo.extras.includes("terrace")){
+          price = (ticketData.general.priceInCents.senior + ticketData.extras.movie.priceInCents.senior)
+        } else if (ticketInfo.entrantType === "senior" && ticketInfo.extras.includes("movie") && ticketInfo.extras.includes("education") &&!ticketInfo.extras.includes("terrace")){
+          price = (ticketData.general.priceInCents.senior + ticketData.extras.movie.priceInCents.senior + ticketData.extras.education.priceInCents.senior)
+        } else if (ticketInfo.entrantType === "senior" && !ticketInfo.extras.includes("movie") && ticketInfo.extras.includes("education") && ticketInfo.extras.includes("terrace")){
+          price = (ticketData.general.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior)
+        } else if (ticketInfo.entrantType === "senior" && ticketInfo.extras.includes("movie") && ticketInfo.extras.includes("education") && ticketInfo.extras.includes("terrace")){
+          price = (ticketData.general.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.movie.priceInCents.senior)
+        }
+      }
+      else
+      { 
+        if (ticketInfo.ticketType === "membership"){
+        if (ticketInfo.entrantType === "child" && ticketInfo.extras.includes("movie") && !ticketInfo.extras.includes("education") &&!ticketInfo.extras.includes("terrace")){
+          price = (ticketData.membership.priceInCents.child + ticketData.extras.movie.priceInCents.child)
+         } else if (ticketInfo.entrantType === "child" && ticketInfo.extras.includes("movie") && ticketInfo.extras.includes("education") &&!ticketInfo.extras.includes("terrace")){
+          price = (ticketData.membership.priceInCents.child + ticketData.extras.movie.priceInCents.child + ticketData.extras.education.priceInCents.child)
+        } else if (ticketInfo.entrantType === "child" && !ticketInfo.extras.includes("movie") && ticketInfo.extras.includes("education") && ticketInfo.extras.includes("terrace")){
+          price = (ticketData.membership.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.terrace.priceInCents.child)
+        } else if (ticketInfo.entrantType === "child" && ticketInfo.extras.includes("movie") && ticketInfo.extras.includes("education") && ticketInfo.extras.includes("terrace")){
+          price = (ticketData.membership.priceInCents.child + ticketData.extras.education.priceInCents.child + ticketData.extras.terrace.priceInCents.child + ticketData.extras.movie.priceInCents.child)
+        } else if (ticketInfo.entrantType === "adult" && ticketInfo.extras.includes("movie") && !ticketInfo.extras.includes("education") &&!ticketInfo.extras.includes("terrace")){
+          price = (ticketData.membership.priceInCents.adult + ticketData.extras.movie.priceInCents.adult)
+        } else if (ticketInfo.entrantType === "adult" && ticketInfo.extras.includes("movie") && ticketInfo.extras.includes("education") &&!ticketInfo.extras.includes("terrace")){
+          price = (ticketData.membership.priceInCents.adult + ticketData.extras.movie.priceInCents.adult + ticketData.extras.education.priceInCents.adult)
+        } else if (ticketInfo.entrantType === "adult" && !ticketInfo.extras.includes("movie") && ticketInfo.extras.includes("education") && ticketInfo.extras.includes("terrace")){
+          price = (ticketData.membership.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult)
+        } else if (ticketInfo.entrantType === "adult" && ticketInfo.extras.includes("movie") && ticketInfo.extras.includes("education") && ticketInfo.extras.includes("terrace")){
+          price = (ticketData.membership.priceInCents.adult + ticketData.extras.education.priceInCents.adult + ticketData.extras.terrace.priceInCents.adult + ticketData.extras.movie.priceInCents.adult)
+        } else if (ticketInfo.entrantType === "senior" && ticketInfo.extras.includes("movie") && !ticketInfo.extras.includes("education") &&!ticketInfo.extras.includes("terrace")){
+          price = (ticketData.membership.priceInCents.senior + ticketData.extras.movie.priceInCents.senior)
+        } else if (ticketInfo.entrantType === "senior" && ticketInfo.extras.includes("movie") && ticketInfo.extras.includes("education") &&!ticketInfo.extras.includes("terrace")){
+          price = (ticketData.membership.priceInCents.senior + ticketData.extras.movie.priceInCents.senior + ticketData.extras.education.priceInCents.senior)
+        } else if (ticketInfo.entrantType === "senior" && !ticketInfo.extras.includes("movie") && ticketInfo.extras.includes("education") && ticketInfo.extras.includes("terrace")){
+          price = (ticketData.membership.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior)
+        } else if (ticketInfo.entrantType === "senior" && ticketInfo.extras.includes("movie") && ticketInfo.extras.includes("education") && ticketInfo.extras.includes("terrace")){
+          price = (ticketData.membership.priceInCents.senior + ticketData.extras.education.priceInCents.senior + ticketData.extras.terrace.priceInCents.senior + ticketData.extras.movie.priceInCents.senior)
+        }
+      }
+     }
+   }           
+  }
+ }
+ return price
+}
 /**
  * purchaseTickets()
  * ---------------------
@@ -109,8 +204,32 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
-
+function purchaseTickets(ticketData, purchases) {
+    let subTotal = 0
+    let extras = 0
+    let printReceipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------";
+     for (let i = 0; i < purchases.length; i++){
+      if (purchases[i].ticketType in ticketData === false){
+        return `Ticket type '${purchases[i].ticketType}' cannot be found.`
+     }
+      else if (purchases[i].entrantType in ticketData.general.priceInCents === false){
+        return `Entrant type '${purchases[i].entrantType}' cannot be found.`
+  //    } else if (purchases[i].extras in ticketData.extras){
+  //    extras += Number(ticketData.extras[purchases[i].extras].priceInCents[purchases[i].entrantType]/100);
+  //    }
+  //  else if (purchases[i].extras in ticketData.extras === false){
+  //    return `Extra type '${purchases[i].extras}' cannot be found.`;
+   }
+     let ticketPrice = calculateTicketPrice(ticketData, purchases[i])/100
+     printReceipt += `\n${purchases[i].entrantType.charAt(0).toUpperCase()}${purchases[i].entrantType.slice(1)} ${purchases[i].ticketType.charAt(0).toUpperCase()}${purchases[i].ticketType.slice(1)} Admission: `
+     printReceipt += `$${(ticketPrice).toFixed(2)}`
+      subTotal += ticketPrice
+      // printReceipt += `\n${`${purchases[i].entrantType[0].toUpperCase()}${purchases[i].entrantType[0].slice(1).toLowerCase()}`} ${`${purchases[i].ticketType[0].toUpperCase()}${purchases[i].ticketType[0].slice(1).toLowerCase()}`} Admission: `
+    }
+  
+     printReceipt += `\n-------------------------------------------\nTOTAL: $${(subTotal).toFixed(2)}`
+    return printReceipt
+  }
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
