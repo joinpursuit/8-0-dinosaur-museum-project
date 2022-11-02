@@ -65,26 +65,24 @@ for (let i = 0; i < dinosaurs.length; i++) {
  */
 function getConnectedRoomNamesById(rooms, id) {
   newArrRooms = []
-  newArrInput = []
 
   for(i=0; i<rooms.length; i++){
     if(rooms[i].roomId == id){
-      for(j=0; j < rooms[i].connectsTo.length; j++){
-        for(k=0; k<rooms.length; k++)
-        if(((rooms[i].connectsTo[j]) == ('incorrect-id'))){
-          return `Room with ID of 'incorrect-id' could not be found.`
-        }else if(((rooms[i].roomId) == ('incorrect-id'))){
-          return `Room with ID of 'incorrect-id' could not be found.`
-        }
-        else if((rooms[i].connectsTo[j]) == (rooms[k].roomId)){
+      connectedRooms = rooms[i].connectsTo
+      for(j=0; j < connectedRooms.length; j++){
+        for(k=0; k < rooms.length; k++){
+        if((connectedRooms[j]).includes(rooms[k].roomId)){
           newArrRooms.push(rooms[k].name)
-        }
-      } 
-        return newArrRooms
+          result = newArrRooms
+          } else if((connectedRooms[j]).includes('incorrect-id')){
+            return `Room with ID of 'incorrect-id' could not be found.`
+          }
+        } 
+      }return result
     }
-       
-  }
-  
+    } 
+    return `Room with ID of 'incorrect-id' could not be found.`
+ 
 }
 
 module.exports = {
