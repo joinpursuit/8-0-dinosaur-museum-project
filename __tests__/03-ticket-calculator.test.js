@@ -329,7 +329,7 @@ describe("calculateTicketPrice()", () => {
   });
 });
 
-describe.only("purchaseTickets()", () => {
+describe("purchaseTickets()", () => {
   describe("errors", () => {
     test("should surface errors from calculateTicketPrice()", () => {
       // Incorrect ticket type

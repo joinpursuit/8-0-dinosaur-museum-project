@@ -81,6 +81,7 @@ function getDinosaurDescription(dinosaurs, id) {
     } //if the dinosaurId exists, it will return the dinosaur name, the pronunciation in parenthesis, \n (creates break in line), and dinosaur description. Add line `It lived in the {dino.period} and {millions of years ago/mya}.
     }
 return `A dinosaur with an ID of 'incorrect-id' cannot be found.`
+
   } //return error at end if there is no matching id.
 
 //let dinoDescribe = `A dinosaur with an ID of '${id}' cannot be found.`
@@ -135,22 +136,22 @@ for (let j = 0; j < dinosaurs.length; j++) {
   let dinoId = dinosaurs[j].dinosaurId
   let max = dinosaurs[j].mya[0] //156 is an example of the highest mya in the dino data
   let min = dinosaurs[j].mya[1] //144
-//another array created and while loop made to decrease from max to min year. execute by pushing in max years to second array
-  let firstArr = []
+//another array created and while loop made to decrease from max to min year. execute by pushing in years to second array
+  let secondArr = []
   while(min <= max) {
-    firstArr.push(max--)
+    secondArr.push(max--)
   } //take the object keys of each dinosaur. then change the variable of the dinoId to each dinosaur's key from dino array
 if (Object.keys(dinosaurs[j]).includes(key)) {
   dinoId = dinosaurs[j][key]
 } //take  the max years in array with mya, and execute with dinoData array to push in the dino Id's
-if (firstArr.includes(mya)) {
+if (secondArr.includes(mya)) {
   dinoDataArr.push(dinoId)
-} else if (dinosaurs[j].mya[0] === mya || dinosaurs[j].mya[0] - 1 === mya) {
-  dinoDataArr.push(dinoId)
+} else if (dinosaurs[j].mya[0] === mya || dinosaurs[j].mya[0] - 1 === mya) { //go through mya key of 1 and 1 mya less than amount
+  dinoDataArr.push(dinoId) //push the dinoId's into the dinoDataArr
 }
 }
 return dinoDataArr
-}
+}//returns all the dinosaur Ids of all dinos alive at approximately given time
 
 module.exports = {
   getLongestDinosaur,

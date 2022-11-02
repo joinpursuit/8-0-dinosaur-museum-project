@@ -55,23 +55,26 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-let total = 0
+let total = 0 //make numerical accumulator -end function in number value
 if (!ticketData.hasOwnProperty(ticketInfo.ticketType)) {
-  return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+  return `Ticket type '${ticketInfo.ticketType}' cannot be found.` //use negation `!`, to say if there is not, hasOwnProperty to see if the ticketData contains the ticketType like general/membership in the ticketinfo, if it does not, return ERROR message
 }
 if (!ticketData[ticketInfo.ticketType].priceInCents.hasOwnProperty(ticketInfo.entrantType)) {
   return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
-}
+} //use negation `!`, to say if there is not, use hasOwnProperty to access the entrant type through ticketInfo than priceInCents, if that entrant type does not exist, return ERROR message
 for (let i = 0; i < ticketInfo.extras.length; i++) {
   if (!ticketData.extras.hasOwnProperty(ticketInfo.extras[i])) {
     return `Extra type '${ticketInfo.extras[i]}' cannot be found.`
-  }
+  } //use negation `!`, to say if there is not, create for loop to go through the extras ticketData, use hasOwnProperty to look over the extras and if extra type does not exist in the ticketInfo, return ERROR message
    total += ticketData.extras[ticketInfo.extras[i]].priceInCents[ticketInfo.entrantType]
-}
+} //bring back total, numerical value with priceInCents with extras to entrant type (child, adult, senior)
   total += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+  //bring back total, numerical value with priceInCents to entrant type (general, membership)
   return total
+  //return accumulator total
 
 }
+
 
 // ??ERRORS
 // no existing ticket 'incorrect-type', entrant 'child', extras[]
@@ -151,17 +154,53 @@ for (let i = 0; i < ticketInfo.extras.length; i++) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-// price = calculateTicketPrice(ticketData, purchases)
-// for (let ticket in tickets) {
+ let endPrice = 0 //set numerical accumulator, bring back at end of function
+ let receipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------` //set written reciept which might change throughout the function
+ for(let m = 0; m < purchases.length; m++){
+   let extraArray = [] //extras end up in this array
+   let bought = purchases[m] //simplify all purchases
+   //create for loop to go through the purchases parameter
+   if(!(ticketData.hasOwnProperty(bought.ticketType))){//use negation, `!`, check through if all ticketData has any of the ticketTypes(general, membership), if not return ERROR message
+     return `Ticket type '${bought.ticketType}' cannot be found.`
+ }
+     if(!(ticketData[bought.ticketType].priceInCents.hasOwnProperty(bought.entrantType))){
+       return `Entrant type '${bought.entrantType}' cannot be found.`
+       //use negation, `!`, check through if all ticketData has any of the entrantTypes(child, adult, senior), if not return ERROR message
+     }
+     let price = calculateTicketPrice(ticketData, purchases[m])/100 //bring down the function from previous problem to create numerical calculation
+     if(typeof price === 'string'){
+       return price
+     } //go through all the price function and determine all strings true, and return true
+     let ticketType = bought.ticketType //ticket type (general, membership)
+     let entrantType = bought.entrantType // entrant type (child, adult, senior)
+     receipt += `\n${entrantType[0].toUpperCase()}${entrantType.slice(1)} ${ticketType[0].toUpperCase()}${ticketType.slice(1)} Admission: $${price.toFixed(2)}`//add reciept here to change it based on adjustment of ALL types changing, add toFixed method to add 2 digits and round after the decimal
+     for (let b = 0; b < purchases[m].extras.length; b++){//create for loop to go through the extras
+         if(ticketData.extras.hasOwnProperty(bought.extras[b])){ //use hasOwnProperty to go through if there aree extras in the ticketData
+             extraArray.push(ticketData.extras[bought.extras[b]].description)//Bring down the extras empty Array and push the description into it if extra do exist
+         } else {
+           return `Extra type '${bought.extras[b]}' cannot be found.` //if extra type does not exist, return ERROR message
+         }
+     }
+     if(extraArray.length !== 0){
+       receipt += ` (${extraArray.join(', ')})`//if there are no extras return the receipt
+     }
+     endPrice += price
+ }//bring down the endPrice and += to calculated ticket price function
+ receipt += `\n-------------------------------------------\nTOTAL: $${endPrice.toFixed(2)}`
+ return receipt
+ }// return the receipt in its last form
 
-//   if (Object.hasOwnProperty.call(object, key)) {
-//    const element = object[key];
-    
-//   }
-// });
+//price = calculateTicketPrice(ticketData, purchases)
+// let admitMessage =  `Thank you for visiting the Dinosaur Museum!\n
+// -------------------------------------------\n
+// ${ticketData.ticketInfo}Admission: $${40.00}
+// -------------------------------------------
+// \nTOTAL: $${40.00}`
+// for (ticket of tickets) {
+//   let
+// }
 
-  
-}
+//(purchases[i].extras.includes("'incorrect-extra'"))
 
 //Do not change anything below this line.
 module.exports = {
