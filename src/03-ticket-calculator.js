@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,112 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let pricedTicket 
+  //for (let i = 0; i <tickets.length; i++ ){
+    // General Ticket 
+    if (ticketInfo.ticketType === "general" ){
+      if (ticketInfo.entrantType === "child" ){
+        pricedTicket = ticketData.general.priceInCents.child
+      } else if(ticketInfo.entrantType === "adult"){
+        pricedTicket = ticketData.general.priceInCents.adult
+      } else if (ticketInfo.entrantType === "senior"){
+        pricedTicket = ticketData.general.priceInCents.senior
+      }
+      // Extras Movie 
+       else if ((ticketInfo.extras === "movie") && (ticketInfo.entrantType === "child") ){
+        pricedTicket = (ticketData.general.priceInCents.child + ticketData.extras.movie.priceInCents.child)
+      }
+     else if ((ticketInfo.extras === "movie") && (ticketInfo.entrantType ===  "adult")){
+        pricedTicket = ticketData.general.priceInCents.adult + ticketData.extras.movie.priceInCents.adult
+      } else if ((ticketInfo.extras === "movie") && (ticketInfo.entrantType === "senior")){
+        pricedTicket = ticketData.general.priceInCents.senior + ticketData.extras.movie.priceInCents.senior
+      }else if ((ticketInfo.extras === "movie" && ticketInfo.extras === "education") && (ticketInfo.entrantType === "child") ){
+        pricedTicket = ticketData.general.priceInCents.child + ticketData.extras.movie.child + ticketData.extras.education.priceInCents.child 
+      }  else if ((ticketInfo.extras === "movie" && ticketInfo.extras === "education") && (ticketInfo.entrantType === "adult")){
+        pricedTicket = ticketData.general.priceInCents.adult + ticketData.extras.movie.adult + ticketData.extras.education.priceInCents.adult 
+      }
+    else  if ((ticketInfo.extras === "movie" && ticketInfo.extras === "education") && (ticketInfo.entrantType === "senior")){
+        pricedTicket = ticketData.general.priceInCents.senior + ticketData.extras.movie.senior + ticketData.extras.education.adult 
+      }
+    else if ((ticketInfo.extras === "movie" && ticketInfo.extras === "terrace") && (ticketInfo.entrantType === "child")) {
+        pricedTicket = ticketData.general.priceInCents.child + ticketData.extras.movie.child + ticketData.extras.terrace.child
+      }
+    else if ((ticketInfo.extras === "movie" && ticketInfo.extras === "terrace") && (ticketInfo.entrantType === "adult")){
+        pricedTicket = ticketData.general.priceInCents.adult + ticketData.extras.movie.adult + ticketData.extras.terrace.adult
+      }
+    else if ((ticketInfo.extras === "movie" && ticketInfo.extras === "terrace") && (ticketInfo.entrantType === "senior")){
+        pricedTicket = ticketData.general.priceInCents.senior + ticketData.extras.movie.senior + ticketData.extras.terrace.senior
+      }
+    else if ((ticketInfo.extras === "movie" && ticketInfo.extras === "education" && ticketInfo.extras === "terrace") && (ticketInfo.entrantType === "child"))
+      {
+        pricedTicket = ticketData.general.priceInCents.child + ticketData.extras.movie.child + ticketData.extras.education.child + ticketData.extras.terrace.child
+      }
+    else if ((ticketInfo.extras === "movie" && ticketInfo.extras === "education" && ticketInfo.extras === "terrace") && (ticketInfo.entrantType === "adult")) 
+      {
+        pricedTicket = ticketData.general.priceInCents.adult + ticketData.extras.movie.adult + ticketData.extras.education.adult + ticketData.extras.terrace.adult
+      }
+    else if ((ticketInfo.extras === "movie" && ticketInfo.extras === "education" && ticketInfo.extras === "terrace") && (ticketInfo.entrantType === "senior"))
+      {
+        pricedTicket = ticketData.general.priceInCents.senior + ticketData.extras.movie.senior + ticketData.extras.education.senior + ticketData.extras.terrace.senior
+      }
+      
+      
+      
+      
+      
+
+
+    } if (ticketInfo.ticketType === "membership"){
+      if (ticketInfo.entrantType === "child" ){
+        pricedTicket = ticketData.membership.priceInCents.child 
+      } if(ticketInfo.entrantType === "adult"){
+        pricedTicket = ticketData.membership.priceInCents.adult
+      }else if (ticketInfo.entrantType === "senior"){
+        pricedTicket = ticketData.membership.priceInCents.senior
+      }
+
+
+  }
+      return pricedTicket
+    }
+    // if (!ticketData){
+    //   return `Ticket type ${ticketInfo.ticketType} cannot be found.`
+    // } else if (!(ticketData == ticketInfo.entrantType.priceInCent  ) ){
+    //   return `Entrant type ${ticketInfo.entrantType} cannot be found.`
+    // } result = ticketData.ticketInfo.priceInCents[entrant]
+    // for (let x of extra){
+    //   if (!(extraData[x])){
+    //     return `Extra type ‘${extra}’ cannot be found.`
+    //   } else {
+    //     result += extraData[x].priceInCents[entrant]
+    //   }
+    //}
+//     if (ticketData !== ticketInfo.ticketType){
+//       return ("Ticket type 'incorrect-type' cannot be found.")
+//   }
+//   if (ticketInfo.entrantType !== "child" || ticketInfo.entrantType !== 
+// "adult" || ticketInfo.entrantType !== "senior"){
+// return "Entrant type 'incorrect-entrant' cannot be found."}
+// }
+    //   if(ticketInfo.includes(priceInCents.child)){
+    //   return ((ticketData[i].priceInCents.child) * 0.01)}
+    // else if (ticketInfo.includes(ticketData[i].priceInCents.adult)){
+    //   return ((ticketData[i].priceInCents.adult) * 0.01)}
+    // else if (ticketInfo.includes(ticketData[i].priceInCents.senior))
+    //   {
+    //     return ( `$ ${tickets.priceInCents.senior} * 0.01`)
+
+      
+  
+  
+
+      
+
+    
+
+  
+
 
 /**
  * purchaseTickets()
@@ -109,7 +215,57 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let receiptMessage = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`;
+  let total;
+  let extraData = ticketData.extras
+  let addOnMessage1;
+  let addOnMessage2;
+  let finalTotal=0;
+  let extraAddOn;
+  
+for (let x of purchases){
+  let entrant = x.entrantType
+  let type = x.ticketType
+  let extra = x.extras
+  if (!ticketData[type]){
+    return `Ticket type '${type}' cannot be found.`
+  } else if (!ticketData[type].priceInCents[entrant]){
+    return `Entrant type '${entrant}' cannot be found.`
+  } total = calculateTicketPrice(ticketData, x)
+  console.log(total)
+  finalTotal += total
+  addOnMessage1 = entrant.charAt(0).toUpperCase() + entrant.slice(1)
+  addOnMessage2 = type.charAt(0).toUpperCase() + type.slice(1)
+  receiptMessage += `${addOnMessage1} ${addOnMessage2} Admission: $${(total/100).toFixed(2)}`
+   if (extra.length > 0){
+   //console.log(receiptMessage)
+    receiptMessage += ` (`
+  for (let i of extra){
+    //console.log(total, `hii`)
+    if (!(extraData[i])){
+      return `Extra type '${extra}' cannot be found.`
+    }
+    //console.log(extraData[i].priceInCents[entrant],` ent`)
+   // total += extraData[i].priceInCents[entrant]
+    //console.log(total, `totall`)
+    extraAddOn = i.charAt(0).toUpperCase() + i.slice(1)
+    receiptMessage += `${extraAddOn} Access, `
+  //console.log(receiptMessage, `test`)
+  }
+  receiptMessage = receiptMessage.slice(0, (receiptMessage.length - 2))
+  receiptMessage += `)\n`
+  //receiptMessage += `${addOnMessage1} ${addOnMessage2} Admission: $${(total/100).toFixed(2)}`
+  } else {
+    receiptMessage += `\n`
+  }
+  } 
+  receiptMessage += `-------------------------------------------\nTOTAL: $${(finalTotal/100).toFixed(2)}`
+  return receiptMessage
+}
+
+
+
 
 // Do not change anything below this line.
 module.exports = {
