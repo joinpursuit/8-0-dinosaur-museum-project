@@ -22,7 +22,40 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+
+
+function getLongestDinosaur(dinosaurs) {
+  //guard statement: if arr is empty, return empty object
+  if (dinosaurs.length === 0) {
+    return {}
+  }
+
+  //setting empty object for the result to fill
+  let obj = {}
+  //declaring the name on the 'key' in the object
+  let key = ""
+  //declaring the value of the object
+  let value = 0
+
+  //looping through array, starting @ first element
+  for (let i = 0; i < dinosaurs.length; i++) {
+    //if the value in 'lim' of the first element is > 0
+    if (dinosaurs[i].lengthInMeters > value) {
+      //reassign that name to key
+      key = dinosaurs[i].name
+      //reassig that length to value
+      value = dinosaurs[i].lengthInMeters
+
+    }
+
+  }
+
+  //add the key value pair into the object
+  obj[`${key}`] = value * 3.281
+  //return object
+  return obj
+
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +77,35 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+
+// return `A Dinoaur with an ID of '${id} cannot be found.`
+
+
+function getDinosaurDescription(dinosaurs, id) {
+  //some place to hold the returned string
+  let answer = ''
+  //looping through dinosaurs array
+  for (let i = 0; i < dinosaurs.length; i++) {
+      //checking if value in dinoid of the first object of the arr is the same as inputted value
+      if(dinosaurs[i].dinosaurId === id){
+      //if true, assign string to the 'answer' variable *DON'T RETURN YET, CHECKING ANOTHER CONDITION*
+      answer = dinosaurs[i].name + " " + "(" + dinosaurs[i].pronunciation + ")" + "\n" + dinosaurs[i].info + " " + 'It lived in the Early Cretaceous period, over 77.5 million years ago.'
+        //If the above condition is true & there's only 1 value in 'mya'
+        if(dinosaurs[i].mya.length === 1){
+          //reassign answer to new string with the obj value pairs with length of 1
+          answer = dinosaurs[i].name + " " + "(" + dinosaurs[i].pronunciation + ")" + "\n" + dinosaurs[i].info + " " + 'It lived in the' + " " + dinosaurs[i].period + " " + 'period, over' + " " + dinosaurs[i].mya + " " + 'million years ago.'
+          //if both statements are true
+          return answer 
+        }//if closing tag`
+        //if only the initial condition is true
+        return answer
+    } //if closing tag`
+  }//for closing tag
+
+//edge case: if id not found
+return answer = `A dinosaur with an ID of '${id}' cannot be found.`
+
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +132,19 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) { 
+  let arr = []
+  for(let i = 0; i < dinosaurs.length; i++){
+    if(dinosaurs[i].mya.includes(mya) || dinosaurs[i].mya-1 === mya || dinosaurs[i].mya[0] > mya && dinosaurs[i].mya[1] < mya){
+      if(!key){
+        arr.push(dinosaurs[i].dinosaurId)
+      } else {
+        arr.push(dinosaurs[i][key])
+      }
+    }//if closing tag
+  }
+  return arr
+}
 
 module.exports = {
   getLongestDinosaur,

@@ -5,6 +5,8 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { general } = require("../data/tickets");
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +56,77 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let ticketPrice = 0;
+  let extras = 0;
+  let total = 0
+
+  if(ticketInfo.entrantType !== 'child' && ticketInfo.entrantType !== 'adult' && ticketInfo.entrantType !== 'senior'){
+    return  "Entrant type 'incorrect-entrant' cannot be found."
+  }
+
+  if(ticketInfo.ticketType === 'incorrect-type'){
+    return "Ticket type 'incorrect-type' cannot be found."
+  }
+
+  if(ticketInfo.extras.includes("incorrect-extra")){
+    return "Extra type 'incorrect-extra' cannot be found."
+  }
+
+  if(ticketInfo.entrantType === "child"){
+    if(ticketInfo.ticketType === "general"){
+      ticketPrice = ticketData.general.priceInCents.child
+    } else if(ticketInfo.ticketType === "membership"){
+      ticketPrice = ticketData.membership.priceInCents.child
+    }//if closing tag
+  } else if(ticketInfo.entrantType === "adult"){
+    if(ticketInfo.ticketType === "general"){
+      ticketPrice = ticketData.general.priceInCents.adult
+    } else if(ticketInfo.ticketType === "membership"){
+      ticketPrice = ticketData.membership.priceInCents.adult
+    }//if closing tag
+  } else if(ticketInfo.entrantType === "senior"){
+    if(ticketInfo.ticketType === "general"){
+      ticketPrice = ticketData.general.priceInCents.senior
+    } else if(ticketInfo.ticketType === "membership"){
+      ticketPrice = ticketData.membership.priceInCents.senior
+    }//if closing tag
+  }//if closing tag
+
+  if(ticketInfo.extras.includes("movie")){
+    if(ticketInfo.entrantType === "child") {
+      extras += ticketData.extras.movie.priceInCents.child
+    }else if(ticketInfo.entrantType === "adult"){
+      extras += ticketData.extras.movie.priceInCents.adult
+    } else if(ticketInfo.entrantType === "senior"){
+      extras += ticketData.extras.movie.priceInCents.senior
+    }//if closing tag
+  }//if closing tag
+
+  if(ticketInfo.extras.includes("terrace")){
+    if(ticketInfo.entrantType === "child") {
+      extras += ticketData.extras.terrace.priceInCents.child
+    }else if(ticketInfo.entrantType === "adult"){
+      extras += ticketData.extras.terrace.priceInCents.adult
+    } else if(ticketInfo.entrantType === "senior"){
+      extras += ticketData.extras.terrace.priceInCents.senior
+    }//if closing tag
+  }//if closing tag
+
+  if(ticketInfo.extras.includes("education")){
+    if(ticketInfo.entrantType === "child") {
+      extras += ticketData.extras.education.priceInCents.child
+    }else if(ticketInfo.entrantType === "adult"){
+      extras += ticketData.extras.education.priceInCents.adult
+    } else if(ticketInfo.entrantType === "senior"){
+      extras += ticketData.extras.education.priceInCents.senior
+    }//if closing tag
+  }//if closing tag
+
+  total = ticketPrice + extras
+  return total
+}
+
 
 /**
  * purchaseTickets()
@@ -97,7 +169,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     ];
     purchaseTickets(tickets, purchases);
     //> "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\nAdult General Admission: $50.00 (Movie Access, Terrace Access)\nSenior General Admission: $35.00 (Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\nChild General Admission: $45.00 (Education Access, Movie Access, Terrace Access)\n-------------------------------------------\nTOTAL: $175.00"
-
+ 
  * EXAMPLE:
     const purchases = [
       {
@@ -109,7 +181,67 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) { 
+  let itemTotal = 0
+  let total = 0;
+  let format
+  let receipt = ["Thank you for visiting the Dinosaur Museum!\n-------------------------------------------"]
+  //looping through purchases array
+  for(let i = 0; i < purchases.length; i++){
+    //setting empty string
+    let arr = []
+    //if the passsed through value for entrant tye does not equal child, adult, and senior
+    if(purchases[i].entrantType !== 'child' && purchases[i].entrantType !== 'adult' && purchases[i].entrantType !== 'senior'){
+      //return error 
+      return   `Entrant type '${purchases[i].entrantType}' cannot be found.`
+    }//if closing tag
+  
+
+    //if ticket type doesnt = general or membership
+    if(purchases[i].ticketType !== 'general' && purchases[i].ticketType !== 'membership' ){
+      //return error
+      return `Ticket type '${purchases[i].ticketType}' cannot be found.`
+    }//if closing tag
+  
+
+    //if extras array includes 
+    if(purchases[i].extras.includes("incorrect-extra")){
+      //return error statement
+      return `Extra type 'incorrect-extra' cannot be found.`
+    }//if closing tag
+
+    //setting item total to the total of each ticket found with previous funct.
+    itemTotal = calculateTicketPrice(ticketData, purchases[i]) / 100
+
+    //setting the format on receipt
+    //takes the first letter of word & capitalizes & then adds on remaining part of word
+    format = `\n${(purchases[i].entrantType[0].toUpperCase() + purchases[i].entrantType.substring(1)) + " " + (purchases[i].ticketType[0].toUpperCase() + purchases[i].ticketType.substring(1)) + ' Admission: ' + '$' + (itemTotal) + '.00'}`
+    receipt.push(format)
+
+    //looping through extras
+    for(let j = 0; j < purchases[i].extras.length; j++){
+      //if extras includes movies, move the to the receipt & so on
+      if(purchases[i].extras[j] === "movie"){
+        arr.push("Movie Access")
+      } else if(purchases[i].extras[j] === "education"){
+        arr.push("Education Access")
+      } else if(purchases[i].extras[j] === "terrace"){
+        arr.push("Terrace Access")
+      }
+    }//for closing tag
+
+    
+    if(arr.length !== 0){
+      receipt.push(` (${arr.join(', ')})`)
+    }//if closing tag
+
+    total += itemTotal
+  }//for closing tag
+
+
+  receipt.push(`\n-------------------------------------------\nTOTAL: $${total}.00`)
+  return receipt.join('')
+}
 
 // Do not change anything below this line.
 module.exports = {
