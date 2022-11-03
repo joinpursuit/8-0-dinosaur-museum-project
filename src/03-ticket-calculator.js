@@ -142,12 +142,13 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  // let receipt = "";
   let receiptData = "";
   let finalPrice = 0;
   let total = 0;
 
   for (let i = 0; i < purchases.length; i++) {
+    finalPrice = calculateTicketPrice(ticketData, purchases[i]);
+
     if (purchases[i].extras.includes("incorrect-extra"))
       return "Extra type 'incorrect-extra' cannot be found.";
 
@@ -160,15 +161,20 @@ function purchaseTickets(ticketData, purchases) {
     ) {
       return "Entrant type 'incorrect-entrant' cannot be found.";
     } else {
-      finalPrice += calculateTicketPrice(ticketData, purchases[i]);
-      receiptData = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${
-        purchases[i].entrantType
-      } ${purchases[i].ticketType} Admission: $${
-        finalPrice / 100
-      }.00 \n----------------------------
-      ---------------\nTOTAL: $${total}`;
+      receiptData = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${purchases[
+        i
+      ].entrantType[0].toUpperCase()}${purchases[i].entrantType.substring(
+        1
+      )} ${purchases[i].ticketType[0].toUpperCase()}${purchases[
+        i
+      ].ticketType.substring(1)} Admission: $${
+       (finalPrice / 100).toFixed(2)
+      }.00\n----------------------------
+          ---------------\nTOTAL: $${total}`;
     }
     total += finalPrice;
+    console.log(total)
+    console.log(finalPrice)
   }
 
   return receiptData;
