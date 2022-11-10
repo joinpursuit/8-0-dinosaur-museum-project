@@ -122,16 +122,31 @@ function getDinosaurDescription(dinosaurs, id) {
  * // returns an array of dinos alive at the mya value 
  * // if key already provided - return the value otherwise, return dino id
  * // if dino has only one value for mya, allows mya value to be equal to the given value or one less
- * 
- * 
+ * // mya = array of two numbers
+ * // loop through dinosaurs & look at .mya value 
+ * // check if mya values are 1 less than or equal to mya param
+ * // if so, return an array with the value of the key 
+ * // if no key, return ID
  */
 
-// i really struggled to understand what this function was asking me to do  & didn't want to waste time so i moved to the next page. 
 function getDinosaursAliveMya(dinosaurs, mya, key) {
+ let aliveArray = []
+for (let i = 0; i < dinosaurs.length; i ++){
+  if (dinosaurs[i].mya.includes(mya) ||dinosaurs[i].mya[0] > mya && dinosaurs[i].mya[1] < mya || dinosaurs[i].mya - 1 === mya){
+    if (key){
+      aliveArray.push(dinosaurs[i][key])
+    } else {
+      aliveArray.push(dinosaurs[i].dinosaurId)
+    }
+  }
+  
 
 
-
+  }
+   return aliveArray;
 }
+
+
 
 module.exports = {
   getLongestDinosaur,
