@@ -55,29 +55,26 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  let cost = 0
-  function checkType(path, entranceType){
-    if (entranceType === 'child'){
-      path = path.child
-      cost+= path
-   }if (entranceType === 'adult'){
-    path = path.adult
-    cost+= path
-   }if (entranceType === 'senior'){
-    path = path.senior 
-    cost+= path
-   }return cost 
+  const ticketType = ticketInfo.ticketType
+  const entrantType = ticketInfo.entrantType
+  const extras =ticketInfo.extras
+  if(ticketData[ticketType] === undefined){
+    return `Ticket type '${ticketType}' cannot be found.`
   }
-if (ticketInfo.ticketType === 'general'){
-  checkType (ticketData.general.priceInCets, ticketInfo.entrantType)
-}else if (ticketInfo.ticketType === 'membership'){
-  checkType (ticketData.membership.priceInCets, ticketInfo.entrantType)
-} else{
-  return `'Ticket type ${ticketInfo.ticketType}' cannot be found `
-} return cost 
-
-
-
+  const priceInCents = ticketData[ticketType].priceInCents[entrantType]
+  if(priceInCents === undefined){
+    return `Entrant type '${entrantType}' cannot be found.`
+  }
+let sum = 0
+sum += priceInCents
+for(let i = 0; i < extras.length; i ++){
+  const extra = extras[i]
+  if( ticketData.extras[extra] === undefined){
+    return `Extra type '${extra}' cannot be found.`
+    }
+  sum += ticketData.extras[extra].priceInCents[entrantType]
+  }
+  return sum 
 }
 
 
@@ -136,12 +133,39 @@ if (ticketInfo.ticketType === 'general'){
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  // let totalPrice = 0
-  // let receipt = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n'
-  // for(let index in purchases){
-  //   let extraPrice = 0
-  //   if(ticketData.hasOwnProperty(purchases[index].ticketType) && ticketData[purchases[index].ticketType].ticketPriceInCents)
-  // }
+  let total = 0
+  let receipt = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n'
+  for(let i = 0; i < purchases.length; i++){
+   const purchase = purchases[i]
+   const priceInCents = calculateTicketPrice(ticketData,purchase)
+   if(typeof priceInCents === "string"){
+    return priceInCents
+   }
+  
+   total += priceInCents
+   const entrant =
+   purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)
+   const ticketTypeDescription = ticketData[purchase.ticketType].description 
+   const price = (priceInCents / 100).toFixed(2)
+   let line =`${entrant} ${ticketTypeDescription}: $${price}`
+   const extras = purchase.extras
+   let ending = '\n'
+   if (extras.length > 0){
+    line += " ("
+    ending = ")" + ending
+   }
+   for(let i = 0; i < extras.length; i++){
+   const extra = ticketData.extras[extras[i]].description
+    if (i === extras.length - 1){
+      line += extra
+    }else{ 
+      line += extra +  ", "
+      }
+    }
+  receipt += line + ending
+  }
+return receipt + `-------------------------------------------
+TOTAL: $${(total / 100).toFixed(2)}`
 }
 
 // Do not change anything below this line.

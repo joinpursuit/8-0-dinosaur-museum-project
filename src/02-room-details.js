@@ -68,13 +68,13 @@ return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  
+  roomName = []
   for (let i = 0; i < rooms.length; i++){
     if (id === rooms.roomId){
       return rooms.name 
     }
    else return `Room with ID of '${id}' could not be found.`
-}
+} return roomName
 }
   module.exports = {
   getRoomByDinosaurName,
