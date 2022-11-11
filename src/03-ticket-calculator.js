@@ -77,9 +77,11 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   }
 
   return ticketPrice += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
-
- 
 }
+
+
+
+
 
 /**
  * purchaseTickets()
@@ -147,14 +149,8 @@ function purchaseTickets(ticketData, purchases) {
     // String that will contain the extras in the format of (Terrace Access, Education Access)
     let extraString = "";
 
-    // Return an error message if the ticketType does not exist as an object name inside of ticketData
-    if (!ticketData[purchases[i].ticketType]) {
-      return `Ticket type '${purchases[i].ticketType}' cannot be found.`;
-    }
-    // Return an error message if the ticketEntrant does not exist as a key inside of priceInCents inside of the outer object name of ticketData
-    if (!ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType]) {
-      return `Entrant type '${purchases[i].entrantType}' cannot be found.`;
-    }
+    // Use calculateTicketPrice function to return error messages when needed
+    if (typeof calculateTicketPrice(ticketData, purchases[i]) === 'string') {return calculateTicketPrice(ticketData, purchases[i]);}
 
     // Add the cost of admission to ticketPrice based on the type of ticket purchased and who(entrantType) the ticket is for
     ticketPrice += ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType];
@@ -163,7 +159,7 @@ function purchaseTickets(ticketData, purchases) {
     // If extras array inside of every object is empty return the receipt without extras 
     if (purchases[i].extras.length === 0) {
       receiptDetails += `${capitalize(purchases[i].entrantType)} ${ticketData[purchases[i].ticketType].description}: $${(ticketPrice / 100).toFixed(2)}`;
-      // Format spacing depending on how many objects are in the purchases array and whether or not the last object has been
+      // Format spacing depending on how many elements are in the purchases array and whether or not the last object has been reached
       if (purchases.length > 1 && i <= purchases.length - 2) {receiptDetails += '\n';}
 
     } else {
@@ -199,17 +195,11 @@ function purchaseTickets(ticketData, purchases) {
   return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${receiptDetails}\n-------------------------------------------\nTOTAL: $${(totalPrice / 100).toFixed(2)}`;
 }
 
+
+
 function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -218,3 +208,7 @@ module.exports = {
   calculateTicketPrice,
   purchaseTickets,
 };
+
+
+
+

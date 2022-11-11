@@ -81,7 +81,7 @@ function getConnectedRoomNamesById(rooms, id) {
   for (let room of rooms) {
     for (let ele of room.connectsTo){
       if (!roomIdArr.includes(ele)) {
-        return `Room with ID of 'incorrect-id' could not be found.`;
+        return `Room with ID of '${ele}' could not be found.`;
       }
     }    
   }
