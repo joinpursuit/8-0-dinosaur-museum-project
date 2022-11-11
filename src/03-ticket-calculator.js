@@ -56,12 +56,24 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
- let results = ""
- for(let i = 0; i < tickets.length;i++)
-  if (ticketInfo.ticketType  or ticketInfo.entrantType or ticketInfo.extras !== true){
-    results = `Entrant type '${ticketData}' cannot be found.`
+  let ticketKind = ticketInfo.ticketType
+  let entrance = ticketInfo.entrantType
+  if (ticketKind in ticketData && entrance in ticketData[ticketKind].priceInCents){
+    let ticketPrice = ticketData[ticketKind].priceInCents[entrance]
+    let extraPrice = 0
+  for(let i = 0; i < ticketInfo.extras.length;i++){
+    if (ticketInfo.extras[i] in ticketData.extras){
+      extraPrice += ticketData.extras[ticketInfo.extras[i]].priceInCents[entrance]
+    } else {
+      return `Extra type '${ticketInfo.extras}' cannot be found.`
+    }
   }
-  return results
+  return extraPrice + ticketPrice
+  }else if (!(ticketKind in ticketData)){
+    return `Ticket type '${ticketKind}' cannot be found.`
+  }else if (!(entrance in ticketData[ticketKind].priceInCents)){
+    return `Entrant type '${entrance}' cannot be found.`
+  }
 }
 
 /**
@@ -117,7 +129,31 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  
+let totalBillPrice = 0
+let finalReceipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
+
+for (let singlePurchase of purchases) {
+  let singleTicketPrice = calculateTicketPrice(ticketData, singlePurchase)  
+  if (typeof singleTicketPrice === "string"){                       
+      return singleTicketPrice
+  }
+  let extraArr = []                         
+  let extras = ""
+    
+  for (let extra of singlePurchase.extras) {
+    extraArr.push(ticketData.extras[extra].description) 
+  }
+  if (singlePurchase.extras.length){                      
+    extras = ` (${extraArr.join(", ")})`                 
+  totalBillPrice += singleTicketPrice            
+  
+  finalReceipt += `${singlePurchase.entrantType[0].toUpperCase()+(singlePurchase.entrantType.slice(1))} ${ticketData[singlePurchase.ticketType].description}: $${(singleTicketPrice/100).toFixed(2)}${extras}\n`
+}
+finalReceipt += `-------------------------------------------\nTOTAL: $${(totalBillPrice/100).toFixed(2)}`
+return finalReceipt  
+}
 
 // Do not change anything below this line.
 module.exports = {

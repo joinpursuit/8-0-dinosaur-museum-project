@@ -23,8 +23,8 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  //> { Brachiosaurus: 98.43 }
  */
 function getLongestDinosaur(dinosaurs) {
-  let foundObject = {};
-  for (let i = 0; i < dinosaurs.length; i++) {
+  let foundObject = {}; // 1.initialize your accumulator
+  for (let i = 0; i < dinosaurs.length; i++) {//2.loop. usually through the whol array
     if (dinosaurs[i].lengthInMeters >= dinosaurs[i + 1].lengthInMeters) {
       dinosaurs[i]
       let dinoName = dinosaurs[i].name
@@ -96,25 +96,26 @@ function getDinosaurDescription(dinosaurs, id) {
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   let results = [];
-  for (let i = 0; i < dinosaurs.length; i++) {
-     if (dinosaurs[i].mya[0]===mya){
-      results.push(dinosaurs[i].dinosaurId)
-    }if (dinosaurs[i].mya[1]===mya){
-      results.push(dinosaurs[i].dinosaurId)
-    }if (dinosaurs[i].mya[0]===mya-1){
-      results.push(dinosaurs[i].dinosaurId)
-    } if (dinosaurs[i].mya[1]===mya-1){
-      results.push(dinosaurs[i].dinosaurId)
-    } if (dinosaurs[i].mya[0]===mya && key){
-    results.push(dinosaurs[i].key)
-    }if (dinosaurs[i].mya[1]===mya && key){
-    results.push(dinosaurs[i].key)
-  }if (dinosaurs[i].mya[0]===mya-1 && key){
-    results.push(dinosaurs[i].key)
-  } if (dinosaurs[i].mya[1]===mya-1 && key){
-    results.push(dinosaurs[i].key)
+  for (let i = 0; i < dinosaurs.length; i++){
+    if(dinosaurs[i].mya.length > 1){
+      if(dinosaurs[i].mya[0] >= mya && dinosaurs[i].mya[dinosaurs[i].mya.length - 1] <= mya){
+      if (key){
+        results.push(dinosaurs[i][key])
+      } else {
+        results.push(dinosaurs[i].dinosaurId)
+      }
+    }
+    }else {
+      if (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0]-1 === mya){
+        if (key){
+          results.push(dinosaurs[i][key])
+        }else {
+          results.push(dinosaurs[i].dinosaurId)
+        }
+      }
+    }
   }
-}return results
+   return results
 }
 
 
