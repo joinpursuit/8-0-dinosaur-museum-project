@@ -5,7 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
-const { membership } = require("../data/tickets");
+const { membership, extras } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -63,7 +63,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   }
   // return message if if ticket entrant type does not exist in the price in cennts
   if (!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]) {
-    return "Entrant type 'incorrect-entrant' cannot be found."
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
   }
   
   // the entrance ticket is checking for every extra 
@@ -76,7 +76,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     
     } else {
 
-      return "Extra type 'incorrect-extra' cannot be found."
+      return `Extra type '${ticketInfo.extras}' cannot be found.`
   
     } 
   }
@@ -137,7 +137,56 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) { }
+// input: 
+// process: purchases is an array of single tickets so we need to loop to access purchases, array of objects and check every ticket 
+//output:
+function purchaseTickets(ticketData, purchases) { 
+  let dinoReciept = ""
+  let totalPrice = 0
+  for (let i = 0; i < purchases.length; i++){
+    let ticketPrice = 0
+   if (typeof calculateTicketPrice(ticketData, purchases[i]) === "string" ){
+    return calculateTicketPrice(ticketData, purchases[i])
+   } 
+   ticketPrice += ticketData[purchases[i].ticketType].priceInCents[purchases[i].entrantType]
+   if (purchases[i].extras.length === 0) {
+    // needs to access general, membership using purchases[i].ticketType
+    dinoReciept += `${capitalize(purchases[i].entrantType)} ${ticketData[purchases[i].ticketType].description}: $${(ticketPrice / 100).toFixed(2)}`
+    if (purchases.length > 1 && i <= purchases.length - 2){
+      dinoReciept += "\n"
+
+    } 
+   } else{
+    let countExtras = 0
+    let extraReciept = ""
+    let extra = purchases[i].extras
+    for (let i = 0;  i < extra.length; i++) {
+
+      ticketPrice += ticketData.extras[extra[i]].priceInCents[purchases[i].entrantType]
+
+      if (countExtras === 0) {
+        extraReciept += `${ticketData.extras[extra[i]].description}`
+      } else {
+        extraReciept += `, ${ticketData.extras[extra[i]].description}`
+
+      } 
+      countExtras++
+    }
+    dinoReciept += `${capitalize(purchases[i].entrantType)} ${ticketData[purchases[i].ticketType].description}: $${(ticketPrice / 100).toFixed(2)} (${extraReciept})`
+    }
+
+   
+   totalPrice += ticketPrice
+  }
+  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${dinoReciept}\n-------------------------------------------\nTOTAL: $${(totalPrice / 100).toFixed(2)}`
+
+}
+// helper function to capitalize a single string
+function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
+}
+
+
 
 // Do not change anything below this line.
 module.exports = {

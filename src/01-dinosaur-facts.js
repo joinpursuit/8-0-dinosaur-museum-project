@@ -24,7 +24,7 @@ const exampleDinosaurData = require("../data/dinosaurs");
  */
 function getLongestDinosaur(dinosaurs) {
   //empty arr
-  let longestDino;
+  let longestDino = {}
   let longDino = 0;
   if (dinosaurs.length === 0) { return {}; }
   // a variable that will be updated to contain the longest dino object
