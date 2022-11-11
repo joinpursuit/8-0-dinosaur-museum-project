@@ -25,9 +25,9 @@ const exampleDinosaurData = require("../data/dinosaurs");
 
 // 
 function getLongestDinosaur(dinosaurs) {
-   if (dinosaurs.length === 0) {return {};}
+ if (dinosaurs.length === 0) {return {};}
   let arr;
-  let longest = 0;
+  let longest = dinosaurs[0].lengthInMeters; //start with first making it the longest
   
   for (let dino of dinosaurs){
     if (dino.lengthInMeters > longest){
@@ -40,7 +40,12 @@ function getLongestDinosaur(dinosaurs) {
  
   
   return arr; 
+
+
+  
 }
+  
+
 
 /**
  * getDinosaurDescription()
