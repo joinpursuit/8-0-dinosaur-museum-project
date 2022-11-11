@@ -168,19 +168,15 @@ function purchaseTickets(ticketData, purchases) {
      
       // Return an error message if ticketData.extras does not contain any of the elements of the extras array within purchases object otherwise add ticketData.description to extraString variable
       for (let extra of purchases[i].extras) {
-        
-        if (!ticketData.extras[extra]) {
-          return `Extra type '${extra}' cannot be found.`;
+        // Update the ticketPrice to include the price of each extra in the array
+        ticketPrice += ticketData.extras[extra].priceInCents[purchases[i].entrantType];
+        // Format the extras string with comma and space and add current extra priceInCents to the ticketPrice and totalPrice
+        if (extraCount === 0) { 
+          extraString += `${ticketData.extras[extra].description}`;
         } else {
-          // Update the ticketPrice to include the price of each extra in the array
-          ticketPrice += ticketData.extras[extra].priceInCents[purchases[i].entrantType];
-          // Format the extras string with comma and space and add current extra priceInCents to the ticketPrice and totalPrice
-          if (extraCount === 0) { 
-            extraString += `${ticketData.extras[extra].description}`;
-          } else {
-            extraString += `, ${ticketData.extras[extra].description}`;
-          }
+          extraString += `, ${ticketData.extras[extra].description}`;
         }
+      
         extraCount++;
       }
      
@@ -198,8 +194,10 @@ function purchaseTickets(ticketData, purchases) {
 
 
 function capitalize(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
+
+
 
 
 
