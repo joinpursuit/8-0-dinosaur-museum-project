@@ -130,33 +130,38 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
+  let totalBill = 0
   
-let totalBillPrice = 0
-let finalReceipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
-
-for (let singlePurchase of purchases) {
-  let singleTicketPrice = calculateTicketPrice(ticketData, singlePurchase)  
-  if (typeof singleTicketPrice === "string"){                       
-      return singleTicketPrice
-  }
-  let extraArr = []                         
-  let extras = ""
+  // Receipt format
+  let finalReceipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"
+  
+  for (let singlePurchase of purchases) {
+    let singleTicketPrice = calculateTicketPrice(ticketData, singlePurchase) // REUSABILITY - using the previous function calculate Price
+    // if priceOfTicket is not a number - then it is an error message, return error message
+    if (typeof singleTicketPrice === "string"){                       
+        return singleTicketPrice
+    }
+    let extraArr = []                                 // local scope variable declaration
+    let extras = ""
+      
+    for (let extra of singlePurchase.extras) {
+      extraArr.push(ticketData.extras[extra].description)   // push the extra description such as movie,terrace, education
+    }
+    if (singlePurchase.extras.length){                      // add the extras
+      extras = ` (${extraArr.join(", ")})`                  // using join to convert array to string
+    }// end of for loop
+    totalBill += singleTicketPrice                     // final bill price
     
-  for (let extra of singlePurchase.extras) {
-    extraArr.push(ticketData.extras[extra].description) 
-  }
-  if (singlePurchase.extras.length){                      
-    extras = ` (${extraArr.join(", ")})`                 
-  totalBillPrice += singleTicketPrice            
-  
-  finalReceipt += `${singlePurchase.entrantType[0].toUpperCase()+(singlePurchase.entrantType.slice(1))} ${ticketData[singlePurchase.ticketType].description}: $${(singleTicketPrice/100).toFixed(2)}${extras}\n`
-}
-finalReceipt += `-------------------------------------------\nTOTAL: $${(totalBillPrice/100).toFixed(2)}`
-return finalReceipt  
-}
-
+    finalReceipt += `${singlePurchase.entrantType[0].toUpperCase()+(singlePurchase.entrantType.slice(1))} ${ticketData[singlePurchase.ticketType].description}: $${(singleTicketPrice/100).toFixed(2)}${extras}\n`
+      //accumulate the full singleTicketPrice
+      
+  }// end of for loop
+  // print the total bill
+  finalReceipt += `-------------------------------------------\nTOTAL: $${(totalBill/100).toFixed(2)}`
+  return finalReceipt  
+  }// end of function
 // Do not change anything below this line.
 module.exports = {
   calculateTicketPrice,
   purchaseTickets,
-};
+}
