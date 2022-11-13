@@ -79,12 +79,12 @@ function getConnectedRoomNamesById(rooms, id) {
 
   // Mapping roomByID which was an object returned the connectedRooms as an array. Spreading the elements returned without the spread operator
   let spreadConnRooms = [].concat.apply([], connRooms);
-  
+
   // converting the roomIds into roomNames 
   for( let i = 0; i < spreadConnRooms.length; i++ ){
 
     // checking the connected rooms which at this time are iDs => checking it with the rooms[] and getting the correct name based on the iD found in the spreadConnRoomsp[]
-    let found = rooms.find( room => spreadConnRooms[i] == room.roomId )
+    let found = rooms.find( room => spreadConnRooms[i] === room.roomId )
 
     // If it is found the .find() method will return the first element in the provided array that satisfies the provided conditional. If no values satisfy the provided conditional, undefined is returned.
     if( found )
@@ -98,7 +98,7 @@ function getConnectedRoomNamesById(rooms, id) {
   let finalResult = spreadConnRooms.map( roomNameOnly => roomNameOnly.name )
 
   return finalResult
-
+ 
 } // ends getConnectedRoomNamesById
 
 module.exports = {

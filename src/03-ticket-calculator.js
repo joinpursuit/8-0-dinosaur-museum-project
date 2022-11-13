@@ -133,7 +133,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  */
 function purchaseTickets(ticketData, purchases) {
 
-  // Declaring variable outside the loop because it will have our total price
+  // Declaring variable outside the loop because it will have our total price // scope
   let totalPrice = 0;
   
   // initial value of the reciept as per instructions
@@ -142,55 +142,42 @@ function purchaseTickets(ticketData, purchases) {
   // starts the forLetInLoop to iterate over purchasesArray
   for( let index in purchases ){
 
-    // creating variables inside the forLetInLoop because we need them to reset everytime we go back to the top of the loop.
-    let extrasPrice = 0;
+    // like in the previous function we will use an ifElse statement to check if we have valid entrantType or ticketType || Riya's needs to be added here. // LeLiah guardE
+    // if( ticketData.hasOwnProperty( purchases[index].ticketType ) && ticketData[purchases[index].ticketType].priceInCents.hasOwnProperty( purchases[index].entrantType ) ){
 
-    // like in the previous function we will use an ifElse statement to check if we have valid entrantType or ticketType
-    if( ticketData.hasOwnProperty( purchases[index].ticketType ) && ticketData[purchases[index].ticketType].priceInCents.hasOwnProperty( purchases[index].entrantType ) ){
+      // Riya's logic to make use of Helper Functions
+      // ? The following code caused ERRORS to surface
+      let calPrice =  calculateTicketPrice( ticketData, purchases[index] );
 
-      // accessing the values of ticketType and entrantType once we know it has properties needed to access 
-      let ticketType = purchases[index].ticketType;
-      let entrantType = purchases[index].entrantType;
+      // ! The following ifStatement only wants the value returned from calculateTicketPrice to be of type 'string'
+      if( typeof calPrice === 'string' )
+        return calPrice
 
-      // accessing the ticket price using my variables declared above
-      let ticketPrice = Number(ticketData[ ticketType ].priceInCents[ entrantType ]/100);
+      calPrice = calPrice/100
 
-      // formatting the values of entrant and ticket to print in receipt
-      ticketType = `${ticketType[0].toUpperCase()}${ticketType.slice(1).toLowerCase()}`
-      entrantType = `${entrantType[0].toUpperCase()}${entrantType.slice(1).toLowerCase()}`
-      
+      // console.log(calPrice)
       // adding to entrantType and ticket type to the receipt
-      receipt += `\n${entrantType} ${ticketType} Admission: `;
-
-      // for readability purposes
-      let extrasArray = purchases[index].extras;
-
-      // We have to call the toLowerCase() on entrantType because we've modified it above.
-      for( let i = 0; i < extrasArray.length; i++){
-
-        if( ticketData.extras.hasOwnProperty( extrasArray[i] ) )
-          extrasPrice += Number( ticketData.extras[ extrasArray[i] ].priceInCents[ entrantType.toLowerCase() ]/100 );
-        else
-          return `Extra type '${extrasArray[i]}' cannot be found.`;
-
-      } // ends forLoop for extrasArray
-
-      // adding extrasPrice to ticketPrice if there is any
-      ticketPrice += extrasPrice;
+      receipt += `\n${purchases[index].entrantType[0].toUpperCase()}${purchases[index].entrantType.slice(1).toLowerCase()} ${purchases[index].ticketType[0].toUpperCase()}${purchases[index].ticketType.slice(1).toLowerCase()} Admission: `;
+      // receipt += `\n${ticketData[purchases[index].priceInCents]}`
+      receipt += `$${ calPrice.toFixed(2) }`;
       
-      // formatting the ticketPrice to fit requirement needs for receipt.
-      receipt += `$${ (ticketPrice).toFixed(2) }`;
+      // for( let i = 0; i < purchases[index].extras.length; i++){
 
+      //  if( !ticketData.extras.hasOwnProperty( purchases[index].extras[i] ) )
+      //    return `Extra type '${purchases[index].extras[i]}' cannot be found.`;
+
+      // } // ends forLoop 
+    
       // fancy way of getting elements in an array and converting them into a string that meets our conditions only running it if there even is a length
-      if( extrasArray.length >= 1)
-        receipt += ` (${extrasArray.map( element => `${element.charAt(0).toUpperCase()}${element.slice(1).toLowerCase()}`).join(' Access, ')} Access)`;
+      if( purchases[index].extras.length >= 1)
+        receipt += ` (${purchases[index].extras.map( element => `${element.charAt(0).toUpperCase()}${element.slice(1).toLowerCase()}`).join(' Access, ')} Access)`;
       
-      totalPrice += ticketPrice;
+      totalPrice += calPrice;
   
-    }else if( !ticketData.hasOwnProperty( purchases[index].ticketType) )
-      return `Ticket type '${purchases[index].ticketType}' cannot be found.`
-    else if( !ticketData[purchases[index].ticketType].priceInCents.hasOwnProperty( purchases[index].entrantType ))
-      return `Entrant type '${purchases[index].entrantType}' cannot be found.`
+    // }else if( !ticketData.hasOwnProperty( purchases[index].ticketType) )
+    //   return `Ticket type '${purchases[index].ticketType}' cannot be found.`
+    // else if( !ticketData[purchases[index].ticketType].priceInCents.hasOwnProperty( purchases[index].entrantType ))
+    //   return `Entrant type '${purchases[index].entrantType}' cannot be found.`
     // ends ifElse statement that checks for valid entrant && ticket type
 
   }// ends the forLetInLoop

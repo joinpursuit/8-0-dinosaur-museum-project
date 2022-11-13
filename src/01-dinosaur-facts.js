@@ -25,16 +25,16 @@ const exampleDinosaurData = require("../data/dinosaurs");
 function getLongestDinosaur(dinosaurs) {
   
   // creating and empty obj 
-  let dinoObj = {};
+  let dinoObj = {}; 
 
-  if ( !dinosaurs.length ){
+  if ( !dinosaurs.length ){ // if there are no dinos in the array return error here
 
     // returning empty object if there are no dinosaurs provided
     return dinoObj;
 
-  }else{  
+  }else{
 
-    // find the longest `lengthInMeters` 
+    // find the longest `lengthInMeters` // yeah
     let result = Math.max.apply( Math, dinosaurs.map( dino => dino.lengthInMeters ) ) 
     
     // matching that `lengthInMeter` to the dinosaurs. It will give us the first one due to find() - returns the first one found
@@ -126,6 +126,11 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
 
   }).map( dinoObject => {
     // Using a ternary logical operator to be fancy. An ifElse statement could be used here.
+
+      // they call it HELPER functions like YEAHHH wtf 
+      /// thats all it means
+
+
     return !key ? dinoObject.dinosaurId : dinoObject[key];
 
   });
