@@ -27,18 +27,14 @@ function getLongestDinosaur(dinosaurs) {
   // creating and empty obj 
   let dinoObj = {}; 
 
-  if ( !dinosaurs.length ){ // if there are no dinos in the array return error here
+  if ( !dinosaurs.length ){ 
 
-    // returning empty object if there are no dinosaurs provided
     return dinoObj;
 
   }else{
-
-    // find the longest `lengthInMeters` // yeah
-    let result = Math.max.apply( Math, dinosaurs.map( dino => dino.lengthInMeters ) ) 
     
     // matching that `lengthInMeter` to the dinosaurs. It will give us the first one due to find() - returns the first one found
-    let dino = dinosaurs.find( dino => dino.lengthInMeters === result )
+    let dino = dinosaurs.find( dino => dino.lengthInMeters === Math.max.apply( Math, dinosaurs.map( dino => dino.lengthInMeters ) )  )
 
     // formatting it to fit requirement needs
     dinoObj[`${dino.name}`] = dino.lengthInMeters * 3.281
