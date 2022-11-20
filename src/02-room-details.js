@@ -26,6 +26,7 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  
   // using the .find() method and get the dinoObj
   let dinoFound = dinosaurs.find( dino => dino.name === dinosaurName )
 

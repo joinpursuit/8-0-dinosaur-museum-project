@@ -22,28 +22,21 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {
+const getLongestDinosaur = ( dinosaurs ) => {
   
-  // creating and empty obj 
   let dinoObj = {}; 
 
-  if ( !dinosaurs.length ){ 
+  if ( dinosaurs.length ){ 
 
-    return dinoObj;
+    let dino = dinosaurs.find( dino => dino.lengthInMeters === Math.max.apply( Math, dinosaurs.map( dino => dino.lengthInMeters ) )  );
 
-  }else{
+    dinoObj[`${dino.name}`] = dino.lengthInMeters * 3.281;
+
+  }
     
-    // matching that `lengthInMeter` to the dinosaurs. It will give us the first one due to find() - returns the first one found
-    let dino = dinosaurs.find( dino => dino.lengthInMeters === Math.max.apply( Math, dinosaurs.map( dino => dino.lengthInMeters ) )  )
+  return dinoObj;
 
-    // formatting it to fit requirement needs
-    dinoObj[`${dino.name}`] = dino.lengthInMeters * 3.281
-    
-    return dinoObj
-
-  } 
-
-} // ends getLongestDinosaur()
+};
 
 /**
  * getDinosaurDescription()
@@ -65,24 +58,17 @@ function getLongestDinosaur(dinosaurs) {
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {
-  // Making use of higherOrder functions.
-  // the .find() method returns the first element by the provided conditional. If it is not found undefined is returned.
+const getDinosaurDescription = (dinosaurs, id) => {
+
   let dino = dinosaurs.find( dino => dino.dinosaurId  === id );
 
-  // If the previous value came back as undefined. Then the provide iD was invalid
-  if( !dino )
+  if( !dino ){
     return `A dinosaur with an ID of '${id}' cannot be found.`
-  else
+  }else{
     return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length - 1]} million years ago.` 
+  }
 
-// for(let i = 0; i < dinosaurs.length; i++){
-//   if( dinosaurs[i].dinosaurId === id  )
-//     return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.` 
-// }
-//   return `A dinosaur with an ID of '${id}' cannot be found.`
-
-} // ends getDinosaurDescription
+};
 
 /**
  * getDinosaursAliveMya()
@@ -111,29 +97,24 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {
+const getDinosaursAliveMya = ( dinosaurs, mya, key ) => {
 
-  // Using the .filter() method creates a shallow copy *references to encapsulating the object*
+
   let dinosFound = dinosaurs.filter( dino => {
 
-    // Since all the requirements make us return a single dino object. I figured it would be best to combine it into one ifElse statement with 4 conditionals
-    if( dino.mya.includes(mya) || dino.mya[0] > mya && dino.mya[1] < mya ||  dino.mya - 1  === mya )
+    if( dino.mya.includes(mya) || dino.mya[0] > mya && dino.mya[1] < mya ||  dino.mya - 1  === mya ){
       return dino
+    }
 
   }).map( dinoObject => {
-    // Using a ternary logical operator to be fancy. An ifElse statement could be used here.
-
-      // they call it HELPER functions like YEAHHH wtf 
-      /// thats all it means
-
 
     return !key ? dinoObject.dinosaurId : dinoObject[key];
 
   });
 
-  return dinosFound
+  return dinosFound;
 
-} // ends getDinosaursAliveMya
+};
 
 module.exports = {
   getLongestDinosaur,
