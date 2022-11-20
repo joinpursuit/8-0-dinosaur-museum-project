@@ -25,24 +25,23 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+const getRoomByDinosaurName = ( dinosaurs, rooms, dinosaurName ) => {
   
-  // using the .find() method and get the dinoObj
-  let dinoFound = dinosaurs.find( dino => dino.name === dinosaurName )
+  let dinoFound = dinosaurs.find( dino => dino.name === dinosaurName );
 
-  // If undefined then no dinosaur was found under that name. The .find() method will return undefined thats why I used 
-  if( !dinoFound )
+  if( !dinoFound ){
     return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+  }
 
-  // Using the forLoop to check the rooms[] to get the proper name of the room
-  for( let i = 0; i < rooms.length; i++ ){
-    if( rooms[i].dinosaurs.includes(dinoFound.dinosaurId) )
-      return rooms[i].name
+  let roomFound = rooms.find( room => room.dinosaurs.includes(dinoFound.dinosaurId) );
+
+  if( roomFound ){
+    return roomFound.name;
   }
 
   return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
 
-} // ends getRoomByDinosaurName() 
+}; 
 
 /**
  * getConnectedRoomNamesById()
@@ -66,41 +65,36 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {
+const getConnectedRoomNamesById = ( rooms, id ) => {
 
-  // will come back empty if the roomId does not match the 'id' provided 
-  let roomByID = rooms.filter( room => room.roomId === id );
-  
-  // If rooms are not found return with error
-  if( !roomByID.length )
+  let roomFound = rooms.find( room => room.roomId === id );
+
+  if( !roomFound )
     return `Room with ID of '${id}' could not be found.`;
 
-  // this will return the array > connectsTo and put it inside another array
-  let connRooms =  roomByID.map( room => room.connectsTo );
+  let connRooms =  roomFound.connectsTo;
 
-  // Mapping roomByID which was an object returned the connectedRooms as an array. Spreading the elements returned without the spread operator
-  let spreadConnRooms = [].concat.apply([], connRooms);
+  let wrongID = false;
 
-  // converting the roomIds into roomNames 
-  for( let i = 0; i < spreadConnRooms.length; i++ ){
+  connRooms = connRooms.map( room => {
 
-    // checking the connected rooms which at this time are iDs => checking it with the rooms[] and getting the correct name based on the iD found in the spreadConnRoomsp[]
-    let found = rooms.find( room => spreadConnRooms[i] === room.roomId )
+    let roomFound = rooms.find( origRoom => origRoom.roomId === room );
 
-    // If it is found the .find() method will return the first element in the provided array that satisfies the provided conditional. If no values satisfy the provided conditional, undefined is returned.
-    if( found )
-      spreadConnRooms[i] = found;
-    else
-      return `Room with ID of '${spreadConnRooms[i]}' could not be found.`;
-    
+    if( !roomFound ){
+      wrongID = room;
+    }else{
+      return roomFound.name;
+    }
+
+  } );
+
+  if( wrongID ){
+    return `Room with ID of '${wrongID}' could not be found.`;
   }
 
-  // after making sure there are no `incorrect-id` thanks to the forLoop() 
-  let finalResult = spreadConnRooms.map( roomNameOnly => roomNameOnly.name )
-
-  return finalResult
+  return connRooms;
  
-} // ends getConnectedRoomNamesById
+};
 
 module.exports = {
   getRoomByDinosaurName,
