@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { extras } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,39 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  //created the variables for easy access.
+  const inputTicket = ticketInfo.ticketType;
+  const inputEntrant = ticketInfo.entrantType;
+  const inputExtra = ticketInfo.extras;
+  //a variable to track the total price.
+  let total = 0;
+  
+  if (!ticketData[inputTicket]) {
+    //if @ticketType doesn't exist, return an error message.
+    return `Ticket type '${inputTicket}' cannot be found.`;
+  } else { //if @ticketType exists
+    if (!ticketData[inputTicket].priceInCents[inputEntrant]) {
+      //if @entrantType doesn't exist, return an error message.
+      return `Entrant type '${inputEntrant}' cannot be found.`; 
+    } else { //if @entrantType exists
+      //add the value of the "total" with @ticketType and @entrantType info provided.
+      total += ticketData[inputTicket].priceInCents[inputEntrant];
+
+      //loop through @extras array
+      for (let extra of inputExtra) { 
+        if (ticketData.extras.hasOwnProperty(extra)) {
+          //if @extras array value(s) exist(s), add to the "total" with @extras info provided.
+          total += ticketData.extras[extra].priceInCents[inputEntrant];
+        } else {
+          //if @extras don't exist, return an error message.
+          return `Extra type '${inputExtra}' cannot be found.`;
+        }
+      }
+    }
+  }
+  return total;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +142,73 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  //set the variables to track the ticket price and total price.
+  let ticketPrice = 0;
+  let totalPrice = 0;
+  //set the variable for the first text on the receipt.
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+
+  //to loop throught the @purchases array of objects.
+  for (let purchase of purchases) {
+    //set the variables for reference (easy access).
+    let inputTicket = purchase.ticketType; //@ticketType
+    let inputEntrant = purchase.entrantType; //@entrantType
+    let inputExtra = purchase.extras; //@extras
+
+    //first letter capitalized for @ticketType and @entrantType.
+    const capTicket = inputTicket.charAt(0).toUpperCase() + inputTicket.slice(1);
+    const capEntrant = inputEntrant.charAt(0).toUpperCase() + inputEntrant.slice(1);
+
+    //error messages
+    if (!ticketData[inputTicket]) { //if @ticketType doesn't exist, return an error message.
+      return `Ticket type '${inputTicket}' cannot be found.`;
+    } else if (!ticketData[inputTicket].priceInCents[inputEntrant]) { //if @entrantType doesn't exist, return an error message.
+      return `Entrant type '${inputEntrant}' cannot be found.`;
+    }
+    
+    //update the "ticketPrice" depending the @ticketType and @entrantType.
+    ticketPrice = ticketData[inputTicket].priceInCents[inputEntrant];
+    //add the text to the "receipt".
+    receipt += `${capEntrant} ${capTicket} Admission: `;
+
+    if (inputExtra.length > 0) {//if @extras is not empty
+      //set the "arrList" array and the "strList" string, and to reset it every loop.
+      let arrList = [];
+      let strList = '';
+      for (let extra of inputExtra) { //to loop through the @extras array.
+        if (!ticketData.extras.hasOwnProperty(extra)) { //if @extras doesn't exist, return an error message.
+          return `Extra type '${extra}' cannot be found.`;
+        } else { //if @extras exists
+          //push to the "arrList" array the first letter capitalized and the rest of the string from the @extras strings.
+          arrList.push(extra.charAt(0).toUpperCase() + extra.slice(1) + " Access");
+          //convert the "arrList" array to the "strList" string with a comma and a space between them.
+          strList = arrList.join(", ");
+
+          //add add-ons to the "ticketPrice".
+          ticketPrice += ticketData.extras[extra].priceInCents[inputEntrant];
+        }
+      }
+      //add the "ticketPrice" converted in dollar plus the "strList" string.
+      receipt += `$${(ticketPrice/100).toFixed(2)} (${strList})`;
+    } else { //if @extras is empty
+      //add the "ticketPrice" converted in dollar.
+      receipt += `$${(ticketPrice/100).toFixed(2)}`;
+    }
+    
+    //add a new line to the "str".
+    receipt += "\n";
+    //add the "ticketPrice" to the "totalPrice".
+    totalPrice += ticketPrice;
+  }
+
+  //add the divider plus the new line, and the final price at the end of the "receipt".
+  receipt += "-------------------------------------------\n";
+  receipt += `TOTAL: $${(totalPrice/100).toFixed(2)}`;
+
+  //return the final result of "receipt".
+  return receipt;
+}
 
 // Do not change anything below this line.
 module.exports = {
