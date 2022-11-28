@@ -99,9 +99,8 @@ let wrongRoomId = connectedRoomIdArray.filter(checkId => (!roomIdArray.includes(
 if(wrongRoomId.length >= 1){                  // if there is any id inside wrongId array that means there was a element in connected room and not in roomId
   return `Room with ID of '${wrongRoomId}' could not be found.`
 }
-
 // Final - Return & Error Message
-  return roomNameArray.length === 0 ? `Room with ID of '${id}' could not be found.` : roomNameArray
+  return roomNameArray.length === 0 ? `Room with ID of '${id}' could not be found.` : roomNameArray 
 } // end of function
 
 module.exports = {
