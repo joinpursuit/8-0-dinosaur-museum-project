@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { membership } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,38 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  //create variable for the price
+  let totalPrice = 0;
+  //check if ticket is membership or general
+  if (ticketInfo.ticketType === "general" || ticketInfo.ticketType === "membership"){
+    //check if the entrant type exists
+    if (ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]){
+      //add the correct price
+      totalPrice += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+    } else {
+      //return entrant error message
+      return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+    } 
+  } else {
+    //return ticket type error message
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+
+  //loop through extras
+  for (let ex of ticketInfo.extras){
+    //checkif the extra type exists
+    if (ticketData.extras[ex]){
+      //add the price of the extra to the total price
+      totalPrice += ticketData.extras[ex].priceInCents[ticketInfo.entrantType];
+    } else {
+      //extras error message
+      return `Extra type '${ex}' cannot be found.`;
+    }
+  }
+  //return the price in cents
+  return totalPrice;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +141,67 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  //create total price variable
+  let totalPrice = 0;
+  //variable for the receipt message and set it equal to the beginning of the message
+  let receiptMessage = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------`;
+  //create extras empty string
+  let extrasPurchased = "";
+  //loop through tickets purchases
+  for (ticket of purchases){
+    //create a ticket price variable
+    let ticketPrice = 0;
+    //check if ticket is membership or general
+    if (ticket.ticketType === "general" || ticket.ticketType === "membership"){
+      //check if the entrant type exists
+      if (ticketData[ticket.ticketType].priceInCents[ticket.entrantType]){
+        //add the correct price
+        totalPrice += ticketData[ticket.ticketType].priceInCents[ticket.entrantType];
+        ticketPrice += ticketData[ticket.ticketType].priceInCents[ticket.entrantType];
+        //put entrant type and ticket type on the receipt
+        receiptMessage += `\n${ticket.entrantType[0].toUpperCase() + ticket.entrantType.substring(1)} ${ticket.ticketType[0].toUpperCase() + ticket.ticketType.substring(1)} Admission: `;
+      } else {
+        //return entrant error message
+        return `Entrant type '${ticket.entrantType}' cannot be found.`;
+      } 
+    } else {
+      //return ticket type error message
+      return `Ticket type '${ticket.ticketType}' cannot be found.`;
+    }
+    //check if theres extras
+    if (ticket.extras[0]){
+      //create an array for the extras descriptions
+      let extrasDescArr = [];
+      //loop through extras
+      for (let ex of ticket.extras){
+        //checkif the extra type exists
+        if (ticketData.extras[ex]){
+          //add the price of the extra to the total price
+          totalPrice += ticketData.extras[ex].priceInCents[ticket.entrantType];
+          ticketPrice += ticketData.extras[ex].priceInCents[ticket.entrantType];
+        } else {
+          //extras error message
+          return `Extra type '${ex}' cannot be found.`;
+        }
+        //push the descriptions
+        extrasDescArr.push(ticketData.extras[ex].description);
+      }  
+      //put the extras array into a string
+      extrasPurchased = extrasDescArr.join(", ");
+      //add in the ticket price and extras  
+      receiptMessage += `$${(ticketPrice/100).toFixed(2)} (${extrasPurchased})`;
+    } else {
+      //add in the ticket price
+      receiptMessage += `$${(ticketPrice/100).toFixed(2)}`;
+    }
+  }
+
+  //finally, add the total to the receipt
+  receiptMessage += `\n-------------------------------------------\nTOTAL: $${(totalPrice/100).toFixed(2)}`;
+  return receiptMessage;
+}
+
 
 // Do not change anything below this line.
 module.exports = {

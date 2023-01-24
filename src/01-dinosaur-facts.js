@@ -22,7 +22,25 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  //create empty array
+  let longestDino = {};
+  //create a variable for the index of the longest dino
+  let longestIndex = 0; 
+  //loop through dinosaur array
+  for (let i = 0; i < dinosaurs.length; i++){
+    //if the dinosaur at the longestIndex is shorter than the next dino in the array
+    if (dinosaurs[longestIndex].lengthInMeters < dinosaurs[i].lengthInMeters){
+      //the new index becomes the current dino
+      longestIndex = i;
+    }
+  }
+  //if there are dinosaurs, put the dinos name and length in feet in the empty array
+  if (dinosaurs[0]){
+    longestDino[dinosaurs[longestIndex].name] = (dinosaurs[longestIndex].lengthInMeters * 3.281);
+  }
+  return longestDino;
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +62,18 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  //loop through dinosaur array
+  for (let i = 0; i < dinosaurs.length; i++){
+    //check if ids match
+    if (dinosaurs[i].dinosaurId === id){
+      //return a string with the dinos name, pronunciation, info, period, and mya
+      return `${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.`
+    }
+  }
+  //return id not found message
+  return `A dinosaur with an ID of '${id}' cannot be found.`
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +100,26 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  //create empty array
+  let aliveArr = [];
+  //loop through dinosaurs
+  for (let i = 0; i < dinosaurs.length; i++){
+    //check if the input mya is between the current dinos timespan OR if it only has on mya and the input mya is equal to or one more than its mya  
+    if ((dinosaurs[i].mya[0] >= mya && mya >= dinosaurs[i].mya[1]) || (dinosaurs[i].mya[0] && (dinosaurs[i].mya[0] === mya + 1 || dinosaurs[i].mya[0] === mya))){
+      //check if the input key exists
+      if (key !== undefined && dinosaurs[i][key]){
+        //push the key value
+        aliveArr.push(dinosaurs[i][key]);
+      } else {
+        //push the name
+        aliveArr.push(dinosaurs[i].dinosaurId);
+      }
+    }
+  }
+  //return the array
+  return aliveArr;
+}
 
 module.exports = {
   getLongestDinosaur,
