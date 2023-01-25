@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,29 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+let ticketPrice = 0
+if (!ticketData[ticketInfo.ticketType]) {
+  return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+}
+
+if (!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]) {
+  return `Entrant type 'incorrect-entrant' cannot be found.`
+}
+
+for (let i = 0; i < ticketInfo.extras.length; i++) {
+  let extra = ticketInfo.extras[i];
+  if (ticketData.extras[extra]) {
+    ticketPrice+= ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+  }else {
+    return "Extra type 'incorrect-extra' cannot be found."
+  }
+}
+
+return ticketPrice += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+
+} 
+
 
 /**
  * purchaseTickets()
@@ -109,7 +132,46 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let total = 0; //accumulator
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+ 
+  for (let purchase of purchases) {
+    const ticketPrice = calculateTicketPrice(ticketData, purchase);
+    if (typeof ticketPrice === "string") {
+      return ticketPrice;
+    }
+    total += ticketPrice;
+  
+    const entrant = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1);
+    const ticketTypeDescription = ticketData[purchase.ticketType].description;
+    const price = (ticketPrice / 100).toFixed(2); //price in decimal
+    let line = `${entrant} ${ticketTypeDescription}: $${price}`;
+  
+    const extras = purchase.extras;
+    let ending = "\n";
+    if (extras.length > 0) {
+      line += " (";
+      ending = ")" + ending;
+    }
+
+    for (let i = 0; i < extras.length; i++) {
+      const extra = ticketData.extras[extras[i]].description;
+      if (i === extras.length - 1) {
+        line += extra;
+      } else {
+        line += extra + ", ";
+      }
+    }
+  
+  receipt += line + ending;
+
+  }
+
+ return receipt +  `-------------------------------------------\nTOTAL: $${(total / 100).toFixed(2)}`
+}    
+
+ 
 
 // Do not change anything below this line.
 module.exports = {
