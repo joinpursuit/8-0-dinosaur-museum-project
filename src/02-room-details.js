@@ -25,7 +25,35 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  //set variable to ERROR message if dinosuar name can't be found, will be changed over time
+  let roomName = `Dinosaur with name '${dinosaurName}' cannot be found.`
+  //set for of loop to go through loop of dinosaur in elements of dinosaurs
+for (let dinosaur of dinosaurs) {
+  //go through each dinosaur name  strictly equal to parameter dinosaur name to see if dinosaur name exists
+  if (dinosaur.name === dinosaurName) {
+    //if dinosaur name does not exist in any of the rooms, change roomName variable to ERROR message
+    roomName = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+    //make another for of loop to go through each room
+for (let room of rooms) {
+  //if the room is listed under the dinosaur, check with its dinosaur Id is included with the room
+  if (room.dinosaurs.includes(dinosaur.dinosaurId)) {
+    //bring back variable roomName to show the given room dinosaur was found
+    roomName = room.name;
+      }
+    }
+  }
+}//roomName variable results in name of room, the dinosaur was found
+return roomName
+}
+
+
+
+//return `if dino exists return ${rooms.name}`
+ // dinosaurs are code ids in room folder
+
+// return error messages `Dinosaur with name ${dinosaurName} cannot be found.`
+// `Dinosaur with name ${dinosaurName} cannot be found in any rooms.`
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +77,40 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  //set 2 arrays, one with connected room and other with Dinosaur Name array that
+let connectedRoom = []
+let dinoNamesArr = []
+//create for loop to go through each of the rooms
+for (let x = 0; x < rooms.length; x++) {
+  //set variable of room to go through all the rooms
+  let room = rooms[x]
+  if (room.roomId === id) { //if statement to have roomId strictly equal to Id parameter to see if room actually is within the array
+    connectedRoom.push(...room.connectsTo)
+    //have the connectedRoom array push all rooms it is connected to within it. Break the loop when it is found
+    for (let id of connectedRoom) {//go through the ids of each connected room with for of loop
+      for (let room of rooms) { //then go through each room of all rooms
+        if (id === room.roomId) { //if there is an id existent, strictly equal it to the roomId
+          dinoNamesArr.push(room.name)
+          //then with the dinoNames array, push all rooms into the dinoNamesArray
+        }
+      }
+    }
+  }
+}//put ERROR messages, go through the dinosaur name Array, and there is no connected Room to any, return error message
+if (dinoNamesArr.length !== connectedRoom.length) { 
+  return `Room with ID of 'incorrect-id' could not be found.`
+} //if go through dinosaur name array and there is no ID, return error message
+if (dinoNamesArr.length === 0) {
+  return `Room with ID of '${id}' could not be found.`
+}
+return dinoNamesArr//return all names of rooms connected to room by dinosaur ID
+}
+// return [`stringofroom`,`stringofroom`,]
+//return if no room === error message
+//if first room found is not correct == `Room with ID of '${id}' could not be found.`
+//if NO ROOM = `Room with ID of 'incorrect-id' could not be found.`
+
 
 module.exports = {
   getRoomByDinosaurName,
