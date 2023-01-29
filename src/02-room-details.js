@@ -25,7 +25,33 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+// Declaration
+  let dinoId = ""
+
+// Main code
+  for(let i = 0; i < dinosaurs.length; i++){
+    if(dinosaurs[i].name === dinosaurName){ // checking if parameter dinosaur name same as dinosaurs.dinosaurname
+        dinoId = dinosaurs[i].dinosaurId
+    }
+  } // end of for loop
+
+  // Error Message
+  if (!dinoId){       // if dinoId falsy then given dinosaur name cant be found
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`
+  }
+
+// Main code
+  for(let j = 0; j < rooms.length; j++){
+    if(rooms[j].dinosaurs.includes(dinoId)){ // checking if rooms.dinosaur[] has dinosaur ID same as dinosaurs.dinosaurId
+      return `${rooms[j].name}`
+    }
+  } // end of for loop
+
+// Error message - if dinosaur cant be found in any room
+return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+
+} // end of function
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +75,33 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+// Declaration
+let roomNameArray = []
+let roomIdArray = []
+let connectedRoomIdArray = []
+
+// Main code
+  for(let i = 0; i < rooms.length; i++){
+    if(rooms[i].connectsTo.includes(id)){ //  checking given id included inside the connectsTo array, 
+      roomNameArray.push(rooms[i].name)   //  if yes then push name of room
+      roomIdArray.push(rooms[i].roomId)   //  if yes, then push room Id, roomIdArray  - has all original room id values that passed the condition
+    }
+
+    if(rooms[i].roomId === id){                   // checking if the given id is equal to room id
+      connectedRoomIdArray = rooms[i].connectsTo  //  push all the connectsTo id of the room
+    }
+  } //end of for loop
+
+let wrongRoomId = connectedRoomIdArray.filter(checkId => (!roomIdArray.includes(checkId))) // filter the connectedroom array with roomid array to get thats not common to both
+
+//Error Message
+if(wrongRoomId.length >= 1){                  // if there is any id inside wrongId array that means there was a element in connected room and not in roomId
+  return `Room with ID of '${wrongRoomId}' could not be found.`
+}
+// Final - Return & Error Message
+  return roomNameArray.length === 0 ? `Room with ID of '${id}' could not be found.` : roomNameArray 
+} // end of function
 
 module.exports = {
   getRoomByDinosaurName,
