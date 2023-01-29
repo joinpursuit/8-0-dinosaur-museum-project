@@ -3,8 +3,8 @@
 
   You may use this data to test your functions. You may assume the shape of the data remains the same but that the values may change.
 */
-const exampleDinosaurData = require("../data/dinosaurs");
-const exampleRoomData = require("../data/rooms");
+const exampleDinosaurData = require('../data/dinosaurs')
+const exampleRoomData = require('../data/rooms')
 // Do not change the lines above.
 
 /**
@@ -25,7 +25,27 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let dinoId
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].name === dinosaurName) {
+      dinoId = dinosaurs[i].dinosaurId
+      break
+    }
+  }
+  for (let i = 0; i < rooms.length; i++) {
+    for (let j = 0; j < rooms[i].dinosaurs.length; j++) {
+      if (rooms[i].dinosaurs[j] === dinoId) {
+        return rooms[i].name
+      }
+    }
+  }
+  if (dinoId) {
+    return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+  } else {
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`
+  }
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,9 +69,35 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  const connected = []
+  const conName = []
+  for (let i = 0; i < rooms.length; i++) {
+    if (rooms[i].roomId === id) {
+      for (let j = 0; j < rooms[i].connectsTo.length; j++) {
+        connected.push(rooms[i].connectsTo[j])
+      }
+      break
+    }
+  }
+  for (let i = 0; i < connected.length; i++) {
+    for (let j = 0; j < rooms.length; j++) {
+      if (connected[i] === rooms[j].roomId) {
+        conName.push(rooms[j].name)
+        connected.shift()
+      }
+    }
+  }
+  if (conName.length >= 1 && connected.length === 0) {
+    return conName
+  } else if (connected.length > 0) {
+    return `Room with ID of '${connected}' could not be found.`
+  } else {
+    return `Room with ID of '${id}' could not be found.`
+  }
+}
 
 module.exports = {
   getRoomByDinosaurName,
   getConnectedRoomNamesById,
-};
+}
