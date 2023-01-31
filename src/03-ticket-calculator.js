@@ -54,7 +54,34 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let persons = ['senior', 'adult', 'child'];
+  let admission = ['membership', 'general'];
+  let extras = ['movie', 'education', 'terrace'];
+  let noExtras;
+  let total = 0;
+  if (!persons.includes(ticketInfo.entrantType)) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+  if (!admission.includes(ticketInfo.ticketType)) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+  for (let i = 0; i < ticketInfo.extras.length; i++) {
+    if (!extras.includes(ticketInfo.extras[i])) {
+      return `Extra type '${ticketInfo.extras[i]}' cannot be found.`;
+    }
+  }
+  noExtras = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+  total += noExtras;
+  if (ticketInfo.extras.length == 0) {
+    return total;
+  }
+  ticketInfo.extras.forEach((extra) => {
+    total += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+  });
+  return total;
+}
+
 
 /**
  * purchaseTickets()
@@ -109,7 +136,28 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+    
+  function purchaseTickets(ticketData, purchases) {
+  let total = 0;
+  let string = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+  for (let purchase of purchases) {
+    let sum = calculateTicketPrice(ticketData, purchase);
+    if (typeof sum === 'string') {
+      return sum;
+    }
+  sum+=total;
+  
+}
+
+}
+
+
+
+
+
+
+
+
 
 // Do not change anything below this line.
 module.exports = {
