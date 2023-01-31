@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
@@ -22,7 +23,26 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  let object = {};
+  let length = 0; //<- will be converted to feet in for loop
+  //Length must be converted to feet.
+  if (dinosaurs.length === 0) {
+    return object;
+    //if there are no dinosaurs return an empty object
+  } for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].lengthInMeters > length) {
+      length = dinosaurs[i].lengthInMeters;
+      dinoKey = dinosaurs[i].name;
+      lengthInFeet = length * 3.281;
+    }
+  } object[dinoKey] = lengthInFeet;
+  return object;
+}
+//Must return an object with the longest dinosaur. (probs a new object)
+//need for loop to check through every dino
+//Dino name(key): length in feet
+
 
 /**
  * getDinosaurDescription()
@@ -44,7 +64,25 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  //need for loop to run through each dinosaur.
+  //should work for dinosaurs with only one value in mya (millon years ago)
+  //let's make a msg so this is easier
+  for (const dinos of dinosaurs) {
+    if (dinos.dinosaurId === id && dinos.mya.length > 1) {
+      dinoDesc = `${dinos.name} (${dinos.pronunciation})\n${dinos.info} It lived in the ${dinos.period} period, over ${dinos.mya[dinos.mya.length - 1]} million years ago.`;
+      return dinoDesc;
+    } if (dinos.dinosaurId === id && dinos.mya.length === 1) {
+      dinoDesc = `${dinos.name} (${dinos.pronunciation})\n${dinos.info} It lived in the ${dinos.period} period, over ${dinos.mya} million years ago.`;
+      return dinoDesc;
+    }
+    //happy path
+  }
+
+  return `A dinosaur with an ID of '${id}' cannot be found.`
+}
+
+
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +109,32 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  /*happy path:
+  * Tests only say  "INCLUDE dinos with only one mya year", NOT "return only the dinos with one mya value."
+  *key represents the values that we should return INSTEAD of the ID.
+  *if the key given does not return a value, (not found in ...dinosaurs), return IDs.
+  Note: dinos with two mya values: first value is always greater than the second value.
+   */
+  let dinoArr = [];
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if ((mya <= dinosaurs[i].mya[0] && mya >= dinosaurs[i].mya[1]) || ((mya === dinosaurs[i].mya[0])) || (dinosaurs[i].mya - mya === 1)) {
+      /*if mya param is less than or equal to a dinosaur with this mya in its first value,
+      AND if mya param is greater than or equal to a dino with an mya in the second value. because the second value is always smaller, we can expect mya param to be larger than or equal to dino's mya, every time.
+     This condition ensures we include dinosaurs with two mya values.*/
+
+      /* OR if the dinosaur has only one mya value, mya must be equal to OR mya must equal the dinosaur's mya value minus 1. */
+      if (dinosaurs[i][key] !== undefined) {
+        dinoArr.push(dinosaurs[i][key])
+        /*if key returns a value, can be pushed into the new array. */
+      } else {
+        dinoArr.push(dinosaurs[i].dinosaurId)
+        /*will return IDs if above conditions are met. but if key returns no value, return IDs. */
+      }
+    }
+  }
+  return dinoArr;
+}
 
 module.exports = {
   getLongestDinosaur,
