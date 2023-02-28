@@ -25,7 +25,28 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  let dinoId = '';
+ 
+  for(dinosaur of dinosaurs){
+    if(dinosaur.name === dinosaurName){
+      dinoId = dinosaur.dinosaurId
+    }
+  }
+
+  if(dinoId === ''){
+    return  `Dinosaur with name '${dinosaurName}' cannot be found.`
+  }
+
+  for(room of rooms){
+    if(room.dinosaurs.includes(dinoId)){
+      return room.name
+    }
+  } 
+
+  return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,8 +70,32 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+    function getConnectedRoomNamesById(rooms, id) {
+      let connectsTo = []
+      let roomNames = []
+    
+      for(room of rooms){
+        if(room.roomId === id){
+          connectsTo = room.connectsTo
+        }
+      }
 
+      if(connectsTo.length === 0){
+        return `Room with ID of '${id}' could not be found.`
+      }
+    
+      for(room of rooms){
+        if(connectsTo.includes(room.roomId)){
+          roomNames.push(room.name)
+        }
+      }      
+
+      return roomNames
+    }
+// Room ID will lead to array of rooms
+// step 1 check for ID of room 
+// step 2 check for ID of connecting rooms in array of connectsTo
+// loop throguh and reprint name connected to roomID
 module.exports = {
   getRoomByDinosaurName,
   getConnectedRoomNamesById,

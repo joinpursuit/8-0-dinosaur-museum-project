@@ -5,9 +5,11 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
+const { general } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
-
+  
 /**
  * calculateTicketPrice()
  * ---------------------
@@ -54,7 +56,39 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+
+  if(!ticketData[ticketInfo.ticketType]){
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+  }else if(!ticketData[ticketInfo.ticketType]['priceInCents'][ticketInfo.entrantType]){
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+  }
+  for(option of ticketInfo.extras){
+    if(!ticketData.extras[option]){
+      return `Extra type '${option}' cannot be found.`
+    }
+  }
+  
+  let price = ticketData[ticketInfo.ticketType]['priceInCents'][ticketInfo.entrantType]
+  let currentExtras = ticketInfo.extras
+  let extras = ticketData.extras
+  
+  for(choice in extras){
+    if(currentExtras.includes(extras[choice])){
+      price += choice.priceInCents[ticketInfo.type]
+    }
+  }
+  return price
+}
+//"Extra type 'incorrect-extra' cannot be found."
+    //if(ticket.general){
+      //for( of ){
+
+      
+    //}
+  
+
+
 
 /**
  * purchaseTickets()
