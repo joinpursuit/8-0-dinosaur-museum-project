@@ -54,7 +54,30 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  const ticketType = ticketInfo.ticketType
+  const entrantType = ticketInfo.entrantType
+  const extras =ticketInfo.extras
+  if(ticketData[ticketType] === undefined){
+    return `Ticket type '${ticketType}' cannot be found.`
+  }
+  const priceInCents = ticketData[ticketType].priceInCents[entrantType]
+  if(priceInCents === undefined){
+    return `Entrant type '${entrantType}' cannot be found.`
+  }
+let sum = 0
+sum += priceInCents
+for(let i = 0; i < extras.length; i ++){
+  const extra = extras[i]
+  if( ticketData.extras[extra] === undefined){
+    return `Extra type '${extra}' cannot be found.`
+    }
+  sum += ticketData.extras[extra].priceInCents[entrantType]
+  }
+  return sum 
+}
+
+
 
 /**
  * purchaseTickets()
@@ -109,7 +132,41 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let total = 0
+  let receipt = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n'
+  for(let i = 0; i < purchases.length; i++){
+   const purchase = purchases[i]
+   const priceInCents = calculateTicketPrice(ticketData,purchase)
+   if(typeof priceInCents === "string"){
+    return priceInCents
+   }
+  
+   total += priceInCents
+   const entrant =
+   purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1)
+   const ticketTypeDescription = ticketData[purchase.ticketType].description 
+   const price = (priceInCents / 100).toFixed(2)
+   let line =`${entrant} ${ticketTypeDescription}: $${price}`
+   const extras = purchase.extras
+   let ending = '\n'
+   if (extras.length > 0){
+    line += " ("
+    ending = ")" + ending
+   }
+   for(let i = 0; i < extras.length; i++){
+   const extra = ticketData.extras[extras[i]].description
+    if (i === extras.length - 1){
+      line += extra
+    }else{ 
+      line += extra +  ", "
+      }
+    }
+  receipt += line + ending
+  }
+return receipt + `-------------------------------------------
+TOTAL: $${(total / 100).toFixed(2)}`
+}
 
 // Do not change anything below this line.
 module.exports = {
