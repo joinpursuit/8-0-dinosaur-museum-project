@@ -74,7 +74,7 @@ function getConnectedRoomNamesById(rooms, id) {
     // Array to store the names of connected rooms
     const connectedRoomsById = [];
   
-    // Using the Find method, we the room with the provided ID in the array of rooms
+    // Find the room with the provided ID in the array of rooms
     const findRoomById = rooms.find(room => id === room.roomId);
   
     // Log the room with the provided ID to the console
