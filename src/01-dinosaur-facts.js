@@ -116,11 +116,17 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
 
   const dinoAliveByMya = [];
 
-  let dinoByKey = dinosaurs.forEach(dino => dino.mya === mya && key);
-  console.log(dinoByKey);
-  dinoAliveByMya.push(dinoByKey);
+  let filteredMya = dinosaurs.filter(dino => {
+    return dino.mya[0] === mya || dino.mya[1] === mya || dino.mya - mya == 1
+  });
 
-  // for (const dino of dinosaurs) {
+  filteredMya.forEach(dino => {
+    key ? dinoAliveByMya.push(key) : dinoAliveByMya.push(dino.dinosaurId);
+  });
+
+  return dinoAliveByMya;
+}
+ // for (const dino of dinosaurs) {
   //   if (dino.mya === mya && key) {
       
   //   }
@@ -128,10 +134,6 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
         
   //     }
   // }
-
-  return dinoAliveByMya;
-}
-
 module.exports = {
   getLongestDinosaur,
   getDinosaurDescription,
