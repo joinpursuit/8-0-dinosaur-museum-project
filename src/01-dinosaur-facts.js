@@ -80,9 +80,7 @@ function getDinosaurDescription(dinosaurs, id) {
       }
       return dinoDesc;
     }
-      
   }
-
   return `A dinosaur with an ID of 'incorrect-id' cannot be found.`;
 }
 
@@ -112,28 +110,17 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  //return dinos that were alive by the given mya year. If a key is provided return the value of that key for each dino alive, otherwise we return the ID.
-
   const dinoAliveByMya = [];
 
-  let filteredMya = dinosaurs.filter(dino => {
-    return dino.mya[0] === mya || dino.mya[1] === mya || dino.mya - mya == 1
+  dinosaurs.forEach(dino => {
+    if (dino.mya.includes(mya) || (dino.mya[0] - mya === 1) || (dino.mya[1] <= mya) && (dino.mya[0] >= mya)){
+      key ? dinoAliveByMya.push(dino[key]) : dinoAliveByMya.push(dino.dinosaurId);
+    }
   });
-
-  filteredMya.forEach(dino => {
-    key ? dinoAliveByMya.push(key) : dinoAliveByMya.push(dino.dinosaurId);
-  });
-
+ 
   return dinoAliveByMya;
 }
- // for (const dino of dinosaurs) {
-  //   if (dino.mya === mya && key) {
-      
-  //   }
-  //     if (dino.mya === mya) {
-        
-  //     }
-  // }
+ 
 module.exports = {
   getLongestDinosaur,
   getDinosaurDescription,
