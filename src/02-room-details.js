@@ -68,7 +68,42 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  // Function to get the names of connected rooms based on the provided rooms and ID
+
+    // Array to store the names of connected rooms
+    const connectedRoomsById = [];
+  
+    // Using the Find method, we the room with the provided ID in the array of rooms
+    const findRoomById = rooms.find(room => id === room.roomId);
+  
+    // Log the room with the provided ID to the console
+    console.log(findRoomById);
+  
+    // If the room with the provided ID is not found, return an error message
+    if (!findRoomById) {
+      return `Room with ID of '${id}' could not be found.`
+    }
+  
+    // Loop through each ID in the 'connectsTo' array of the found room
+    for (const conIds of findRoomById.connectsTo) {
+  
+      // Find the room with the current ID in the array of rooms
+      const connectedRooms = rooms.find(room => conIds === room.roomId);
+  
+      // If the connected room is found, add its name to the array
+      if (connectedRooms)  {
+        connectedRoomsById.push(connectedRooms.name);
+      } else {
+        // If the connected room is not found, return an error message
+        return `Room with ID of 'incorrect-id' could not be found.`
+      }
+    }
+    
+    // Return the array of connected room names
+    return connectedRoomsById;
+  }
+
 
 module.exports = {
   getRoomByDinosaurName,
