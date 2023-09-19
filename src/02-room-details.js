@@ -77,9 +77,6 @@ function getConnectedRoomNamesById(rooms, id) {
     // Find the room with the provided ID in the array of rooms
     const findRoomById = rooms.find(room => id === room.roomId);
   
-    // Log the room with the provided ID to the console
-    console.log(findRoomById);
-  
     // If the room with the provided ID is not found, return an error message
     if (!findRoomById) {
       return `Room with ID of '${id}' could not be found.`
