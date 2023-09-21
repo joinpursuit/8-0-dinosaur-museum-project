@@ -55,26 +55,23 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  let costOfTicketInCents = 0;
-
-  const invalidTicketType = ticketInfo.ticketType !== 'general' && ticketInfo.ticketType !== 'membership';
-  const invalidEntrantType = ticketInfo.entrantType !== 'adult' && ticketInfo.entrantType !== 'child' && ticketInfo.entrantType !== 'senior';
-  const invalidExtraType = ticketInfo.extras !== 'movie' && ticketInfo.extras !== 'education' && ticketInfo.extras !== 'terrace';
-
-  if (invalidTicketType) {
-    return `Ticket type 'incorrect-type' cannot be found.`
+  if (!ticketData[ticketInfo.ticketType]) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
   }
-  if (invalidEntrantType) {
-    return `Entrant type 'incorrect-entrant' cannot be found.`
+  if (!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
   }
-  if (invalidExtraType) {
-    return `Extra type 'incorrect-extra' cannot be found.`
-  }
+ 
+   let costOfTicket = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+   for (const extras of ticketInfo.extras) {
+    if (!ticketData.extras[extras]) {
+      return `Extra type '${extras}' cannot be found.`;
+    }
 
-  // const calculateTicketPrice = ;
+    costOfTicket += ticketData.extras[extras].priceInCents[ticketInfo.entrantType];
+   }
 
-
-  return costOfTicketInCents;
+   return costOfTicket;
 }
 
 /**
@@ -146,19 +143,17 @@ function purchaseTickets(ticketData, purchases) {
    costOfTicket += ticketPrice; 
  
    let entrantType = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1); 
-   let purchaseEntry = `${entryType} ${ticketData[purchase.ticketType].description}: $${(ticketPrice / 100).toFixed(2)}`; 
+   let purchaseEntry = `${entrantType} ${ticketData[purchase.ticketType].description}: $${(ticketPrice / 100).toFixed(2)}`; 
  
    if (purchase.extras.length) { 
-     purchaseEntry += `(${purchase.extras.map(addExtra =>ticketData.extras[addExtra].description).join(", ")})`; 
+     purchaseEntry += ` (${purchase.extras.map(addExtra =>ticketData.extras[addExtra].description).join(", ")})`; 
    }
  
    receiptLines.push(purchaseEntry); 
- 
  }
  
  receiptLines.push(`-------------------------------------------`); 
- receiptLines.push(`TOTAL: $${(totalCost / 100).toFixed(2)}`); 
- 
+ receiptLines.push(`TOTAL: $${(costOfTicket / 100).toFixed(2)}`); 
  return receiptLines.join("\n"); 
 }
 
