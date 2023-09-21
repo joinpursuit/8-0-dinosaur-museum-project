@@ -54,7 +54,28 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let costOfTicketInCents = 0;
+
+  const invalidTicketType = ticketInfo.ticketType !== 'general' && ticketInfo.ticketType !== 'membership';
+  const invalidEntrantType = ticketInfo.entrantType !== 'adult' && ticketInfo.entrantType !== 'child' && ticketInfo.entrantType !== 'senior';
+  const invalidExtraType = ticketInfo.extras !== 'movie' && ticketInfo.extras !== 'education' && ticketInfo.extras !== 'terrace';
+
+  if (invalidTicketType) {
+    return `Ticket type 'incorrect-type' cannot be found.`
+  }
+  if (invalidEntrantType) {
+    return `Entrant type 'incorrect-entrant' cannot be found.`
+  }
+  if (invalidExtraType) {
+    return `Extra type 'incorrect-extra' cannot be found.`
+  }
+
+  // const calculateTicketPrice = ;
+
+
+  return costOfTicketInCents;
+}
 
 /**
  * purchaseTickets()
@@ -64,7 +85,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
  * Any errors that would occur as a result of incorrect ticket information should be surfaced in the same way it is in the previous function.
  * 
  * NOTE: Pay close attention to the format in the examples below and tests. You will need to have the same format to get the tests to pass.
- *
+ * 
  * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
  * @param {Object[]} purchases - An array of objects. Each object represents a single ticket being purchased.
  * @param {string} purchases[].ticketType - Represents the type of ticket. Could be any string except the value "extras".
@@ -110,7 +131,35 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
-  
+ 
+ let costOfTicket = 0; 
+ let receiptLines = [ 
+   `Thank you for visiting the Dinosaur Museum!`,
+   `-------------------------------------------` 
+ ];
+ 
+ for (const purchase of purchases) { 
+   let ticketPrice = calculateTicketPrice(ticketData, purchase); 
+   if (typeof ticketPrice === "string") { 
+     return ticketPrice; 
+   } 
+   costOfTicket += ticketPrice; 
+ 
+   let entrantType = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1); 
+   let purchaseEntry = `${entryType} ${ticketData[purchase.ticketType].description}: $${(ticketPrice / 100).toFixed(2)}`; 
+ 
+   if (purchase.extras.length) { 
+     purchaseEntry += `(${purchase.extras.map(addExtra =>ticketData.extras[addExtra].description).join(", ")})`; 
+   }
+ 
+   receiptLines.push(purchaseEntry); 
+ 
+ }
+ 
+ receiptLines.push(`-------------------------------------------`); 
+ receiptLines.push(`TOTAL: $${(totalCost / 100).toFixed(2)}`); 
+ 
+ return receiptLines.join("\n"); 
 }
 
 // Do not change anything below this line.

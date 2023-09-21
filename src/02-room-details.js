@@ -26,10 +26,10 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
- // Find the dinosaur with the given name in the 'dinosaurs' array
+ // Find the dinosaur with the given name in the dinosaurs array
  const findDino = dinosaurs.find(dino => dinosaurName === dino.name);
  
- // If no dinosaur is found, return an error message
+ // If no dinosaur is found, returns an error message
  if (!findDino) {
    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
  }
@@ -37,11 +37,11 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
  // Find the room that contains the dinosaur with the found dinosaurId
  const findRoom = rooms.find(room => room.dinosaurs.includes(findDino.dinosaurId));
  
- // If a room is found, return the name of the room
+ // If a room is found, returns the name of the room
  if (findRoom) {
    return `${findRoom.name}`;
  } else {
-   // If no room is found, return an error message
+   // If no room is found, returns an error message
    return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
  }
 }
@@ -77,27 +77,27 @@ function getConnectedRoomNamesById(rooms, id) {
     // Find the room with the provided ID in the array of rooms
     const findRoomById = rooms.find(room => id === room.roomId);
   
-    // If the room with the provided ID is not found, return an error message
+    // If the room with the provided ID is not found, returns an error message
     if (!findRoomById) {
       return `Room with ID of '${id}' could not be found.`
     }
   
-    // Loop through each ID in the 'connectsTo' array of the found room
+    // Loops through each ID in the filtered findRoomById.connectsTo array of the found room
     for (const conIds of findRoomById.connectsTo) {
   
-      // Find the room with the current ID in the array of rooms
+      // Find the room with the current connected ID in the array of rooms
       const connectedRooms = rooms.find(room => conIds === room.roomId);
   
       // If the connected room is found, add its name to the array
       if (connectedRooms)  {
         connectedRoomsById.push(connectedRooms.name);
       } else {
-        // If the connected room is not found, return an error message
+        // If the connected room is not found, returns an error message
         return `Room with ID of 'incorrect-id' could not be found.`
       }
     }
     
-    // Return the array of connected room names
+    // Returns the array of connected room names
     return connectedRoomsById;
   }
 
