@@ -140,7 +140,7 @@ dinosaurs.forEach(dino => {
   }
 });
 
-// Return the 'dinoAliveByMya' array containing the dinosaurs that are alive based on the given criteria
+// Return the 'dinoAliveByMya' array containing the dinosaurs that are alive
 return dinoAliveByMya;
 }
  
