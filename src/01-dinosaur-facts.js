@@ -155,14 +155,21 @@ return dinoAliveByMya;
  * @return {string} A string representing the fun fact.
  */
 function getFunDinosaurFacts (dinosaurs, name) {
+  // Define an array of options for dinosaur facts
   const factOptions = ["meaningOfName", "diet", "lengthInMeters"];
+
+  // Generate a random index based on the length of the factOptions array
   const randomFact = Math.floor(Math.random() * factOptions.length);
+
+  // Find the dinosaur object in the dinosaurs array that matches the given name
   const dinosaur = dinosaurs.find((dino) => dino.name === name);
 
+  // If no dinosaur object is found, return an error message
   if (!dinosaur) {
     return "No name was given or it's an invalid name";
   }
 
+  // Use a switch statement to return a specific fact based on the randomly generated index
   switch (randomFact) {
     case "diet":
       return `The ${name} is ${dinosaur.diet}.`;
@@ -173,7 +180,6 @@ function getFunDinosaurFacts (dinosaurs, name) {
     default:
       return `The ${name} is an awesome dino!`;
   }
-
 }
 
 
