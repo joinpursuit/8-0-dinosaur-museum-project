@@ -49,7 +49,7 @@ function getLongestDinosaur(dinosaurs) {
   
   // Return the longestDino object
   return longestDino;
-
+}
 /**
  * getDinosaurDescription()
  * ---------------------
@@ -128,6 +128,14 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   return dinoAliveByMya;
 }
  
+
+
+
+
+
+
+
+
 module.exports = {
   getLongestDinosaur,
   getDinosaurDescription,
