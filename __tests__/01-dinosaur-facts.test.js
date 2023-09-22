@@ -2,6 +2,7 @@ const {
   getLongestDinosaur,
   getDinosaurDescription,
   getDinosaursAliveMya,
+  getFunDinosaurFacts,
 } = require("../src/01-dinosaur-facts");
 
 // Dinosaur data
@@ -146,5 +147,36 @@ describe("getDinosaursAliveMya()", () => {
     const expected = ["Dracorex", "Indosuchus", "Tyrannosaurus"];
 
     expect(actual).toEqual(expected);
+  });
+
+  /////////////////////////////////////////////////////////////////////
+
+  describe('getFunDinosaurFacts', () => {
+    const dinosaurs = [
+      {
+        name: "Allosaurus",
+        pronunciation: "AL-oh-sore-us",
+        meaningOfName: "other lizard",
+        diet: "carnivorous",
+        lengthInMeters: 12,
+        period: "Late Jurassic",
+        mya: [156, 144],
+        info: "Allosaurus was an apex predator in the Late Jurassic in North America.",
+      },
+    ];
+  
+    it('should return a fun fact about the dinosaur', () => {
+      const name = "Allosaurus";
+      const actual = getFunDinosaurFacts(dinosaurs, name);
+      const expected = `The Allosaurus`; 
+      expect(actual).toContain(expected);
+    });
+  
+    it('should return a default message for an unknown dinosaur name', () => {
+      const name = "UnknownDinosaur";
+      const actual = getFunDinosaurFacts(dinosaurs, name);
+      const expected = ("No name was given or it's an invalid name");
+      expect(actual).toEqual(expected);
+    });
   });
 });
