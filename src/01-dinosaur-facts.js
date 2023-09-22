@@ -140,8 +140,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
  */
 function getFunDinosaurFacts (dinosaurs, name) {
   const factOptions = ["meaningOfName", "diet", "lengthInMeters"];
-  const randomKey = Math.floor(Math.random() * factOptions.length);
-  const randomFact = factOptions[randomKey];
+  const randomFact = Math.floor(Math.random() * factOptions.length);
   const dinosaur = dinosaurs.find((dino) => dino.name === name);
 
   if (!dinosaur) {
