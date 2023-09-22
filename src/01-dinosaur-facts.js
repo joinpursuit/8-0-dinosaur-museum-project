@@ -131,12 +131,41 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
 
 
 
+/**
+ * Retrieves fun dinosaur facts based on the given dinosaurs and name.
+ *
+ * @param {array} dinosaurs - An array of dinosaurs.
+ * @param {string} name - The name of the dinosaur.
+ * @return {string} A string representing the fun fact.
+ */
+function getFunDinosaurFacts (dinosaurs, name) {
+  const factOptions = ["meaningOfName", "diet", "lengthInMeters"];
+  const randomKey = Math.floor(Math.random() * factOptions.length);
+  const randomFact = factOptions[randomKey];
+  const dinosaur = dinosaurs.find((dino) => dino.name === name);
 
+  if (!dinosaur) {
+    return "No name was given or it's an invalid name";
+  }
+
+  switch (randomFact) {
+    case "diet":
+      return `The ${name} is ${dinosaur.diet}.`;
+    case "lengthInMeters":
+      return `The ${name} is ${dinosaur.lengthInMeters} meters long.`;
+    case "meaningOfName":
+      return `The ${name} name means ${dinosaur.meaningOfName}.`;
+    default:
+      return `The ${name} is an awesome dino!`;
+  }
+
+}
 
 
 
 
 module.exports = {
+  getFunDinosaurFacts,
   getLongestDinosaur,
   getDinosaurDescription,
   getDinosaursAliveMya,
