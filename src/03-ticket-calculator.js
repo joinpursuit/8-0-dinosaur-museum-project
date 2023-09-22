@@ -55,23 +55,32 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
+  // Checks if the ticket type exists in the ticketData object, if not return it cannot be found
   if (!ticketData[ticketInfo.ticketType]) {
     return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
   }
+  
+  // Checks if the entrant type exists for the given ticket type, if not return it cannot be found
   if (!ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]) {
     return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
   }
- 
-   let costOfTicket = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
-   for (const extras of ticketInfo.extras) {
+  
+  // Initialize the costOfTicket variable with the base price for the ticket type and entrant type
+  let costOfTicket = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+  
+  // Iterate through the extras array and add the price for each extra if it exists
+  for (const extras of ticketInfo.extras) {
+    // Check if the extra type exists in the ticketData object, if not return it cannot be found
     if (!ticketData.extras[extras]) {
       return `Extra type '${extras}' cannot be found.`;
     }
-
+  
+    // Add the price for the extra based on the entrant type
     costOfTicket += ticketData.extras[extras].priceInCents[ticketInfo.entrantType];
-   }
-
-   return costOfTicket;
+  }
+  
+  // Return the final cost of the ticket
+  return costOfTicket;
 }
 
 /**
@@ -128,33 +137,53 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
- 
- let costOfTicket = 0; 
- let receiptLines = [ 
-   `Thank you for visiting the Dinosaur Museum!`,
-   `-------------------------------------------` 
- ];
- 
- for (const purchase of purchases) { 
-   let ticketPrice = calculateTicketPrice(ticketData, purchase); 
-   if (typeof ticketPrice === "string") { 
-     return ticketPrice; 
-   } 
-   costOfTicket += ticketPrice; 
- 
-   let entrantType = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1); 
-   let purchaseEntry = `${entrantType} ${ticketData[purchase.ticketType].description}: $${(ticketPrice / 100).toFixed(2)}`; 
- 
-   if (purchase.extras.length) { 
-     purchaseEntry += ` (${purchase.extras.map(addExtra =>ticketData.extras[addExtra].description).join(", ")})`; 
-   }
- 
-   receiptLines.push(purchaseEntry); 
- }
- 
- receiptLines.push(`-------------------------------------------`); 
- receiptLines.push(`TOTAL: $${(costOfTicket / 100).toFixed(2)}`); 
- return receiptLines.join("\n"); 
+// Initialize the cost of the ticket to 0
+let costOfTicket = 0; 
+// Create an array to store the lines of the receipt
+let receiptLines = [
+  `Thank you for visiting the Dinosaur Museum!`,
+  `-------------------------------------------` 
+];
+
+// Loop through each purchase in the 'purchases' array
+for (const purchase of purchases) { 
+  // Calculate the price of the ticket for the purchase using the calculateTicketPrice() function above
+  let ticketPrice = calculateTicketPrice(ticketData, purchase); 
+
+  // If the 'ticketPrice' is a string, it means there was an error calculating the price
+  // Return the error message
+  if (typeof ticketPrice === "string") { 
+    return ticketPrice; 
+  } 
+
+  // Adds the 'ticketPrice' to the total cost of the ticket
+  costOfTicket += ticketPrice; 
+
+  // Get the entrant type for the purchase and capitalize the first letter
+  let entrantType = purchase.entrantType[0].toUpperCase() + purchase.entrantType.slice(1); 
+
+  // Create a string representing the purchase with the entrant type, ticket description, and price in dollars
+  let purchaseEntry = `${entrantType} ${ticketData[purchase.ticketType].description}: $${(ticketPrice / 100).toFixed(2)}`; 
+
+  // If there are extras in the purchase, add them to the purchase entry
+  if (purchase.extras.length) { 
+    // Map over each extra in the 'extras' array and get the description from 'ticketData.extras'
+    // Join the descriptions with a comma and add them to the purchase entry
+    purchaseEntry += ` (${purchase.extras.map(addExtra =>ticketData.extras[addExtra].description).join(", ")})`; 
+  }
+
+  // Add the purchase entry to the receipt lines array
+  receiptLines.push(purchaseEntry); 
+}
+
+// Add line to the receipt to match the expected output
+receiptLines.push(`-------------------------------------------`); 
+
+// Add the total cost of the ticket to the receipt
+receiptLines.push(`TOTAL: $${(costOfTicket / 100).toFixed(2)}`); 
+
+// Join all the receipt lines with a newline and return the resulting string
+return receiptLines.join("\n");
 }
 
 // Do not change anything below this line.
