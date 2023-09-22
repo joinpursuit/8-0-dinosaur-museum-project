@@ -152,7 +152,7 @@ function getFunDinosaurFacts (dinosaurs, name) {
     case "diet":
       return `The ${name} is ${dinosaur.diet}.`;
     case "lengthInMeters":
-      return `The ${name} is ${dinosaur.lengthInMeters} meters long.`;
+      return `The ${name} is ${dinosaur.lengthInMeters} meter(s) long.`;
     case "meaningOfName":
       return `The ${name} name means ${dinosaur.meaningOfName}.`;
     default:
@@ -160,7 +160,6 @@ function getFunDinosaurFacts (dinosaurs, name) {
   }
 
 }
-
 
 
 
