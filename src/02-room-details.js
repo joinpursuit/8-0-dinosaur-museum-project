@@ -25,7 +25,34 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+
+  let theId = ""; // a string expected,
+
+  for ( let dino of dinosaurs) { // I am sooooo happy to have found this way of getting through an array, super simple i love it. this is definining individual indexes of the dinosaurs loop, and making loop go through the entire array 
+
+    if (dino.name === dinosaurName){ // if the specific key name of rando index in dinosaurs array is strictly equal to the provided dinosaur name 
+
+      theId = dino.dinosaurId; // then the string required will be redefined to equal the dinosaur Id of that specific index 
+    }
+  }
+
+  if (theId !== ""){ 
+
+    for (let room of rooms){ // another loop to go through the array of rooms 
+
+      if (room.dinosaurs.includes(theId)){ // if TheId is included in the dinosaurs array of the rooms array 
+        return room.name; // then the name of that particular room is to be returned 
+      }
+    }
+  }
+  else{ // otherwise 
+
+    return `Dinosaur with name '${dinosaurName}' cannot be found.` // the error code that it cannot be found in that room is to be returned 
+  }
+
+  return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.` // if all if statements are false, then the dinosaur cannot be found anywhere 
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +76,20 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  let roomNames = [] //definind array to be returned 
+
+  for (let room of rooms) { // loop to go through each index of the rooms array 
+    if (room.roomId === id) { // if specific room id of room does not strictly equal the id provided 
+      roomNames.push(room.name) // then the name of the room to be pushed into the array 
+    }
+
+    else {
+      roomNames = `Room with ID of 'incorrect-id' could not be found.` // else error code to be returned 
+    }
+
+  } return roomNames // returning array requested 
+}
 
 module.exports = {
   getRoomByDinosaurName,

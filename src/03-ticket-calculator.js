@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,40 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let cost = 0;
+
+  if (ticketInfo.ticketType in ticketData){
+
+    if (ticketInfo.entrantType in ticketData[ticketInfo.ticketType]["priceInCents"]){
+
+      cost += ticketData[ticketInfo.ticketType]["priceInCents"][ticketInfo.entrantType];
+
+      for ( let extra of ticketInfo.extras){
+
+        if (extra in ticketData.extras == false) {
+          return `Extra type '${extra}' cannot be found.`
+        }
+        else {
+
+          cost += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+        }
+      }
+      
+    }
+    else {
+
+      return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+    }
+  }
+  else {
+
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+  }
+
+  return cost;
+}
+
 
 /**
  * purchaseTickets()
@@ -109,7 +143,42 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let subTotal = 0
+  let ticketInfo = 0
+  let printReceipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------";
+   for (let i = 0; i < purchases.length; i++){
+    //check with your Guard Clause to generate your error message
+   if (!purchases[i].ticketType in ticketData){
+    //error message
+      return `Ticket type '${purchases[i].ticketType}' cannot be found.`
+   }
+   if (!purchases[i].entrantType in ticketData[purchases[i].ticketType].priceInCents){
+      return `Entrant type '${purchases[i].entrantType}' cannot be found.`
+   } //FORMATTING IS FUN! ... FOR STRINGS...
+   let ticketPrice = calculateTicketPrice(ticketData, purchases[i]) // /100
+   printReceipt += `\n${purchases[i].entrantType.charAt(0).toUpperCase()}${purchases[i].entrantType.slice(1)} ${purchases[i].ticketType.charAt(0).toUpperCase()}${purchases[i].ticketType.slice(1)} Admission: `
+   printReceipt += `$${(ticketPrice).toFixed(2)}`
+
+   
+
+
+   
+    //
+    // redefine params now that you invoke the previous function ---> HELPER FUNCTIONS 
+    //ticketInfo = purchases[i]
+    
+
+   // if (typeof price === 'string') 
+    //return ticketPrice
+    subTotal += ticketPrice
+  }//end of for loop
+
+   printReceipt += `\n-------------------------------------------\nTOTAL: $${(subTotal).toFixed(2)}`
+
+  return printReceipt
+  
+}
 
 // Do not change anything below this line.
 module.exports = {
