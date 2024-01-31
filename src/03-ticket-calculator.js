@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const { general } = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,74 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let grandTotal = 0; // the final ticket price
+  // Three guard clauses - test if the ticket type, entrant type, and any extras in the ticketInfo object exist in the ticketData object
+  if (!ticketData.hasOwnProperty(ticketInfo.ticketType)) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+  if (!ticketData.general.priceInCents.hasOwnProperty(ticketInfo.entrantType)) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+  for (const extra of ticketInfo.extras) {
+    if (!ticketData.extras.hasOwnProperty(extra)) {
+      return `Extra type '${extra}' cannot be found.`;
+    }
+  }
+  // adding the base admission price to the total, depending on whether or not the entrant is a member, and whether they are a child, adult, or senior
+  if (ticketInfo.ticketType === "general") {
+    if (ticketInfo.entrantType === "child") {
+      grandTotal += ticketData.general.priceInCents.child;
+    } else if (ticketInfo.entrantType === "adult") {
+      grandTotal += ticketData.general.priceInCents.adult;
+    } else if (ticketInfo.entrantType === "senior") {
+      grandTotal += ticketData.general.priceInCents.senior;
+    }
+  } else if (ticketInfo.ticketType === "membership") {
+    if (ticketInfo.entrantType === "child") {
+      grandTotal += ticketData.membership.priceInCents.child;
+    } else if (ticketInfo.entrantType === "adult") {
+      grandTotal += ticketData.membership.priceInCents.adult;
+    } else if (ticketInfo.entrantType === "senior") {
+      grandTotal += ticketData.membership.priceInCents.senior;
+    }
+  }
+  // calculating the price of extras added onto the ticket, if any -- movie, education, or terrace access cost different amounts depending on whether the entrant is a child, adult or senior
+  if (ticketInfo.extras.length) {
+    if (ticketInfo.entrantType === "child") {
+      if (ticketInfo.extras.includes("movie")) {
+        grandTotal += ticketData.extras.movie.priceInCents.child;
+      }
+      if (ticketInfo.extras.includes("education")) {
+        grandTotal += ticketData.extras.education.priceInCents.child;
+      }
+      if (ticketInfo.extras.includes("terrace")) {
+        grandTotal += ticketData.extras.terrace.priceInCents.child;
+      }
+    } else if (ticketInfo.entrantType === "adult") {
+      if (ticketInfo.extras.includes("movie")) {
+        grandTotal += ticketData.extras.movie.priceInCents.adult;
+      }
+      if (ticketInfo.extras.includes("education")) {
+        grandTotal += ticketData.extras.education.priceInCents.adult;
+      }
+      if (ticketInfo.extras.includes("terrace")) {
+        grandTotal += ticketData.extras.terrace.priceInCents.adult;
+      }
+    } else if (ticketInfo.entrantType === "senior") {
+      if (ticketInfo.extras.includes("movie")) {
+        grandTotal += ticketData.extras.movie.priceInCents.senior;
+      }
+      if (ticketInfo.extras.includes("education")) {
+        grandTotal += ticketData.extras.education.priceInCents.senior;
+      }
+      if (ticketInfo.extras.includes("terrace")) {
+        grandTotal += ticketData.extras.terrace.priceInCents.senior;
+      }
+    }
+  }
+  return grandTotal;
+}
 
 /**
  * purchaseTickets()
