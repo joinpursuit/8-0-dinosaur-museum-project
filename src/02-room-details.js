@@ -3,6 +3,7 @@
 
   You may use this data to test your functions. You may assume the shape of the data remains the same but that the values may change.
 */
+const dinosaurs = require("../data/dinosaurs");
 const exampleDinosaurData = require("../data/dinosaurs");
 const exampleRoomData = require("../data/rooms");
 // Do not change the lines above.
@@ -25,7 +26,30 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  // declared variable
+  let dinoId;
+  // looped through dinosaurs 
+  for (let i = 0; i < dinosaurs.length; i++) {
+    if (dinosaurs[i].name === dinosaurName) {
+     // make assigned varibale = the value of diosaurs.if
+      dinoId = dinosaurs[i].dinosaurId
+    }
+  }
+  // create a conditional
+  // if dinoid is false return message
+  if (!dinoId) {
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`
+
+  }
+  // loop through rooms and if the value of dino id is included return the foom names
+  for (let i = 0; i < rooms.length; i++) {
+    if (rooms[i].dinosaurs.includes(dinoId)) {
+      return (rooms[i].name)
+    }
+  }
+  return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +73,35 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  //created an empty arr will collect the rooms that include room id
+  let connectedArr = [];
+  // will retrun the room with the names
+  let newArr = [];
+  // looping throught
+  for (let i = 0; i < rooms.length; i++) {
+    if (rooms[i].roomId === (id)) {
+      // created to house the c
+      connectedArr = (rooms[i].connectsTo);
+    }
+
+  }
+  for (let j = 0; j < rooms.length; j++) {
+    if (connectedArr.includes(rooms[j].roomId)) {
+      newArr.push(rooms[j].name)
+    }
+  }
+  // the array can be empty and there will be no match. connectedArr.length is the saw as id
+    if (!connectedArr.length) {
+    return `Room with ID of '${id}' could not be found.`
+  }
+  // if the room ids are not the same then it must 
+   if (connectedArr.length !== newArr.length) {
+    return `Room with ID of 'incorrect-id' could not be found.`
+  }
+
+  return newArr;
+}
 
 module.exports = {
   getRoomByDinosaurName,
